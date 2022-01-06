@@ -246,16 +246,16 @@ class Slot extends Component {
 
     switch (parseInt(this.props.match.params.type)) {
       case GameTypeEnum.TABLEGAME:
-        title = i18n.translation.t('common.electron')
+        title = i18n.t('common.electron')
         break
       case GameTypeEnum.FISH:
-        title = i18n.translation.t('common.fish')
+        title = i18n.t('common.fish')
         break
       case GameTypeEnum.TIGERSLOT:
-        title = i18n.translation.t('common.slot')
+        title = i18n.t('common.slot')
         break
       default:
-        title = i18n.translation.t('common.slot')
+        title = i18n.t('common.slot')
         break
     }
     this.state = {
@@ -387,10 +387,10 @@ class Slot extends Component {
   handleGameClick = (gpcode, gpid) => {
     if (this.props.token) {
       window.open(
-        `/${i18n.translation.language}/joingame/${this.props.match.params.type}/${gpcode}/${gpid}`
+        `/${i18n.language}/joingame/${this.props.match.params.type}/${gpcode}/${gpid}`
       )
     } else {
-      this.props.history.push(`/${i18n.translation.language}/}`)
+      this.props.history.push(`/${i18n.language}/}`)
     }
   }
   handleChangeTab = (event, newValue) => {
@@ -487,23 +487,23 @@ class Slot extends Component {
               scrollButtons='auto'
             >
               <Tab
-                label={i18n.translation.t('slot.allGame')}
+                label={i18n.t('slot.allGame')}
                 value={SlotFilterType.All}
               />
               <Tab
-                label={i18n.translation.t('slot.hotGame')}
+                label={i18n.t('slot.hotGame')}
                 value={SlotFilterType.Hot}
               />
               <Tab
-                label={i18n.translation.t('slot.newGame')}
+                label={i18n.t('slot.newGame')}
                 value={SlotFilterType.New}
               />
               <Tab
-                label={i18n.translation.t('slot.recommendGame')}
+                label={i18n.t('slot.recommendGame')}
                 value={SlotFilterType.Recommend}
               />
               <Tab
-                label={i18n.translation.t('slot.bookmarkGame')}
+                label={i18n.t('slot.bookmarkGame')}
                 value={'fav'}
               />
             </Tabs>
@@ -514,7 +514,7 @@ class Slot extends Component {
                     selected={this.state.platform === ''}
                     onClick={() => this.handlePlatformChange('')}
                   >
-                    {i18n.translation.t('slot.all')}
+                    {i18n.t('slot.all')}
                   </GameItem>
                 </GameItemLI>
 
@@ -623,7 +623,7 @@ class Slot extends Component {
               <SearchKeywordWrap>
                 <SearchInputBG>
                   <SearchInput
-                    placeholder={i18n.translation.t('slot.search')}
+                    placeholder={i18n.t('slot.search')}
                     type={'text'}
                     onChange={this.handleChangeKeyword}
                     value={this.state.keyword}
@@ -633,7 +633,7 @@ class Slot extends Component {
                   ></SearchInputButton>
                 </SearchInputBG>
                 <SearchCancelButton onClick={this.handleResetSearch}>
-                  {i18n.translation.t('common.cancel')}
+                  {i18n.t('common.cancel')}
                 </SearchCancelButton>
               </SearchKeywordWrap>
             </SearchContainer>

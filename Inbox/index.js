@@ -113,7 +113,7 @@ class Inbox extends Component {
   }
   getMessageList = (page, isNew = false) => {
     this.props.getMessages(
-      i18n.translation.language,
+      i18n.language,
       this.state.limit,
       page + 1,
       isNew
@@ -197,7 +197,7 @@ class Inbox extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('inbox.title')}
+          title={i18n.t('inbox.title')}
         ></Header>
 
         {

@@ -50,7 +50,7 @@ const CustomListItemText = withStyles({
 })(ListItemText)
 class Profile extends Component {
   state = {
-    checked: i18n.translation.language
+    checked: i18n.language
   }
   languages = [
     { name: '简体中文', code: 'zh-CN' },
@@ -59,7 +59,7 @@ class Profile extends Component {
   ]
   componentDidMount() {
     if (this.props.account.token === null) {
-      this.props.appHistory.replace('/' + i18n.translation.language + '/')
+      this.props.appHistory.replace('/' + i18n.language + '/')
     }
   }
   handleBackClick = () => {
@@ -79,7 +79,7 @@ class Profile extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('profile.title')}
+          title={i18n.t('profile.title')}
         ></Header>
         <CustomList>
           {this.props.general.brandLanguage.map((value) => {
@@ -98,7 +98,7 @@ class Profile extends Component {
                 </ListItemIcon>
                 <CustomListItemText
                   id={labelId}
-                  primary={i18n.translation.t('lang.' + value.culturecode)}
+                  primary={i18n.t('lang.' + value.culturecode)}
                 />
                 <ListItemSecondaryAction>
                   {(() => {
@@ -114,7 +114,7 @@ class Profile extends Component {
           })}
         </CustomList>
         <CustomButton
-          label={i18n.translation.t('common.update')}
+          label={i18n.t('common.update')}
           style={{ margin: '50px auto' }}
           onClick={this.handleUpdate}
         ></CustomButton>

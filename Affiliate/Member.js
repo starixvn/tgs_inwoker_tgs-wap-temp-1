@@ -87,7 +87,7 @@ class Member extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('affiliate.downline')}
+          title={i18n.t('affiliate.downline')}
         ></Header>
         {this.props.account.promote_user.list.map((row, index) => {
           return (
@@ -97,13 +97,13 @@ class Member extends Component {
                 <ContentContainer>
                   <ContentWrap>
                     <ContentLabel>
-                      {i18n.translation.t('affiliate.memberName')}
+                      {i18n.t('affiliate.memberName')}
                     </ContentLabel>
                     <ContentValue>{row.name}</ContentValue>
                   </ContentWrap>
                   <ContentWrap>
                     <ContentLabel>
-                      {i18n.translation.t('affiliate.UUID')}
+                      {i18n.t('affiliate.UUID')}
                     </ContentLabel>
                     <ContentValue>{row.uuid}</ContentValue>
                   </ContentWrap>

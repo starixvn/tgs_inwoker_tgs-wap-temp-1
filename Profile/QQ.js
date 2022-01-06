@@ -30,7 +30,7 @@ class QQ extends BaseProfile {
     //sdasdasdasda
     const re = new RegExp('^[1-9]\\d{4,14}$')
     if (!qq.match(re)) {
-      this.props.alert('', i18n.translation.t('profile.qq.msgInvalidQQ'))
+      this.props.alert('', i18n.t('profile.qq.msgInvalidQQ'))
       // this.props.enqueueSnackbar("QQ号码格式不正确", {
       //   key: "error"
       // });
@@ -51,7 +51,7 @@ class QQ extends BaseProfile {
             }
             this.props.alert(
               '',
-              i18n.translation.t('common.msgSuccessUpdateProfile')
+              i18n.t('common.msgSuccessUpdateProfile')
             )
             this.showLoading(false)
           })
@@ -74,14 +74,14 @@ class QQ extends BaseProfile {
 
   render() {
     return this.setupContent(
-      i18n.translation.t('common.qqNumber'),
+      i18n.t('common.qqNumber'),
       <Textbox
         style={{ margin: '50px auto 20px auto' }}
         value={this.state.qq}
         onChange={this.handleChangeNumber}
-        placeholder={i18n.translation.t('profile.qq.plsEnterQQ')}
+        placeholder={i18n.t('profile.qq.plsEnterQQ')}
         type={'text'}
-        label={i18n.translation.t('common.qqNumber')}
+        label={i18n.t('common.qqNumber')}
       ></Textbox>
     )
   }

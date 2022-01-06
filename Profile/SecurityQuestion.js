@@ -32,7 +32,7 @@
 //   componentDidMount() {
 //     if (this.props.account.info.member_question != 0) {
 //       this.props.history.replace(
-//         "/" + i18n.translation.language + "/profile/security-question/option"
+//         "/" + i18n.language + "/profile/security-question/option"
 //       );
 //     }
 //     //fetch security list

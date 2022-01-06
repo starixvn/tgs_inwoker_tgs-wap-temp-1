@@ -120,7 +120,7 @@ class Affiliate extends Component {
   handleCopyLink = () => {
     this.setState({ ...this.state, copyTooltips: true })
     copy(
-      `${window.location.hostname}/${i18n.translation.language}/a/${this.props.account.info.promote_code}`
+      `${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`
     )
     setTimeout(() => {
       this.setState({ ...this.state, copyTooltips: false })
@@ -136,17 +136,17 @@ class Affiliate extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('affiliate.title')}
+          title={i18n.t('affiliate.title')}
         ></Header>
-        <QRCodeLabel>{i18n.translation.t('affiliate.qrCode')}</QRCodeLabel>
+        <QRCodeLabel>{i18n.t('affiliate.qrCode')}</QRCodeLabel>
         <QRCodeContainer>
           <QRCode
-            value={`http://${window.location.hostname}/${i18n.translation.language}/a/${this.props.account.info.promote_code}`}
+            value={`http://${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`}
           ></QRCode>
         </QRCodeContainer>
 
         <CustomText>
-          <CustomLabel>{i18n.translation.t('affiliate.promoId')}</CustomLabel>
+          <CustomLabel>{i18n.t('affiliate.promoId')}</CustomLabel>
           <CustomInput
             type={'text'}
             value={this.props.account.info.promote_code}
@@ -154,19 +154,19 @@ class Affiliate extends Component {
           ></CustomInput>
         </CustomText>
         <CustomText>
-          <CustomLabel>{i18n.translation.t('affiliate.promoLink')}</CustomLabel>
+          <CustomLabel>{i18n.t('affiliate.promoLink')}</CustomLabel>
           <CustomInput
             type={'text'}
-            value={`${window.location.hostname}/${i18n.translation.language}/a/${this.props.account.info.promote_code}`}
+            value={`${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`}
             readOnly={true}
           ></CustomInput>
           <LightTooltip
             open={this.state.copyTooltips}
-            title={i18n.translation.t('affiliate.copied')}
+            title={i18n.t('affiliate.copied')}
             placement='top'
           >
             <Button onClick={this.handleCopyLink}>
-              {i18n.translation.t('common.copy')}
+              {i18n.t('common.copy')}
             </Button>
           </LightTooltip>
         </CustomText>
@@ -178,7 +178,7 @@ class Affiliate extends Component {
             }
             onClick={() => this.props.navigate('/affiliate/member')}
           >
-            {i18n.translation.t('affiliate.downline')}
+            {i18n.t('affiliate.downline')}
           </ListItem>
           <ListItem
             icon={
@@ -187,7 +187,7 @@ class Affiliate extends Component {
             }
             onClick={() => this.props.navigate('/affiliate/report')}
           >
-            {i18n.translation.t('affiliate.report')}
+            {i18n.t('affiliate.report')}
           </ListItem>
           <ListItem
             icon={
@@ -196,7 +196,7 @@ class Affiliate extends Component {
             }
             onClick={() => this.props.navigate('/affiliate/guide')}
           >
-            {i18n.translation.t('affiliate.info')}
+            {i18n.t('affiliate.info')}
           </ListItem>
         </ListView>
 

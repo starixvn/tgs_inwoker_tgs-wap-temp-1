@@ -153,7 +153,7 @@ class Login extends Component {
 
     if (this.props.token != null) {
       this.props.appHistory.replace(
-        '/' + i18n.translation.language + '/main/home'
+        '/' + i18n.language + '/main/home'
       )
     } else {
       let urlParams = new URLSearchParams(this.props.location.search)
@@ -214,9 +214,9 @@ class Login extends Component {
     // this.props.getIDCardNo();
     // this.props.getDepositChannel();
     // this.props.getInviteLink();
-    this.props.getMessageList(i18n.translation.language, 1, 99)
+    this.props.getMessageList(i18n.language, 1, 99)
     this.props.getBankCardList()
-    this.props.getPlayerPromotionList(i18n.translation.language)
+    this.props.getPlayerPromotionList(i18n.language)
     this.props.getAccountInfo()
     if (this.state.rememberMe === true) {
       localStorage.setItem('remember', true)
@@ -228,12 +228,12 @@ class Login extends Component {
       localStorage.removeItem('username')
     }
     this.props.appHistory.replace(
-      '/' + i18n.translation.language + '/main/home'
+      '/' + i18n.language + '/main/home'
     )
   }
   handleBackToHomeClick = () => {
     this.props.appHistory.replace(
-      '/' + i18n.translation.language + '/main/home'
+      '/' + i18n.language + '/main/home'
     )
   }
   handleLoginClick = () => {
@@ -245,7 +245,7 @@ class Login extends Component {
     if (username === '') {
       this.props.alert(
         '',
-        i18n.translation.t('web.login.errorMsg.emptyUsername')
+        i18n.t('web.login.errorMsg.emptyUsername')
       )
       // this.props.enqueueSnackbar("用户名不能为空", {
       //   variant: "warning"
@@ -255,7 +255,7 @@ class Login extends Component {
     if (username === '') {
       this.props.alert(
         '',
-        i18n.translation.t('web.login.errorMsg.emptyPassword')
+        i18n.t('web.login.errorMsg.emptyPassword')
       )
       // this.props.enqueueSnackbar("密码不能为空", {
       //   variant: "warning"
@@ -269,7 +269,7 @@ class Login extends Component {
       } else {
         if (result.code === 210) {
           this.props.appHistory.push(
-            '/' + i18n.translation.language + '/banned'
+            '/' + i18n.language + '/banned'
           )
         } else {
           if (result.data.self_control === 1) {
@@ -284,7 +284,7 @@ class Login extends Component {
           } else {
             this.props.alert(
               '',
-              i18n.translation.t('common.msgInvalidUsername')
+              i18n.t('common.msgInvalidUsername')
             )
             // this.props.enqueueSnackbar(result.msg, {
             //   variant: "warning"
@@ -301,13 +301,13 @@ class Login extends Component {
   }
   handleForgotpasswordClick = () => {
     this.props.appHistory.push(
-      '/' + i18n.translation.language + '/forgot-password'
+      '/' + i18n.language + '/forgot-password'
     )
   }
 
   handleGoDownloadPage = () => {
     this.props.appHistory.push(
-      '/' + i18n.translation.language + '/main/download'
+      '/' + i18n.language + '/main/download'
     )
   }
   handleUsernameChange = (e) => {
@@ -386,25 +386,25 @@ class Login extends Component {
     if (!expr.test(username)) {
       this.props.alert(
         '',
-        i18n.translation.t('common.msgRegisterUserNameInvalid')
+        i18n.t('common.msgRegisterUserNameInvalid')
       )
       return
     }
     expr = /^.{6,20}$/
     if (!expr.test(password)) {
-      this.props.alert('', i18n.translation.t('common.msgRegisterPassInvalid'))
+      this.props.alert('', i18n.t('common.msgRegisterPassInvalid'))
       return
     }
     expr = /^[a-zA-Z0-9]{6}$/
     if (!expr.test(code)) {
-      this.props.alert('', i18n.translation.t('common.msgEnterCode'))
+      this.props.alert('', i18n.t('common.msgEnterCode'))
       return
     }
 
     AccountService.VerifyActivation(securityKey, code).then(
       async (response) => {
         if (response.IsSuccess) {
-          this.props.alert('', i18n.translation.t('common.msgTokenVerified'))
+          this.props.alert('', i18n.t('common.msgTokenVerified'))
           this.doLogin(username, password)
         } else {
           this.props.alert('', response.info)
@@ -424,7 +424,7 @@ class Login extends Component {
       if (!expr.test(username)) {
         this.props.alert(
           '',
-          i18n.translation.t('common.msgRegisterUserNameInvalid')
+          i18n.t('common.msgRegisterUserNameInvalid')
         )
         return
       }
@@ -432,7 +432,7 @@ class Login extends Component {
       if (!expr.test(password)) {
         this.props.alert(
           '',
-          i18n.translation.t('common.msgRegisterPassInvalid')
+          i18n.t('common.msgRegisterPassInvalid')
         )
         return
       }
@@ -440,7 +440,7 @@ class Login extends Component {
       AccountService.Activation(username, password, areacode, phone).then(
         async (response) => {
           if (response.IsSuccess) {
-            this.props.alert('', i18n.translation.t('common.msgTokenSent'))
+            this.props.alert('', i18n.t('common.msgTokenSent'))
             this.setState({
               ...this.state,
               countdown: 60,
@@ -482,13 +482,13 @@ class Login extends Component {
     if (!expr.test(username)) {
       this.props.alert(
         '',
-        i18n.translation.t('common.msgRegisterUserNameInvalid')
+        i18n.t('common.msgRegisterUserNameInvalid')
       )
       return
     }
     var expr = /^.{6,20}$/
     if (!expr.test(password)) {
-      this.props.alert('', i18n.translation.t('common.msgRegisterPassInvalid'))
+      this.props.alert('', i18n.t('common.msgRegisterPassInvalid'))
 
       return
     }
@@ -496,18 +496,18 @@ class Login extends Component {
     if (password !== confirmPassword) {
       this.props.alert(
         '',
-        i18n.translation.t('common.msgRegisterPassMatchInvalid')
+        i18n.t('common.msgRegisterPassMatchInvalid')
       )
 
       return
     }
     // if (withdrawalPassword.length < 6) {
-    //   this.props.alert("", i18n.translation.t("common.msgRegisterWithdrawalPassInvalid"));
+    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassInvalid"));
 
     //   return;
     // }
     // if (withdrawalPassword !== confirmWithdrawalPassword) {
-    //   this.props.alert("", i18n.translation.t("common.msgRegisterWithdrawalPassMatchInvalid"));
+    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassMatchInvalid"));
 
     //   return;
     // }
@@ -523,7 +523,7 @@ class Login extends Component {
         .register(username, password, confirmPassword, promotion_id)
         .then(async (response) => {
           if (response.IsSuccess && response.data.isnew === false) {
-            this.props.alert('', i18n.translation.t('common.msgAlreadyExist'))
+            this.props.alert('', i18n.t('common.msgAlreadyExist'))
             this.setState({ ...this.state, loading: false })
           } else if (response.IsSuccess) {
             if (config.features.SMSVerification) {
@@ -539,7 +539,7 @@ class Login extends Component {
             // if (response.code === 206) {
             //   this.props.alert(
             //     '',
-            //     i18n.translation.t('common.msgInvalidInvitationCode')
+            //     i18n.t('common.msgInvalidInvitationCode')
             //   )
             // } else {
             //   this.props.alert('', response.info)
@@ -580,7 +580,7 @@ class Login extends Component {
                       `/assets/images/wapp/icon-user.png`
                     }
                     type={'text'}
-                    placeholder={i18n.translation.t('common.username')}
+                    placeholder={i18n.t('common.username')}
                     style={{ marginTop: '60px' }}
                     value={this.state.username}
                     maxLength='16'
@@ -593,7 +593,7 @@ class Login extends Component {
                     }
                     type={this.state.hidePassword ? 'password' : 'text'}
                     hidePassword={this.state.hidePassword}
-                    placeholder={i18n.translation.t('common.password')}
+                    placeholder={i18n.t('common.password')}
                     style={{ marginTop: '20px' }}
                     password={true}
                     maxLength='20'
@@ -622,21 +622,21 @@ class Login extends Component {
                       onChange={this.handleRememberMeChange}
                     />
                     <RememberPassLabel>
-                      {i18n.translation.t('wap.login.rememberMe')}
+                      {i18n.t('wap.login.rememberMe')}
                     </RememberPassLabel>
                   </RememberPassContainer>
                   <ForgotPassContainer onClick={this.handleForgotpasswordClick}>
                     <ForgotPassLabel>
-                      {i18n.translation.t('wap.login.forgetPass')}
+                      {i18n.t('wap.login.forgetPass')}
                     </ForgotPassLabel>
                   </ForgotPassContainer>
                   <LoginActionContainer>
                     <ButtonWap
-                      name={i18n.translation.t('common.login')}
+                      name={i18n.t('common.login')}
                       onClick={this.handleLoginClick}
                     ></ButtonWap>
                     <CustomWapButton
-                      name={i18n.translation.t('wap.login.browse')}
+                      name={i18n.t('wap.login.browse')}
                       style={{ 'margin-top': '10px' }}
                       onClick={this.handleBackToHomeClick}
                     ></CustomWapButton>
@@ -649,13 +649,13 @@ class Login extends Component {
                             <React.Fragment>
                               <LanguageLink
                                 selected={
-                                  i18n.translation.language === lang.culturecode
+                                  i18n.language === lang.culturecode
                                 }
                                 onClick={() => {
                                   window.location.href = `/${lang.culturecode}`
                                 }}
                               >
-                                {i18n.translation.t('lang.' + lang.culturecode)}
+                                {i18n.t('lang.' + lang.culturecode)}
                               </LanguageLink>
 
                               {this.props.general.brandLanguage.length - 1 !==
@@ -672,7 +672,7 @@ class Login extends Component {
                   </LanguageWrap>
                   {config.features.HaveDownloadFeature && (
                     <LanguageWrap onClick={this.handleGoDownloadPage}>
-                      {i18n.translation.t('wap.main.account.appDownload')}
+                      {i18n.t('wap.main.account.appDownload')}
                     </LanguageWrap>
                   )}
                 </React.Fragment>
@@ -686,7 +686,7 @@ class Login extends Component {
                       `/assets/images/wapp/icon-user.png`
                     }
                     type={'text'}
-                    placeholder={i18n.translation.t('wap.register.username')}
+                    placeholder={i18n.t('wap.register.username')}
                     style={{ marginTop: '60px' }}
                     maxLength='16'
                     value={this.state.username}
@@ -699,7 +699,7 @@ class Login extends Component {
                     }
                     type={this.state.hidePassword ? 'password' : 'text'}
                     hidePassword={this.state.hidePassword}
-                    placeholder={i18n.translation.t('wap.register.password')}
+                    placeholder={i18n.t('wap.register.password')}
                     style={{ marginTop: '20px' }}
                     password={true}
                     maxLength='20'
@@ -714,7 +714,7 @@ class Login extends Component {
                     }
                     type={this.state.hideConfirmPassword ? 'password' : 'text'}
                     hidePassword={this.state.hideConfirmPassword}
-                    placeholder={i18n.translation.t(
+                    placeholder={i18n.t(
                       'wap.register.confirmPassword'
                     )}
                     style={{ marginTop: '20px' }}
@@ -731,7 +731,7 @@ class Login extends Component {
                         `/assets/images/wapp/icon-promo.png`
                       }
                       type={'text'}
-                      placeholder={i18n.translation.t(
+                      placeholder={i18n.t(
                         'wap.register.promoteCode'
                       )}
                       style={{ marginTop: '20px' }}
@@ -761,11 +761,11 @@ class Login extends Component {
                       checked={this.state.tnc}
                       onChange={this.handleTncClick}
                     />
-                    <TNC>{i18n.translation.t('web.register.contract')}</TNC>
+                    <TNC>{i18n.t('web.register.contract')}</TNC>
                   </RememberPassContainer>
                   <ButtonWap
                     style={{ margin: '100px auto 0 auto' }}
-                    name={i18n.translation.t('common.register')}
+                    name={i18n.t('common.register')}
                     disableButton={!this.state.tnc}
                     onClick={this.handleRegisterClick}
                   ></ButtonWap>
@@ -780,7 +780,7 @@ class Login extends Component {
                       `/assets/images/wapp/icon-user.png`
                     }
                     type={'text'}
-                    placeholder={i18n.translation.t('wap.register.username')}
+                    placeholder={i18n.t('wap.register.username')}
                     style={{ marginTop: '60px' }}
                     maxLength='32'
                     value={this.state.username}
@@ -794,7 +794,7 @@ class Login extends Component {
                     }
                     type={this.state.hidePassword ? 'password' : 'text'}
                     hidePassword={this.state.hidePassword}
-                    placeholder={i18n.translation.t('wap.register.password')}
+                    placeholder={i18n.t('wap.register.password')}
                     style={{ marginTop: '20px' }}
                     password={true}
                     maxLength='20'
@@ -805,7 +805,7 @@ class Login extends Component {
 
                   <Select
                     type={'text'}
-                    placeholder={i18n.translation.t(
+                    placeholder={i18n.t(
                       'forgotPassword.plsEnterPhoneNumber'
                     )}
                     selectValue={this.state.areaCode}
@@ -821,7 +821,7 @@ class Login extends Component {
                   ></VerificationCode>
                   <ButtonWap
                     style={{ margin: '100px auto 0 auto' }}
-                    name={i18n.translation.t('common.submit')}
+                    name={i18n.t('common.submit')}
                     onClick={this.handleActivationClick}
                   ></ButtonWap>
                 </React.Fragment>

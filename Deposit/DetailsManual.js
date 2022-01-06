@@ -74,13 +74,13 @@ class DetailsManual extends Component {
         !fileName.endsWith('.png') &&
         !fileName.endsWith('.tiff')
       ) {
-        this.props.alert('', i18n.translation.t('deposit.msgInvalidFileType'))
+        this.props.alert('', i18n.t('deposit.msgInvalidFileType'))
         e.target.value = null
         return false
       }
       const fileSize = Math.round(files[0].size / 1024)
       if (fileSize > 10240) {
-        this.props.alert('', i18n.translation.t('deposit.msgInvalidFileSize'))
+        this.props.alert('', i18n.t('deposit.msgInvalidFileSize'))
         e.target.value = null
       } else {
         this.setState({ ...this.state, files: files })
@@ -99,21 +99,21 @@ class DetailsManual extends Component {
       <Container>
         <ContentBg>
           <BalanceLabel>
-            {i18n.translation.t('deposit.depositAmount')}：
+            {i18n.t('deposit.depositAmount')}：
           </BalanceLabel>
           <DepositAmount>¥ {this.props.amount}</DepositAmount>
           <SplitLine></SplitLine>
-          <LeftLabel>{i18n.translation.t('deposit.orderNumber')}</LeftLabel>
+          <LeftLabel>{i18n.t('deposit.orderNumber')}</LeftLabel>
           <RightLabel>
             {this.props.depositResult
               ? this.props.depositResult.data
               : this.props.paymentId}
           </RightLabel>
           <SplitBoth></SplitBoth>
-          <LeftLabel>{i18n.translation.t('deposit.depositMethod')}</LeftLabel>
-          <RightLabel>{i18n.translation.t(this.props.methodcode)}</RightLabel>
+          <LeftLabel>{i18n.t('deposit.depositMethod')}</LeftLabel>
+          <RightLabel>{i18n.t(this.props.methodcode)}</RightLabel>
           <SplitBoth></SplitBoth>
-          <LeftLabel>{i18n.translation.t('deposit.depositTunnel')}</LeftLabel>
+          <LeftLabel>{i18n.t('deposit.depositTunnel')}</LeftLabel>
           <RightLabel>{this.props.channelname}</RightLabel>
           <SplitBoth></SplitBoth>
 
@@ -127,12 +127,12 @@ class DetailsManual extends Component {
                   <BankImg src={this.props.extended.logo}></BankImg>
                   <SplitBoth></SplitBoth>
                   <LeftLabel>
-                    {i18n.translation.t('deposit.receiverBank')}
+                    {i18n.t('deposit.receiverBank')}
                   </LeftLabel>
                   <RightLabel>{this.props.extended.name}</RightLabel>
                   <SplitBoth></SplitBoth>
                   <LeftLabel>
-                    {i18n.translation.t('deposit.receiverAccount')}
+                    {i18n.t('deposit.receiverAccount')}
                   </LeftLabel>
                   <RightLabel>{this.props.extended.bankAccount}</RightLabel>
                   <SplitBoth></SplitBoth>
@@ -146,7 +146,7 @@ class DetailsManual extends Component {
               return (
                 <React.Fragment>
                   <LeftLabel>
-                    {i18n.translation.t('deposit.uploadReceipt')}
+                    {i18n.t('deposit.uploadReceipt')}
                   </LeftLabel>
                   <RightLabel>
                     <input
@@ -167,7 +167,7 @@ class DetailsManual extends Component {
               <Button
                 style={{ margin: '20px auto' }}
                 labelStyle={{ color: '#fff' }}
-                label={i18n.translation.t('deposit.uploadReceipt')}
+                label={i18n.t('deposit.uploadReceipt')}
                 onClick={this.handleUploadClick}
                 disabled={this.state.files.length <= 0}
               ></Button>
@@ -179,8 +179,8 @@ class DetailsManual extends Component {
           labelStyle={{ color: '#fff' }}
           label={
             this.props.isManual === true
-              ? i18n.translation.t('common.back')
-              : i18n.translation.t('common.complete')
+              ? i18n.t('common.back')
+              : i18n.t('common.complete')
           }
           onClick={this.props.handleRestartClick}
         ></Button>

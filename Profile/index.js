@@ -79,12 +79,12 @@ const ContentItem = (
   title,
   isConfigured,
   onClickEvent,
-  configuredValue = i18n.translation.t('profile.setted')
+  configuredValue = i18n.t('profile.setted')
 ) => {
   var configureElement = isConfigured ? (
     <SettedLabel>{configuredValue}</SettedLabel>
   ) : (
-    <NotSetLabel>{i18n.translation.t('profile.notSet')}</NotSetLabel>
+    <NotSetLabel>{i18n.t('profile.notSet')}</NotSetLabel>
   )
   return (
     <ItemContainer onClick={onClickEvent}>
@@ -105,14 +105,14 @@ class Profile extends Component {
   state = {}
   componentDidMount() {
     if (this.props.account.token === null) {
-      this.props.appHistory.replace('/' + i18n.translation.language + '/')
+      this.props.appHistory.replace('/' + i18n.language + '/')
     }
   }
   handleBackClick = () => {
     this.props.appHistory.goBack()
   }
   handleNavigate = (path) => {
-    this.props.appHistory.push('/' + i18n.translation.language + path)
+    this.props.appHistory.push('/' + i18n.language + path)
   }
   isConfigured(value) {
     if (value) return true
@@ -126,16 +126,16 @@ class Profile extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('profile.title')}
+          title={i18n.t('profile.title')}
         ></Header>
 
         <div style={{ marginBottom: '-30px' }}>
           <BlockContainer>
-            <BlockLabel>{i18n.translation.t('profile.basicInfo')}</BlockLabel>
+            <BlockLabel>{i18n.t('profile.basicInfo')}</BlockLabel>
             {config.features.ICVerification &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-user.png`,
-                i18n.translation.t('profile.nameVerify.title'),
+                i18n.t('profile.nameVerify.title'),
                 this.isConfigured(
                   this.props.account.info.member_name !== '' &&
                     this.props.account.info.member_name !== null
@@ -148,7 +148,7 @@ class Profile extends Component {
 
             {/* {ContentItem(
             IconMobilePNG,
-            i18n.translation.t("profile.phone.title"),
+            i18n.t("profile.phone.title"),
             this.isConfigured(this.props.account.info.member_phone),
             () => {
               this.handleNavigate("/profile/phone");
@@ -159,7 +159,7 @@ class Profile extends Component {
             {config.features.SMSVerification &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-phone.png`,
-                i18n.translation.t('profile.phone.title'),
+                i18n.t('profile.phone.title'),
                 this.isConfigured(this.props.account.info.member_phone),
                 () => {
                   this.handleNavigate('/profile/phone')
@@ -172,7 +172,7 @@ class Profile extends Component {
             {config.features.EmailVerification &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-email.png`,
-                i18n.translation.t('common.emailAddress'),
+                i18n.t('common.emailAddress'),
                 this.isConfigured(this.props.account.info.member_email),
                 () => {
                   this.handleNavigate('/profile/email')
@@ -182,11 +182,11 @@ class Profile extends Component {
           </BlockContainer>
 
           <BlockContainer>
-            <BlockLabel>{i18n.translation.t('profile.otherInfo')}</BlockLabel>
+            <BlockLabel>{i18n.t('profile.otherInfo')}</BlockLabel>
             {config.features.QQWeChat &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`,
-                i18n.translation.t('common.qqNumber'),
+                i18n.t('common.qqNumber'),
                 this.isConfigured(this.props.account.info.member_qq),
                 () => {
                   this.handleNavigate('/profile/qq')
@@ -199,7 +199,7 @@ class Profile extends Component {
             {config.features.QQWeChat &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-wechat.png`,
-                i18n.translation.t('common.wechatNumber'),
+                i18n.t('common.wechatNumber'),
                 this.isConfigured(this.props.account.info.member_wechat),
                 () => {
                   this.handleNavigate('/profile/wechat')
@@ -212,10 +212,10 @@ class Profile extends Component {
         </div>
 
         <BlockContainer>
-          <BlockLabel>{i18n.translation.t('profile.securityInfo')}</BlockLabel>
+          <BlockLabel>{i18n.t('profile.securityInfo')}</BlockLabel>
           {ContentItem(
             process.env.PUBLIC_URL + `/assets/images/wapp/icon-unlock.png`,
-            i18n.translation.t('profile.password.title'),
+            i18n.t('profile.password.title'),
             true,
             () => {
               this.handleNavigate('/profile/changepassword')
@@ -225,13 +225,13 @@ class Profile extends Component {
 
           {/* {ContentItem(
             process.env.PUBLIC_URL + `/assets/images/wapp/icon-piggy.png`,
-            i18n.translation.t('profile.withdrawalPassword.title'),
+            i18n.t('profile.withdrawalPassword.title'),
             this.isConfigured(this.props.account.info.member_safe_password),
             () => {
               if (this.props.account.info.check_pass_email === false) {
                 this.props.alert(
                   '',
-                  i18n.translation.t('profile.msgPlsBindEmailAddress')
+                  i18n.t('profile.msgPlsBindEmailAddress')
                 )
                 this.handleNavigate('/profile/email')
               } else {

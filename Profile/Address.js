@@ -26,7 +26,7 @@
 //   }
 
 //   handleNavigate = path => {
-//     this.props.appHistory.push("/" + i18n.translation.language + path);
+//     this.props.appHistory.push("/" + i18n.language + path);
 //   };
 //   handleChangeName = e => {
 //     this.setState({ ...this.state, name: e.target.value });

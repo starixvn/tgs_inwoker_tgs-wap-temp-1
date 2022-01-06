@@ -223,8 +223,8 @@ class Deposit extends Component {
 
   componentDidMount() {
     if (this.props.token != null) {
-      this.props.getDepositMethod(i18n.translation.language)
-      this.props.getPlayerPromotionList(i18n.translation.language)
+      this.props.getDepositMethod(i18n.language)
+      this.props.getPlayerPromotionList(i18n.language)
       if (this.state.paymentId) {
         WalletService.PerformGetManualDepositDetail(this.state.paymentId).then(
           (e) => {
@@ -242,7 +242,7 @@ class Deposit extends Component {
         )
       }
     } else {
-      this.props.appHistory.replace('/' + i18n.translation.language + '/')
+      this.props.appHistory.replace('/' + i18n.language + '/')
     }
   }
   componentDidUpdate(preProps, preState) {
@@ -263,10 +263,10 @@ class Deposit extends Component {
         // if (this.props.wallet.depositResult.code === 407) {
         //   this.props.alert(
         //     '',
-        //     i18n.translation.t('deposit.msgFailedJoinPromotion')
+        //     i18n.t('deposit.msgFailedJoinPromotion')
         //   )
         // } else if (this.props.wallet.depositResult.code === 900) {
-        //   this.props.alert('', i18n.translation.t('common.msgRequestFailed'))
+        //   this.props.alert('', i18n.t('common.msgRequestFailed'))
         // } else {
         //   this.props.alert('', this.props.wallet.depositResult.info)
         // }
@@ -281,7 +281,7 @@ class Deposit extends Component {
     ) {
       if (this.props.wallet.depositUploadResult.IsSuccess) {
         this.setState({ ...this.initialState })
-        this.props.alert('', i18n.translation.t('deposit.uploadSuccess'))
+        this.props.alert('', i18n.t('deposit.uploadSuccess'))
       } else {
         this.props.alert('', this.props.wallet.depositUploadResult.info)
         this.setState({ ...this.state, loading: false })
@@ -515,7 +515,7 @@ class Deposit extends Component {
             <React.Fragment>
               <CustomText>
                 <CustomLabel>
-                  {i18n.translation.t('deposit.msgPlsSelectPayment')}
+                  {i18n.t('deposit.msgPlsSelectPayment')}
                 </CustomLabel>
                 <CustomFormControl variant='outlined'>
                   <CustomSelect
@@ -537,7 +537,7 @@ class Deposit extends Component {
                     }}
                   >
                     <option value={''} disabled>
-                      {i18n.translation.t('deposit.msgPlsSelectPayment')}
+                      {i18n.t('deposit.msgPlsSelectPayment')}
                     </option>
                     {this.props.wallet.depositTypeList.length > 0 &&
                       this.props.wallet.depositTypeList[
@@ -545,7 +545,7 @@ class Deposit extends Component {
                       ].method.map((item, index) => {
                         return (
                           <option value={index}>
-                            {i18n.translation.t(item.methodcode)}
+                            {i18n.t(item.methodcode)}
                           </option>
                         )
                       })}
@@ -554,7 +554,7 @@ class Deposit extends Component {
               </CustomText>
               <CustomText>
                 <CustomLabel>
-                  {i18n.translation.t('deposit.msgPlsSelectMethod')}
+                  {i18n.t('deposit.msgPlsSelectMethod')}
                 </CustomLabel>
                 <CustomFormControl variant='outlined'>
                   <CustomSelect
@@ -601,10 +601,10 @@ class Deposit extends Component {
                     <Textbox
                       style={{ margin: '20px auto 20px auto' }}
                       type={'text'}
-                      placeholder={i18n.translation.t(
+                      placeholder={i18n.t(
                         'deposit.msgPlsEnterAccount'
                       )}
-                      label={i18n.translation.t('deposit.msgPlsEnterAccount')}
+                      label={i18n.t('deposit.msgPlsEnterAccount')}
                       value={this.state.account}
                       onChange={(e) => {
                         this.setState({
@@ -622,7 +622,7 @@ class Deposit extends Component {
                 onChange={this.handleAmountChange}
                 type={'number'}
                 placeholder={
-                  i18n.translation.t('deposit.msgPleaseEnter') +
+                  i18n.t('deposit.msgPleaseEnter') +
                   Common.formatNumberWithThousand(
                     this.props.wallet.depositTypeList[
                       this.state.selectedPaymentIndex
@@ -638,14 +638,14 @@ class Deposit extends Component {
                       this.state.selectedChannelIndex
                     ].transferlimit.to
                   ) +
-                  i18n.translation.t('deposit.dollor')
+                  i18n.t('deposit.dollor')
                 }
-                label={i18n.translation.t('deposit.depositAmount')}
+                label={i18n.t('deposit.depositAmount')}
               ></Textbox>
               {this.props.wallet.depositTypeList[
                 this.state.selectedPaymentIndex
               ].paymentcode.toUpperCase() === 'UMPAY' && (
-                <Remark>{i18n.translation.t('deposit.ppRemark')}</Remark>
+                <Remark>{i18n.t('deposit.ppRemark')}</Remark>
               )}
               {(() => {
                 if (
@@ -662,11 +662,11 @@ class Deposit extends Component {
                     return (
                       <ExchangeRateContainer style={{ marginTop: '4px' }}>
                         <LimitLabel>
-                          {i18n.translation.t('deposit.exchangeRate')}:{' '}
+                          {i18n.t('deposit.exchangeRate')}:{' '}
                         </LimitLabel>
                         <LimitAmount>{` ${this.state.exchangeRate.buyprice}`}</LimitAmount>
                         <LimitLabel style={{ marginLeft: '26px' }}>
-                          {i18n.translation.t('deposit.expectedPayment')}
+                          {i18n.t('deposit.expectedPayment')}
                         </LimitLabel>{' '}
                         <LimitAmount>{` ${
                           isNaN(this.state.amount) === false
@@ -688,11 +688,11 @@ class Deposit extends Component {
                                 style={{ marginTop: '4px' }}
                               >
                                 <LimitLabel>
-                                  {i18n.translation.t('deposit.exchangeRate')}:{' '}
+                                  {i18n.t('deposit.exchangeRate')}:{' '}
                                 </LimitLabel>
                                 <LimitAmount>{` ${this.state.exchangeRate[key][key2].rate}`}</LimitAmount>
                                 <LimitLabel style={{ marginLeft: '26px' }}>
-                                  {i18n.translation.t(
+                                  {i18n.t(
                                     'deposit.expectedPayment'
                                   )}
                                 </LimitLabel>{' '}
@@ -715,7 +715,7 @@ class Deposit extends Component {
               })()}
               <CustomText>
                 <CustomLabel>
-                  {i18n.translation.t('deposit.promotion')}
+                  {i18n.t('deposit.promotion')}
                 </CustomLabel>
                 <CustomFormControl variant='outlined'>
                   <CustomSelect
@@ -736,7 +736,7 @@ class Deposit extends Component {
                     }}
                   >
                     <option value={''}>
-                      {i18n.translation.t('deposit.msgPlsSelectPromotion')}
+                      {i18n.t('deposit.msgPlsSelectPromotion')}
                     </option>
                     {this.props.general.promotionList.items
                       .filter(
@@ -761,7 +761,7 @@ class Deposit extends Component {
                 style={{ margin: '40px auto 0 auto' }}
                 label={
                   this.state.step === 1
-                    ? i18n.translation.t('common.nextStep')
+                    ? i18n.t('common.nextStep')
                     : this.state.step === 2
                     ? '上传'
                     : ''
@@ -866,7 +866,7 @@ class Deposit extends Component {
       <Container>
         <Header
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('deposit.title')}
+          title={i18n.t('deposit.title')}
           rightContent={
             <BalanceLabel>
               {this.props.wallet.mainSymbol}
@@ -901,9 +901,9 @@ class Deposit extends Component {
                       <Tab
                         key={index}
                         value={index}
-                        label={i18n.translation.t(item.paymentcode)}
+                        label={i18n.t(item.paymentcode)}
                       >
-                        {i18n.translation.t(item.paymentcode)}
+                        {i18n.t(item.paymentcode)}
                       </Tab>
                     )
                   })}
@@ -919,10 +919,10 @@ class Deposit extends Component {
           onClose={this.props.hideAlert}
           open={this.props.wallet.message !== ''}
         >
-          <DialoTitle>{i18n.translation.t('common.info')}</DialoTitle>
+          <DialoTitle>{i18n.t('common.info')}</DialoTitle>
           <DialoMessage>{this.props.wallet.message}</DialoMessage>
           <ButtonConfirm onClick={this.props.hideAlert}>
-            {i18n.translation.t('common.confirm')}
+            {i18n.t('common.confirm')}
           </ButtonConfirm>
         </StyledModalPopup>
 

@@ -34,7 +34,7 @@ class WeChat extends BaseProfile {
     if (!wechat.match(re)) {
       this.props.alert(
         '',
-        i18n.translation.t('profile.wechat.msgInvalidWeChat')
+        i18n.t('profile.wechat.msgInvalidWeChat')
       )
       // this.props.enqueueSnackbar("微信号码格式不正确", {
       //   key: "error"
@@ -56,7 +56,7 @@ class WeChat extends BaseProfile {
             }
             this.props.alert(
               '',
-              i18n.translation.t('common.msgSuccessUpdateProfile')
+              i18n.t('common.msgSuccessUpdateProfile')
             )
             this.showLoading(false)
           })
@@ -79,13 +79,13 @@ class WeChat extends BaseProfile {
 
   render() {
     return this.setupContent(
-      i18n.translation.t('common.wechatNumber'),
+      i18n.t('common.wechatNumber'),
       <Textbox
         style={{ margin: '50px auto 20px auto' }}
         value={this.state.wechat}
         onChange={this.handleChangeNumber}
-        placeholder={i18n.translation.t('profile.wechat.plsEnterWechat')}
-        label={i18n.translation.t('common.wechatNumber')}
+        placeholder={i18n.t('profile.wechat.plsEnterWechat')}
+        label={i18n.t('common.wechatNumber')}
       ></Textbox>
     )
   }

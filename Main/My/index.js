@@ -176,7 +176,7 @@ class My extends Component {
   }
   componentDidMount() {
     if (this.props.account.token === null) {
-      this.props.appHistory.replace('/' + i18n.translation.language + '/')
+      this.props.appHistory.replace('/' + i18n.language + '/')
     }
     if (this.props.wallet.balanceList.length <= 0) {
       this.props.getBalanceList()
@@ -241,7 +241,7 @@ class My extends Component {
             <div className='clear'></div>
             <MainWalletContainer>
               <WalletLabel>
-                {i18n.translation.t('wap.main.account.mainAccount')}
+                {i18n.t('wap.main.account.mainAccount')}
               </WalletLabel>
               <WalletAmount>
                 {this.props.wallet.mainSymbol}
@@ -250,7 +250,7 @@ class My extends Component {
             </MainWalletContainer>
             <TotalWalletContainer>
               <WalletLabel>
-                {i18n.translation.t('wap.main.account.totalFund')}
+                {i18n.t('wap.main.account.totalFund')}
               </WalletLabel>
               <WalletAmount>
                 {(() => {
@@ -291,7 +291,7 @@ class My extends Component {
                   `/assets/images/wapp/icon-profile-deposit.svg`
                 }
               ></IconImg>
-              <IconLabel>{i18n.translation.t('common.deposit')}</IconLabel>
+              <IconLabel>{i18n.t('common.deposit')}</IconLabel>
             </IconColumn>
             {checkTransferWallet && (
               <IconColumn onClick={() => this.props.navigate('/transfer')}>
@@ -301,7 +301,7 @@ class My extends Component {
                     `/assets/images/wapp/icon-profile-transfer.svg`
                   }
                 ></IconImg>
-                <IconLabel>{i18n.translation.t('common.transfer')}</IconLabel>
+                <IconLabel>{i18n.t('common.transfer')}</IconLabel>
               </IconColumn>
             )}
             <IconColumn onClick={() => this.props.navigate('/withdrawal')}>
@@ -311,7 +311,7 @@ class My extends Component {
                   `/assets/images/wapp/icon-profile-cashflow.svg`
                 }
               ></IconImg>
-              <IconLabel>{i18n.translation.t('common.withdrawal')}</IconLabel>
+              <IconLabel>{i18n.t('common.withdrawal')}</IconLabel>
             </IconColumn>
           </IconContainer>
         </StyledAppBar>
@@ -323,7 +323,7 @@ class My extends Component {
             }
             onClick={() => this.props.navigate('/profile')}
           >
-            {i18n.translation.t('wap.main.account.personalInfo')}
+            {i18n.t('wap.main.account.personalInfo')}
           </ListItem>
           <ListItem
             icon={
@@ -332,7 +332,7 @@ class My extends Component {
             }
             onClick={() => this.props.navigate('/inbox')}
           >
-            {i18n.translation.t('wap.main.account.inbox')}
+            {i18n.t('wap.main.account.inbox')}
 
             <MessageRedDot
               style={
@@ -346,7 +346,7 @@ class My extends Component {
             icon={IconProfileCashflowPNG}
             onClick={() => this.props.navigate("/report/1")}
           >
-            {i18n.translation.t("wap.main.account.transferReport")}
+            {i18n.t("wap.main.account.transferReport")}
           </ListItem> */}
 
           <ListItem
@@ -356,7 +356,7 @@ class My extends Component {
             }
             onClick={() => this.props.navigate('/report/2')}
           >
-            {i18n.translation.t('wap.main.account.betReport')}
+            {i18n.t('wap.main.account.betReport')}
           </ListItem>
           <ListItem
             icon={
@@ -365,7 +365,7 @@ class My extends Component {
             }
             onClick={() => this.props.navigate('/report/3')}
           >
-            {i18n.translation.t('report.withdrawalDetails')}
+            {i18n.t('report.withdrawalDetails')}
           </ListItem>
           <ListItem
             icon={
@@ -375,7 +375,7 @@ class My extends Component {
             style={{ backgroundSize: 60 }}
             onClick={() => this.props.navigate('/report/4')}
           >
-            {i18n.translation.t('report.depositDetails')}
+            {i18n.t('report.depositDetails')}
           </ListItem>
 
           {checkTransferWallet && (
@@ -386,7 +386,7 @@ class My extends Component {
               }
               onClick={() => this.props.navigate('/report/6')}
             >
-              {i18n.translation.t('report.transfer.title')}
+              {i18n.t('report.transfer.title')}
             </ListItem>
           )}
 
@@ -397,21 +397,21 @@ class My extends Component {
             }
             onClick={() => this.props.navigate('/card')}
           >
-            {i18n.translation.t('wap.main.account.manageBank')}
+            {i18n.t('wap.main.account.manageBank')}
           </ListItem>
 
           {/*   <ListItem
             icon={IconProfileRecommendPNG}
             onClick={() => this.props.navigate("/affiliate")}
           >
-            {i18n.translation.t("wap.main.account.affiliate")}
+            {i18n.t("wap.main.account.affiliate")}
           </ListItem> */}
 
           {/* <ListItem
             icon={IconProfileAboutPNG}
             onClick={() => this.props.navigate("/aboutus")}
           >
-            {i18n.translation.t("wap.main.account.question")}
+            {i18n.t("wap.main.account.question")}
           </ListItem> */}
 
           {/* <ListItem
@@ -423,7 +423,7 @@ class My extends Component {
               )
             }
           >
-            {i18n.translation.t("wap.main.account.appDownload")}
+            {i18n.t("wap.main.account.appDownload")}
           </ListItem> */}
           <ListItem
             icon={
@@ -432,7 +432,7 @@ class My extends Component {
             }
             onClick={() => this.props.navigate('/setting/language')}
           >
-            {i18n.translation.t('common.language')}
+            {i18n.t('common.language')}
           </ListItem>
           {config.features.HaveDownloadFeature && (
             <ListItem
@@ -441,14 +441,14 @@ class My extends Component {
               }
               onClick={() => this.props.navigate('/main/download')}
             >
-              {i18n.translation.t('wap.main.account.appDownload')}
+              {i18n.t('wap.main.account.appDownload')}
             </ListItem>
           )}
 
           <div className='clear'></div>
           <BtnLogout
             onClick={this.handleLogoutClick}
-            name={i18n.translation.t('wap.main.account.signout')}
+            name={i18n.t('wap.main.account.signout')}
             style={{ margin: '30px auto 10px auto' }}
           ></BtnLogout>
         </ListView>

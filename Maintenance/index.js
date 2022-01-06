@@ -152,7 +152,7 @@ const Maintenance = (props) => {
           如您有任何问题，请<Hyperlink onClick={csClick}>联系客服</Hyperlink>。
         </Text>
         {(() => {
-          if (i18n.translation.language === 'vi-VN') {
+          if (i18n.language === 'vi-VN') {
             return (
               <React.Fragment>
                 <Text>
@@ -182,20 +182,20 @@ const Maintenance = (props) => {
             csClick()
           }}
         >
-          {i18n.translation.t('support.online')}
+          {i18n.t('support.online')}
         </AnotherButton>
         <Button
           onClick={() => {
             setOpen(true)
           }}
         >
-          {i18n.translation.t('panel.im')}
+          {i18n.t('panel.im')}
         </Button>
       </ButtonContainer>
       <Overlay open={open}>
         <OverlayContent>
           <OverlayHeader>
-            <div>{i18n.translation.t('panel.im')}</div>
+            <div>{i18n.t('panel.im')}</div>
             <div
               onClick={() => {
                 setOpen(false)
@@ -210,7 +210,7 @@ const Maintenance = (props) => {
                 <IMWrapper
                   onClick={() => {
                     IMHandler(data.type, data.phone)
-                    //  props.alert('', i18n.translation.t('affiliate.copied'))
+                    //  props.alert('', i18n.t('affiliate.copied'))
                   }}
                 >
                   <Icon icon={`${data.type}.png`} />

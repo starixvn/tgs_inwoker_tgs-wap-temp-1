@@ -100,12 +100,12 @@ class ChangePhone extends BaseProfile {
   handleGetCodeClick = (e) => {
     if (this.state.countdownToken > 0) return
     if (!this.state.phone)
-      return this.showErrorMessage(i18n.translation.t('common.msgEnterPhone'))
+      return this.showErrorMessage(i18n.t('common.msgEnterPhone'))
     this.showLoading(true)
     AccountService.VerifyPhone(this.state.phone, this.state.areacode)
       .then((response) => {
         if (response.IsSuccess) {
-          this.showInfoMessage(i18n.translation.t('common.msgTokenSent'))
+          this.showInfoMessage(i18n.t('common.msgTokenSent'))
           this.setState({
             ...this.state,
             countdownToken: 60,
@@ -164,7 +164,7 @@ class ChangePhone extends BaseProfile {
     AccountService.UpdatePhone(this.state.securityKey, this.state.code)
       .then((response) => {
         if (response.IsSuccess) {
-          this.showInfoMessage(i18n.translation.t('common.msgTokenVerified'))
+          this.showInfoMessage(i18n.t('common.msgTokenVerified'))
           this.showLoading(false)
           if (this.state.currentStep === 1) {
             this.setState({
@@ -179,7 +179,7 @@ class ChangePhone extends BaseProfile {
             this.props.getAccountInfo().then((responseUpdate) => {
               if (responseUpdate.IsSuccess) {
                 this.props.appHistory.replace(
-                  '/' + i18n.translation.language + '/profile/phone'
+                  '/' + i18n.language + '/profile/phone'
                 )
               }
             })
@@ -188,7 +188,7 @@ class ChangePhone extends BaseProfile {
           this.showErrorMessage(response.info)
           // if (response.code === 405) {
           //   this.showErrorMessage(
-          //     i18n.translation.t('common.msgInvalidPhoneCode')
+          //     i18n.t('common.msgInvalidPhoneCode')
           //   )
           // } else {
           //   this.showErrorMessage(response.info)
@@ -203,17 +203,17 @@ class ChangePhone extends BaseProfile {
   }
   render() {
     return this.setupContent(
-      i18n.translation.t('profile.changePhone.title'),
+      i18n.t('profile.changePhone.title'),
       <React.Fragment>
         <Step
           steps={[
-            { label: i18n.translation.t('profile.changePhone.step1Title') },
-            { label: i18n.translation.t('profile.changePhone.step2Title') }
+            { label: i18n.t('profile.changePhone.step1Title') },
+            { label: i18n.t('profile.changePhone.step2Title') }
           ]}
           currentStep={this.state.currentStep}
         ></Step>
         <CustomText>
-          <CustomLabel>{i18n.translation.t('common.phoneNumber')}</CustomLabel>
+          <CustomLabel>{i18n.t('common.phoneNumber')}</CustomLabel>
           <Container
             style={{
               margin: '18px 5px 0 0',
@@ -236,7 +236,7 @@ class ChangePhone extends BaseProfile {
             style={this.props.color ? { color: this.props.color } : {}}
             type={'text'}
             value={this.state.phone}
-            placeholder={i18n.translation.t('common.msgEnterPhone')}
+            placeholder={i18n.t('common.msgEnterPhone')}
             disabled={this.state.currentStep === 1}
             onChange={this.handleChangePhone}
             maxLength={10}
@@ -246,8 +246,8 @@ class ChangePhone extends BaseProfile {
         <TextboxWithButton
           buttonlabel={
             this.state.countdownToken <= 0
-              ? i18n.translation.t('common.msgSendToken')
-              : i18n.translation.t('common.btnTokenResendLabel') +
+              ? i18n.t('common.msgSendToken')
+              : i18n.t('common.btnTokenResendLabel') +
                 '(' +
                 this.state.countdownToken +
                 's)'
@@ -255,15 +255,15 @@ class ChangePhone extends BaseProfile {
           style={{ margin: '20px auto 20px auto' }}
           value={this.state.code}
           onChange={this.handleChangeCode}
-          placeholder={i18n.translation.t('common.msgEnterPhoneCode')}
-          label={i18n.translation.t('common.token')}
+          placeholder={i18n.t('common.msgEnterPhoneCode')}
+          label={i18n.t('common.token')}
           onClick={this.handleGetCodeClick}
           maxLength={6}
         ></TextboxWithButton>
       </React.Fragment>,
       this.state.currentStep === 1
-        ? i18n.translation.t('common.nextStep')
-        : i18n.translation.t('common.submit')
+        ? i18n.t('common.nextStep')
+        : i18n.t('common.submit')
     )
   }
 }

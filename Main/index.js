@@ -177,7 +177,7 @@ class Main extends Component {
 
   handleChangeSelection = (value) => {
     if (value === '/main/profile' && this.props.account.token == null) {
-      this.props.appHistory.push('/' + i18n.translation.language + '/login')
+      this.props.appHistory.push('/' + i18n.language + '/login')
     } else {
       //if (value === "/customer-service") {
       //  if (this.props.account.token == null) {
@@ -196,13 +196,13 @@ class Main extends Component {
           ...this.state,
           currentPage: value
         })
-        this.props.appHistory.push('/' + i18n.translation.language + value)
+        this.props.appHistory.push('/' + i18n.language + value)
       }
     }
   }
   toggleMenu = () => {
     if (this.props.account.token == null) {
-      this.props.appHistory.push('/' + i18n.translation.language + '/login')
+      this.props.appHistory.push('/' + i18n.language + '/login')
     } else {
       this.setState({ ...this.state, showMenu: true })
     }
@@ -268,7 +268,7 @@ class Main extends Component {
                   }
                 ></MenuImage>
                 <MenuLabel>
-                  {i18n.translation.t('wap.main.menuDrawer.deposit')}
+                  {i18n.t('wap.main.menuDrawer.deposit')}
                 </MenuLabel>
               </Menuitem>
 
@@ -283,7 +283,7 @@ class Main extends Component {
                     }
                   ></MenuImage>
                   <MenuLabel>
-                    {i18n.translation.t('wap.main.menuDrawer.transfer')}
+                    {i18n.t('wap.main.menuDrawer.transfer')}
                   </MenuLabel>
                 </Menuitem>
               )}
@@ -298,7 +298,7 @@ class Main extends Component {
                   }
                 ></MenuImage>
                 <MenuLabel>
-                  {i18n.translation.t('wap.main.menuDrawer.withdrawal')}
+                  {i18n.t('wap.main.menuDrawer.withdrawal')}
                 </MenuLabel>
               </Menuitem>
 
@@ -310,13 +310,13 @@ class Main extends Component {
                   }
                 ></MenuImage>
                 <MenuLabel>
-                  {i18n.translation.t('wap.main.account.betReport')}
+                  {i18n.t('wap.main.account.betReport')}
                 </MenuLabel>
               </Menuitem>
 
               {/* <Menuitem onClick={() => this.handleChangeSelection("/report/2")}>
                 <MenuImage img={IconMenuReport2PNG}></MenuImage>
-                <MenuLabel>{i18n.translation.t("wap.main.menuDrawer.betReport")}</MenuLabel>
+                <MenuLabel>{i18n.t("wap.main.menuDrawer.betReport")}</MenuLabel>
               </Menuitem>
             */}
               <Menuitem onClick={() => this.handleChangeSelection('/report/3')}>
@@ -327,7 +327,7 @@ class Main extends Component {
                   }
                 ></MenuImage>
                 <MenuLabel>
-                  {i18n.translation.t('wap.main.menuDrawer.withdrawalReport')}
+                  {i18n.t('wap.main.menuDrawer.withdrawalReport')}
                 </MenuLabel>
               </Menuitem>
               <Menuitem onClick={() => this.handleChangeSelection('/report/4')}>
@@ -338,7 +338,7 @@ class Main extends Component {
                   }
                 ></MenuImage>
                 <MenuLabel>
-                  {i18n.translation.t('wap.main.menuDrawer.depositReport')}
+                  {i18n.t('wap.main.menuDrawer.depositReport')}
                 </MenuLabel>
               </Menuitem>
               <Menuitem onClick={() => this.handleChangeSelection('/card')}>
@@ -349,7 +349,7 @@ class Main extends Component {
                   }
                 ></MenuImage>
                 <MenuLabel>
-                  {i18n.translation.t('wap.main.menuDrawer.bankCard')}
+                  {i18n.t('wap.main.menuDrawer.bankCard')}
                 </MenuLabel>
               </Menuitem>
 
@@ -361,7 +361,7 @@ class Main extends Component {
                   }
                 ></MenuImage>
                 <MenuLabel>
-                  {i18n.translation.t('wap.main.menuDrawer.inbox')}
+                  {i18n.t('wap.main.menuDrawer.inbox')}
                 </MenuLabel>
               </Menuitem>
             </MenuItemWrap>
@@ -375,7 +375,7 @@ class Main extends Component {
             style={{ width: '750px', height: '90px' }}
           >
             <CustomBottomNavigationAction
-              label={i18n.translation.t('wap.main.homePage')}
+              label={i18n.t('wap.main.homePage')}
               value='/main/home'
               onClick={() => this.handleChangeSelection('/main/home')}
               icon={
@@ -387,7 +387,7 @@ class Main extends Component {
               }
             />
             <CustomBottomNavigationAction
-              label={i18n.translation.t('wap.main.promo')}
+              label={i18n.t('wap.main.promo')}
               value='/promotion-list'
               onClick={() => this.handleChangeSelection('/promotion-list')}
               icon={
@@ -412,7 +412,7 @@ class Main extends Component {
             <CustomBottomNavigationAction
               onClick={() => this.handleChangeSelection('/main/support')}
               value='/customer-service'
-              label={i18n.translation.t('wap.main.cs')}
+              label={i18n.t('wap.main.cs')}
               icon={
                 <BottomNavigatorFrame
                   src={
@@ -422,7 +422,7 @@ class Main extends Component {
               }
             />
             <CustomBottomNavigationAction
-              label={i18n.translation.t('wap.main.my')}
+              label={i18n.t('wap.main.my')}
               value='/main/profile'
               onClick={() => this.handleChangeSelection('/main/profile')}
               icon={

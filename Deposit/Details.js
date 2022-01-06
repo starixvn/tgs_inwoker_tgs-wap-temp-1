@@ -182,7 +182,7 @@ class Details extends Component {
   //   this.setCountdownTimer();
   // };
   handleDepositConfirmClick = (e) => {
-    this.props.appHistory.replace('/' + i18n.translation.language + '/transfer')
+    this.props.appHistory.replace('/' + i18n.language + '/transfer')
     // this.setState({ ...this.state, loading: true });
     // WalletService.CheckDeposit(this.props.token, this.props.order.id).then(
     //   response => {
@@ -228,13 +228,13 @@ class Details extends Component {
         !fileName.endsWith('.png') &&
         !fileName.endsWith('.tiff')
       ) {
-        this.props.alert('', i18n.translation.t('deposit.msgInvalidFileType'))
+        this.props.alert('', i18n.t('deposit.msgInvalidFileType'))
         e.target.value = null
         return false
       }
       const fileSize = Math.round(files[0].size / 1024)
       if (fileSize > 10240) {
-        this.props.alert('', i18n.translation.t('deposit.msgInvalidFileSize'))
+        this.props.alert('', i18n.t('deposit.msgInvalidFileSize'))
         e.target.value = null
       } else {
         this.setState({ ...this.state, files: files })
@@ -245,7 +245,7 @@ class Details extends Component {
     this.props.performUploadImage(this.state.files[0])
   }
   handleDepositCancelClick = (e) => {
-    this.props.appHistory.replace('/' + i18n.translation.language + '/deposit')
+    this.props.appHistory.replace('/' + i18n.language + '/deposit')
   }
   handleOpenPopupUrl = () => {
     if (this.state.url !== '') {
@@ -282,7 +282,7 @@ class Details extends Component {
               : ''}
             <div>
               <BalanceLabel>
-                {i18n.translation.t('deposit.depositAmount')}：
+                {i18n.t('deposit.depositAmount')}：
               </BalanceLabel>
               <DepositAmount>
                 <Textfit mode='single' forceSingleModeWidth={false}>
@@ -293,17 +293,17 @@ class Details extends Component {
           </TheGapper>
 
           <SplitLine></SplitLine>
-          <LeftLabel>{i18n.translation.t('deposit.orderNumber')}</LeftLabel>
+          <LeftLabel>{i18n.t('deposit.orderNumber')}</LeftLabel>
           <RightLabel>
             {this.props.isManual === true
               ? this.props.depositResult.data
               : this.props.depositResult.data.formid}
           </RightLabel>
           <SplitBoth></SplitBoth>
-          <LeftLabel>{i18n.translation.t('deposit.depositMethod')}</LeftLabel>
-          <RightLabel>{i18n.translation.t(this.props.methodcode)}</RightLabel>
+          <LeftLabel>{i18n.t('deposit.depositMethod')}</LeftLabel>
+          <RightLabel>{i18n.t(this.props.methodcode)}</RightLabel>
           <SplitBoth></SplitBoth>
-          <LeftLabel>{i18n.translation.t('deposit.depositTunnel')}</LeftLabel>
+          <LeftLabel>{i18n.t('deposit.depositTunnel')}</LeftLabel>
           <RightLabel>{this.props.channel.channelname}</RightLabel>
           <SplitBoth></SplitBoth>
 
@@ -313,12 +313,12 @@ class Details extends Component {
                 return (
                   <React.Fragment>
                     <LeftLabel>
-                      {i18n.translation.t('deposit.exchangeRate')}
+                      {i18n.t('deposit.exchangeRate')}
                     </LeftLabel>
                     <RightLabel>{this.state.exchangeRate.buyprice}</RightLabel>
                     <SplitBoth></SplitBoth>
                     <LeftLabel>
-                      {i18n.translation.t('deposit.expectedPayment')}
+                      {i18n.t('deposit.expectedPayment')}
                     </LeftLabel>
                     <RightLabel>
                       {(
@@ -336,14 +336,14 @@ class Details extends Component {
                         return (
                           <React.Fragment>
                             <LeftLabel>
-                              {i18n.translation.t('deposit.exchangeRate')}
+                              {i18n.t('deposit.exchangeRate')}
                             </LeftLabel>
                             <RightLabel>
                               {this.state.exchangeRate[key][key2].rate}
                             </RightLabel>
                             <SplitBoth></SplitBoth>
                             <LeftLabel>
-                              {i18n.translation.t('deposit.expectedPayment')}
+                              {i18n.t('deposit.expectedPayment')}
                             </LeftLabel>
                             <RightLabel>
                               {(
@@ -372,12 +372,12 @@ class Details extends Component {
                   <BankImg src={this.props.extended.logo}></BankImg>
                   <SplitBoth></SplitBoth>
                   <LeftLabel>
-                    {i18n.translation.t('deposit.receiverBank')}
+                    {i18n.t('deposit.receiverBank')}
                   </LeftLabel>
                   <RightLabel>{this.props.extended.name}</RightLabel>
                   <SplitBoth></SplitBoth>
                   <LeftLabel>
-                    {i18n.translation.t('deposit.receiverAccount')}
+                    {i18n.t('deposit.receiverAccount')}
                   </LeftLabel>
                   <RightLabel>{this.props.extended.bankAccount}</RightLabel>
                   <SplitBoth></SplitBoth>
@@ -391,7 +391,7 @@ class Details extends Component {
               return (
                 <React.Fragment>
                   <LeftLabel>
-                    {i18n.translation.t('deposit.uploadReceipt')}
+                    {i18n.t('deposit.uploadReceipt')}
                   </LeftLabel>
                   <RightLabel>
                     <input
@@ -411,7 +411,7 @@ class Details extends Component {
               <Button
                 style={{ margin: '20px auto' }}
                 labelStyle={{ color: '#fff' }}
-                label={i18n.translation.t('deposit.uploadReceipt')}
+                label={i18n.t('deposit.uploadReceipt')}
                 onClick={this.handleUploadClick}
                 disabled={this.state.files.length <= 0}
               ></Button>
@@ -423,8 +423,8 @@ class Details extends Component {
           labelStyle={{ color: '#fff' }}
           label={
             this.props.isManual === true
-              ? i18n.translation.t('common.back')
-              : i18n.translation.t('common.complete')
+              ? i18n.t('common.back')
+              : i18n.t('common.complete')
           }
           onClick={this.props.handleRestartClick}
         ></Button>
@@ -433,18 +433,18 @@ class Details extends Component {
           onClose={this.handleClosePopup}
           open={this.state.openPopup}
         >
-          <DialoMessage>{i18n.translation.t('deposit.msgDialog')}</DialoMessage>
+          <DialoMessage>{i18n.t('deposit.msgDialog')}</DialoMessage>
           <ButtonConfirm
             onClick={this.handleOpenPopupUrl}
             style={{ float: 'left' }}
           >
-            {i18n.translation.t('common.confirm')}
+            {i18n.t('common.confirm')}
           </ButtonConfirm>
           <ButtonConfirm
             onClick={this.handleClosePopup}
             style={{ float: 'right' }}
           >
-            {i18n.translation.t('common.cancel')}
+            {i18n.t('common.cancel')}
           </ButtonConfirm>
         </StyledModalPopup>
         <Loading show={this.state.loading}></Loading>

@@ -211,12 +211,12 @@ const Download = () => {
     }
   }, [])
   return (
-    <Container language={i18n.translation.language}>
+    <Container language={i18n.language}>
       <ContentPlacedHere>
         <TheFirstSection>
           <FirstSectionContent>
             <SectionContentItem>
-              <Text>{i18n.translation.t('download.supported')}:</Text>
+              <Text>{i18n.t('download.supported')}:</Text>
             </SectionContentItem>
             <SectionContentItem>
               <Icons icon='android' />
@@ -233,7 +233,7 @@ const Download = () => {
                 setOpen(true)
               }}
             >
-              {i18n.translation.t('download.openGuide')}
+              {i18n.t('download.openGuide')}
             </InstallationGuideButton>
           </SectionContentItem>
         </TheGuide>
@@ -242,7 +242,7 @@ const Download = () => {
           <DownloadTitleSection>
             <DownloadIcon icon='download' />
             <TitleText>
-              {i18n.translation.t('download.downloadMethod')}
+              {i18n.t('download.downloadMethod')}
             </TitleText>
           </DownloadTitleSection>
         </TheSecondSection>
@@ -263,7 +263,7 @@ const Download = () => {
                     window.open(data.link, '_blank')
                   }}
                 >
-                  {i18n.translation.t('download.title')}
+                  {i18n.t('download.title')}
                 </DownloadButton>
               </QRCodeContainer>
             )
@@ -277,7 +277,7 @@ const Download = () => {
         }}
       >
         <DialogTitle2>
-          <div>{i18n.translation.t('download.openGuide')}</div>
+          <div>{i18n.t('download.openGuide')}</div>
           <CloseButton
             onClick={() => {
               setOpen(false)
@@ -288,14 +288,14 @@ const Download = () => {
         </DialogTitle2>
         <DialogContent>
           <DeviceGuide>
-            {i18n.translation.t('download.iphone.title')} <br />
-            {i18n.translation.t('download.iphone.point1')} <br />
-            {i18n.translation.t('download.iphone.point2')} <br />
+            {i18n.t('download.iphone.title')} <br />
+            {i18n.t('download.iphone.point1')} <br />
+            {i18n.t('download.iphone.point2')} <br />
           </DeviceGuide>
           <DeviceGuide>
-            {i18n.translation.t('download.android.title')} <br />
-            {i18n.translation.t('download.android.point1')} <br />
-            {i18n.translation.t('download.android.point2')} <br />
+            {i18n.t('download.android.title')} <br />
+            {i18n.t('download.android.point1')} <br />
+            {i18n.t('download.android.point2')} <br />
           </DeviceGuide>
         </DialogContent>
       </CustomModal>

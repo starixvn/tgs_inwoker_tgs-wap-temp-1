@@ -27,7 +27,7 @@ class ChangePassword extends BaseProfile {
     const newpassword = this.state.newpassword
     const newpassword2 = this.state.newpassword2
     if (newpassword !== newpassword2) {
-      this.props.alert('', i18n.translation.t('common.msgInvalidConfirmPass'))
+      this.props.alert('', i18n.t('common.msgInvalidConfirmPass'))
       // this.props.enqueueSnackbar("确认密码错误", {
       //   key: "error"
       // });
@@ -40,14 +40,14 @@ class ChangePassword extends BaseProfile {
           this.updateInfo({})
           this.props.alert(
             '',
-            i18n.translation.t('common.msgSuccessUpdateProfile')
+            i18n.t('common.msgSuccessUpdateProfile')
           )
 
           this.props.appHistory.replace(
-            '/' + i18n.translation.language + '/profile'
+            '/' + i18n.language + '/profile'
           )
         } else {
-          this.props.alert('', i18n.translation.t('common.msgInvalidOldPass'))
+          this.props.alert('', i18n.t('common.msgInvalidOldPass'))
         }
         this.showLoading(false)
       })
@@ -71,36 +71,36 @@ class ChangePassword extends BaseProfile {
   }
   render() {
     return this.setupContent(
-      i18n.translation.t('profile.changePassword.editPassword'),
+      i18n.t('profile.changePassword.editPassword'),
       <React.Fragment>
         <Textbox
           type={'password'}
           style={{ margin: '50px auto 20px auto' }}
           value={this.state.oldpassword}
           onChange={this.handleChangeOldPassword}
-          placeholder={i18n.translation.t(
+          placeholder={i18n.t(
             'profile.changePassword.msgEnterOriPass'
           )}
-          label={i18n.translation.t('profile.changePassword.OriPass')}
+          label={i18n.t('profile.changePassword.OriPass')}
         ></Textbox>
         <Textbox
           type={'password'}
           style={{ margin: '20px auto 20px auto' }}
           value={this.state.newpassword}
           onChange={this.handleChangeNewPassword}
-          placeholder={i18n.translation.t('common.msgEnterNewPass')}
-          label={i18n.translation.t('common.NewPass')}
+          placeholder={i18n.t('common.msgEnterNewPass')}
+          label={i18n.t('common.NewPass')}
         ></Textbox>
         <Textbox
           type={'password'}
           style={{ margin: '20px auto 20px auto' }}
           value={this.state.newpassword2}
           onChange={this.handleChangeNewPassword2}
-          placeholder={i18n.translation.t('common.msgEnterConfirmPass')}
-          label={i18n.translation.t('common.ConfirmPass')}
+          placeholder={i18n.t('common.msgEnterConfirmPass')}
+          label={i18n.t('common.ConfirmPass')}
         ></Textbox>
       </React.Fragment>,
-      i18n.translation.t('common.complete')
+      i18n.t('common.complete')
     )
   }
 }

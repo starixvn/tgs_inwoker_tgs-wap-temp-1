@@ -329,14 +329,14 @@ class Transfer extends Component {
           loading: false,
           open: false
         })
-        // this.props.appHistory.replace("/" + i18n.translation.language + "/withdrawal");
+        // this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
       } else {
         this.props.alert('', this.props.wallet.transferResult.info)
         // if (
         //   this.props.wallet.transferResult.code === 208 ||
         //   this.props.wallet.transferResult.code === 209
         // ) {
-        //   this.props.alert('', i18n.translation.t('transfer.msgFailedTransfer'))
+        //   this.props.alert('', i18n.t('transfer.msgFailedTransfer'))
         // } else {
         //   this.props.alert('', this.props.wallet.transferResult.info)
         // }
@@ -358,7 +358,7 @@ class Transfer extends Component {
           loading: false,
           open: false
         })
-        // this.props.appHistory.replace("/" + i18n.translation.language + "/withdrawal");
+        // this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
       } else {
         this.props.alert('', this.props.wallet.withdrawalAllResult.info)
       }
@@ -434,7 +434,7 @@ class Transfer extends Component {
               <DynamicFont
                 content={
                   item.maintenance === 1
-                    ? i18n.translation.t('transfer.maintenance')
+                    ? i18n.t('transfer.maintenance')
                     : item.symbol +
                       Common.formatNumberWithThousand(item.balance)
                 }
@@ -462,9 +462,9 @@ class Transfer extends Component {
       transferFrom === this.state.mainAccountId
     ) {
       if (parseFloat(transferAmount) <= 0) {
-        this.props.alert('', i18n.translation.t('transfer.invalidAmount'))
+        this.props.alert('', i18n.t('transfer.invalidAmount'))
       } else {
-        this.props.alert('', i18n.translation.t('transfer.insufficient'))
+        this.props.alert('', i18n.t('transfer.insufficient'))
       }
     } else {
       if (transferFrom === this.state.mainAccountId)
@@ -559,7 +559,7 @@ class Transfer extends Component {
             <RefreshLabel onClick={this.handleRefreshClick}></RefreshLabel>
           }
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('transfer.title')}
+          title={i18n.t('transfer.title')}
         ></Header>
         <InnerContainer>
           <RowContainer>
@@ -572,7 +572,7 @@ class Transfer extends Component {
               ></LeftLabelIcon>
               <div className='clear'></div>
               <LeftLabel>
-                {i18n.translation.t('transfer.mainAccount')}
+                {i18n.t('transfer.mainAccount')}
               </LeftLabel>
             </LeftBalanceContainer>
 
@@ -580,7 +580,7 @@ class Transfer extends Component {
               {Common.formatNumberWithThousand(this.props.wallet.mainBalance)}
             </RightAmountLabel>
             {/* <OneClickReceiveButton onClick={this.handleWithdrawAllClick}>
-              {i18n.translation.t("transfer.oneKeyReceive")}
+              {i18n.t("transfer.oneKeyReceive")}
             </OneClickReceiveButton> */}
           </RowContainer>
           <SplitLineHalf></SplitLineHalf>
@@ -589,10 +589,10 @@ class Transfer extends Component {
           <div></div>
           <CustomSwitchContainer>
             <div>
-              {i18n.translation.t('transfer.autoTransfer')} (
+              {i18n.t('transfer.autoTransfer')} (
               {this.props.wallet.autotransfer === true
-                ? i18n.translation.t('transfer.on')
-                : i18n.translation.t('transfer.off')}
+                ? i18n.t('transfer.on')
+                : i18n.t('transfer.off')}
               )
             </div>
             <CustomSwitch
@@ -625,7 +625,7 @@ class Transfer extends Component {
 
         <TransferAccountContainer>
           <TransferLabel>
-            {i18n.translation.t('transfer.transferFromWallet')}
+            {i18n.t('transfer.transferFromWallet')}
           </TransferLabel>
           <CustomFormControl
             variant='outlined'
@@ -652,7 +652,7 @@ class Transfer extends Component {
               value={this.state.fromWallet}
             >
               <option value={this.state.mainAccountId}>
-                {i18n.translation.t('transfer.mainAccount')}
+                {i18n.t('transfer.mainAccount')}
               </option>
               {this.props.game.providerList
                 .filter(
@@ -669,7 +669,7 @@ class Transfer extends Component {
         <TransferArrowIcon></TransferArrowIcon>
         <TransferAccountContainer style={{ margin: '0px' }}>
           <TransferLabel>
-            {i18n.translation.t('transfer.transferToWallet')}
+            {i18n.t('transfer.transferToWallet')}
           </TransferLabel>
           <CustomFormControl
             variant='outlined'
@@ -694,7 +694,7 @@ class Transfer extends Component {
               value={this.state.toWallet}
             >
               <option value={this.state.mainAccountId}>
-                {i18n.translation.t('transfer.mainAccount')}
+                {i18n.t('transfer.mainAccount')}
               </option>
               {this.props.game.providerList
                 .filter(
@@ -710,21 +710,21 @@ class Transfer extends Component {
         </TransferAccountContainer>
         <div className='clear'></div>
         <TextboxContainer>
-          <TextboxLabel>{i18n.translation.t('common.amount')}</TextboxLabel>
+          <TextboxLabel>{i18n.t('common.amount')}</TextboxLabel>
           <TextboxInput
             type={'number'}
-            placeholder={i18n.translation.t('transfer.msgEnterAmount')}
+            placeholder={i18n.t('transfer.msgEnterAmount')}
             onChange={this.handleTransferAmountChanged}
             value={this.state.transferAmount}
           ></TextboxInput>
           <ButtonDiv onClick={this.handleMaxAmountClicked}>
-            {i18n.translation.t('transfer.maxAmount')}
+            {i18n.t('transfer.maxAmount')}
           </ButtonDiv>
         </TextboxContainer>
 
         <Button
           style={{ margin: '40px auto 40px auto' }}
-          label={i18n.translation.t('common.confirm')}
+          label={i18n.t('common.confirm')}
           onClick={this.handleSubmitClicked}
           disabled={(() => {
             return (

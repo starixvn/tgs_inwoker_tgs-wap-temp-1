@@ -30,14 +30,14 @@ class WithdrawalPassword extends BaseProfile {
     const confirmPassword = this.state.confirmPassword
     var expr = /^.{6,20}$/
     if (!expr.test(password)) {
-      this.props.alert('', i18n.translation.t('common.msgRegisterPassInvalid'))
+      this.props.alert('', i18n.t('common.msgRegisterPassInvalid'))
       return
     }
 
     if (password !== confirmPassword) {
       this.props.alert(
         '',
-        i18n.translation.t('profile.withdrawalPassword.msgInvalidConPass')
+        i18n.t('profile.withdrawalPassword.msgInvalidConPass')
       )
       return
     }
@@ -66,27 +66,27 @@ class WithdrawalPassword extends BaseProfile {
   }
   render() {
     return this.setupContent(
-      i18n.translation.t('profile.withdrawalPassword.title'),
+      i18n.t('profile.withdrawalPassword.title'),
       <React.Fragment>
         <Textbox
           type={'password'}
           style={{ margin: '20px auto 20px auto' }}
           value={this.state.password}
           onChange={this.handlePassword}
-          placeholder={i18n.translation.t(
+          placeholder={i18n.t(
             'profile.withdrawalPassword.msgEnterNewPass'
           )}
-          label={i18n.translation.t('profile.withdrawalPassword.newPass')}
+          label={i18n.t('profile.withdrawalPassword.newPass')}
         ></Textbox>
         <Textbox
           type={'password'}
           style={{ margin: '20px auto 20px auto' }}
           value={this.state.confirmPassword}
           onChange={this.handleConfirmPassword}
-          placeholder={i18n.translation.t(
+          placeholder={i18n.t(
             'profile.withdrawalPassword.msgEnterConPass'
           )}
-          label={i18n.translation.t('profile.withdrawalPassword.conPass')}
+          label={i18n.t('profile.withdrawalPassword.conPass')}
         ></Textbox>
       </React.Fragment>
     )

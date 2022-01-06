@@ -115,7 +115,7 @@ class ForgotPassword extends Component {
   }
   getCodeResponse = (response) => {
     if (response.IsSuccess) {
-      this.props.alert('', i18n.translation.t('common.msgTokenSent'))
+      this.props.alert('', i18n.t('common.msgTokenSent'))
 
       this.setState({
         ...this.state,
@@ -124,7 +124,7 @@ class ForgotPassword extends Component {
       })
     } else {
       // if (response.code === 201) {
-      //   this.props.alert('', i18n.translation.t('error.ERR201'))
+      //   this.props.alert('', i18n.t('error.ERR201'))
       // } else {
       //   this.props.alert('', response.info)
       // }
@@ -140,7 +140,7 @@ class ForgotPassword extends Component {
       if (this.state.password !== this.state.password2) {
         this.props.alert(
           '',
-          i18n.translation.t('forgotPassword.invalidConfirmPass')
+          i18n.t('forgotPassword.invalidConfirmPass')
         )
       } else {
         AccountService.ResetPassword(
@@ -151,9 +151,9 @@ class ForgotPassword extends Component {
           if (response.IsSuccess) {
             this.props.alert(
               '',
-              i18n.translation.t('forgotPassword.updateSuccess')
+              i18n.t('forgotPassword.updateSuccess')
             )
-            this.props.appHistory.replace('/' + i18n.translation.language + '/')
+            this.props.appHistory.replace('/' + i18n.language + '/')
           } else {
             this.props.alert('', response.info)
           }
@@ -189,7 +189,7 @@ class ForgotPassword extends Component {
       <React.Fragment>
         <Header
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('forgotPassword.title')}
+          title={i18n.t('forgotPassword.title')}
         ></Header>
         {(() => {
           if (this.state.step === 1) {
@@ -197,7 +197,7 @@ class ForgotPassword extends Component {
               <React.Fragment>
                 <CustomText>
                   <CustomLabel>
-                    {i18n.translation.t('common.phoneNumber')}
+                    {i18n.t('common.phoneNumber')}
                   </CustomLabel>
                   <Container
                     style={{
@@ -222,19 +222,19 @@ class ForgotPassword extends Component {
                   <CustomInput
                     value={this.state.phone}
                     onChange={this.handlePhoneChange}
-                    placeholder={i18n.translation.t('common.msgEnterPhone')}
+                    placeholder={i18n.t('common.msgEnterPhone')}
                     type={'text'}
-                    label={i18n.translation.t('common.msgEnterPhone')}
+                    label={i18n.t('common.msgEnterPhone')}
                   ></CustomInput>
                 </CustomText>
 
                 <TextboxWithButton
-                  buttonlabel={i18n.translation.t('common.msgSendToken')}
+                  buttonlabel={i18n.t('common.msgSendToken')}
                   style={{ margin: '20px auto 20px auto' }}
                   value={this.state.code}
                   onChange={this.handleCodeChange}
-                  placeholder={i18n.translation.t('common.msgEnterCode')}
-                  label={i18n.translation.t('common.token')}
+                  placeholder={i18n.t('common.msgEnterCode')}
+                  label={i18n.t('common.token')}
                   onClick={this.handleGetCodeClick}
                   type={'text'}
                 ></TextboxWithButton>
@@ -245,17 +245,17 @@ class ForgotPassword extends Component {
                   style={{ margin: '20px auto 20px auto' }}
                   value={this.state.email}
                   onChange={this.handleEmailChange}
-                  placeholder={i18n.translation.t('common.msgEnterEmail')}
+                  placeholder={i18n.t('common.msgEnterEmail')}
                   type={'text'}
-                  label={i18n.translation.t('common.emailAddress')}
+                  label={i18n.t('common.emailAddress')}
                 ></Textbox>
                 <TextboxWithButton
-                  buttonlabel={i18n.translation.t('common.msgSendToken')}
+                  buttonlabel={i18n.t('common.msgSendToken')}
                   style={{ margin: '20px auto 20px auto' }}
                   value={this.state.code}
                   onChange={this.handleCodeChange}
-                  placeholder={i18n.translation.t('common.msgEnterCode')}
-                  label={i18n.translation.t('common.token')}
+                  placeholder={i18n.t('common.msgEnterCode')}
+                  label={i18n.t('common.token')}
                   onClick={this.handleGetCodeClick}
                   type={'text'}
                 ></TextboxWithButton>
@@ -268,18 +268,18 @@ class ForgotPassword extends Component {
                   style={{ margin: '20px auto 20px auto' }}
                   value={this.state.password}
                   onChange={this.handlePasswordChange}
-                  placeholder={i18n.translation.t('wap.register.password')}
+                  placeholder={i18n.t('wap.register.password')}
                   type={'password'}
-                  label={i18n.translation.t('common.NewPass')}
+                  label={i18n.t('common.NewPass')}
                 ></Textbox>
 
                 <Textbox
                   style={{ margin: '20px auto 20px auto' }}
                   value={this.state.password2}
                   onChange={this.handlePassword2Change}
-                  placeholder={i18n.translation.t('common.msgEnterConfirmPass')}
+                  placeholder={i18n.t('common.msgEnterConfirmPass')}
                   type={'password'}
-                  label={i18n.translation.t('common.ConfirmPass')}
+                  label={i18n.t('common.ConfirmPass')}
                 ></Textbox>
               </React.Fragment>
             )
@@ -298,8 +298,8 @@ class ForgotPassword extends Component {
           }
           label={
             this.state.step === 1
-              ? i18n.translation.t('common.nextStep')
-              : i18n.translation.t('common.confirm')
+              ? i18n.t('common.nextStep')
+              : i18n.t('common.confirm')
           }
           onClick={this.handleNextClick}
         ></Button>

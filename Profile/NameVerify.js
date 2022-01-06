@@ -44,14 +44,14 @@ class NameVerify extends BaseProfile {
         this.setState({ disableButton: true })
         // this.props.getIDCardNo();
         this.props.appHistory.replace(
-          '/' + i18n.translation.language + '/profile'
+          '/' + i18n.language + '/profile'
         )
       } else {
         this.props.alert('', this.props.account.updateCardResult.info)
         // if (this.props.account.updateCardResult.code === 401) {
         //   this.props.alert(
         //     '',
-        //     i18n.translation.t('profile.nameVerify.msgInvalidICNum')
+        //     i18n.t('profile.nameVerify.msgInvalidICNum')
         //   )
         // } else {
         //   this.props.alert('', this.props.account.updateCardResult.info)
@@ -86,14 +86,14 @@ class NameVerify extends BaseProfile {
   }
   render() {
     return this.setupContent(
-      i18n.translation.t('profile.nameVerify.title'),
+      i18n.t('profile.nameVerify.title'),
       <React.Fragment>
         <Textbox
           style={{ margin: '50px auto 20px auto' }}
           value={this.state.name}
           onChange={this.handleChangeName}
-          placeholder={i18n.translation.t('profile.nameVerify.title')}
-          label={i18n.translation.t('profile.nameVerify.verifyName')}
+          placeholder={i18n.t('profile.nameVerify.title')}
+          label={i18n.t('profile.nameVerify.verifyName')}
           disabled={this.props.account.info.check_pass_account === true}
           maxLength={10}
         ></Textbox>
@@ -102,8 +102,8 @@ class NameVerify extends BaseProfile {
             style={{ margin: '50px auto 20px auto' }}
             value={this.state.ic}
             onChange={this.handleChangeIC}
-            placeholder={i18n.translation.t('profile.nameVerify.msgEnterICNum')}
-            label={i18n.translation.t('profile.nameVerify.icNum')}
+            placeholder={i18n.t('profile.nameVerify.msgEnterICNum')}
+            label={i18n.t('profile.nameVerify.icNum')}
             disabled={this.props.account.info.check_pass_account === true}
             maxLength={30}
           ></Textbox>
@@ -112,12 +112,12 @@ class NameVerify extends BaseProfile {
         )}
       </React.Fragment>,
       this.props.account.info.check_pass_account
-        ? i18n.translation.t('common.configured')
-        : i18n.translation.t('common.complete'),
+        ? i18n.t('common.configured')
+        : i18n.t('common.complete'),
       <BottomNote
-        text1={i18n.translation.t('profile.nameVerify.toEdit')}
+        text1={i18n.t('profile.nameVerify.toEdit')}
         link={'../chat'}
-        text2={i18n.translation.t('common.customerService')}
+        text2={i18n.t('common.customerService')}
       ></BottomNote>
     )
   }

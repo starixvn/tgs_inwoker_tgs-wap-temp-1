@@ -203,8 +203,8 @@ class AddCard extends Component {
         this.props.alert(
           '',
           config.features.AddCard_DisplayFPS
-            ? i18n.translation.t('hk28.card.addCard.msgEnterBankName')
-            : i18n.translation.t('card.addCard.msgEnterBankName')
+            ? i18n.t('hk28.card.addCard.msgEnterBankName')
+            : i18n.t('card.addCard.msgEnterBankName')
         )
         return
       }
@@ -213,8 +213,8 @@ class AddCard extends Component {
         this.props.alert(
           '',
           config.features.AddCard_DisplayFPS
-            ? i18n.translation.t('hk28.card.addCard.msgEnterBankAccountName')
-            : i18n.translation.t('card.addCard.msgEnterBankAccountName')
+            ? i18n.t('hk28.card.addCard.msgEnterBankAccountName')
+            : i18n.t('card.addCard.msgEnterBankAccountName')
         )
         return
       }
@@ -223,8 +223,8 @@ class AddCard extends Component {
         this.props.alert(
           '',
           config.features.AddCard_DisplayFPS
-            ? i18n.translation.t('hk28.msgEnterWithdrawalNumber')
-            : i18n.translation.t('common.msgEnterWithdrawalNumber')
+            ? i18n.t('hk28.msgEnterWithdrawalNumber')
+            : i18n.t('common.msgEnterWithdrawalNumber')
         )
         return
       }
@@ -292,7 +292,7 @@ class AddCard extends Component {
         <StyledAppBar>
           <Header
             onBackClick={this.handleBackClick}
-            title={i18n.translation.t('card.addCard.title')}
+            title={i18n.t('card.addCard.title')}
             position={'sticky'}
             backgroundColor={'transparent'}
           ></Header>
@@ -300,7 +300,7 @@ class AddCard extends Component {
             {Common.formatNumberWithThousand(this.props.wallet.mainBalance)}
           </BalanceLabel>
         </StyledAppBar>
-        <SubTitle>{i18n.translation.t('card.addCard.title')}</SubTitle>
+        <SubTitle>{i18n.t('card.addCard.title')}</SubTitle>
         <Textbox
           style={{ margin: '20px auto 20px auto' }}
           value={
@@ -312,14 +312,14 @@ class AddCard extends Component {
           }
           onClick={() => this.setState({ ...this.state, bankTypeOpen: true })}
           type={'text'}
-          label={i18n.translation.t('common.withdrawalBankType')}
+          label={i18n.t('common.withdrawalBankType')}
           disabled={true}
         ></Textbox>
         <Textbox
           style={{ margin: '20px auto 20px auto' }}
           value={
             this.state.channelList.length > 0
-              ? i18n.translation.t(
+              ? i18n.t(
                   this.state.channelList[this.state.selectedChannelIndex]
                     .channelcode
                 )
@@ -327,7 +327,7 @@ class AddCard extends Component {
           }
           onClick={() => this.setState({ ...this.state, channelOpen: true })}
           type={'text'}
-          label={i18n.translation.t('common.withdrawalChannel')}
+          label={i18n.t('common.withdrawalChannel')}
           disabled={true}
         ></Textbox>
         {(() => {
@@ -348,15 +348,15 @@ class AddCard extends Component {
                       type={'text'}
                       placeholder={
                         config.features.AddCard_DisplayFPS
-                          ? i18n.translation.t(
+                          ? i18n.t(
                               'hk28.card.addCard.msgEnterBankName'
                             )
-                          : i18n.translation.t('card.addCard.msgEnterBankName')
+                          : i18n.t('card.addCard.msgEnterBankName')
                       }
                       label={
                         config.features.AddCard_DisplayFPS
-                          ? i18n.translation.t('hk28.card.addCard.BankName')
-                          : i18n.translation.t('card.addCard.BankName')
+                          ? i18n.t('hk28.card.addCard.BankName')
+                          : i18n.t('card.addCard.BankName')
                       }
                     ></Textbox>
                   )}
@@ -368,10 +368,10 @@ class AddCard extends Component {
                         value={this.state.bankBranch}
                         onChange={this.handleBankBranchChange}
                         type={'text'}
-                        placeholder={i18n.translation.t(
+                        placeholder={i18n.t(
                           'card.addCard.branchPlaceHolder'
                         )}
-                        label={i18n.translation.t('card.addCard.branch')}
+                        label={i18n.t('card.addCard.branch')}
                       ></Textbox>
                     )
                   }
@@ -384,17 +384,17 @@ class AddCard extends Component {
                   type={'text'}
                   placeholder={
                     config.features.AddCard_DisplayFPS
-                      ? i18n.translation.t(
+                      ? i18n.t(
                           'hk28.card.addCard.msgEnterBankAccountName'
                         )
-                      : i18n.translation.t(
+                      : i18n.t(
                           'card.addCard.msgEnterBankAccountName'
                         )
                   }
                   label={
                     config.features.AddCard_DisplayFPS
-                      ? i18n.translation.t('hk28.card.addCard.BankAccountName')
-                      : i18n.translation.t('card.addCard.BankAccountName')
+                      ? i18n.t('hk28.card.addCard.BankAccountName')
+                      : i18n.t('card.addCard.BankAccountName')
                   }
                 ></Textbox>
               </React.Fragment>
@@ -419,10 +419,10 @@ class AddCard extends Component {
                 })
               }}
               type={'text'}
-              placeholder={i18n.translation.t(
+              placeholder={i18n.t(
                 'profile.nameVerify.msgPlsEnterName'
               )}
-              label={i18n.translation.t('profile.nameVerify.title')}
+              label={i18n.t('profile.nameVerify.title')}
             ></Textbox>
             <Textbox
               style={{ margin: '20px auto 20px auto' }}
@@ -438,19 +438,19 @@ class AddCard extends Component {
               type={'text'}
               placeholder={
                 config.features.AddCard_DisplayFPS
-                  ? i18n.translation.t('bet28.msgEnterPhone')
-                  : i18n.translation.t('common.msgEnterPhone')
+                  ? i18n.t('bet28.msgEnterPhone')
+                  : i18n.t('common.msgEnterPhone')
               }
               label={
                 config.features.AddCard_DisplayFPS
-                  ? i18n.translation.t('bet28.phoneNumber')
-                  : i18n.translation.t('common.phoneNumber')
+                  ? i18n.t('bet28.phoneNumber')
+                  : i18n.t('common.phoneNumber')
               }
             ></Textbox>
-            <BottomInfo>{i18n.translation.t('card.addCard.desc')}</BottomInfo>
+            <BottomInfo>{i18n.t('card.addCard.desc')}</BottomInfo>
             <Button
               style={{ margin: '40px auto 0 auto' }}
-              label={i18n.translation.t('common.confirm')}
+              label={i18n.t('common.confirm')}
               onClick={this.handleNextClick}
               disabled={this.state.name === '' || this.state.phone === ''}
             ></Button>
@@ -471,19 +471,19 @@ class AddCard extends Component {
               type={'text'}
               placeholder={
                 config.features.AddCard_DisplayFPS
-                  ? i18n.translation.t('hk28.msgEnterWithdrawalNumber')
-                  : i18n.translation.t('common.msgEnterWithdrawalNumber')
+                  ? i18n.t('hk28.msgEnterWithdrawalNumber')
+                  : i18n.t('common.msgEnterWithdrawalNumber')
               }
               label={
                 config.features.AddCard_DisplayFPS
-                  ? i18n.translation.t('hk28.withdrawalNumber')
-                  : i18n.translation.t('common.withdrawalNumber')
+                  ? i18n.t('hk28.withdrawalNumber')
+                  : i18n.t('common.withdrawalNumber')
               }
             ></Textbox>
-            <BottomInfo>{i18n.translation.t('card.addCard.desc')}</BottomInfo>
+            <BottomInfo>{i18n.t('card.addCard.desc')}</BottomInfo>
             <Button
               style={{ margin: '40px auto 0 auto' }}
-              label={i18n.translation.t('common.confirm')}
+              label={i18n.t('common.confirm')}
               onClick={this.handleNextClick}
               disabled={(() => {
                 if (this.props.wallet.withdrawalList.length <= 0) return true
@@ -554,7 +554,7 @@ class AddCard extends Component {
                 onClick={() => this.handleChannelClick(index)}
               >
                 <StyledListItemText
-                  primary={i18n.translation.t(item.channelcode)}
+                  primary={i18n.t(item.channelcode)}
                 ></StyledListItemText>
               </StyledListItem>
             )

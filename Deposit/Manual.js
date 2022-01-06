@@ -108,7 +108,7 @@ class Manual extends Component {
   componentDidMount() {
     if (this.props.order == null) {
       this.props.appHistory.replace(
-        '/' + i18n.translation.language + '/deposit'
+        '/' + i18n.language + '/deposit'
       )
     } else {
     }
@@ -119,7 +119,7 @@ class Manual extends Component {
       this.props.wallet.depositUploadResult !== null
     ) {
       if (this.props.wallet.depositUploadResult.IsSuccess) {
-        this.props.alert('', i18n.translation.t('deposit.uploadSuccess'))
+        this.props.alert('', i18n.t('deposit.uploadSuccess'))
         this.props.appHistory.goBack()
       } else {
         this.props.alert('', this.props.wallet.depositUploadResult.info)
@@ -132,7 +132,7 @@ class Manual extends Component {
     ) {
       this.props.resetDeposit()
       if (this.props.wallet.cancelDepositResult.IsSuccess) {
-        this.props.alert('', i18n.translation.t('deposit.cancelDeposit'))
+        this.props.alert('', i18n.t('deposit.cancelDeposit'))
         this.props.appHistory.goBack()
       } else {
         this.props.alert('', this.props.wallet.cancelDepositResult.info)
@@ -141,7 +141,7 @@ class Manual extends Component {
   }
   handleDepositConfirmClick = (e) => {
     if (!this.myRef.current.files[0]) {
-      this.props.alert('', i18n.translation.t('deposit.msgPlsSelectFile'))
+      this.props.alert('', i18n.t('deposit.msgPlsSelectFile'))
       return
     }
     this.props.doDepositUpload(
@@ -181,18 +181,18 @@ class Manual extends Component {
       <Container>
         <ContentBg>
           <BalanceLabel>
-            {i18n.translation.t('deposit.depositAmount')}：
+            {i18n.t('deposit.depositAmount')}：
           </BalanceLabel>
           <DepositAmount>¥ {this.props.order.amount}</DepositAmount>
           <SplitLine></SplitLine>
-          <LeftLabel>{i18n.translation.t('deposit.depositMethod')}</LeftLabel>
+          <LeftLabel>{i18n.t('deposit.depositMethod')}</LeftLabel>
           <RightLabel>{this.props.order.selectedType.title}</RightLabel>
           <SplitBoth></SplitBoth>
-          <LeftLabel>{i18n.translation.t('deposit.depositTunnel')}</LeftLabel>
+          <LeftLabel>{i18n.t('deposit.depositTunnel')}</LeftLabel>
           <RightLabel>{this.props.order.selectedChannel.title}</RightLabel>
           <SplitBoth></SplitBoth>
 
-          <LeftLabel>{i18n.translation.t('deposit.uploadReceipt')}</LeftLabel>
+          <LeftLabel>{i18n.t('deposit.uploadReceipt')}</LeftLabel>
           <RightLabel>
             <input type='file' ref={this.myRef} accept='image/*'></input>
           </RightLabel>
@@ -202,17 +202,17 @@ class Manual extends Component {
               return (
                 <React.Fragment>
                   <LeftLabel>
-                    {i18n.translation.t('deposit.receiverBank')}
+                    {i18n.t('deposit.receiverBank')}
                   </LeftLabel>
                   <RightLabel>{this.props.order.bankInfo.bank_name}</RightLabel>
                   <SplitBoth></SplitBoth>
                   <LeftLabel>
-                    {i18n.translation.t('deposit.receiverAccount')}
+                    {i18n.t('deposit.receiverAccount')}
                   </LeftLabel>
                   <RightLabel>{this.props.order.bankInfo.user_name}</RightLabel>
                   <SplitBoth></SplitBoth>
                   <LeftLabel>
-                    {i18n.translation.t('deposit.receiverNumber')}
+                    {i18n.t('deposit.receiverNumber')}
                   </LeftLabel>
                   <RightLabel>{this.props.order.bankInfo.account}</RightLabel>
                   <SplitBoth></SplitBoth>
@@ -242,7 +242,7 @@ class Manual extends Component {
         <Button
           style={{ margin: '20px auto' }}
           labelStyle={{ color: '#fff' }}
-          label={i18n.translation.t('deposit.upload')}
+          label={i18n.t('deposit.upload')}
           onClick={this.handleDepositConfirmClick}
         ></Button>
 

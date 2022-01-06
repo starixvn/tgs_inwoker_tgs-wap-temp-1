@@ -111,8 +111,8 @@ class VerificationCode extends Component {
           }}
           name={
             this.props.countdown <= 0
-              ? i18n.translation.t('common.msgSendToken')
-              : i18n.translation.t('common.btnTokenResendLabel') +
+              ? i18n.t('common.msgSendToken')
+              : i18n.t('common.btnTokenResendLabel') +
                 '(' +
                 this.props.countdown +
                 's)'

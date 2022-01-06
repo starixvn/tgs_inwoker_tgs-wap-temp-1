@@ -80,7 +80,7 @@ class ButtonSwitch extends Component {
           active={this.props.selected === 0}
           onClick={() => this.props.handleChangeSelection(0)}
         >
-          {i18n.translation.t('common.login')}
+          {i18n.t('common.login')}
         </SwitchTextLeftContainer>
         <SwitchTextrightContainer
           style={
@@ -89,7 +89,7 @@ class ButtonSwitch extends Component {
           active={this.props.selected === 1}
           onClick={() => this.props.handleChangeSelection(1)}
         >
-          {i18n.translation.t('common.register')}
+          {i18n.t('common.register')}
         </SwitchTextrightContainer>
         {this.state.activation ? (
           <SwitchTextrightContainer
@@ -97,7 +97,7 @@ class ButtonSwitch extends Component {
             active={this.props.selected === 2}
             onClick={() => this.props.handleChangeSelection(2)}
           >
-            {i18n.translation.t('web.register.activation')}
+            {i18n.t('web.register.activation')}
           </SwitchTextrightContainer>
         ) : null}
       </Container>

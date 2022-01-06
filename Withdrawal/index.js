@@ -253,11 +253,11 @@ class Withdrawal extends Component {
       config.features.EmailVerification
     ) {
       this.props.appHistory.replace(
-        `/${i18n.translation.language}/profile/email`
+        `/${i18n.language}/profile/email`
       )
       // } else if (this.props.account.info.member_safe_password !== 'set') {
       //   this.props.appHistory.replace(
-      //     `/${i18n.translation.language}/profile/withdrawalpassword/`
+      //     `/${i18n.language}/profile/withdrawalpassword/`
       //   )
     } else {
       if (this.props.token != null) {
@@ -282,18 +282,18 @@ class Withdrawal extends Component {
       if (this.props.wallet.withdrawalResult.IsSuccess) {
         this.props.resetResult()
         this.props.getBalanceList()
-        this.props.alert('', i18n.translation.t('withdrawal.msgSuccess'))
+        this.props.alert('', i18n.t('withdrawal.msgSuccess'))
         this.setState({
           ...this.initialState
         })
       } else {
         this.props.alert('', this.props.wallet.withdrawalResult.info)
         // if (this.props.wallet.withdrawalResult.code === 207) {
-        //   this.props.alert('', i18n.translation.t('common.msgRequiredTurnover'))
+        //   this.props.alert('', i18n.t('common.msgRequiredTurnover'))
         // } else if (this.props.wallet.withdrawalResult.code === 901) {
         //   this.props.alert(
         //     '',
-        //     i18n.translation.t('common.msgInvalidWithdrawalPassword')
+        //     i18n.t('common.msgInvalidWithdrawalPassword')
         //   )
         // } else {
         //   this.props.alert('', this.props.wallet.withdrawalResult.info)
@@ -310,7 +310,7 @@ class Withdrawal extends Component {
     const amount = this.state.amount
     if (config.features.Withdrawal_HundredDigit) {
       if (!/^[1-9][0-9]{0,17}00$/.test(amount)) {
-        this.props.alert('', i18n.translation.t('withdrawal.msgMustHundred'))
+        this.props.alert('', i18n.t('withdrawal.msgMustHundred'))
         return this.setState({ ...this.state, disabled: false })
       }
     }
@@ -348,7 +348,7 @@ class Withdrawal extends Component {
 
     const formatedamount = amount.toString().replace(/,/g, '')
     // if (parseFloat(formatedamount) <= 0) {
-    //   this.props.alert("", i18n.translation.t("withdrawal.msgInvalidAmt"));
+    //   this.props.alert("", i18n.t("withdrawal.msgInvalidAmt"));
 
     //   return;
     // }
@@ -383,12 +383,12 @@ class Withdrawal extends Component {
             </BalanceLabel>
           }
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('withdrawal.title')}
+          title={i18n.t('withdrawal.title')}
         ></Header>
         <InnerContainer>
           <RowContainer>
             <LeftLabel>
-              {i18n.translation.t('withdrawal.msgCanWithdrawal')}
+              {i18n.t('withdrawal.msgCanWithdrawal')}
             </LeftLabel>
             <LeftLabelValue>
               {this.props.wallet.mainSymbol}
@@ -396,7 +396,7 @@ class Withdrawal extends Component {
             </LeftLabelValue>
           </RowContainer>
           <RowContainer>
-            <LeftLabel>{i18n.translation.t('withdrawal.turnover')}</LeftLabel>
+            <LeftLabel>{i18n.t('withdrawal.turnover')}</LeftLabel>
             <LeftLabelValue>
               {this.props.wallet.mainSymbol}
               {Common.formatNumberWithThousand(this.state.minWithdrawLimit)}
@@ -406,22 +406,22 @@ class Withdrawal extends Component {
         <ButtonCardManage
           onClick={() =>
             this.props.appHistory.push(
-              '/' + i18n.translation.language + '/card'
+              '/' + i18n.language + '/card'
             )
           }
         >
-          {i18n.translation.t('withdrawal.manageBank')}
+          {i18n.t('withdrawal.manageBank')}
         </ButtonCardManage>
 
         <CustomSelectContainer>
-          <CustomLabel>{i18n.translation.t('withdrawal.bankCard')}</CustomLabel>
+          <CustomLabel>{i18n.t('withdrawal.bankCard')}</CustomLabel>
           <CustomSelect
             value={this.state.selectedBankCardIndex}
             native
             onChange={(e) => this.handleBankClick(e)}
           >
             <option disabled>
-              {i18n.translation.t('withdrawal.msgEnterBank')}
+              {i18n.t('withdrawal.msgEnterBank')}
             </option>
             {this.props.wallet.bankCardList.map((item, index) => {
               return (
@@ -440,8 +440,8 @@ class Withdrawal extends Component {
           style={{ margin: '50px auto 20px auto' }}
           value={this.state.amount}
           onChange={this.handleChangeAmount}
-          placeholder={i18n.translation.t('withdrawal.enterAmount')}
-          label={i18n.translation.t('common.amount')}
+          placeholder={i18n.t('withdrawal.enterAmount')}
+          label={i18n.t('common.amount')}
           type={'number'}
         ></Textbox>
 
@@ -449,14 +449,14 @@ class Withdrawal extends Component {
           style={{ margin: '50px auto 20px auto' }}
           onChange={this.handlePasswordChange}
           value={this.state.password}
-          placeholder={i18n.translation.t('withdrawal.msgEnterWithdrawalPass')}
-          label={i18n.translation.t('common.withdrawalPassword')}
+          placeholder={i18n.t('withdrawal.msgEnterWithdrawalPass')}
+          label={i18n.t('common.withdrawalPassword')}
           type={'password'}
         ></Textbox> */}
-        <BottomDesc>{i18n.translation.t('withdrawal.notice')}</BottomDesc>
+        <BottomDesc>{i18n.t('withdrawal.notice')}</BottomDesc>
         <Button
           style={{ margin: '40px auto 0 auto' }}
-          label={i18n.translation.t('common.submit')}
+          label={i18n.t('common.submit')}
           onClick={this.handleSubmitClick}
           disabled={(() => {
             return (
@@ -501,12 +501,12 @@ class Withdrawal extends Component {
           aria-labelledby='alert-dialog-slide-title'
           aria-describedby='alert-dialog-slide-description'
         >
-          {/* <DialoTitle>{i18n.translation.t("common.withdrawalPassword")}</DialoTitle>
+          {/* <DialoTitle>{i18n.t("common.withdrawalPassword")}</DialoTitle>
           <Textbox
             style={{ margin: "50px auto 20px auto" }}
             onChange={this.handlePasswordChange}
             value={this.state.password}
-            label={i18n.translation.t("common.withdrawalPassword")}
+            label={i18n.t("common.withdrawalPassword")}
             type={"password"}
           ></Textbox> */}
           {/* <OTPContainer>
@@ -529,7 +529,7 @@ class Withdrawal extends Component {
               backgroundColor: '#b7b7b7'
             }}
             labelStyle={{ color: '#fff' }}
-            label={i18n.translation.t('common.cancel')}
+            label={i18n.t('common.cancel')}
             onClick={() => this.setState({ ...this.state, otp: false })}
           ></Button>
           <Button
@@ -538,7 +538,7 @@ class Withdrawal extends Component {
               float: 'right'
             }}
             disabled={this.state.password.length < 6}
-            label={i18n.translation.t('common.confirm')}
+            label={i18n.t('common.confirm')}
             onClick={this.handleConfirmOTP}
           ></Button>
         </StyledModalPopup>

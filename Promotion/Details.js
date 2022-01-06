@@ -66,7 +66,7 @@ class Details extends Component {
 
     if (index === -1) {
       this.props.appHistory.replace({
-        pathname: '/' + i18n.translation.language + '/promotion-list'
+        pathname: '/' + i18n.language + '/promotion-list'
       })
     }
 
@@ -84,10 +84,10 @@ class Details extends Component {
       prevProps.general.joinPromoResult !== this.props.general.joinPromoResult
     ) {
       if (this.props.general.joinPromoResult.success === true) {
-        this.props.alert('', i18n.translation.t('promotion.joinSuccess'))
+        this.props.alert('', i18n.t('promotion.joinSuccess'))
       } else {
         if (this.props.general.joinPromoResult.err === 0) {
-          this.props.alert('', i18n.translation.t('promotion.promoJoint'))
+          this.props.alert('', i18n.t('promotion.promoJoint'))
         }
       }
     }
@@ -107,7 +107,7 @@ class Details extends Component {
       ) >= 0
     ) {
       this.props.appHistory.push({
-        pathname: '/' + i18n.translation.language + '/deposit/' + id
+        pathname: '/' + i18n.language + '/deposit/' + id
       })
     }
   }
@@ -115,7 +115,7 @@ class Details extends Component {
   handleJoinClick = (id, promotionType) => {
     if (this.props.token === null || this.props.token === '') {
       this.props.appHistory.replace({
-        pathname: '/' + i18n.translation.language + '/'
+        pathname: '/' + i18n.language + '/'
       })
     } else {
       if (this.state.details.vipLevels.length === 0) {
@@ -133,7 +133,7 @@ class Details extends Component {
   }
   async componentDidMount() {
     // if (this.props.promo == null) {
-    //   this.props.appHistory.replace("/" + i18n.translation.language + "/promotion-list");
+    //   this.props.appHistory.replace("/" + i18n.language + "/promotion-list");
     // } else {
     //   BonusService.GetActivityDetails(this.props.promo.id).then((response) => {
     //     if (response.IsSuccess) {
@@ -150,7 +150,7 @@ class Details extends Component {
 
   handleBackClick = () => {
     this.props.appHistory.replace(
-      '/' + i18n.translation.language + '/promotion-list'
+      '/' + i18n.language + '/promotion-list'
     )
   }
 
@@ -163,7 +163,7 @@ class Details extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('promotion.promoDetail')}
+          title={i18n.t('promotion.promoDetail')}
         ></Header>
         {(() => {
           if (this.state.details.localization !== null) {
@@ -190,10 +190,10 @@ class Details extends Component {
 
         <Content>
           <EventTitle>
-            【{i18n.translation.t('promotion.promoDetail')}】
+            【{i18n.t('promotion.promoDetail')}】
           </EventTitle>
           <EventText>
-            {i18n.translation.t('promotion.promoTarget')}：
+            {i18n.t('promotion.promoTarget')}：
             <br />
             {this.state.details.vipLevels.map((a, index) => {
               return (
@@ -205,7 +205,7 @@ class Details extends Component {
             })}
           </EventText>
           <EventText>
-            {i18n.translation.t('promotion.promoDate')}：
+            {i18n.t('promotion.promoDate')}：
             <br />
             {moment(this.state.details.from).format('YYYY/MM/DD HH:mm:ss')}
             {' - '}
@@ -250,7 +250,7 @@ class Details extends Component {
         </Content>
         <Button
           style={{ margin: '40px auto 0 auto' }}
-          label={i18n.translation.t('promotion.joinPromo')}
+          label={i18n.t('promotion.joinPromo')}
           onClick={() =>
             this.handleJoinClick(
               this.state.details.id,

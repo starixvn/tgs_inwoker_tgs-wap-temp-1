@@ -133,13 +133,13 @@ class Card extends Component {
     //   this.props.account.info.member_name === null
     // ) {
     //   this.props.appHistory.replace({
-    //     pathname: '/' + i18n.translation.language + '/profile/name',
+    //     pathname: '/' + i18n.language + '/profile/name',
     //     state: { from: 'card' }
     //   })
     // } else {
     //   // if (this.props.account.info.member_safe_password !== 'set') {
     //   //   this.props.appHistory.replace(
-    //   //     '/' + i18n.translation.language + '/profile/withdrawalpassword'
+    //   //     '/' + i18n.language + '/profile/withdrawalpassword'
     //   //   )
     //   // } else {
     //   //   // this.GetBankCardList();
@@ -194,7 +194,7 @@ class Card extends Component {
         <StyledAppBar>
           <Header
             onBackClick={this.handleBackClick}
-            title={i18n.translation.t('card.title')}
+            title={i18n.t('card.title')}
             position={'sticky'}
             backgroundColor={'transparent'}
           ></Header>
@@ -230,15 +230,15 @@ class Card extends Component {
           )
         })}
 
-        <InfoLabel>{i18n.translation.t('card.msgSlideToDelete')}</InfoLabel>
+        <InfoLabel>{i18n.t('card.msgSlideToDelete')}</InfoLabel>
         <div className='clear'></div>
         <EmptyCardItem onClick={() => this.props.navigate('/card/add')}>
           <EmptyCardAdd></EmptyCardAdd>
           <EmptyCardTitle>
-            {i18n.translation.t('card.msgAddCard')}
+            {i18n.t('card.msgAddCard')}
           </EmptyCardTitle>
           <EmptyCardDesc>
-            {i18n.translation.t('card.msgAddCardDesc')}
+            {i18n.t('card.msgAddCardDesc')}
           </EmptyCardDesc>
         </EmptyCardItem>
         <MessageDialog

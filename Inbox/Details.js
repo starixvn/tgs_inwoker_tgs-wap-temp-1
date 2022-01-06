@@ -143,7 +143,7 @@ class Details extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('inbox.title')}
+          title={i18n.t('inbox.title')}
         ></Header>
         {(() => {
           if (this.state.message !== null) {
@@ -186,10 +186,10 @@ class Details extends Component {
 
         <PopupContainer edit={this.state.edit}>
           <ButtonDelete onClick={this.handleDeleteClick}>
-            <ButtonLabel>{i18n.translation.t('common.delete')}</ButtonLabel>
+            <ButtonLabel>{i18n.t('common.delete')}</ButtonLabel>
           </ButtonDelete>
           <ButtonCancel onClick={this.handleCancelClick}>
-            <ButtonLabel>{i18n.translation.t('common.cancel')}</ButtonLabel>
+            <ButtonLabel>{i18n.t('common.cancel')}</ButtonLabel>
           </ButtonCancel>
         </PopupContainer>
       </Container>

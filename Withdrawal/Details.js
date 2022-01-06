@@ -119,7 +119,7 @@ class Details extends Component {
   componentDidMount() {
     if (this.props.order == null) {
       this.props.appHistory.replace(
-        '/' + i18n.translation.language + '/withdrawal'
+        '/' + i18n.language + '/withdrawal'
       )
     } else {
       this.props.addBilling(this.props.order.id, this.props.order.amount)
@@ -134,7 +134,7 @@ class Details extends Component {
         this.props.resetResult()
         this.props.getBalanceList()
         this.props.appHistory.replace(
-          '/' + i18n.translation.language + '/withdrawal'
+          '/' + i18n.language + '/withdrawal'
         )
       } else {
         this.props.alert('', this.props.wallet.withdrawalResult.info)
@@ -150,7 +150,7 @@ class Details extends Component {
   handleWithdrawalCancelClick = (e) => {
     this.setState({ ...this.state, loading: true })
     this.props.appHistory.replace(
-      '/' + i18n.translation.language + '/withdrawal'
+      '/' + i18n.language + '/withdrawal'
     )
   }
   handleConfirmOTP = () => {
@@ -185,7 +185,7 @@ class Details extends Component {
       <Container>
         <Header
           onBackClick={this.handleWithdrawalCancelClick}
-          title={i18n.translation.t('withdrawal.title')}
+          title={i18n.t('withdrawal.title')}
         ></Header>
         {(() => {
           if (this.props.wallet.addBillingResult !== null) {
@@ -193,7 +193,7 @@ class Details extends Component {
               <React.Fragment>
                 <ContentBg>
                   <BalanceLabel>
-                    {i18n.translation.t('common.amount')}
+                    {i18n.t('common.amount')}
                   </BalanceLabel>
                   <DepositAmount>
                     {this.props.wallet.mainSymbol}{' '}
@@ -201,26 +201,26 @@ class Details extends Component {
                   </DepositAmount>
                   <SplitLine></SplitLine>
                   <LeftLabel>
-                    {i18n.translation.t('withdrawal.receiverAcc')}
+                    {i18n.t('withdrawal.receiverAcc')}
                   </LeftLabel>
                   <RightLabel>
                     {this.props.wallet.addBillingResult.data.card}
                   </RightLabel>
                   <SplitBoth></SplitBoth>
                   <LeftLabel>
-                    {i18n.translation.t('withdrawal.receiverName')}
+                    {i18n.t('withdrawal.receiverName')}
                   </LeftLabel>
                   <RightLabel>
                     {this.props.wallet.addBillingResult.data.name}
                   </RightLabel>
                   <SplitBoth></SplitBoth>
-                  <LeftLabel>{i18n.translation.t('withdrawal.fee')}</LeftLabel>
+                  <LeftLabel>{i18n.t('withdrawal.fee')}</LeftLabel>
                   <RightLabel>
                     {this.props.wallet.addBillingResult.data.fee}
                   </RightLabel>
                   <SplitBoth></SplitBoth>
                   <LeftLabel>
-                    {i18n.translation.t('withdrawal.receiverAmount')}
+                    {i18n.t('withdrawal.receiverAmount')}
                   </LeftLabel>
                   <RightLabel>
                     {this.props.wallet.addBillingResult.data.bill}
@@ -236,7 +236,7 @@ class Details extends Component {
                     backgroundColor: '#b7b7b7'
                   }}
                   labelStyle={{ color: '#fff' }}
-                  label={i18n.translation.t('common.cancel')}
+                  label={i18n.t('common.cancel')}
                   onClick={this.handleWithdrawalCancelClick}
                 ></Button>
                 <Button
@@ -246,7 +246,7 @@ class Details extends Component {
                     marginRight: '50px'
                   }}
                   labelStyle={{ color: '#fff' }}
-                  label={i18n.translation.t('common.confirm')}
+                  label={i18n.t('common.confirm')}
                   onClick={this.handleWithdrawalConfirmClick}
                 ></Button>
               </React.Fragment>
@@ -262,7 +262,7 @@ class Details extends Component {
           aria-describedby='alert-dialog-slide-description'
         >
           <DialoTitle>
-            {i18n.translation.t('common.withdrawalPassword')}
+            {i18n.t('common.withdrawalPassword')}
           </DialoTitle>
           <OTPContainer>
             <OTPTextBox
@@ -284,7 +284,7 @@ class Details extends Component {
               backgroundColor: '#b7b7b7'
             }}
             labelStyle={{ color: '#fff' }}
-            label={i18n.translation.t('common.cancel')}
+            label={i18n.t('common.cancel')}
             onClick={() => this.setState({ ...this.state, otp: false })}
           ></Button>
           <Button
@@ -293,7 +293,7 @@ class Details extends Component {
               float: 'right'
             }}
             disabled={this.state.password.length < 6}
-            label={i18n.translation.t('common.confirm')}
+            label={i18n.t('common.confirm')}
             onClick={this.handleConfirmOTP}
           ></Button>
         </StyledModalPopup>

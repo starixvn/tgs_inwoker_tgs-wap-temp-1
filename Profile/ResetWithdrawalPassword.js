@@ -63,7 +63,7 @@ class ResetResetWithdrawalPassword extends Component {
         countdownToken: 60,
         getCodeClicked: true
       })
-      this.showInfoMessage(i18n.translation.t('common.msgTokenSent'))
+      this.showInfoMessage(i18n.t('common.msgTokenSent'))
       setTimeout(() => {
         this.checkCountdownToken()
       }, 1000)
@@ -101,7 +101,7 @@ class ResetResetWithdrawalPassword extends Component {
     const password = this.state.password
     const confirmPassword = this.state.confirmPassword
     if (password !== confirmPassword) {
-      this.props.alert('', i18n.translation.t('common.msgInvalidConfirmPass'))
+      this.props.alert('', i18n.t('common.msgInvalidConfirmPass'))
       return
     }
     AccountService.ChangeWithdrawalPassword(
@@ -112,7 +112,7 @@ class ResetResetWithdrawalPassword extends Component {
       if (response.IsSuccess) {
         this.props.alert(
           '',
-          i18n.translation.t(
+          i18n.t(
             'profile.resetResetWithdrawalPassword.resetSuccess'
           )
         )
@@ -120,7 +120,7 @@ class ResetResetWithdrawalPassword extends Component {
       } else {
         this.props.alert('', response.info)
         // if (response.code === 405) {
-        //   this.props.alert('', i18n.translation.t('common.msgInvalidPhoneCode'))
+        //   this.props.alert('', i18n.t('common.msgInvalidPhoneCode'))
         // } else {
         //   this.props.alert('', response.info)
         // }
@@ -151,7 +151,7 @@ class ResetResetWithdrawalPassword extends Component {
     }
   }
   handleCSClick = () => {
-    this.props.appHistory.push('/' + i18n.translation.language + '/chat')
+    this.props.appHistory.push('/' + i18n.language + '/chat')
   }
   render() {
     return (
@@ -159,11 +159,11 @@ class ResetResetWithdrawalPassword extends Component {
         <Step
           steps={[
             {
-              label: i18n.translation.t(
+              label: i18n.t(
                 'profile.resetResetWithdrawalPassword.verifiedEmail'
               )
             },
-            { label: i18n.translation.t('common.reset') }
+            { label: i18n.t('common.reset') }
           ]}
           currentStep={this.state.step}
         ></Step>
@@ -172,16 +172,16 @@ class ResetResetWithdrawalPassword extends Component {
             <Textbox
               style={{ margin: '100px auto 20px auto' }}
               value={this.props.account.info.member_email}
-              placeholder={i18n.translation.t('common.msgEnterEmail')}
+              placeholder={i18n.t('common.msgEnterEmail')}
               type={'text'}
               disabled={true}
-              label={i18n.translation.t('common.emailAddress')}
+              label={i18n.t('common.emailAddress')}
             ></Textbox>
             <TextboxWithButton
               buttonlabel={
                 this.state.countdownToken <= 0
-                  ? i18n.translation.t('common.msgSendToken')
-                  : i18n.translation.t('common.btnTokenResendLabel') +
+                  ? i18n.t('common.msgSendToken')
+                  : i18n.t('common.btnTokenResendLabel') +
                     '(' +
                     this.state.countdownToken +
                     's)'
@@ -189,15 +189,15 @@ class ResetResetWithdrawalPassword extends Component {
               style={{ margin: '20px auto 20px auto' }}
               value={this.state.code}
               onChange={this.handleCodeChange}
-              placeholder={i18n.translation.t('common.msgEnterEmailCode')}
-              label={i18n.translation.t('common.token')}
+              placeholder={i18n.t('common.msgEnterEmailCode')}
+              label={i18n.t('common.token')}
               onClick={this.handleGetCodeClick}
               maxLength={6}
               type={'text'}
             ></TextboxWithButton>
             <Button
               style={{ margin: '40px auto 0 auto' }}
-              label={i18n.translation.t('common.nextStep')}
+              label={i18n.t('common.nextStep')}
               onClick={this.handleNextClick}
               disabled={
                 !this.state.getCodeClicked || this.state.code.length < 6
@@ -211,26 +211,26 @@ class ResetResetWithdrawalPassword extends Component {
               style={{ margin: '100px auto 20px auto' }}
               value={this.state.password}
               onChange={this.handlePassword}
-              placeholder={i18n.translation.t('common.msgEnterNewPass')}
-              label={i18n.translation.t('common.NewPass')}
+              placeholder={i18n.t('common.msgEnterNewPass')}
+              label={i18n.t('common.NewPass')}
             ></Textbox>
             <Textbox
               type={'password'}
               style={{ margin: '20px auto 20px auto' }}
               value={this.state.confirmPassword}
               onChange={this.handleConfirmPassword}
-              placeholder={i18n.translation.t('common.msgEnterConfirmPass')}
-              label={i18n.translation.t('common.ConfirmPass')}
+              placeholder={i18n.t('common.msgEnterConfirmPass')}
+              label={i18n.t('common.ConfirmPass')}
             ></Textbox>
 
             <Button
               style={{ margin: '40px auto 0 auto' }}
-              label={i18n.translation.t('common.submit')}
+              label={i18n.t('common.submit')}
               onClick={this.handleSubmitClicked}
             ></Button>
             <Button
               style={{ margin: '20px auto 0 auto' }}
-              label={i18n.translation.t('common.back')}
+              label={i18n.t('common.back')}
               onClick={this.handleBackClick}
             ></Button>
           </React.Fragment>

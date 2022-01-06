@@ -396,13 +396,13 @@ class Home extends Component {
         }
       })
     } else {
-      this.props.appHistory.push('/' + i18n.translation.language + '/login')
+      this.props.appHistory.push('/' + i18n.language + '/login')
     }
   }
 
   handleJoinOtherGame = (type, params, game_platform_id) => {
     if (!this.props.account.token) {
-      this.props.appHistory.push('/' + i18n.translation.language + '/login')
+      this.props.appHistory.push('/' + i18n.language + '/login')
       return
     }
     if (
@@ -415,7 +415,7 @@ class Home extends Component {
     } else {
       Common.PopupCenter(
         '/' +
-          i18n.translation.language +
+          i18n.language +
           '/joinlobbygame/' +
           type +
           '/' +
@@ -430,31 +430,31 @@ class Home extends Component {
       : this.handleJoinOtherGame(type, params, game_platform_id)
   }
   handleSignupClick = () => {
-    this.props.appHistory.push('/' + i18n.translation.language + '/login')
+    this.props.appHistory.push('/' + i18n.language + '/login')
   }
   convertGameTypeToText(gameType) {
     switch (gameType) {
       case GameTypeEnum.LIVE:
-        return i18n.translation.t('wap.main.home.gameTab.live')
+        return i18n.t('wap.main.home.gameTab.live')
       case GameTypeEnum.LIVELOBBY:
-        return i18n.translation.t('wap.main.home.gameTab.live')
+        return i18n.t('wap.main.home.gameTab.live')
       case GameTypeEnum.QIPAI:
-        return i18n.translation.t('wap.main.home.gameTab.chess')
+        return i18n.t('wap.main.home.gameTab.chess')
       case GameTypeEnum.QIPAILOBBY:
-        return i18n.translation.t('wap.main.home.gameTab.chess')
+        return i18n.t('wap.main.home.gameTab.chess')
       case GameTypeEnum.SPORTS:
-        return i18n.translation.t('wap.main.home.gameTab.sports')
+        return i18n.t('wap.main.home.gameTab.sports')
       case GameTypeEnum.ESPORTS:
-        return i18n.translation.t('wap.main.home.gameTab.esports')
+        return i18n.t('wap.main.home.gameTab.esports')
       case GameTypeEnum.LOTTERYLOBBY:
-        return i18n.translation.t('wap.main.home.gameTab.lottery')
+        return i18n.t('wap.main.home.gameTab.lottery')
       case GameTypeEnum.SLOT:
-        return i18n.translation.t('wap.main.home.gameTab.slot')
+        return i18n.t('wap.main.home.gameTab.slot')
       case GameTypeEnum.FISH:
-        return i18n.translation.t('wap.main.home.gameTab.fish')
+        return i18n.t('wap.main.home.gameTab.fish')
       case GameTypeEnum.TIGERSLOT:
       default:
-        return i18n.translation.t('wap.main.home.gameTab.electron')
+        return i18n.t('wap.main.home.gameTab.electron')
     }
   }
   getImgPrefix(gameType) {
@@ -505,7 +505,7 @@ class Home extends Component {
           <FixedContainer>
             <AnnouncementContainer>
               <AnnouncementTitle>
-                {i18n.translation.t('wap.main.home.profile.announcement')}
+                {i18n.t('wap.main.home.profile.announcement')}
               </AnnouncementTitle>
               <MarqueeContainer>
                 <Marquee />
@@ -522,7 +522,7 @@ class Home extends Component {
                     return (
                       <React.Fragment>
                         <WelcomeLabel>
-                          {i18n.translation.t(
+                          {i18n.t(
                             'wap.main.home.profile.welcomeBack'
                           )}
                         </WelcomeLabel>
@@ -535,7 +535,7 @@ class Home extends Component {
                   } else {
                     return (
                       <WelcomeLabel>
-                        {i18n.translation.t(
+                        {i18n.t(
                           'wap.main.home.profile.pleaseLogin'
                         )}
                       </WelcomeLabel>
@@ -544,7 +544,7 @@ class Home extends Component {
                 })()}
 
                 <ProfileLink onClick={() => this.props.navigate('/profile')}>
-                  {i18n.translation.t('wap.main.home.profile.profile')}
+                  {i18n.t('wap.main.home.profile.profile')}
                 </ProfileLink>
               </ProfileContainerTop>
               <ProfileContainerBottom>
@@ -567,7 +567,7 @@ class Home extends Component {
                             )}
                           </BalanceAmount>
                           <WalletTypeLabel>
-                            {i18n.translation.t(
+                            {i18n.t(
                               'wap.main.home.profile.mainAccount'
                             )}
                           </WalletTypeLabel>
@@ -576,7 +576,7 @@ class Home extends Component {
                     } else {
                       return (
                         <ButtonSignup onClick={this.handleSignupClick}>
-                          {i18n.translation.t(
+                          {i18n.t(
                             'wap.main.home.profile.loginRegister'
                           )}
                         </ButtonSignup>
@@ -595,7 +595,7 @@ class Home extends Component {
                           `/assets/images/wapp/icon-deposit.png`
                         }
                       ></WalletActionIcon>
-                      {i18n.translation.t('common.deposit')}
+                      {i18n.t('common.deposit')}
                     </WalletActionLI>
                     {checkTransferWallet && (
                       <WalletActionLI
@@ -607,7 +607,7 @@ class Home extends Component {
                             `/assets/images/wapp/icon-transfer.png`
                           }
                         ></WalletActionIcon>
-                        {i18n.translation.t('common.transfer')}
+                        {i18n.t('common.transfer')}
                       </WalletActionLI>
                     )}
 
@@ -620,7 +620,7 @@ class Home extends Component {
                           `/assets/images/wapp/icon-withdrawal.png`
                         }
                       ></WalletActionIcon>
-                      {i18n.translation.t('common.withdrawal')}
+                      {i18n.t('common.withdrawal')}
                     </WalletActionLI>
                   </WalletActionUL>
                 </WalletActionContainer>
@@ -634,7 +634,7 @@ class Home extends Component {
                   return (
                     <GameSelectionLI
                       style={
-                        i18n.translation.language === 'en-US'
+                        i18n.language === 'en-US'
                           ? { fontSize: '29px', paddingTop: '6px' }
                           : {}
                       }
@@ -664,7 +664,7 @@ class Home extends Component {
                   var jsx = (
                     <NewWrapper maintenance={row.status != 0}>
                       <Maintenance>
-                        {i18n.translation.t('transfer.maintenance')}
+                        {i18n.t('transfer.maintenance')}
                       </Maintenance>
                       <GameFrameImg
                         src={`${
@@ -687,7 +687,7 @@ class Home extends Component {
                         }
                       >
                         <ButtonStartGame>
-                          {i18n.translation.t('common.startGame')}
+                          {i18n.t('common.startGame')}
                         </ButtonStartGame>
                       </GameFrameImg>
                     </NewWrapper>

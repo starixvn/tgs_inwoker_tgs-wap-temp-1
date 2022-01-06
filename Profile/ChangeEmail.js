@@ -43,19 +43,19 @@ class ChangeEmail extends BaseProfile {
       this.setState({
         ...this.state,
         countdownToken: this.state.countdownToken - 1,
-        btnTokenLabel: i18n.translation.t('common.btnTokenLabel')
+        btnTokenLabel: i18n.t('common.btnTokenLabel')
       })
     }
   }
   handleGetCodeClick = (e) => {
     if (this.state.countdownToken > 0) return
     if (!this.state.email)
-      return this.showErrorMessage(i18n.translation.t('common.msgEnterEmail'))
+      return this.showErrorMessage(i18n.t('common.msgEnterEmail'))
     this.showLoading(true)
     AccountService.VerifyEmail(this.state.email)
       .then((response) => {
         if (response.IsSuccess) {
-          this.showInfoMessage(i18n.translation.t('common.msgTokenSent'))
+          this.showInfoMessage(i18n.t('common.msgTokenSent'))
 
           this.setState({
             ...this.state,
@@ -68,7 +68,7 @@ class ChangeEmail extends BaseProfile {
         } else {
           this.showErrorMessage(response.info)
           // if (response.code === 402) {
-          //   this.showErrorMessage(i18n.translation.t('common.msgInvalidEmail'))
+          //   this.showErrorMessage(i18n.t('common.msgInvalidEmail'))
           // } else {
           //   this.showErrorMessage(response.info)
           // }
@@ -100,7 +100,7 @@ class ChangeEmail extends BaseProfile {
   }
   handleSubmitClicked = () => {
     if (this.state.code.length < 6) {
-      this.showErrorMessage(i18n.translation.t('common.msgEnterCode'))
+      this.showErrorMessage(i18n.t('common.msgEnterCode'))
       return
     }
     this.showLoading(true)
@@ -119,7 +119,7 @@ class ChangeEmail extends BaseProfile {
           } else {
             // if (response.code === 405) {
             //   this.showErrorMessage(
-            //     i18n.translation.t('common.msgInvalidPhoneCode')
+            //     i18n.t('common.msgInvalidPhoneCode')
             //   )
             // } else {
             //   this.showErrorMessage(response.info)
@@ -140,7 +140,7 @@ class ChangeEmail extends BaseProfile {
             this.props.getAccountProfile(true).then((responseUpdate) => {
               if (responseUpdate.IsSuccess) {
                 this.props.appHistory.replace(
-                  '/' + i18n.translation.language + '/profile/email'
+                  '/' + i18n.language + '/profile/email'
                 )
               }
               this.showLoading(false)
@@ -148,7 +148,7 @@ class ChangeEmail extends BaseProfile {
           } else {
             // if (response.code === 405) {
             //   this.showErrorMessage(
-            //     i18n.translation.t('common.msgInvalidPhoneCode')
+            //     i18n.t('common.msgInvalidPhoneCode')
             //   )
             // } else {
             //   this.showErrorMessage(response.info)
@@ -165,12 +165,12 @@ class ChangeEmail extends BaseProfile {
   }
   render() {
     return this.setupContent(
-      i18n.translation.t('profile.email.editEmail'),
+      i18n.t('profile.email.editEmail'),
       <React.Fragment>
         <Step
           steps={[
-            { label: i18n.translation.t('profile.email.verifyEmail') },
-            { label: i18n.translation.t('profile.email.addEmail') }
+            { label: i18n.t('profile.email.verifyEmail') },
+            { label: i18n.t('profile.email.addEmail') }
           ]}
           currentStep={this.state.currentStep}
         ></Step>
@@ -178,15 +178,15 @@ class ChangeEmail extends BaseProfile {
           style={{ margin: '50px auto 20px auto' }}
           value={this.state.email}
           onChange={this.handleChangeEmail}
-          placeholder={i18n.translation.t('profile.email.plsEnterEmail')}
+          placeholder={i18n.t('profile.email.plsEnterEmail')}
           disabled={this.state.currentStep === 1}
-          label={i18n.translation.t('common.emailAddress')}
+          label={i18n.t('common.emailAddress')}
         ></Textbox>
         <TextboxWithButton
           buttonlabel={
             this.state.countdownToken <= 0
-              ? i18n.translation.t('common.msgSendToken')
-              : i18n.translation.t('common.btnTokenResendLabel') +
+              ? i18n.t('common.msgSendToken')
+              : i18n.t('common.btnTokenResendLabel') +
                 '(' +
                 this.state.countdownToken +
                 's)'
@@ -195,15 +195,15 @@ class ChangeEmail extends BaseProfile {
           style={{ margin: '20px auto 20px auto' }}
           value={this.state.code}
           onChange={this.handleChangeCode}
-          placeholder={i18n.translation.t('common.msgEnterEmailCode')}
-          label={i18n.translation.t('common.token')}
+          placeholder={i18n.t('common.msgEnterEmailCode')}
+          label={i18n.t('common.token')}
           onClick={this.handleGetCodeClick}
           maxLength={6}
         ></TextboxWithButton>
       </React.Fragment>,
       this.state.currentStep === 1
-        ? i18n.translation.t('common.nextStep')
-        : i18n.translation.t('common.submit')
+        ? i18n.t('common.nextStep')
+        : i18n.t('common.submit')
     )
   }
 }

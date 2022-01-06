@@ -200,7 +200,7 @@ class CustomerService extends Component {
     // if (!csWindowTab || csWindowTab.closed) {
     //   csWindowTab = Common.PopupCenter(
     //     "/" +
-    //     i18n.translation.language +
+    //     i18n.language +
     //     "/chat/" +
     //     encodeURI(userid) +
     //     "/" +
@@ -260,7 +260,7 @@ class CustomerService extends Component {
       }
       this.childWindow = window.open(
         '/' +
-          i18n.translation.language +
+          i18n.language +
           '/chat/%20/%20/' +
           encodeURI(this.state.question),
         '_blank'

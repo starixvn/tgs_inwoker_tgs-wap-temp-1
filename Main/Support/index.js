@@ -214,8 +214,8 @@ const Support = (props) => {
       navigator.clipboard.writeText(text)
     }
     return (
-      <SupportBackground language={i18n.translation.language}>
-        <TheGirlHolder language={i18n.translation.language} />
+      <SupportBackground language={i18n.language}>
+        <TheGirlHolder language={i18n.language} />
         <ButtonContainer>
           {props.general.livechat && (
             <TheSupportButton
@@ -225,9 +225,9 @@ const Support = (props) => {
             >
               <IconTextContainer>
                 <Icon icon='wechat' />
-                <div>{i18n.translation.t('support.online')}</div>
+                <div>{i18n.t('support.online')}</div>
               </IconTextContainer>
-              <TheRedText>{i18n.translation.t('support.contact')}</TheRedText>
+              <TheRedText>{i18n.t('support.contact')}</TheRedText>
             </TheSupportButton>
           )}
           {
@@ -239,13 +239,13 @@ const Support = (props) => {
             //     <div>
             //       {
             //         i18n.t("support.qr")
-            //         //i18n.translation.t('common.transfer')
+            //         //i18n.t('common.transfer')
             //       }
             //     </div>
             //     <TheRedText>
             //       {
             //         i18n.t("support.join")
-            //         //i18n.translation.t('common.transfer')
+            //         //i18n.t('common.transfer')
             //       }
             //     </TheRedText>
             //   </TheSupportButton>
@@ -272,11 +272,11 @@ const Support = (props) => {
                   <div>
                     {
                       <TheRedText>
-                        {i18n.translation.t('support.join')}
+                        {i18n.t('support.join')}
                       </TheRedText>
                       //   data.qrcodeurl || data.type === 'WhatsApp' ? (
                       //     <TheRedText>
-                      //       {i18n.translation.t('support.join')}
+                      //       {i18n.t('support.join')}
                       //     </TheRedText>
                       //   ) : (
                       //     <IconTextContainerTwo>
@@ -291,7 +291,7 @@ const Support = (props) => {
                       //           copyText(data.appid ? data.appid : data.phone)
                       //           props.alert(
                       //             '',
-                      //             i18n.translation.t('affiliate.copied')
+                      //             i18n.t('affiliate.copied')
                       //           )
                       //         }}
                       //       />
@@ -333,7 +333,7 @@ const Support = (props) => {
           <QRTitle>
             {
               //i18n.t('support.qr')
-              i18n.translation.t('support.qr')
+              i18n.t('support.qr')
             }
           </QRTitle>
         </TitleHeader>

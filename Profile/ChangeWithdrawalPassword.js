@@ -37,7 +37,7 @@ class ChangeWithdrawalPassword extends BaseProfile {
     const newpassword = this.state.newpassword
     const newpassword2 = this.state.newpassword2
     if (newpassword !== newpassword2) {
-      this.props.alert('', i18n.translation.t('common.msgInvalidConfirmPass'))
+      this.props.alert('', i18n.t('common.msgInvalidConfirmPass'))
       // this.props.enqueueSnackbar("确认密码错误", {
       //   key: "error"
       // });
@@ -85,7 +85,7 @@ class ChangeWithdrawalPassword extends BaseProfile {
       <React.Fragment>
         <Header
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('profile.changeWithdrawalPassword.title')}
+          title={i18n.t('profile.changeWithdrawalPassword.title')}
         ></Header>
         <ResetWithdrawalPassword
           alert={this.props.alert}

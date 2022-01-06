@@ -55,8 +55,8 @@ const settings = {
 class Slider extends React.Component {
   render() {
     const isChinese =
-      i18n.translation.language === 'zh-CN' ||
-      i18n.translation.language === 'zh-TW'
+      i18n.language === 'zh-CN' ||
+      i18n.language === 'zh-TW'
     return (
       <Slick {...settings}>
         {(() => {
@@ -76,7 +76,7 @@ class Slider extends React.Component {
         </ATag> */}
         {/* {this.props.list.map((row, index) => {
           return (
-            <ATag href={"/" + i18n.translation.language + "/" + row.url} key={index}>
+            <ATag href={"/" + i18n.language + "/" + row.url} key={index}>
               <SlideImage src={row.file_url}></SlideImage>
             </ATag>
           );

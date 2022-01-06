@@ -130,12 +130,12 @@
 //             .then((responseUpdate) => {
 //               if (responseUpdate.IsSuccess) {
 //                 if (this.props.from === "deposit") {
-//                   this.props.appHistory.replace("/" + i18n.translation.language + "/deposit");
+//                   this.props.appHistory.replace("/" + i18n.language + "/deposit");
 //                 } else {
 //                   if (this.props.account.info.member_safe_password === "set") {
-//                     this.props.appHistory.replace("/" + i18n.translation.language + "/card");
+//                     this.props.appHistory.replace("/" + i18n.language + "/card");
 //                   } else {
-//                     this.props.appHistory.replace("/" + i18n.translation.language + "/card/pass");
+//                     this.props.appHistory.replace("/" + i18n.language + "/card/pass");
 //                   }
 //                 }
 //               }
@@ -154,7 +154,7 @@
 //         <StyledAppBar>
 //           <Header
 //             onBackClick={this.handleBackClick}
-//             title={this.props.from === "deposit" ? i18n.translation.t("card.nameVerification.realName") : i18n.translation.t("card.nameVerification.title")}
+//             title={this.props.from === "deposit" ? i18n.t("card.nameVerification.realName") : i18n.t("card.nameVerification.title")}
 //             position={"sticky"}
 //             backgroundColor={"transparent"}
 //           ></Header>
@@ -165,19 +165,19 @@
 //           style={{ margin: "50px auto 20px auto" }}
 //           value={this.state.name}
 //           onChange={this.handleNameChange}
-//           placeholder={i18n.translation.t("card.nameVerification.msgEnterName")}
+//           placeholder={i18n.t("card.nameVerification.msgEnterName")}
 //           maxLength={20}
-//           label={i18n.translation.t("card.nameVerification.realName")}
+//           label={i18n.t("card.nameVerification.realName")}
 //         ></Textbox>
 
-//         <BottomInfo>{i18n.translation.t("card.nameVerification.msgTNC")}</BottomInfo>
+//         <BottomInfo>{i18n.t("card.nameVerification.msgTNC")}</BottomInfo>
 //         <Button
 //           style={{ margin: "40px auto 0 auto" }}
 //           label={
 //             this.props.account.info.member_safe_password === "set" ||
 //               this.props.from === "deposit"
-//               ? i18n.translation.t("common.confirm")
-//               : i18n.translation.t("common.nextStep")
+//               ? i18n.t("common.confirm")
+//               : i18n.t("common.nextStep")
 //           }
 //           disabled={(() => {
 //             return this.state.name === "";
@@ -185,31 +185,31 @@
 //           onClick={this.handleNextClick}
 //         ></Button>
 //         <ImportantNote>
-//           <b>{i18n.translation.t("card.nameVerification.reminder")}</b>
+//           <b>{i18n.t("card.nameVerification.reminder")}</b>
 //           <br />
 //           <ol>
 //             <li>
-//               {i18n.translation.t("card.nameVerification.msgImportantLine1")}
+//               {i18n.t("card.nameVerification.msgImportantLine1")}
 //             </li>
 //             <li>
-//               {i18n.translation.t("card.nameVerification.msgImportantLine2")}
+//               {i18n.t("card.nameVerification.msgImportantLine2")}
 //             </li>
 //             <li>
-//               {i18n.translation.t("card.nameVerification.msgImportantLine3")}
+//               {i18n.t("card.nameVerification.msgImportantLine3")}
 //             </li>
 //           </ol>
 //         </ImportantNote>
 //         <StyledModal onClose={this.handleClose} open={this.state.open}>
 //           <DialoMessage>
-//             {i18n.translation.t("card.nameVerification.msgDialogLine1")}
+//             {i18n.t("card.nameVerification.msgDialogLine1")}
 //             <br />
-//             {i18n.translation.t("card.nameVerification.msgDialogLine2")}
+//             {i18n.t("card.nameVerification.msgDialogLine2")}
 //           </DialoMessage>
-//           <ButtonConfirm onClick={this.handleConfirmClick}>{i18n.translation.t("common.confirm")}</ButtonConfirm>
+//           <ButtonConfirm onClick={this.handleConfirmClick}>{i18n.t("common.confirm")}</ButtonConfirm>
 //           <ButtonCancel
 //             onClick={() => this.setState({ ...this.state, open: false })}
 //           >
-//             {i18n.translation.t("common.cancel")}
+//             {i18n.t("common.cancel")}
 //           </ButtonCancel>
 //         </StyledModal>
 //         <Loading show={this.state.loading}></Loading>

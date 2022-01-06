@@ -75,9 +75,9 @@ class Promotion extends Component {
   }
   componentDidMount() {
     if (this.props.token === null || this.props.token === '') {
-      this.props.getPromotionList(i18n.translation.language)
+      this.props.getPromotionList(i18n.language)
     } else {
-      this.props.getPlayerPromotionList(i18n.translation.language)
+      this.props.getPlayerPromotionList(i18n.language)
     }
   }
 
@@ -87,7 +87,7 @@ class Promotion extends Component {
   }
   handlePromoClick = (id) => {
     this.props.appHistory.replace({
-      pathname: '/' + i18n.translation.language + '/promotion/' + id
+      pathname: '/' + i18n.language + '/promotion/' + id
     })
   }
 
@@ -109,7 +109,7 @@ class Promotion extends Component {
       <Container>
         <Header
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('promotion.title')}
+          title={i18n.t('promotion.title')}
         ></Header>
 
         <ListView>
@@ -118,15 +118,15 @@ class Promotion extends Component {
               <PromoEmptyText>
                 <PromoEmptyTextLine
                   style={
-                    i18n.translation.language === 'en-US'
+                    i18n.language === 'en-US'
                       ? { fontSize: '26px', padding: '0px 32px' }
                       : {}
                   }
                 >
-                  {i18n.translation.t('promotion.emptyLine1')}
+                  {i18n.t('promotion.emptyLine1')}
                 </PromoEmptyTextLine>
                 <PromoEmptyTextLine>
-                  {i18n.translation.t('promotion.emptyLine2')}
+                  {i18n.t('promotion.emptyLine2')}
                 </PromoEmptyTextLine>
               </PromoEmptyText>
             </EmptyPromo>

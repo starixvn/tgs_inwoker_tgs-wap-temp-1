@@ -30,20 +30,20 @@ class BottomNote extends Component {
     return (
       <Content>
         {this.props.text1 ||
-          i18n.translation.t('share.bottomNote.pleaseContact')}{' '}
+          i18n.t('share.bottomNote.pleaseContact')}{' '}
         {(() => {
           if (this.props.link) {
             return (
               <LabelLink to={this.props.link}>
                 {this.props.text2 ||
-                  i18n.translation.t('share.bottomNote.liveChat')}
+                  i18n.t('share.bottomNote.liveChat')}
               </LabelLink>
             )
           } else {
             return (
               <LabelNormal onClick={this.handleCSClick}>
                 {this.props.text2 ||
-                  i18n.translation.t('share.bottomNote.liveChat')}
+                  i18n.t('share.bottomNote.liveChat')}
               </LabelNormal>
             )
           }

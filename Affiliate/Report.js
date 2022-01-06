@@ -86,7 +86,7 @@ class Report extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('affiliate.report')}
+          title={i18n.t('affiliate.report')}
         ></Header>
         {this.props.account.promote_bill.list.map((row, index) => {
           return (
@@ -94,25 +94,25 @@ class Report extends Component {
               <ItemContainer>
                 <ContentWrap>
                   <ContentLabel>
-                    {i18n.translation.t('affiliate.dateTime')}
+                    {i18n.t('affiliate.dateTime')}
                   </ContentLabel>
                   <ContentValue>{row.create_time}</ContentValue>
                 </ContentWrap>
                 <ContentWrap>
                   <ContentLabel>
-                    {i18n.translation.t('affiliate.transAmount')}
+                    {i18n.t('affiliate.transAmount')}
                   </ContentLabel>
                   <ContentValue>{row.valid_amount_text}</ContentValue>
                 </ContentWrap>
                 <ContentWrap>
                   <ContentLabel>
-                    {i18n.translation.t('affiliate.commission')}
+                    {i18n.t('affiliate.commission')}
                   </ContentLabel>
                   <ContentValue>{row.bonus_text}</ContentValue>
                 </ContentWrap>
                 <ContentWrap>
                   <ContentLabel>
-                    {i18n.translation.t('affiliate.status')}
+                    {i18n.t('affiliate.status')}
                   </ContentLabel>
                   <ContentValue>{row.status_text}</ContentValue>
                 </ContentWrap>

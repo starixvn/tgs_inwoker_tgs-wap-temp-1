@@ -127,7 +127,7 @@ class NameVerification extends Component {
     if (this.state.password !== this.state.confirmPassword) {
       this.props.alert(
         '',
-        i18n.translation.t('card.passSetting.msgInvalidConfirmPass')
+        i18n.t('card.passSetting.msgInvalidConfirmPass')
       )
       // this.props.enqueueSnackbar("两次输入的密码不一致", {
       //   variant: "error"
@@ -149,7 +149,7 @@ class NameVerification extends Component {
           }
         })
 
-        this.props.appHistory.replace('/' + i18n.translation.language + '/card')
+        this.props.appHistory.replace('/' + i18n.language + '/card')
         this.setState({ ...this.state, loading: false })
       } else {
         this.props.alert('', response.info)
@@ -168,55 +168,55 @@ class NameVerification extends Component {
         <StyledAppBar>
           <Header
             onBackClick={this.handleBackClick}
-            title={i18n.translation.t('card.passSetting.title')}
+            title={i18n.t('card.passSetting.title')}
             position={'sticky'}
             backgroundColor={'transparent'}
           ></Header>
           <BalanceLabel>￥{this.props.balance}</BalanceLabel>
         </StyledAppBar>
         <SubTitle>
-          {i18n.translation.t('card.passSetting.settingWithdrawalPass')}
+          {i18n.t('card.passSetting.settingWithdrawalPass')}
         </SubTitle>
         <Textbox
           style={{ margin: '20px auto 20px auto' }}
           value={this.state.password}
           onChange={this.handlePasswordChange}
           type={'password'}
-          placeholder={i18n.translation.t(
+          placeholder={i18n.t(
             'card.passSetting.withdrawalPassPlaceholder'
           )}
-          label={i18n.translation.t('card.passSetting.withdrawalPass')}
+          label={i18n.t('card.passSetting.withdrawalPass')}
         ></Textbox>
         <Textbox
           style={{ margin: '20px auto 20px auto' }}
           value={this.state.confirmPassword}
           onChange={this.handleConfirmPasswordChange}
           type={'password'}
-          placeholder={i18n.translation.t(
+          placeholder={i18n.t(
             'card.passSetting.confirmWithdrawalPass'
           )}
-          label={i18n.translation.t('card.passSetting.reEnterWithdrawalPass')}
+          label={i18n.t('card.passSetting.reEnterWithdrawalPass')}
         ></Textbox>
         <BottomInfo>
-          {i18n.translation.t('card.passSetting.withdrawalPassDesc')}
+          {i18n.t('card.passSetting.withdrawalPassDesc')}
         </BottomInfo>
         <Button
           style={{ margin: '40px auto 0 auto' }}
-          label={i18n.translation.t('common.confirm')}
+          label={i18n.t('common.confirm')}
           onClick={this.handleConfirmClick}
         ></Button>
 
         <StyledModal onClose={this.handleClose} open={this.state.open}>
           <DialoTitle>
-            {i18n.translation.t('card.passSetting.dialogTitle')}
+            {i18n.t('card.passSetting.dialogTitle')}
           </DialoTitle>
           <DialoMessage>
-            {i18n.translation.t('card.passSetting.dialogMsg')}
+            {i18n.t('card.passSetting.dialogMsg')}
           </DialoMessage>
           <ButtonConfirm
             onClick={() => this.setState({ ...this.state, open: false })}
           >
-            {i18n.translation.t('common.confirm')}
+            {i18n.t('common.confirm')}
           </ButtonConfirm>
         </StyledModal>
         <Loading show={this.state.loading}></Loading>

@@ -264,6 +264,7 @@ const TheDepositButton = styled.div`
   border-radius: 8px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 `
+const DateTimeDisplay = styled.div``
 class Report extends Component {
   constructor(props) {
     super(props)
@@ -889,7 +890,7 @@ class Report extends Component {
 
   handleManualDeposit = (id) => {
     this.props.appHistory.push({
-      pathname: '/' + i18n.translation.language + '/manual/' + id
+      pathname: '/' + i18n.language + '/manual/' + id
     })
   }
 
@@ -906,21 +907,21 @@ class Report extends Component {
             title={(() => {
               switch (this.state.selectedType) {
                 case 1:
-                  return i18n.translation.t('report.transferDetails')
+                  return i18n.t('report.transferDetails')
                 case 2:
-                  return i18n.translation.t('report.bettingDetails')
+                  return i18n.t('report.bettingDetails')
                 case 3:
-                  return i18n.translation.t('report.withdrawalDetails')
+                  return i18n.t('report.withdrawalDetails')
                 case 4:
-                  return i18n.translation.t('report.depositDetails')
+                  return i18n.t('report.depositDetails')
                 case 5:
                   return
                 case 6:
-                  return i18n.translation.t('report.transfer.title')
+                  return i18n.t('report.transfer.title')
                 case 7:
-                  return i18n.translation.t('report.joinedPromo.title')
+                  return i18n.t('report.joinedPromo.title')
                 default:
-                  return i18n.translation.t('report.rebateDetails')
+                  return i18n.t('report.rebateDetails')
               }
             })()}
             position={'sticky'}
@@ -942,46 +943,46 @@ class Report extends Component {
           <Tab
               style={{ width: "calc(750px/5)" }}
               index={1}
-              label={i18n.translation.t("report.transferDetails")}
+              label={i18n.t("report.transferDetails")}
               value={1}
             />
           */}
             <Tab
               style={{ width: 'calc(750px/5)' }}
               index={2}
-              label={i18n.translation.t('report.bettingDetails')}
+              label={i18n.t('report.bettingDetails')}
               value={2}
             />
             <Tab
               style={{ width: 'calc(750px/5)' }}
               index={3}
-              label={i18n.translation.t('report.withdrawalDetails')}
+              label={i18n.t('report.withdrawalDetails')}
               value={3}
             />
             <Tab
               style={{ width: 'calc(750px/5)' }}
               index={4}
-              label={i18n.translation.t('report.depositDetails')}
+              label={i18n.t('report.depositDetails')}
               value={4}
             />
             {/*<Tab
               style={{ width: "calc(750px/5)" }}
               index={5}
-              label={i18n.translation.t("report.rebateDetails")}
+              label={i18n.t("report.rebateDetails")}
               value={5}
             /> */}{' '}
             {checkTransferWallet && (
               <Tab
                 style={{ width: 'calc(750px/5)' }}
                 index={6}
-                label={i18n.translation.t('common.transfer')}
+                label={i18n.t('common.transfer')}
                 value={6}
               />
             )}{' '}
             <Tab
               style={{ width: 'calc(750px/5)' }}
               index={7}
-              label={i18n.translation.t('report.joinedPromo.title')}
+              label={i18n.t('report.joinedPromo.title')}
               value={7}
             />
           </Tabs>
@@ -989,7 +990,7 @@ class Report extends Component {
 
         <DateContainer>
           <DateInner>
-            <DateLabel>{i18n.translation.t('report.startDate')}</DateLabel>
+            <DateLabel>{i18n.t('report.startDate')}</DateLabel>
             <ThemeProvider theme={materialTheme}>
               <MuiPickersUtilsProvider
                 utils={DateFnsUtils}
@@ -1009,7 +1010,7 @@ class Report extends Component {
           </DateInner>
           <DateSpliter>-</DateSpliter>
           <DateInner style={{ float: 'right' }}>
-            <DateLabel>{i18n.translation.t('report.endDate')}</DateLabel>
+            <DateLabel>{i18n.t('report.endDate')}</DateLabel>
             <ThemeProvider theme={materialTheme}>
               <MuiPickersUtilsProvider
                 utils={DateFnsUtils}
@@ -1035,19 +1036,19 @@ class Report extends Component {
               onClick={this.handleTodayClick}
               selected={this.state.dateRange === 0}
             >
-              {i18n.translation.t('report.today')}
+              {i18n.t('report.today')}
             </DateRangSelection>
             <DateRangSelection
               selected={this.state.dateRange === 1}
               onClick={this.handleWeeklyClick}
             >
-              {i18n.translation.t('report.oneWeek')}
+              {i18n.t('report.oneWeek')}
             </DateRangSelection>
             <DateRangSelection
               selected={this.state.dateRange === 2}
               onClick={this.handleMontlyClick}
             >
-              {i18n.translation.t('report.oneMonth')}
+              {i18n.t('report.oneMonth')}
             </DateRangSelection>
           </DateRangContainer>
         </DateContainer>
@@ -1056,7 +1057,7 @@ class Report extends Component {
             return (
               <SelectContainer>
                 <SelectLabel>
-                  {i18n.translation.t('report.platform')}
+                  {i18n.t('report.platform')}
                 </SelectLabel>
                 <CustomFormControl variant='outlined' style={{}}>
                   <CustomSelect
@@ -1074,7 +1075,7 @@ class Report extends Component {
                     }}
                   >
                     <option value={0}>
-                      {i18n.translation.t('report.all')}
+                      {i18n.t('report.all')}
                     </option>
 
                     {(() => {
@@ -1093,7 +1094,7 @@ class Report extends Component {
           } else if (this.state.selectedType === 3) {
             return (
               <SelectContainer>
-                <SelectLabel>{i18n.translation.t('report.status')}</SelectLabel>
+                <SelectLabel>{i18n.t('report.status')}</SelectLabel>
                 <CustomFormControl variant='outlined' style={{}}>
                   <CustomSelect
                     native
@@ -1106,13 +1107,13 @@ class Report extends Component {
                     value={this.state.status}
                   >
                     <option value={''}>
-                      {i18n.translation.t('report.all')}
+                      {i18n.t('report.all')}
                     </option>
 
                     {Object.keys(this.state.withdrawalStatusList).map((key) => {
                       return (
                         <option value={key}>
-                          {i18n.translation.t(`report.withdrawal.status${key}`)}
+                          {i18n.t(`report.withdrawal.status${key}`)}
                         </option>
                       )
                     })}
@@ -1123,7 +1124,7 @@ class Report extends Component {
           } else if (this.state.selectedType === 4) {
             return (
               <SelectContainer>
-                <SelectLabel>{i18n.translation.t('report.status')}</SelectLabel>
+                <SelectLabel>{i18n.t('report.status')}</SelectLabel>
                 <CustomFormControl variant='outlined' style={{}}>
                   <CustomSelect
                     native
@@ -1136,12 +1137,12 @@ class Report extends Component {
                     value={this.state.status}
                   >
                     <option value={''}>
-                      {i18n.translation.t('report.all')}
+                      {i18n.t('report.all')}
                     </option>
                     {Object.keys(this.state.depositStatusList).map((key) => {
                       return (
                         <option value={key}>
-                          {i18n.translation.t(`report.deposit.status${key}`)}
+                          {i18n.t(`report.deposit.status${key}`)}
                         </option>
                       )
                     })}
@@ -1159,19 +1160,19 @@ class Report extends Component {
                 <DataHeader>
                   <DataHeaderRow>
                     <DataDateCell>
-                      {i18n.translation.t('report.submitDate')}
+                      {i18n.t('report.submitDate')}
                     </DataDateCell>
                     <DataWinlossCell>
-                      {i18n.translation.t('report.status')}
+                      {i18n.t('report.status')}
                     </DataWinlossCell>
                     <DataWinlossCell>
-                      {i18n.translation.t('report.transferOut')}
+                      {i18n.t('report.transferOut')}
                       <br />
-                      {i18n.translation.t('report.transferIn')}
+                      {i18n.t('report.transferIn')}
                     </DataWinlossCell>
 
                     <DataWinlossCell>
-                      {i18n.translation.t('common.amount')}
+                      {i18n.t('common.amount')}
                     </DataWinlossCell>
                   </DataHeaderRow>
                 </DataHeader>
@@ -1239,7 +1240,7 @@ class Report extends Component {
                           return (
                             <React.Fragment key={index}>
                               <DataRowId>
-                                {i18n.translation.t('report.betid')} :{' '}
+                                {i18n.t('report.betid')} :{' '}
                                 <IDCell>{row.id}</IDCell>
                               </DataRowId>
                               <DataRowId>
@@ -1250,11 +1251,11 @@ class Report extends Component {
                               <DataRowId>
                                 <IDCell>
                                   <IDCell>
-                                    {i18n.translation.t('report.betAmount')} :
+                                    {i18n.t('report.betAmount')} :
                                     {row.betAmount}
                                   </IDCell>{' '}
                                   <IDCell>
-                                    {i18n.translation.t('report.winloss')} :
+                                    {i18n.t('report.winloss')} :
                                     {row.winLoss}
                                   </IDCell>
                                 </IDCell>
@@ -1277,14 +1278,14 @@ class Report extends Component {
                 <DataHeader>
                   <DataHeaderRow>
                     <DataDateCell3>
-                      {i18n.translation.t('report.dateTime')}
+                      {i18n.t('report.dateTime')}
                     </DataDateCell3>
 
                     <DataDateCell3>
-                      {i18n.translation.t('report.status')}
+                      {i18n.t('report.status')}
                     </DataDateCell3>
                     <DataDateCellAmount>
-                      {i18n.translation.t('common.amount')}
+                      {i18n.t('common.amount')}
                     </DataDateCellAmount>
                   </DataHeaderRow>
                 </DataHeader>
@@ -1301,17 +1302,17 @@ class Report extends Component {
                           return (
                             <React.Fragment key={index}>
                               <DataRowId>
-                                {i18n.translation.t('report.OrderNumber')} :{' '}
+                                {i18n.t('report.OrderNumber')} :{' '}
                                 <IDCell>{row.id}</IDCell>
                               </DataRowId>
                               <DataRowId>
-                                {i18n.translation.t('report.NewOrderNumber')} :{' '}
+                                {i18n.t('report.NewOrderNumber')} :{' '}
                                 <IDCell>{row.orderno}</IDCell>
                               </DataRowId>
                               <DataRow>
                                 <DataDateCell3>{date}</DataDateCell3>
                                 <DataDateCell3>
-                                  {i18n.translation.t(
+                                  {i18n.t(
                                     `report.withdrawal.status${row.status}`
                                   )}
                                 </DataDateCell3>
@@ -1334,14 +1335,14 @@ class Report extends Component {
                 <DataHeader>
                   <DataHeaderRow>
                     <DataDateCell3>
-                      {i18n.translation.t('report.dateTime')}
+                      {i18n.t('report.dateTime')}
                     </DataDateCell3>
 
                     <DataDateCell3>
-                      {i18n.translation.t('report.status')}
+                      {i18n.t('report.status')}
                     </DataDateCell3>
                     <DataDateCellAmount>
-                      {i18n.translation.t('common.amount')}
+                      {i18n.t('common.amount')}
                     </DataDateCellAmount>
                   </DataHeaderRow>
                 </DataHeader>
@@ -1358,17 +1359,17 @@ class Report extends Component {
                           return (
                             <React.Fragment key={index}>
                               <DataRowId>
-                                {i18n.translation.t('report.OrderNumber')} :{' '}
+                                {i18n.t('report.OrderNumber')} :{' '}
                                 <IDCell>{row.id}</IDCell>
                               </DataRowId>
                               <DataRowId>
-                                {i18n.translation.t('report.NewOrderNumber')} :{' '}
+                                {i18n.t('report.NewOrderNumber')} :{' '}
                                 <IDCell>{row.orderno}</IDCell>
                               </DataRowId>
                               <DataRow>
                                 <DataDateCell3>{date}</DataDateCell3>
                                 <DataDateCell3>
-                                  {i18n.translation.t(
+                                  {i18n.t(
                                     `report.deposit.status${row.status}`
                                   )}
                                 </DataDateCell3>
@@ -1383,7 +1384,7 @@ class Report extends Component {
                                           this.handleManualDeposit(row.id)
                                         }}
                                       >
-                                        {i18n.translation.t(
+                                        {i18n.t(
                                           'deposit.uploadReceipt'
                                         )}
                                       </TheDepositButton>
@@ -1405,18 +1406,18 @@ class Report extends Component {
                 <DataHeader>
                   <DataHeaderRow>
                     <DataDateCell>
-                      {i18n.translation.t('report.rebate.sn')}
+                      {i18n.t('report.rebate.sn')}
                     </DataDateCell>
                     <DataDateCell>
-                      {i18n.translation.t('report.rebate.cycleDate')}
+                      {i18n.t('report.rebate.cycleDate')}
                     </DataDateCell>
                     <DataDateCell>
-                      {i18n.translation.t('report.status')}
+                      {i18n.t('report.status')}
                     </DataDateCell>
                     <DataDateCell style={{ 'text-align': 'right' }}>
-                      {i18n.translation.t('report.rebate.validBet')}
+                      {i18n.t('report.rebate.validBet')}
                       <br />
-                      {i18n.translation.t('report.rebate.amount')}
+                      {i18n.t('report.rebate.amount')}
                     </DataDateCell>
                   </DataHeaderRow>
                 </DataHeader>
@@ -1459,17 +1460,17 @@ class Report extends Component {
                           return (
                             <div key={index}>
                               <DataRowId>
-                                {i18n.translation.t(
+                                {i18n.t(
                                   'report.transfer.table.from'
                                 )}{' '}
                                 : <IDCell>{row.from}</IDCell>
                               </DataRowId>
                               <DataRowId>
-                                {i18n.translation.t('report.transfer.table.to')}{' '}
+                                {i18n.t('report.transfer.table.to')}{' '}
                                 : <IDCell>{row.to}</IDCell>
                               </DataRowId>
                               <DataRowId>
-                                {i18n.translation.t('report.amount')} :{' '}
+                                {i18n.t('report.amount')} :{' '}
                                 <IDCell>{row.amount}</IDCell>
                               </DataRowId>
                               <DataRow>
@@ -1494,7 +1495,7 @@ class Report extends Component {
                 {(() => {
                   if (this.state.dataList.length <= 0) {
                     return (
-                      <NoRecordContainer language={i18n.translation.language} />
+                      <NoRecordContainer language={i18n.language} />
                     )
                   } else {
                     return (
@@ -1507,13 +1508,13 @@ class Report extends Component {
                             <div key={index}>
                               <DataRow>
                                 <DataRowId>
-                                  {i18n.translation.t(
+                                  {i18n.t(
                                     'report.joinedPromo.promoName'
                                   )}
                                   : <IDCell>{row.promotionName}</IDCell>
                                 </DataRowId>
                                 <DataRowId>
-                                  {i18n.translation.t('report.dateTime')} :{' '}
+                                  {i18n.t('report.dateTime')} :{' '}
                                   <IDCell>{date}</IDCell>
                                 </DataRowId>
                               </DataRow>

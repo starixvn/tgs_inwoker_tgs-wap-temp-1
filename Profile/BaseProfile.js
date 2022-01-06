@@ -77,7 +77,7 @@ class BaseProfile extends Component {
   setupContent(
     title,
     body,
-    buttonTitle = i18n.translation.t('common.submit'),
+    buttonTitle = i18n.t('common.submit'),
     bottomNode
   ) {
     return (

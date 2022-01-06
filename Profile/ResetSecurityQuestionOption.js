@@ -252,7 +252,7 @@
 //         ).then(response => {
 //           if (response.IsSuccess) {
 //             this.props.appHistory.replace(
-//               "/" + i18n.translation.language + "/profile/security-question/reset"
+//               "/" + i18n.language + "/profile/security-question/reset"
 //             );
 //           } else {
 //             this.props.alert("", response.msg);
@@ -268,7 +268,7 @@
 //         ).then(response => {
 //           if (response.IsSuccess) {
 //             this.props.appHistory.replace(
-//               "/" + i18n.translation.language + "/profile/security-question/reset"
+//               "/" + i18n.language + "/profile/security-question/reset"
 //             );
 //           } else {
 //             this.props.alert("", response.msg);
@@ -291,7 +291,7 @@
 //               //   variant: "success"
 //               // });
 //               this.props.appHistory.replace(
-//                 "/" + i18n.translation.language + "/profile/security-question/reset"
+//                 "/" + i18n.language + "/profile/security-question/reset"
 //               );
 //             } else {
 //               this.props.alert("", response.msg);
@@ -328,7 +328,7 @@
 //     }
 //   };
 //   handleCSClick = () => {
-//     this.props.appHistory.push("/" + i18n.translation.language + "/chat");
+//     this.props.appHistory.push("/" + i18n.language + "/chat");
 //   };
 //   render() {
 //     return (
