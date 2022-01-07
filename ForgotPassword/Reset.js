@@ -103,7 +103,7 @@
 //   };
 //   componentDidMount() {
 //     if (this.props.forget_token == null) {
-//       this.props.appHistory.replace("/" + i18n.translation.language + "/forgot-password");
+//       this.props.appHistory.replace("/" + i18n.language + "/forgot-password");
 //     } else {
 //       this.setState({
 //         ...this.state,
@@ -123,7 +123,7 @@
 //     this.setState({ ...this.state, password2: e.target.value });
 //   };
 //   handleConfirmClicked = () => {
-//     this.props.appHistory.replace("/" + i18n.translation.language + "/");
+//     this.props.appHistory.replace("/" + i18n.language + "/");
 //   };
 //   handleNextClick = () => {
 //     if (this.state.password !== this.state.password2) {
@@ -152,7 +152,7 @@
 //     }
 //   };
 //   handleCSClick = () => {
-//     this.props.appHistory.push("/" + i18n.translation.language + "/customer-service");
+//     this.props.appHistory.push("/" + i18n.language + "/customer-service");
 //   };
 //   render() {
 //     return (

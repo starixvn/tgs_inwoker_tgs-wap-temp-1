@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import Header from '../../Wap/Share/Header'
-import { accountAction, InboxService, inboxAction } from '@Inwoker/tgs-api'
-import BottomScrollListener from 'react-bottom-scroll-listener'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import Header from "../../Wap/Share/Header";
+import { accountAction, InboxService, inboxAction } from "@Inwoker/tgs-api";
+import BottomScrollListener from "react-bottom-scroll-listener";
 
-import Loading from '../../Wap/Share/Loading'
-import i18n from '../../../utils/i18n'
+import Loading from "../../Wap/Share/Loading";
+import i18n from "../../../utils/i18n";
 
-import InboxList from './InboxList'
+import InboxList from "./InboxList";
 
 const CheckboxContainer = styled.div`
   float: left;
@@ -17,18 +17,18 @@ const CheckboxContainer = styled.div`
   margin: 56px 0 0 20px;
 
   ${(props) => (props.edit ? `display:block` : `display:none`)};
-`
+`;
 const ContentContainer = styled.div`
   float: left;
   font-size: 28px;
   width: 90%;
-`
+`;
 
 const ListItem = styled.div`
   width: 100%;
   margin: 20px auto;
   height: 155px;
-`
+`;
 const MsgTitle = styled.div`
   color: #2e2426;
   width: 100%;
@@ -38,7 +38,7 @@ const MsgTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`
+`;
 
 const MsgTitleSpan = styled.span`
   float: left;
@@ -46,14 +46,14 @@ const MsgTitleSpan = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-`
+`;
 const MsgDate = styled.div`
   color: #949494;
 
   float: left;
   margin-top: 15px;
   font-size: 28px;
-`
+`;
 
 const ItemContainer = styled.div`
   float: right;
@@ -65,7 +65,7 @@ const ItemContainer = styled.div`
   background-color: #ffffff;
   padding: 30px 20px 0 35px;
   margin-right: 30px;
-`
+`;
 const CheckboxCircle = styled.div`
   width: 46px;
   height: 46px;
@@ -77,7 +77,7 @@ const CheckboxCircle = styled.div`
         }) no-repeat;`
       : `border-radius: 23px;
     border: 2px solid #949494;`}
-`
+`;
 
 class Inbox extends Component {
   state = {
@@ -88,9 +88,9 @@ class Inbox extends Component {
     selected: [],
     selectedGuid: [],
     loading: false,
-    inbox: '',
-    view: false
-  }
+    inbox: "",
+    view: false,
+  };
 
   componentDidMount() {
     // InboxService.InboxList(0).then((response) => {
@@ -103,7 +103,7 @@ class Inbox extends Component {
     // });
 
     if (this.props.token != null) {
-      this.getMessageList(0, true)
+      this.getMessageList(0, true);
     }
   }
   componentDidUpdate(preProps) {
@@ -112,58 +112,53 @@ class Inbox extends Component {
     // }
   }
   getMessageList = (page, isNew = false) => {
-    this.props.getMessages(
-      i18n.translation.language,
-      this.state.limit,
-      page + 1,
-      isNew
-    )
-  }
+    this.props.getMessages(i18n.language, this.state.limit, page + 1, isNew);
+  };
   handleScrollBottom = () => {
     if (this.state.isBottom === false) {
       if (this.props.inbox.items.length < this.props.inbox.totalcount) {
-        this.getMessageList(this.state.page + 1)
-        this.setState({ ...this.state, page: this.state.page + 1 })
+        this.getMessageList(this.state.page + 1);
+        this.setState({ ...this.state, page: this.state.page + 1 });
       }
     }
-  }
+  };
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   handleEditClick = () => {
     if (this.props.inbox.items.length > 0) {
-      this.setState({ ...this.state, edit: !this.state.edit })
+      this.setState({ ...this.state, edit: !this.state.edit });
     }
-  }
+  };
   handleItemClick = (id) => {
     if (this.state.edit === false) {
       this.props.setMessageRead([id]).then((response) => {
-        this.props.getMessages(1, 99, true, true)
-      })
+        this.props.getMessages(1, 99, true, true);
+      });
 
       this.setState({
         ...this.state,
-        view: true
-      })
+        view: true,
+      });
     }
-  }
+  };
   handleCheckboxClick = (SubjectID, GUID) => {
-    let selected = this.state.selected
-    let selectedGuid = this.state.selectedGuid
+    let selected = this.state.selected;
+    let selectedGuid = this.state.selectedGuid;
     if (this.state.selected.includes(SubjectID)) {
-      selected = selected.filter((item) => item !== SubjectID)
-      selectedGuid = selectedGuid.filter((item) => item !== GUID)
+      selected = selected.filter((item) => item !== SubjectID);
+      selectedGuid = selectedGuid.filter((item) => item !== GUID);
     } else {
-      selected = selected.concat(SubjectID)
-      selectedGuid = selectedGuid.concat(GUID)
+      selected = selected.concat(SubjectID);
+      selectedGuid = selectedGuid.concat(GUID);
     }
     this.setState({
       ...this.state,
       selected: selected,
-      selectedGuid: selectedGuid
-    })
-  }
-  callbackCount = 0
+      selectedGuid: selectedGuid,
+    });
+  };
+  callbackCount = 0;
   // handleCallback = () => {
   //   this.getMessageList(0);
   //   this.setState({
@@ -188,7 +183,7 @@ class Inbox extends Component {
     //     this.handleCallback();
     //   }
     // );
-  }
+  };
   render() {
     return (
       <div style={{ paddingBottom: this.state.edit ? 120 : 0 }}>
@@ -197,7 +192,7 @@ class Inbox extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('inbox.title')}
+          title={i18n.t("inbox.title")}
         ></Header>
 
         {
@@ -212,9 +207,9 @@ class Inbox extends Component {
                     handleCheckboxClick={this.handleCheckboxClick}
                     handleItemClick={this.handleItemClick}
                   />
-                )
+                );
               })
-            : ''
+            : ""
           // this.props.inbox.list.map((row, index) => {
           //   return (
           //     <ListItem key={index}>
@@ -244,23 +239,23 @@ class Inbox extends Component {
 
         <Loading show={this.state.loading}></Loading>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     token: state.account.token,
-    inbox: state.account.inbox
-  }
-}
+    inbox: state.account.inbox,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     getMessages: (language, limit, page, isNew, getCount = false) =>
       dispatch(inboxAction.getMessages(language, page, limit, isNew, getCount)),
     dispatch: dispatch,
     getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
-    setMessageRead: (ids) => dispatch(inboxAction.setMessageRead(ids))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Inbox)
+    setMessageRead: (ids) => dispatch(inboxAction.setMessageRead(ids)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Inbox);

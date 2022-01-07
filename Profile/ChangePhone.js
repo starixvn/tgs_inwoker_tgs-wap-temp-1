@@ -1,15 +1,15 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-import TextboxWithButton from '../Share/TextboxWithButton'
-import Step from '../Share/Step'
-import BaseProfile from './BaseProfile'
-import { AccountService } from '@Inwoker/tgs-api'
-import { accountAction } from '@Inwoker/tgs-api'
+import TextboxWithButton from "../Share/TextboxWithButton";
+import Step from "../Share/Step";
+import BaseProfile from "./BaseProfile";
+import { AccountService } from "@Inwoker/tgs-api";
+import { accountAction } from "@Inwoker/tgs-api";
 
-import i18n from '../../../utils/i18n'
-import styled from 'styled-components'
+import i18n from "../../../utils/i18n";
+import styled from "styled-components";
 const Container = styled.div`
   margin: 0 auto;
 
@@ -18,26 +18,26 @@ const Container = styled.div`
   border-radius: 6px;
 
   background-color: #ffffff;
-`
+`;
 const SelectContainer = styled.select`
   width: 100%;
   height: 100%;
   border: none;
   color: #000;
   font-size: 30px;
-`
+`;
 const CustomText = styled.div`
   width: 700px;
   height: 170px;
   padding: 20px 20px 0 20px;
   margin: 20px auto;
-`
+`;
 const CustomLabel = styled.div`
   font-size: 24px;
   font-weight: 600;
   margin-left: 3px;
   color: ${({ theme }) => theme.secondary};
-`
+`;
 const CustomInput = styled.input`
   height: 50px;
   width: 405px;
@@ -59,73 +59,73 @@ const CustomInput = styled.input`
 
     opacity: 1;
   }
-`
+`;
 class ChangePhone extends BaseProfile {
   componentDidMount() {
     this.setState({
       ...this.state,
       phone: this.props.account.info.member_phone,
-      areacode: '+852',
-      code: '',
+      areacode: "+852",
+      code: "",
       currentStep: 1,
       countdownToken: 0,
-      securityKey: ''
-    })
+      securityKey: "",
+    });
   }
 
   handleChangePhone = (e) => {
-    this.setState({ ...this.state, phone: e.target.value })
-    this.onTextChanged()
-  }
+    this.setState({ ...this.state, phone: e.target.value });
+    this.onTextChanged();
+  };
   handleChangeCode = (e) => {
-    this.setState({ ...this.state, code: e.target.value })
-    this.onTextChanged()
-  }
+    this.setState({ ...this.state, code: e.target.value });
+    this.onTextChanged();
+  };
   checkCountdownToken = () => {
     if (this.state.countdownToken > 0) {
       this.setState({
         ...this.state,
-        countdownToken: this.state.countdownToken - 1
-      })
+        countdownToken: this.state.countdownToken - 1,
+      });
       setTimeout(() => {
-        this.checkCountdownToken()
-      }, 1000)
+        this.checkCountdownToken();
+      }, 1000);
     } else {
       this.setState({
         ...this.state,
-        countdownToken: this.state.countdownToken - 1
-      })
+        countdownToken: this.state.countdownToken - 1,
+      });
     }
-  }
+  };
   handleGetCodeClick = (e) => {
-    if (this.state.countdownToken > 0) return
+    if (this.state.countdownToken > 0) return;
     if (!this.state.phone)
-      return this.showErrorMessage(i18n.translation.t('common.msgEnterPhone'))
-    this.showLoading(true)
+      return this.showErrorMessage(i18n.t("common.msgEnterPhone"));
+    this.showLoading(true);
     AccountService.VerifyPhone(this.state.phone, this.state.areacode)
       .then((response) => {
         if (response.IsSuccess) {
-          this.showInfoMessage(i18n.translation.t('common.msgTokenSent'))
+          this.showInfoMessage(i18n.t("common.msgTokenSent"));
           this.setState({
             ...this.state,
             countdownToken: 60,
-            securityKey: response.data
-          })
+            securityKey: response.data,
+          });
           setTimeout(() => {
-            this.checkCountdownToken()
-          }, 1000)
+            this.checkCountdownToken();
+          }, 1000);
         } else {
-          this.showInfoMessage(response.info)
+          this.showInfoMessage(response.info);
         }
 
-        this.showLoading(false)
+        this.showLoading(false);
       })
       .catch((err) => {
-        this.showErrorMessage(err.Message)
-      })
-  }
+        this.showErrorMessage(err.Message);
+      });
+  };
   handleVerifyTokenError = (err) => {
-    this.showErrorMessage(err.Message)
+    this.showErrorMessage(err.Message);
 
     if (
       err.Result.RemainingSec != null &&
@@ -133,110 +133,110 @@ class ChangePhone extends BaseProfile {
     ) {
       this.setState({
         ...this.state,
-        countdownToken: err.Result.RemainingSec
-      })
+        countdownToken: err.Result.RemainingSec,
+      });
       setTimeout(() => {
-        this.checkCountdownToken()
-      }, 1000)
+        this.checkCountdownToken();
+      }, 1000);
     }
 
-    this.showLoading(false)
-  }
+    this.showLoading(false);
+  };
   isDisableButton = () => {
-    const code = this.state.code
-    const phone = this.state.phone
-    return !(code && phone)
-  }
+    const code = this.state.code;
+    const phone = this.state.phone;
+    return !(code && phone);
+  };
   showErrorMessage = (msg) => {
-    this.props.alert('', msg)
+    this.props.alert("", msg);
     // this.props.enqueueSnackbar(msg, {
     //   key: "error"
     // });
-  }
+  };
   showInfoMessage = (msg) => {
-    this.props.alert('', msg)
+    this.props.alert("", msg);
     // this.props.enqueueSnackbar(msg, {
     //   key: "info"
     // });
-  }
+  };
   handleSubmitClicked = () => {
-    this.showLoading(true)
+    this.showLoading(true);
     AccountService.UpdatePhone(this.state.securityKey, this.state.code)
       .then((response) => {
         if (response.IsSuccess) {
-          this.showInfoMessage(i18n.translation.t('common.msgTokenVerified'))
-          this.showLoading(false)
+          this.showInfoMessage(i18n.t("common.msgTokenVerified"));
+          this.showLoading(false);
           if (this.state.currentStep === 1) {
             this.setState({
               ...this.state,
-              phone: '',
-              code: '',
-              securityKey: '',
+              phone: "",
+              code: "",
+              securityKey: "",
               currentStep: 2,
-              countdownToken: 0
-            })
+              countdownToken: 0,
+            });
           } else {
             this.props.getAccountInfo().then((responseUpdate) => {
               if (responseUpdate.IsSuccess) {
                 this.props.appHistory.replace(
-                  '/' + i18n.translation.language + '/profile/phone'
-                )
+                  "/" + i18n.language + "/profile/phone"
+                );
               }
-            })
+            });
           }
         } else {
-          this.showErrorMessage(response.info)
+          this.showErrorMessage(response.info);
           // if (response.code === 405) {
           //   this.showErrorMessage(
-          //     i18n.translation.t('common.msgInvalidPhoneCode')
+          //     i18n.t('common.msgInvalidPhoneCode')
           //   )
           // } else {
           //   this.showErrorMessage(response.info)
           // }
         }
-        this.showLoading(false)
+        this.showLoading(false);
       })
       .catch((err) => {
-        this.showErrorMessage(err)
-        this.showLoading(false)
-      })
-  }
+        this.showErrorMessage(err);
+        this.showLoading(false);
+      });
+  };
   render() {
     return this.setupContent(
-      i18n.translation.t('profile.changePhone.title'),
+      i18n.t("profile.changePhone.title"),
       <React.Fragment>
         <Step
           steps={[
-            { label: i18n.translation.t('profile.changePhone.step1Title') },
-            { label: i18n.translation.t('profile.changePhone.step2Title') }
+            { label: i18n.t("profile.changePhone.step1Title") },
+            { label: i18n.t("profile.changePhone.step2Title") },
           ]}
           currentStep={this.state.currentStep}
         ></Step>
         <CustomText>
-          <CustomLabel>{i18n.translation.t('common.phoneNumber')}</CustomLabel>
+          <CustomLabel>{i18n.t("common.phoneNumber")}</CustomLabel>
           <Container
             style={{
-              margin: '18px 5px 0 0',
-              width: '180px',
-              float: 'left',
-              padding: '10px'
+              margin: "18px 5px 0 0",
+              width: "180px",
+              float: "left",
+              padding: "10px",
             }}
           >
             <SelectContainer
               value={this.state.areacode}
               onChange={(e) => {
-                this.setState({ ...this.state, areacode: e.target.value })
+                this.setState({ ...this.state, areacode: e.target.value });
               }}
               disabled={this.state.currentStep === 1}
             >
-              <option value={'+852'}>+852</option>
+              <option value={"+852"}>+852</option>
             </SelectContainer>
           </Container>
           <CustomInput
             style={this.props.color ? { color: this.props.color } : {}}
-            type={'text'}
+            type={"text"}
             value={this.state.phone}
-            placeholder={i18n.translation.t('common.msgEnterPhone')}
+            placeholder={i18n.t("common.msgEnterPhone")}
             disabled={this.state.currentStep === 1}
             onChange={this.handleChangePhone}
             maxLength={10}
@@ -246,39 +246,39 @@ class ChangePhone extends BaseProfile {
         <TextboxWithButton
           buttonlabel={
             this.state.countdownToken <= 0
-              ? i18n.translation.t('common.msgSendToken')
-              : i18n.translation.t('common.btnTokenResendLabel') +
-                '(' +
+              ? i18n.t("common.msgSendToken")
+              : i18n.t("common.btnTokenResendLabel") +
+                "(" +
                 this.state.countdownToken +
-                's)'
+                "s)"
           }
-          style={{ margin: '20px auto 20px auto' }}
+          style={{ margin: "20px auto 20px auto" }}
           value={this.state.code}
           onChange={this.handleChangeCode}
-          placeholder={i18n.translation.t('common.msgEnterPhoneCode')}
-          label={i18n.translation.t('common.token')}
+          placeholder={i18n.t("common.msgEnterPhoneCode")}
+          label={i18n.t("common.token")}
           onClick={this.handleGetCodeClick}
           maxLength={6}
         ></TextboxWithButton>
       </React.Fragment>,
       this.state.currentStep === 1
-        ? i18n.translation.t('common.nextStep')
-        : i18n.translation.t('common.submit')
-    )
+        ? i18n.t("common.nextStep")
+        : i18n.t("common.submit")
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAccountInfo: () => dispatch(accountAction.getAccountInfo())
-  }
-}
+    getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
+  };
+};
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ChangePhone))
+)(withRouter(ChangePhone));

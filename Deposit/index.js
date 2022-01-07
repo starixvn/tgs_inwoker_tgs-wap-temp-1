@@ -1,55 +1,55 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
 
 import {
   walletAction,
   WalletService,
   WALLET_HIDEMESSAGE,
   RESET_WALLETRESULT,
-  generalAction
-} from '@Inwoker/tgs-api'
-import { withRouter } from 'react-router-dom'
-import Common from '../../../utils/Common'
+  generalAction,
+} from "@Inwoker/tgs-api";
+import { withRouter } from "react-router-dom";
+import Common from "../../../utils/Common";
 
-import AppBar from '@material-ui/core/AppBar'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
-import Header from '../Share/Header'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import { withStyles } from '@material-ui/core/styles'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
+import Header from "../Share/Header";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { withStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
-import 'react-lazy-load-image-component/src/effects/blur.css'
-import Textbox from '../../Wap/Share/Textbox'
-import Button from '../../Wap/Share/Button'
+import "react-lazy-load-image-component/src/effects/blur.css";
+import Textbox from "../../Wap/Share/Textbox";
+import Button from "../../Wap/Share/Button";
 
-import Modal from '@material-ui/core/Dialog'
-import Loading from '../../Wap/Share/Loading'
+import Modal from "@material-ui/core/Dialog";
+import Loading from "../../Wap/Share/Loading";
 
-import i18n from '../../../utils/i18n'
-import { Grid } from '@material-ui/core'
+import i18n from "../../../utils/i18n";
+import { Grid } from "@material-ui/core";
 
-import Details from './Details'
-import Manual from './Manual'
-import DetailsManual from './DetailsManual'
-import config from '../../../config/config'
+import Details from "./Details";
+import Manual from "./Manual";
+import DetailsManual from "./DetailsManual";
+import config from "../../../config/config";
 const UnderConstructionWrap = styled.div`
   background: url(${process.env.PUBLIC_URL +
     `/assets/images/wapp/underconstruction.png`})
     no-repeat center 50px #fff;
-`
+`;
 const DescLabel = styled.div`
   margin: 330px auto 0 auto;
   text-align: center;
   font-size: 30px;
-`
+`;
 const Container = styled.div`
   padding-top: 85px;
-`
+`;
 const BalanceLabel = styled.div`
   float: right;
   margin: 26px 20px 0 0;
@@ -59,56 +59,56 @@ const BalanceLabel = styled.div`
 
   text-align: right;
   color: #fde73f;
-`
+`;
 
 const StyledAppBar = withStyles({
   root: {
-    top: '89px',
+    top: "89px",
 
-    backgroundColor: '#f1f1f1',
-    boxShadow: 'none'
-  }
-})(AppBar)
+    backgroundColor: "#f1f1f1",
+    boxShadow: "none",
+  },
+})(AppBar);
 
 const StyledModalPopup = withStyles((theme) => ({
   paper: {
-    borderRadius: '50px',
-    fontSize: '28px',
-    color: '#666666',
-    padding: '30px',
-    width: '600px',
-    maxWidth: '690px',
+    borderRadius: "50px",
+    fontSize: "28px",
+    color: "#666666",
+    padding: "30px",
+    width: "600px",
+    maxWidth: "690px",
 
-    display: 'block'
-  }
-}))(Modal)
+    display: "block",
+  },
+}))(Modal);
 
 const CustomSelect = withStyles((theme) => ({
   root: {
-    '&:focus': {
-      border: 'none',
-      backgroundColor: '#fff'
+    "&:focus": {
+      border: "none",
+      backgroundColor: "#fff",
     },
-    '&:active': {
-      border: 'none',
-      backgroundColor: '#fff'
-    }
+    "&:active": {
+      border: "none",
+      backgroundColor: "#fff",
+    },
   },
   select: {
-    padding: '18.5px 0px',
-    '&:focus': {
-      border: 'none',
-      backgroundColor: '#fff'
+    padding: "18.5px 0px",
+    "&:focus": {
+      border: "none",
+      backgroundColor: "#fff",
     },
-    '&:active': {
-      border: 'none',
-      backgroundColor: '#fff'
+    "&:active": {
+      border: "none",
+      backgroundColor: "#fff",
     },
-    '&:disabled': {
-      color: '#c3c3c3'
-    }
-  }
-}))(Select)
+    "&:disabled": {
+      color: "#c3c3c3",
+    },
+  },
+}))(Select);
 const CustomText = styled.div`
   width: 700px;
   height: 170px;
@@ -119,25 +119,25 @@ const CustomText = styled.div`
   border-radius: 20px;
   padding: 40px 20px 0 20px;
   margin: 20px auto;
-`
+`;
 const CustomLabel = styled.div`
   font-size: 20px;
   font-weight: 600;
   margin-left: 3px;
   color: #212e31;
-`
+`;
 const CustomFormControl = withStyles((theme) => ({
   root: {
-    margin: '10px 0 0 0',
-    width: '640px',
-    height: '78px',
-    border: 'none',
-    fontSize: '28px',
-    '& fieldset': {
-      border: 'none'
-    }
-  }
-}))(FormControl)
+    margin: "10px 0 0 0",
+    width: "640px",
+    height: "78px",
+    border: "none",
+    fontSize: "28px",
+    "& fieldset": {
+      border: "none",
+    },
+  },
+}))(FormControl);
 
 const DialoTitle = styled.div`
   font-size: 36px;
@@ -145,14 +145,14 @@ const DialoTitle = styled.div`
   margin: 0 auto;
   display: table;
   color: #4a4a4a;
-`
+`;
 const DialoMessage = styled.div`
   font-size: 26px;
   margin: 30px 45px;
   color: #4a4a4a;
   line-height: 1.8em;
   text-align: center;
-`
+`;
 
 const ButtonConfirm = styled.div`
   width: 250px;
@@ -170,30 +170,30 @@ const ButtonConfirm = styled.div`
     theme.primaryGradient},
       ${({ theme }) => theme.primary}));
   color: #ffffff;
-`
+`;
 const LimitLabel = styled.span`
   color: #747474;
-`
+`;
 
 const LimitAmount = styled.span`
   color: #c0252d;
-`
+`;
 const ExchangeRateContainer = styled.div`
   margin: 20px auto;
   font-size: 28px;
   padding: 0px 20px 20px 48px;
-`
+`;
 
 const Remark = styled.div`
   font-size: 20px;
   padding: 0px 50px;
   color: ${({ theme }) => theme.secondary};
   opacity: 0.75;
-`
+`;
 
 class Deposit extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.initialState = {
       selectedPaymentIndex: 0,
@@ -201,30 +201,30 @@ class Deposit extends Component {
 
       selectedChannelIndex: 0,
       depositPromotion: this.props.match.params.promotionid,
-      account: '',
-      amount: '',
+      account: "",
+      amount: "",
       exchangeRate: { buyprice: 0, sellprice: 0 },
       step: 1,
-      upload: '',
+      upload: "",
 
       isMaintenance: false,
 
       //to handle access via URL
       paymentId: this.props.match.params.paymentId,
-      depositDetail: '',
-      channelname: '',
-      methodcode: '',
-      bankaccount: '',
-      disabled: false
-    }
-    this.state = { ...this.initialState }
+      depositDetail: "",
+      channelname: "",
+      methodcode: "",
+      bankaccount: "",
+      disabled: false,
+    };
+    this.state = { ...this.initialState };
   }
-  bankInfo = null
+  bankInfo = null;
 
   componentDidMount() {
     if (this.props.token != null) {
-      this.props.getDepositMethod(i18n.translation.language)
-      this.props.getPlayerPromotionList(i18n.translation.language)
+      this.props.getDepositMethod(i18n.language);
+      this.props.getPlayerPromotionList(i18n.language);
       if (this.state.paymentId) {
         WalletService.PerformGetManualDepositDetail(this.state.paymentId).then(
           (e) => {
@@ -235,14 +235,14 @@ class Deposit extends Component {
                 amount: e.data.amount,
                 channelname: e.data.bankname,
                 methodcode: e.data.methodname,
-                bankaccount: e.data.bankaccount
-              })
+                bankaccount: e.data.bankaccount,
+              });
             }
           }
-        )
+        );
       }
     } else {
-      this.props.appHistory.replace('/' + i18n.translation.language + '/')
+      this.props.appHistory.replace("/" + i18n.language + "/");
     }
   }
   componentDidUpdate(preProps, preState) {
@@ -252,26 +252,26 @@ class Deposit extends Component {
     ) {
       if (this.props.wallet.depositResult.IsSuccess) {
         var payment =
-          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
+          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
 
         this.setState({
           ...this.state,
-          step: payment.paymentcode.toUpperCase() === 'MANUAL' ? 2 : 3,
-          loading: false
-        })
+          step: payment.paymentcode.toUpperCase() === "MANUAL" ? 2 : 3,
+          loading: false,
+        });
       } else {
         // if (this.props.wallet.depositResult.code === 407) {
         //   this.props.alert(
         //     '',
-        //     i18n.translation.t('deposit.msgFailedJoinPromotion')
+        //     i18n.t('deposit.msgFailedJoinPromotion')
         //   )
         // } else if (this.props.wallet.depositResult.code === 900) {
-        //   this.props.alert('', i18n.translation.t('common.msgRequestFailed'))
+        //   this.props.alert('', i18n.t('common.msgRequestFailed'))
         // } else {
         //   this.props.alert('', this.props.wallet.depositResult.info)
         // }
-        this.props.alert('', this.props.wallet.depositResult.info)
-        this.setState({ ...this.state, loading: false })
+        this.props.alert("", this.props.wallet.depositResult.info);
+        this.setState({ ...this.state, loading: false });
       }
     }
     if (
@@ -280,11 +280,11 @@ class Deposit extends Component {
       this.props.wallet.depositUploadResult !== null
     ) {
       if (this.props.wallet.depositUploadResult.IsSuccess) {
-        this.setState({ ...this.initialState })
-        this.props.alert('', i18n.translation.t('deposit.uploadSuccess'))
+        this.setState({ ...this.initialState });
+        this.props.alert("", i18n.t("deposit.uploadSuccess"));
       } else {
-        this.props.alert('', this.props.wallet.depositUploadResult.info)
-        this.setState({ ...this.state, loading: false })
+        this.props.alert("", this.props.wallet.depositUploadResult.info);
+        this.setState({ ...this.state, loading: false });
       }
     }
     if (
@@ -294,11 +294,11 @@ class Deposit extends Component {
     ) {
       if (
         this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
-          .method[this.state.selectedMethodIndex].methodcode === 'Crypto'
+          .method[this.state.selectedMethodIndex].methodcode === "Crypto"
       ) {
         if (
           this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
-            .paymentcode === 'LeePay'
+            .paymentcode === "LeePay"
         ) {
           WalletService.GetLeePayExchangeRate(
             this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
@@ -307,14 +307,14 @@ class Deposit extends Component {
             ].id
           ).then((response) => {
             if (response.IsSuccess) {
-              this.setState({ ...this.state, exchangeRate: response.data })
+              this.setState({ ...this.state, exchangeRate: response.data });
             } else {
               this.setState({
                 ...this.state,
-                exchangeRate: this.initialState.exchangeRate
-              })
+                exchangeRate: this.initialState.exchangeRate,
+              });
             }
-          })
+          });
         } else {
           WalletService.GetUmPayExchangeRate(
             this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
@@ -325,28 +325,28 @@ class Deposit extends Component {
             if (response.IsSuccess) {
               this.setState({
                 ...this.state,
-                exchangeRate: response.data.rate
-              })
+                exchangeRate: response.data.rate,
+              });
             } else {
               this.setState({
                 ...this.state,
-                exchangeRate: this.initialState.exchangeRate
-              })
+                exchangeRate: this.initialState.exchangeRate,
+              });
             }
-          })
+          });
         }
       } else {
         this.setState({
           ...this.state,
-          exchangeRate: this.initialState.exchangeRate
-        })
+          exchangeRate: this.initialState.exchangeRate,
+        });
       }
     }
   }
   handleRestartClick = (e) => {
-    this.setState({ ...this.initialState })
-    this.props.resetDeposit()
-  }
+    this.setState({ ...this.initialState });
+    this.props.resetDeposit();
+  };
   // CancelDeposit(token, id) {
   //   return WalletService.CancelDeposit(token, id);
   // }
@@ -391,16 +391,16 @@ class Deposit extends Component {
   handleAmountChange = (e) => {
     this.setState({
       ...this.state,
-      amount: e.target.value.replace(/,/g, '')
-    })
-  }
+      amount: e.target.value.replace(/,/g, ""),
+    });
+  };
 
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   handleClose = () => {
-    this.setState({ ...this.state, open: false })
-  }
+    this.setState({ ...this.state, open: false });
+  };
   // handleChangeTab = (e, newValue) => {
 
   //   this.setState({
@@ -429,64 +429,64 @@ class Deposit extends Component {
   uploadImage = (e) => {
     this.setState({
       ...this.state,
-      upload: e.target.files[0]
-    })
-  }
+      upload: e.target.files[0],
+    });
+  };
 
   handleDepositClick = () => {
-    this.setState({ ...this.state, disabled: true })
+    this.setState({ ...this.state, disabled: true });
     var payment =
-      this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
-    var method = payment.method[this.state.selectedMethodIndex]
+      this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
+    var method = payment.method[this.state.selectedMethodIndex];
 
-    var channel = method.channel[this.state.selectedChannelIndex]
+    var channel = method.channel[this.state.selectedChannelIndex];
 
-    if (payment.paymentcode.toUpperCase() === 'MANUAL') {
+    if (payment.paymentcode.toUpperCase() === "MANUAL") {
       // handle manual deposit
-      if (method.methodcode === 'BankTransfer') {
+      if (method.methodcode === "BankTransfer") {
         this.props.doBankDeposit(
           this.state.account,
-          this.state.amount.replace(/,/g, ''),
+          this.state.amount.replace(/,/g, ""),
           channel.id,
           this.state.depositPromotion
-        )
+        );
       }
-      if (method.methodcode === 'ThirdParty') {
+      if (method.methodcode === "ThirdParty") {
         this.props.doThirdPartyDeposit(
-          this.state.amount.replace(/,/g, ''),
+          this.state.amount.replace(/,/g, ""),
           channel.id,
           this.state.depositPromotion
-        )
+        );
       }
     } else {
-      if (method.methodcode === 'Crypto') {
+      if (method.methodcode === "Crypto") {
         this.props.doCryptoDeposit(
-          this.state.amount.replace(/,/g, ''),
+          this.state.amount.replace(/,/g, ""),
           channel.id,
           this.state.depositPromotion,
           payment.paymentcode
-        )
+        );
       } else {
         this.props.doBankDeposit2(
-          this.state.amount.replace(/,/g, ''),
+          this.state.amount.replace(/,/g, ""),
           channel.id,
           this.state.depositPromotion,
           payment.paymentcode
-        )
+        );
       }
     }
 
     setTimeout(() => {
-      this.setState({ ...this.state, disabled: false })
-    }, 1000)
-  }
+      this.setState({ ...this.state, disabled: false });
+    }, 1000);
+  };
 
   changeValue = (e) => {
     this.setState({
       ...this.state,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
   handlePaymentChange = (e, value) => {
     if (this.state.step === 1) {
       this.setState({
@@ -494,18 +494,18 @@ class Deposit extends Component {
         selectedMethodIndex: 0,
 
         selectedChannelIndex: 0,
-        selectedPaymentIndex: value
-      })
+        selectedPaymentIndex: value,
+      });
     }
-  }
+  };
   performUploadImage = (file) => {
     this.props.doUploadDepositProof(
       this.props.wallet.depositResult
         ? this.props.wallet.depositResult.data
         : this.state.paymentId,
       file
-    )
-  }
+    );
+  };
 
   render() {
     const switchView = (view) => {
@@ -515,29 +515,29 @@ class Deposit extends Component {
             <React.Fragment>
               <CustomText>
                 <CustomLabel>
-                  {i18n.translation.t('deposit.msgPlsSelectPayment')}
+                  {i18n.t("deposit.msgPlsSelectPayment")}
                 </CustomLabel>
-                <CustomFormControl variant='outlined'>
+                <CustomFormControl variant="outlined">
                   <CustomSelect
                     native
-                    id='customSelect'
+                    id="customSelect"
                     style={{
-                      fontSize: '28px',
-                      height: '78px',
-                      border: 'none',
-                      color: '#d09f58'
+                      fontSize: "28px",
+                      height: "78px",
+                      border: "none",
+                      color: "#d09f58",
                     }}
                     value={this.state.selectedMethodIndex}
                     onChange={(e) => {
                       this.setState({
                         ...this.state,
                         selectedChannelIndex: 0,
-                        selectedMethodIndex: e.target.value
-                      })
+                        selectedMethodIndex: e.target.value,
+                      });
                     }}
                   >
-                    <option value={''} disabled>
-                      {i18n.translation.t('deposit.msgPlsSelectPayment')}
+                    <option value={""} disabled>
+                      {i18n.t("deposit.msgPlsSelectPayment")}
                     </option>
                     {this.props.wallet.depositTypeList.length > 0 &&
                       this.props.wallet.depositTypeList[
@@ -545,33 +545,33 @@ class Deposit extends Component {
                       ].method.map((item, index) => {
                         return (
                           <option value={index}>
-                            {i18n.translation.t(item.methodcode)}
+                            {i18n.t(item.methodcode)}
                           </option>
-                        )
+                        );
                       })}
                   </CustomSelect>
                 </CustomFormControl>
               </CustomText>
               <CustomText>
                 <CustomLabel>
-                  {i18n.translation.t('deposit.msgPlsSelectMethod')}
+                  {i18n.t("deposit.msgPlsSelectMethod")}
                 </CustomLabel>
-                <CustomFormControl variant='outlined'>
+                <CustomFormControl variant="outlined">
                   <CustomSelect
                     native
-                    id='customSelect'
+                    id="customSelect"
                     style={{
-                      fontSize: '28px',
-                      height: '78px',
-                      border: 'none',
-                      color: '#d09f58'
+                      fontSize: "28px",
+                      height: "78px",
+                      border: "none",
+                      color: "#d09f58",
                     }}
                     value={this.state.selectedChannelIndex}
                     onChange={(e) => {
                       this.setState({
                         ...this.state,
-                        selectedChannelIndex: e.target.value
-                      })
+                        selectedChannelIndex: e.target.value,
+                      });
                     }}
                   >
                     {this.props.wallet.depositTypeList.length > 0 &&
@@ -581,7 +581,7 @@ class Deposit extends Component {
                         (item, index) => {
                           return (
                             <option value={index}>{item.channelname}</option>
-                          )
+                          );
                         }
                       )}
                   </CustomSelect>
@@ -592,37 +592,35 @@ class Deposit extends Component {
                 if (
                   this.props.wallet.depositTypeList[
                     this.state.selectedPaymentIndex
-                  ].paymentcode.toUpperCase() === 'MANUAL' ||
+                  ].paymentcode.toUpperCase() === "MANUAL" ||
                   this.props.wallet.depositTypeList[
                     this.state.selectedPaymentIndex
-                  ].paymentcode.toUpperCase() === 'APPLEPAY'
+                  ].paymentcode.toUpperCase() === "APPLEPAY"
                 ) {
                   return (
                     <Textbox
-                      style={{ margin: '20px auto 20px auto' }}
-                      type={'text'}
-                      placeholder={i18n.translation.t(
-                        'deposit.msgPlsEnterAccount'
-                      )}
-                      label={i18n.translation.t('deposit.msgPlsEnterAccount')}
+                      style={{ margin: "20px auto 20px auto" }}
+                      type={"text"}
+                      placeholder={i18n.t("deposit.msgPlsEnterAccount")}
+                      label={i18n.t("deposit.msgPlsEnterAccount")}
                       value={this.state.account}
                       onChange={(e) => {
                         this.setState({
                           ...this.state,
-                          account: e.target.value
-                        })
+                          account: e.target.value,
+                        });
                       }}
                     ></Textbox>
-                  )
+                  );
                 }
               })()}
               <Textbox
-                style={{ margin: '20px auto 20px auto' }}
+                style={{ margin: "20px auto 20px auto" }}
                 value={this.state.amount}
                 onChange={this.handleAmountChange}
-                type={'number'}
+                type={"number"}
                 placeholder={
-                  i18n.translation.t('deposit.msgPleaseEnter') +
+                  i18n.t("deposit.msgPleaseEnter") +
                   Common.formatNumberWithThousand(
                     this.props.wallet.depositTypeList[
                       this.state.selectedPaymentIndex
@@ -630,7 +628,7 @@ class Deposit extends Component {
                       this.state.selectedChannelIndex
                     ].transferlimit.from
                   ) +
-                  '-' +
+                  "-" +
                   Common.formatNumberWithThousand(
                     this.props.wallet.depositTypeList[
                       this.state.selectedPaymentIndex
@@ -638,36 +636,36 @@ class Deposit extends Component {
                       this.state.selectedChannelIndex
                     ].transferlimit.to
                   ) +
-                  i18n.translation.t('deposit.dollor')
+                  i18n.t("deposit.dollor")
                 }
-                label={i18n.translation.t('deposit.depositAmount')}
+                label={i18n.t("deposit.depositAmount")}
               ></Textbox>
               {this.props.wallet.depositTypeList[
                 this.state.selectedPaymentIndex
-              ].paymentcode.toUpperCase() === 'UMPAY' && (
-                <Remark>{i18n.translation.t('deposit.ppRemark')}</Remark>
+              ].paymentcode.toUpperCase() === "UMPAY" && (
+                <Remark>{i18n.t("deposit.ppRemark")}</Remark>
               )}
               {(() => {
                 if (
                   this.props.wallet.depositTypeList[
                     this.state.selectedPaymentIndex
                   ].method[this.state.selectedMethodIndex].methodcode ===
-                  'Crypto'
+                  "Crypto"
                 ) {
                   if (
                     this.props.wallet.depositTypeList[
                       this.state.selectedPaymentIndex
-                    ].paymentcode === 'LeePay'
+                    ].paymentcode === "LeePay"
                   ) {
                     return (
-                      <ExchangeRateContainer style={{ marginTop: '4px' }}>
+                      <ExchangeRateContainer style={{ marginTop: "4px" }}>
                         <LimitLabel>
-                          {i18n.translation.t('deposit.exchangeRate')}:{' '}
+                          {i18n.t("deposit.exchangeRate")}:{" "}
                         </LimitLabel>
                         <LimitAmount>{` ${this.state.exchangeRate.buyprice}`}</LimitAmount>
-                        <LimitLabel style={{ marginLeft: '26px' }}>
-                          {i18n.translation.t('deposit.expectedPayment')}
-                        </LimitLabel>{' '}
+                        <LimitLabel style={{ marginLeft: "26px" }}>
+                          {i18n.t("deposit.expectedPayment")}
+                        </LimitLabel>{" "}
                         <LimitAmount>{` ${
                           isNaN(this.state.amount) === false
                             ? (
@@ -677,25 +675,23 @@ class Deposit extends Component {
                             : 0
                         }`}</LimitAmount>
                       </ExchangeRateContainer>
-                    )
+                    );
                   } else {
                     return Object.keys(this.state.exchangeRate).map((key) => {
                       return Object.keys(this.state.exchangeRate[key]).map(
                         (key2) => {
-                          if (key2 === 'HKD') {
+                          if (key2 === "HKD") {
                             return (
                               <ExchangeRateContainer
-                                style={{ marginTop: '4px' }}
+                                style={{ marginTop: "4px" }}
                               >
                                 <LimitLabel>
-                                  {i18n.translation.t('deposit.exchangeRate')}:{' '}
+                                  {i18n.t("deposit.exchangeRate")}:{" "}
                                 </LimitLabel>
                                 <LimitAmount>{` ${this.state.exchangeRate[key][key2].rate}`}</LimitAmount>
-                                <LimitLabel style={{ marginLeft: '26px' }}>
-                                  {i18n.translation.t(
-                                    'deposit.expectedPayment'
-                                  )}
-                                </LimitLabel>{' '}
+                                <LimitLabel style={{ marginLeft: "26px" }}>
+                                  {i18n.t("deposit.expectedPayment")}
+                                </LimitLabel>{" "}
                                 <LimitAmount>{` ${
                                   isNaN(this.state.amount) === false
                                     ? (
@@ -705,46 +701,44 @@ class Deposit extends Component {
                                     : 0
                                 }`}</LimitAmount>
                               </ExchangeRateContainer>
-                            )
+                            );
                           }
                         }
-                      )
-                    })
+                      );
+                    });
                   }
                 }
               })()}
               <CustomText>
-                <CustomLabel>
-                  {i18n.translation.t('deposit.promotion')}
-                </CustomLabel>
-                <CustomFormControl variant='outlined'>
+                <CustomLabel>{i18n.t("deposit.promotion")}</CustomLabel>
+                <CustomFormControl variant="outlined">
                   <CustomSelect
                     native
-                    id='customSelect'
+                    id="customSelect"
                     style={{
-                      fontSize: '28px',
-                      height: '78px',
-                      border: 'none',
-                      color: '#d09f58'
+                      fontSize: "28px",
+                      height: "78px",
+                      border: "none",
+                      color: "#d09f58",
                     }}
                     value={this.state.depositPromotion}
                     onChange={(e) => {
                       this.setState({
                         ...this.state,
-                        depositPromotion: e.target.value
-                      })
+                        depositPromotion: e.target.value,
+                      });
                     }}
                   >
-                    <option value={''}>
-                      {i18n.translation.t('deposit.msgPlsSelectPromotion')}
+                    <option value={""}>
+                      {i18n.t("deposit.msgPlsSelectPromotion")}
                     </option>
                     {this.props.general.promotionList.items
                       .filter(
                         (item) =>
                           [
-                            'FirstDeposit',
-                            'DailySecondDeposit',
-                            'DailyFirstDeposit'
+                            "FirstDeposit",
+                            "DailySecondDeposit",
+                            "DailyFirstDeposit",
                           ].indexOf(item.promotionType) >= 0
                       )
                       .map((item, index) => {
@@ -752,29 +746,29 @@ class Deposit extends Component {
                           <option value={item.id} key={index}>
                             {item.name}
                           </option>
-                        )
+                        );
                       })}
                   </CustomSelect>
                 </CustomFormControl>
               </CustomText>
               <Button
-                style={{ margin: '40px auto 0 auto' }}
+                style={{ margin: "40px auto 0 auto" }}
                 label={
                   this.state.step === 1
-                    ? i18n.translation.t('common.nextStep')
+                    ? i18n.t("common.nextStep")
                     : this.state.step === 2
-                    ? '上传'
-                    : ''
+                    ? "上传"
+                    : ""
                 }
                 onClick={this.handleDepositClick}
                 disabled={
                   this.state.disabled === true ||
                   ((this.props.wallet.depositTypeList[
                     this.state.selectedPaymentIndex
-                  ].paymentcode.toUpperCase() === 'MANUAL' ||
+                  ].paymentcode.toUpperCase() === "MANUAL" ||
                     this.props.wallet.depositTypeList[
                       this.state.selectedPaymentIndex
-                    ].paymentcode.toUpperCase() === 'APPLEPAY') &&
+                    ].paymentcode.toUpperCase() === "APPLEPAY") &&
                     null) ||
                   this.state.amount <
                     this.props.wallet.depositTypeList[
@@ -791,7 +785,7 @@ class Deposit extends Component {
                 }
               ></Button>
             </React.Fragment>
-          )
+          );
         case 2:
         case 3:
           return (
@@ -816,12 +810,12 @@ class Deposit extends Component {
               isManual={
                 this.props.wallet.depositTypeList[
                   this.state.selectedPaymentIndex
-                ].paymentcode.toUpperCase() === 'MANUAL'
+                ].paymentcode.toUpperCase() === "MANUAL"
               }
               isCrypto={
                 this.props.wallet.depositTypeList[
                   this.state.selectedPaymentIndex
-                ].method[this.state.selectedMethodIndex].methodcode === 'Crypto'
+                ].method[this.state.selectedMethodIndex].methodcode === "Crypto"
               }
               depositType={
                 this.props.wallet.depositTypeList[
@@ -836,7 +830,7 @@ class Deposit extends Component {
                 ].extended
               }
             ></Details>
-          )
+          );
         case 5:
           return (
             <DetailsManual
@@ -859,14 +853,14 @@ class Deposit extends Component {
                 ].extended
               }
             ></DetailsManual>
-          )
+          );
       }
-    }
+    };
     return (
       <Container>
         <Header
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('deposit.title')}
+          title={i18n.t("deposit.title")}
           rightContent={
             <BalanceLabel>
               {this.props.wallet.mainSymbol}
@@ -885,7 +879,7 @@ class Deposit extends Component {
 
         {(() => {
           if (this.props.wallet.depositTypeList.length <= 0) {
-            return <React.Fragment></React.Fragment>
+            return <React.Fragment></React.Fragment>;
           }
           return (
             <React.Fragment>
@@ -893,42 +887,42 @@ class Deposit extends Component {
                 <Tabs
                   value={this.state.selectedPaymentIndex}
                   onChange={this.handlePaymentChange}
-                  variant='scrollable'
-                  scrollButtons='auto'
+                  variant="scrollable"
+                  scrollButtons="auto"
                 >
                   {this.props.wallet.depositTypeList.map((item, index) => {
                     return (
                       <Tab
                         key={index}
                         value={index}
-                        label={i18n.translation.t(item.paymentcode)}
+                        label={i18n.t(item.paymentcode)}
                       >
-                        {i18n.translation.t(item.paymentcode)}
+                        {i18n.t(item.paymentcode)}
                       </Tab>
-                    )
+                    );
                   })}
                 </Tabs>
               </StyledAppBar>
               {(() => {
-                return switchView(this.state.step)
+                return switchView(this.state.step);
               })()}
             </React.Fragment>
-          )
+          );
         })()}
         <StyledModalPopup
           onClose={this.props.hideAlert}
-          open={this.props.wallet.message !== ''}
+          open={this.props.wallet.message !== ""}
         >
-          <DialoTitle>{i18n.translation.t('common.info')}</DialoTitle>
+          <DialoTitle>{i18n.t("common.info")}</DialoTitle>
           <DialoMessage>{this.props.wallet.message}</DialoMessage>
           <ButtonConfirm onClick={this.props.hideAlert}>
-            {i18n.translation.t('common.confirm')}
+            {i18n.t("common.confirm")}
           </ButtonConfirm>
         </StyledModalPopup>
 
         <Loading show={this.props.wallet.depositLoading}></Loading>
       </Container>
-    )
+    );
   }
 }
 
@@ -938,9 +932,9 @@ const mapStateToProps = (state) => {
     token: state.account.token,
     wallet: state.wallet,
     general: state.general,
-    game: state.game
-  }
-}
+    game: state.game,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     doDepositUpload: (file, fileType, orderId) =>
@@ -955,7 +949,7 @@ const mapDispatchToProps = (dispatch) => {
           promotionid,
           banktype
         )
-      )
+      );
     },
     doThirdPartyDeposit: (amount, paymentid, promotionid, banktype) => {
       dispatch(
@@ -965,11 +959,11 @@ const mapDispatchToProps = (dispatch) => {
           promotionid,
           banktype
         )
-      )
+      );
     },
     getPlayerPromotionList: (language) =>
       dispatch(
-        generalAction.getPlayerPromotionList(language, 1, 99, true, '', true)
+        generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
       ),
 
     doBankDeposit2: (amount, payment_id, promotionid, paymentcode) =>
@@ -994,13 +988,16 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(walletAction.doUploadDepositProof(id, file)),
     hideAlert: () =>
       dispatch({
-        type: WALLET_HIDEMESSAGE
+        type: WALLET_HIDEMESSAGE,
       }),
     resetDeposit: () => {
       return dispatch({
-        type: RESET_WALLETRESULT
-      })
-    }
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Deposit))
+        type: RESET_WALLETRESULT,
+      });
+    },
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Deposit));

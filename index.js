@@ -16,9 +16,6 @@ import {
   inboxAction,
 } from "@Inwoker/tgs-api";
 import debounce from "lodash.debounce";
-
-import { Wapp, setConfigApi, seti18n } from "@Inwoker/tgs-wap-t2";
-
 import config from "../../config/config";
 
 // import NameVerification from "./Card/NameVerification";
@@ -35,6 +32,43 @@ import i18n from "../../utils/i18n";
 import BlowFishEncryption from "../../utils/BlowFishEncryption";
 import Common from "../../utils/Common";
 import PopupAnnouncement from "../Share/PopupAnnouncement";
+import Login from "./Login/index";
+import Main from "./Main/index";
+import Profile from "./Profile/index";
+import NameVefiry from "./Profile/NameVerify";
+import WeChat from "./Profile/WeChat";
+import QQ from "./Profile/QQ";
+import Email from "./Profile/Email";
+import ChangeEmail from "./Profile/ChangeEmail";
+import ChangePhone from "./Profile/ChangePhone";
+import Phone from "./Profile/Phone";
+import ChangePassword from "./Profile/ChangePassword";
+import WithdrawalPassword from "./Profile/WithdrawalPassword";
+import ChangeWithdrawalPassword from "./Profile/ChangeWithdrawalPassword";
+import ResetWithdrawalPassword from "./Profile/ResetWithdrawalPassword";
+import Slot from "./Slot";
+import Promotion from "./Promotion/index";
+import PromotionDetails from "./Promotion/Details";
+import Aboutus from "./Aboutus/index";
+import Inbox from "./Inbox/index";
+import InboxDetails from "./Inbox/Details";
+import Transfer from "./Transfer/index";
+import Withdrawal from "./Withdrawal/index";
+import Download from "./Download/index";
+import WithdrawalDetails from "./Withdrawal/Details";
+import Deposit from "./Deposit/index";
+import DepositPayment from "./Deposit/Payment";
+import DepositDetails from "./Deposit/Details";
+import DepositManual from "./Deposit/Manual";
+import Card from "./Card/index";
+import AddCard from "./Card/AddCard";
+import Report from "./Report/index";
+import ForgotPassword from "./ForgotPassword/index";
+import SettingLanguage from "./Setting/Language";
+import CustomerServiceChat from "./CustomerService/index";
+import Maintenance from "./Maintenance";
+import Banned from "./Banned";
+import Loading from "./Share/Loading";
 
 const baseRouteUrl = Common.baseRouteUrl;
 
@@ -98,207 +132,207 @@ const ButtonCancel = styled(ButtonConfirm)``;
 const RouteMapping = [
   {
     path: "/",
-    component: Wapp.Main,
+    component: Main,
     alert: true,
     popup: true,
     navigate: true,
   },
   {
     path: "/main",
-    component: Wapp.Main,
+    component: Main,
     alert: true,
     popup: true,
     navigate: true,
   },
   {
     path: "/main/:page",
-    component: Wapp.Main,
+    component: Main,
     alert: true,
     popup: true,
     navigate: true,
   },
   {
     path: "/login",
-    component: Wapp.Login,
+    component: Login,
     alert: true,
   },
   {
     path: "/a/:promotionid",
-    component: Wapp.Login,
+    component: Login,
     alert: true,
   },
   {
     path: "/t/:promotionid",
-    component: Wapp.Login,
+    component: Login,
     alert: true,
   },
   {
     path: "/f/:promotionid",
-    component: Wapp.Login,
+    component: Login,
     alert: true,
   },
   {
     path: "/profile",
-    component: Wapp.Profile,
+    component: Profile,
     alert: true,
   },
   {
     path: "/profile/name",
-    component: Wapp.NameVefiry,
+    component: NameVefiry,
     alert: true,
   },
   {
     path: "/profile/wechat",
-    component: Wapp.WeChat,
+    component: WeChat,
     alert: true,
   },
   {
     path: "/profile/qq",
-    component: Wapp.QQ,
+    component: QQ,
     alert: true,
   },
   {
     path: "/profile/email",
-    component: Wapp.Email,
+    component: Email,
     alert: true,
   },
   {
     path: "/profile/changeemail",
-    component: Wapp.ChangeEmail,
+    component: ChangeEmail,
     alert: true,
   },
   {
     path: "/profile/changephone",
-    component: Wapp.ChangePhone,
+    component: ChangePhone,
     alert: true,
   },
   {
     path: "/profile/phone",
-    component: Wapp.Phone,
+    component: Phone,
     alert: true,
   },
   {
     path: "/profile/changepassword",
-    component: Wapp.ChangePassword,
+    component: ChangePassword,
     alert: true,
   },
   {
     path: "/profile/withdrawalpassword",
-    component: Wapp.WithdrawalPassword,
+    component: WithdrawalPassword,
     alert: true,
   },
   {
     path: "/profile/resetwithdrawalpassword",
-    component: Wapp.ResetWithdrawalPassword,
+    component: ResetWithdrawalPassword,
     alert: true,
   },
   {
     path: "/profile/changewithdrawalpassword",
-    component: Wapp.ChangeWithdrawalPassword,
+    component: ChangeWithdrawalPassword,
     alert: true,
   },
 
   {
     path: "/slots/:platform?/:type?",
-    component: Wapp.Slot,
+    component: Slot,
     alert: true,
     navigate: true,
   },
   {
     path: "/promotion-list",
-    component: Wapp.Promotion,
+    component: Promotion,
     alert: true,
     navigate: true,
   },
   {
     path: "/promotion/:id?",
-    component: Wapp.PromotionDetails,
+    component: PromotionDetails,
     alert: true,
     navigate: true,
     promoProps: true,
   },
   {
     path: "/aboutus",
-    component: Wapp.Aboutus,
+    component: Aboutus,
     alert: true,
     navigate: true,
   },
 
   {
     path: "/inbox",
-    component: Wapp.Inbox,
+    component: Inbox,
     alert: true,
     navigate: true,
   },
   {
     path: "/inbox/details/:id",
-    component: Wapp.InboxDetails,
+    component: InboxDetails,
     alert: true,
     navigate: true,
     screenHeight: true,
   },
   {
     path: "/transfer",
-    component: Wapp.Transfer,
+    component: Transfer,
     alert: true,
     navigate: true,
   },
   {
     path: "/withdrawal",
-    component: Wapp.Withdrawal,
+    component: Withdrawal,
     alert: true,
     navigate: true,
   },
   {
     path: "/withdrawal/details",
-    component: Wapp.WithdrawalDetails,
+    component: WithdrawalDetails,
     alert: true,
     navigate: true,
   },
 
   {
     path: "/deposit/:promotionid?",
-    component: Wapp.Deposit,
+    component: Deposit,
     alert: true,
     navigate: true,
   },
   {
     path: "/manual/:paymentId?",
-    component: Wapp.Deposit,
+    component: Deposit,
     alert: true,
     navigate: true,
   },
   {
     path: "/deposit/payment/:id/:bank/:amount/:bonus?",
-    component: Wapp.DepositPayment,
+    component: DepositPayment,
     alert: true,
     navigate: true,
   },
   {
     path: "/deposit/details",
-    component: Wapp.DepositDetails,
+    component: DepositDetails,
     alert: true,
   },
   {
     path: "/deposit/manual",
-    component: Wapp.DepositManual,
+    component: DepositManual,
     alert: true,
   },
   {
     path: "/card",
-    component: Wapp.Card,
+    component: Card,
     alert: true,
     navigate: true,
   },
   {
     path: "/card/add",
-    component: Wapp.AddCard,
+    component: AddCard,
     alert: true,
     navigate: true,
   },
   {
     path: "/maintenance",
-    component: Wapp.Maintenance,
+    component: Maintenance,
     navigate: true,
     alert: true,
     GetSupportUrl: true,
@@ -319,7 +353,7 @@ const RouteMapping = [
 
   {
     path: "/report/:tab?",
-    component: Wapp.Report,
+    component: Report,
     alert: true,
     navigate: true,
   },
@@ -332,11 +366,11 @@ const RouteMapping = [
   // },
   {
     path: "/chat/:userid?/:name?/:question?",
-    component: Wapp.CustomerServiceChat,
+    component: CustomerServiceChat,
   },
   {
     path: "/forgot-password",
-    component: Wapp.ForgotPassword,
+    component: ForgotPassword,
     alert: true,
   },
   // {
@@ -372,12 +406,12 @@ const RouteMapping = [
   //},
   {
     path: "/setting/language",
-    component: Wapp.SettingLanguage,
+    component: SettingLanguage,
     screenHeight: true,
   },
   {
     path: "/banned",
-    component: Wapp.Banned,
+    component: Banned,
     navigate: true,
   },
 ];
@@ -421,8 +455,6 @@ class Wap extends Component {
     this.props.updateScreenSize(w, h, scale);
   };
   async componentDidMount() {
-    seti18n(i18n);
-    setConfigApi(config);
     Common.loadScript("/js/config.js", () => {
       Common.loadScript("/js/iovation.js", () => {});
     });
@@ -701,7 +733,7 @@ class Wap extends Component {
         this.props.general.token == null) &&
       this.props.general.isMaintenance === false
     ) {
-      return <Wapp.Loading show={this.state.loading}></Wapp.Loading>;
+      return <Loading show={this.state.loading}></Loading>;
     } else {
       return (
         <>

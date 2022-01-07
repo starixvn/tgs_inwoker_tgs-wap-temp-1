@@ -1,30 +1,30 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import React from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
 // import ReactDOM from "react-dom";
-import config from '../../../../config/config'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import Slick from 'react-slick'
+import config from "../../../../config/config";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slick from "react-slick";
 
-import i18n from '../../../../utils/i18n'
+import i18n from "../../../../utils/i18n";
 const SlideImage = styled.img`
   height: 310px;
   width: 750px;
 
   border: none;
   margin: 0 auto;
-`
+`;
 const ATag = styled.a`
   text-decoration: none;
-`
+`;
 
 const settings = {
   dots: true,
-  className: 'center',
+  className: "center",
   centerMode: true,
   infinite: true,
-  centerPadding: '0',
+  centerPadding: "0",
   slidesToShow: 1,
   speed: 500,
   arrows: false,
@@ -32,41 +32,39 @@ const settings = {
   appendDots: (dots) => (
     <div
       style={{
-        marginBottom: '30px'
+        marginBottom: "30px",
       }}
     >
-      <ul style={{ margin: '0px' }}> {dots} </ul>
+      <ul style={{ margin: "0px" }}> {dots} </ul>
     </div>
   ),
   customPaging: (a) => {
     return (
       <div
         style={{
-          border: '2px solid #fff',
-          borderRadius: '50%',
-          width: '12px',
-          height: '12px'
+          border: "2px solid #fff",
+          borderRadius: "50%",
+          width: "12px",
+          height: "12px",
         }}
       ></div>
-    )
+    );
   },
-  beforeChange: (current, next) => {}
-}
+  beforeChange: (current, next) => {},
+};
 class Slider extends React.Component {
   render() {
-    const isChinese =
-      i18n.translation.language === 'zh-CN' ||
-      i18n.translation.language === 'zh-TW'
+    const isChinese = i18n.language === "zh-CN" || i18n.language === "zh-TW";
     return (
       <Slick {...settings}>
         {(() => {
           return this.props.general.banner.map((item, index) => {
             return (
-              <ATag href={item.navurl} key={index} target='_blank'>
+              <ATag href={item.navurl} key={index} target="_blank">
                 <SlideImage src={item.mobileurl} alt={item.alt}></SlideImage>
               </ATag>
-            )
-          })
+            );
+          });
         })()}
         {/* <ATag>
           <SlideImage src={isChinese ? Image1 : Image1En}></SlideImage>
@@ -76,18 +74,18 @@ class Slider extends React.Component {
         </ATag> */}
         {/* {this.props.list.map((row, index) => {
           return (
-            <ATag href={"/" + i18n.translation.language + "/" + row.url} key={index}>
+            <ATag href={"/" + i18n.language + "/" + row.url} key={index}>
               <SlideImage src={row.file_url}></SlideImage>
             </ATag>
           );
         })} */}
       </Slick>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
   return {
-    general: state.general
-  }
-}
-export default connect(mapStateToProps, null)(Slider)
+    general: state.general,
+  };
+};
+export default connect(mapStateToProps, null)(Slider);

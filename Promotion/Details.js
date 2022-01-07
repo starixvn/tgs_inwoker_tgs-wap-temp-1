@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { withRouter } from 'react-router-dom'
-import Header from '../../Wap/Share/Header'
-import Button from '../../Wap/Share/Button'
-import { generalAction } from '@Inwoker/tgs-api'
-import i18n from '../../../utils/i18n'
-import Common from '../../../utils/Common'
-const moment = require('moment')
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { withRouter } from "react-router-dom";
+import Header from "../../Wap/Share/Header";
+import Button from "../../Wap/Share/Button";
+import { generalAction } from "@Inwoker/tgs-api";
+import i18n from "../../../utils/i18n";
+import Common from "../../../utils/Common";
+const moment = require("moment");
 const Content = styled.div`
   width: 100%;
 
   padding: 0 30px 30px 30px;
-`
+`;
 const PromoDetailImage = styled.div`
   width: 750px;
   height: 304px;
@@ -20,7 +20,7 @@ const PromoDetailImage = styled.div`
   background-size: 100% 100%;
   position: relative;
   margin-bottom: 20px;
-`
+`;
 const PromoImgTitle = styled.div`
   color: #fff;
   position: absolute;
@@ -29,14 +29,14 @@ const PromoImgTitle = styled.div`
   height: 230px;
   margin: 33px 0 0 40px;
   line-height: 0.95em;
-`
+`;
 const EventTitle = styled.div`
   color: #7e0000;
   margin-bottom: 10px;
   font-size: 28px;
   font-family: AdobeHeitiR;
   margin-left: -16px;
-`
+`;
 
 const EventText = styled.div`
   font-size: 22px;
@@ -44,39 +44,39 @@ const EventText = styled.div`
   font-family: AdobeHeitiR;
   line-height: 26px;
   margin-bottom: 20px;
-`
+`;
 const PromoDesc = styled.div`
   font-size: 22px;
-`
+`;
 class Details extends Component {
   constructor(props) {
-    super(props)
-    var index = -1
-    var details = null
+    super(props);
+    var index = -1;
+    var details = null;
     for (var i = 0; i < this.props.general.promotionList.items.length; i++) {
       if (
         this.props.general.promotionList.items[i].id ===
         this.props.match.params.id
       ) {
-        index = i
-        details = this.props.general.promotionList.items[i]
-        break
+        index = i;
+        details = this.props.general.promotionList.items[i];
+        break;
       }
     }
 
     if (index === -1) {
       this.props.appHistory.replace({
-        pathname: '/' + i18n.translation.language + '/promotion-list'
-      })
+        pathname: "/" + i18n.language + "/promotion-list",
+      });
     }
 
     this.state = {
       details: details,
       index: index,
-      loading: false
-    }
+      loading: false,
+    };
 
-    document.getElementsByTagName('body')[0].style.background = '#fff'
+    document.getElementsByTagName("body")[0].style.background = "#fff";
   }
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -84,56 +84,56 @@ class Details extends Component {
       prevProps.general.joinPromoResult !== this.props.general.joinPromoResult
     ) {
       if (this.props.general.joinPromoResult.success === true) {
-        this.props.alert('', i18n.translation.t('promotion.joinSuccess'))
+        this.props.alert("", i18n.t("promotion.joinSuccess"));
       } else {
         if (this.props.general.joinPromoResult.err === 0) {
-          this.props.alert('', i18n.translation.t('promotion.promoJoint'))
+          this.props.alert("", i18n.t("promotion.promoJoint"));
         }
       }
     }
   }
 
   componentWillUnmount() {
-    document.getElementsByTagName('body')[0].style.background = ''
+    document.getElementsByTagName("body")[0].style.background = "";
   }
   handleBonusChange = (e) => {
-    this.setState({ ...this.state, bonusSubId: parseInt(e.target.value) })
-  }
+    this.setState({ ...this.state, bonusSubId: parseInt(e.target.value) });
+  };
   performRedirect = (id, promotionType) => {
-    this.props.joinPromotion(id)
+    this.props.joinPromotion(id);
     if (
-      ['FirstDeposit', 'DailySecondDeposit', 'DailyFirstDeposit'].indexOf(
+      ["FirstDeposit", "DailySecondDeposit", "DailyFirstDeposit"].indexOf(
         promotionType
       ) >= 0
     ) {
       this.props.appHistory.push({
-        pathname: '/' + i18n.translation.language + '/deposit/' + id
-      })
+        pathname: "/" + i18n.language + "/deposit/" + id,
+      });
     }
-  }
+  };
 
   handleJoinClick = (id, promotionType) => {
-    if (this.props.token === null || this.props.token === '') {
+    if (this.props.token === null || this.props.token === "") {
       this.props.appHistory.replace({
-        pathname: '/' + i18n.translation.language + '/'
-      })
+        pathname: "/" + i18n.language + "/",
+      });
     } else {
       if (this.state.details.vipLevels.length === 0) {
         //if nothing inside viplevels
-        this.performRedirect(id, promotionType)
+        this.performRedirect(id, promotionType);
       } else {
         this.state.details.vipLevels.filter((levels) => {
           if (levels === this.props.account.info.member_level_id) {
             //check every single level whether it match member level
-            this.performRedirect(id, promotionType)
+            this.performRedirect(id, promotionType);
           }
-        })
+        });
       }
     }
-  }
+  };
   async componentDidMount() {
     // if (this.props.promo == null) {
-    //   this.props.appHistory.replace("/" + i18n.translation.language + "/promotion-list");
+    //   this.props.appHistory.replace("/" + i18n.language + "/promotion-list");
     // } else {
     //   BonusService.GetActivityDetails(this.props.promo.id).then((response) => {
     //     if (response.IsSuccess) {
@@ -149,13 +149,11 @@ class Details extends Component {
   }
 
   handleBackClick = () => {
-    this.props.appHistory.replace(
-      '/' + i18n.translation.language + '/promotion-list'
-    )
-  }
+    this.props.appHistory.replace("/" + i18n.language + "/promotion-list");
+  };
 
   render() {
-    if (this.state.details === null) return <React.Fragment></React.Fragment>
+    if (this.state.details === null) return <React.Fragment></React.Fragment>;
     return (
       <React.Fragment>
         <Header
@@ -163,7 +161,7 @@ class Details extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('promotion.promoDetail')}
+          title={i18n.t("promotion.promoDetail")}
         ></Header>
         {(() => {
           if (this.state.details.localization !== null) {
@@ -177,80 +175,78 @@ class Details extends Component {
                 }
                 onClick={() => this.handlePromoClick(this.state.details.id)}
               ></PromoDetailImage>
-            )
+            );
           } else {
             return (
               <PromoDetailImage
                 img={this.state.details.mobileBanner}
                 onClick={() => this.handlePromoClick(this.state.details.id)}
               ></PromoDetailImage>
-            )
+            );
           }
         })()}
 
         <Content>
-          <EventTitle>
-            【{i18n.translation.t('promotion.promoDetail')}】
-          </EventTitle>
+          <EventTitle>【{i18n.t("promotion.promoDetail")}】</EventTitle>
           <EventText>
-            {i18n.translation.t('promotion.promoTarget')}：
+            {i18n.t("promotion.promoTarget")}：
             <br />
             {this.state.details.vipLevels.map((a, index) => {
               return (
                 <span key={index}>
                   VIP{a}
-                  {index < this.state.details.vipLevels.length - 1 && ', '}
+                  {index < this.state.details.vipLevels.length - 1 && ", "}
                 </span>
-              )
+              );
             })}
           </EventText>
           <EventText>
-            {i18n.translation.t('promotion.promoDate')}：
+            {i18n.t("promotion.promoDate")}：
             <br />
-            {moment(this.state.details.from).format('YYYY/MM/DD HH:mm:ss')}
-            {' - '}
-            {moment(this.state.details.to).format('YYYY/MM/DD HH:mm:ss')}
+            {moment(this.state.details.from).format("YYYY/MM/DD HH:mm:ss")}
+            {" - "}
+            {moment(this.state.details.to).format("YYYY/MM/DD HH:mm:ss")}
           </EventText>
           <PromoDesc
             dangerouslySetInnerHTML={{
               __html:
-                '<div>' +
+                "<div>" +
                 (() => {
                   if (
                     this.state.details.localization !== null &&
                     this.state.details.localization.content &&
                     this.state.details.localization.content !== null
                   ) {
-                    return this.state.details.localization.content
+                    return this.state.details.localization.content;
                   } else {
-                    return this.state.details.content
+                    return this.state.details.content;
                   }
                 })() +
-                '</div>'
+                "</div>",
             }}
           ></PromoDesc>
           <PromoDesc
             dangerouslySetInnerHTML={{
               __html:
-                '<div>' +
+                "<div>" +
                 (() => {
                   if (
                     this.state.details.localization !== null &&
                     this.state.details.localization.terms &&
                     this.state.details.localization.terms !== null
                   ) {
-                    return this.state.details.localization.terms
+                    return this.state.details.localization.terms;
                   } else {
-                    return this.state.details.terms
+                    return this.state.details.terms;
                   }
                 })() +
-                '</div>'
+                "</div>",
             }}
           ></PromoDesc>
         </Content>
         <Button
-          style={{ margin: '40px auto 0 auto' }}
-          label={i18n.translation.t('promotion.joinPromo')}
+          style={{ margin: "40px auto 0 auto" }}
+          label={i18n.t("promotion.joinPromo")}
           onClick={() =>
             this.handleJoinClick(
               this.state.details.id,
@@ -259,20 +255,23 @@ class Details extends Component {
           }
         ></Button>
       </React.Fragment>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
   return {
     general: state.general,
-    token: state.account.token
-  }
-}
+    token: state.account.token,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     joinPromotion: (id) => {
-      dispatch(generalAction.joinPromotion(id))
-    }
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Details))
+      dispatch(generalAction.joinPromotion(id));
+    },
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Details));

@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import styled from 'styled-components'
-import i18n from '../../../utils/i18n'
-import config from '../../../config/config'
+import React, { Component } from "react";
+import styled from "styled-components";
+import i18n from "../../../utils/i18n";
+import config from "../../../config/config";
 const Container = styled.div`
   margin: 50px auto 0 auto;
 
@@ -17,7 +17,7 @@ const Container = styled.div`
   border: solid 2px #ffffff;
   background-color: ${({ theme }) => theme.secondary};
   border-radius: 10px;
-`
+`;
 
 const SwitchContainer = styled.div`
   width: 319px;
@@ -29,7 +29,7 @@ const SwitchContainer = styled.div`
     ${({ theme }) => theme.primaryGradient},
     ${({ theme }) => theme.primary}
   );
-`
+`;
 
 const SwitchTextContainerComponent = styled.div`
   width: 319px;
@@ -46,21 +46,21 @@ const SwitchTextContainerComponent = styled.div`
   padding-top: 14px;
 
   background: ${({ active, theme }) => {
-    return active ? theme.primary : theme.secondary
+    return active ? theme.primary : theme.secondary;
   }};
-`
+`;
 const SwitchTextLeftContainer = styled(SwitchTextContainerComponent)`
   left: 0;
-`
+`;
 const SwitchTextrightContainer = styled(SwitchTextContainerComponent)`
   right: 0;
-`
+`;
 class ButtonSwitch extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      activation: config.features.SMSVerification
-    }
+      activation: config.features.SMSVerification,
+    };
   }
   // constructor(props) {
   //   super(props);
@@ -76,32 +76,32 @@ class ButtonSwitch extends Component {
     return (
       <Container>
         <SwitchTextLeftContainer
-          style={{ width: this.state.activation ? '200px' : '300px' }}
+          style={{ width: this.state.activation ? "200px" : "300px" }}
           active={this.props.selected === 0}
           onClick={() => this.props.handleChangeSelection(0)}
         >
-          {i18n.translation.t('common.login')}
+          {i18n.t("common.login")}
         </SwitchTextLeftContainer>
         <SwitchTextrightContainer
           style={
-            this.state.activation ? { width: '200px', right: '218px' } : {}
+            this.state.activation ? { width: "200px", right: "218px" } : {}
           }
           active={this.props.selected === 1}
           onClick={() => this.props.handleChangeSelection(1)}
         >
-          {i18n.translation.t('common.register')}
+          {i18n.t("common.register")}
         </SwitchTextrightContainer>
         {this.state.activation ? (
           <SwitchTextrightContainer
-            style={{ width: '200px' }}
+            style={{ width: "200px" }}
             active={this.props.selected === 2}
             onClick={() => this.props.handleChangeSelection(2)}
           >
-            {i18n.translation.t('web.register.activation')}
+            {i18n.t("web.register.activation")}
           </SwitchTextrightContainer>
         ) : null}
       </Container>
-    )
+    );
   }
 }
-export default ButtonSwitch
+export default ButtonSwitch;

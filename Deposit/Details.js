@@ -1,95 +1,95 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { WalletService } from '@Inwoker/tgs-api'
-import { withRouter } from 'react-router-dom'
-import { withStyles } from '@material-ui/core/styles'
-import Modal from '@material-ui/core/Dialog'
-import Header from '../Share/Header'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { WalletService } from "@Inwoker/tgs-api";
+import { withRouter } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Dialog";
+import Header from "../Share/Header";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-import 'react-lazy-load-image-component/src/effects/blur.css'
+import "react-lazy-load-image-component/src/effects/blur.css";
 
-import { Textfit } from 'react-textfit'
-import Button from '../../Wap/Share/Button'
-import Loading from '../../Wap/Share/Loading'
-import i18n from '../../../utils/i18n'
-import config from '../../../config/config'
-const Container = styled.div``
+import { Textfit } from "react-textfit";
+import Button from "../../Wap/Share/Button";
+import Loading from "../../Wap/Share/Loading";
+import i18n from "../../../utils/i18n";
+import config from "../../../config/config";
+const Container = styled.div``;
 const ContentBg = styled.div`
   background: #fff;
   width: 100%;
 
   padding: 60px 60px 30px 60px;
-`
+`;
 const BalanceLabel = styled.div`
   font-size: 30px;
   text-align: right;
   color: #979797;
-`
+`;
 const DepositAmount = styled.div`
   font-weight: bold;
   font-size: 80px;
   padding-left: 20px;
   text-align: right;
   color: ${({ theme }) => theme.secondary};
-`
+`;
 const SplitLine = styled.div`
   height: 2px;
   background-color: #f1f1f1;
   margin: 50px 0;
-`
+`;
 const LeftLabel = styled.div`
   font-size: 24px;
   color: #979797;
   float: left;
-`
+`;
 const BankImg = styled.img`
   margin: 0 auto;
   display: block;
-`
+`;
 const RightLabel = styled.div`
   font-size: 24px;
   color: #333333;
   float: right;
   font-weight: bold;
-`
+`;
 const SplitBoth = styled.div`
   clear: both;
   margin: 30px 0;
-`
+`;
 
 const TheGapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 const TheQRCode = styled.img`
   height: 250px;
   width: 250px;
-`
+`;
 
 const StyledModalPopup = withStyles((theme) => ({
   paper: {
-    borderRadius: '50px',
-    fontSize: '28px',
-    color: '#666666',
-    padding: '30px',
-    width: '600px',
-    maxWidth: '690px',
+    borderRadius: "50px",
+    fontSize: "28px",
+    color: "#666666",
+    padding: "30px",
+    width: "600px",
+    maxWidth: "690px",
 
-    display: 'block'
-  }
-}))(Modal)
+    display: "block",
+  },
+}))(Modal);
 const DialoMessage = styled.div`
   font-size: 26px;
   margin: 20px 45px;
   color: #4a4a4a;
   line-height: 1.8em;
   text-align: center;
-`
+`;
 const ButtonConfirm = styled.div`
   width: 250px;
   height: 90px;
@@ -108,65 +108,65 @@ const ButtonConfirm = styled.div`
     ${({ theme }) => theme.primary}
   );
   color: #ffffff;
-`
+`;
 class Details extends Component {
   state = {
     expired_time: 0,
     loading: false,
     openPopup: true,
     files: [],
-    url: '',
-    exchangeRate: { buyprice: 0, sellprice: 0 }
-  }
+    url: "",
+    exchangeRate: { buyprice: 0, sellprice: 0 },
+  };
   componentDidMount() {
     if (this.props.isCrypto === true) {
-      if (this.props.depositType === 'LeePay') {
+      if (this.props.depositType === "LeePay") {
         WalletService.GetLeePayExchangeRate(this.props.channel.id).then(
           (response) => {
             if (response.IsSuccess) {
-              this.setState({ ...this.state, exchangeRate: response.data })
+              this.setState({ ...this.state, exchangeRate: response.data });
             } else {
               this.setState({
-                ...this.state
-              })
+                ...this.state,
+              });
             }
           }
-        )
+        );
       } else {
         WalletService.GetUmPayExchangeRate(this.props.channel.id).then(
           (response) => {
             if (response.IsSuccess) {
               this.setState({
                 ...this.state,
-                exchangeRate: response.data.rate
-              })
+                exchangeRate: response.data.rate,
+              });
             } else {
               this.setState({
                 ...this.state,
-                exchangeRate: this.initialState.exchangeRate
-              })
+                exchangeRate: this.initialState.exchangeRate,
+              });
             }
           }
-        )
+        );
       }
       this.setState({
         ...this.state,
-        openPopup: true
-      })
+        openPopup: true,
+      });
     } else {
-      if (this.props.depositType.toUpperCase() === 'HELP2PAY') {
+      if (this.props.depositType.toUpperCase() === "HELP2PAY") {
         this.setState({
           ...this.state,
           openPopup: true,
           url:
-            config.baseUrl.replace('/api/', '') +
-            this.props.depositResult.data.paymenturl
-        })
+            config.baseUrl.replace("/api/", "") +
+            this.props.depositResult.data.paymenturl,
+        });
       } else {
         this.setState({
           ...this.state,
-          openPopup: this.props.isManual ? false : true
-        })
+          openPopup: this.props.isManual ? false : true,
+        });
       }
     }
   }
@@ -182,7 +182,7 @@ class Details extends Component {
   //   this.setCountdownTimer();
   // };
   handleDepositConfirmClick = (e) => {
-    this.props.appHistory.replace('/' + i18n.translation.language + '/transfer')
+    this.props.appHistory.replace("/" + i18n.language + "/transfer");
     // this.setState({ ...this.state, loading: true });
     // WalletService.CheckDeposit(this.props.token, this.props.order.id).then(
     //   response => {
@@ -217,59 +217,59 @@ class Details extends Component {
     //     // }
     //   }
     // );
-  }
+  };
   handleFileChange = (e) => {
-    var files = e.target.files
-    var fileName = e.target.value.toLowerCase()
+    var files = e.target.files;
+    var fileName = e.target.value.toLowerCase();
     if (files.length > 0) {
       if (
-        !fileName.endsWith('.jpg') &&
-        !fileName.endsWith('.jpeg') &&
-        !fileName.endsWith('.png') &&
-        !fileName.endsWith('.tiff')
+        !fileName.endsWith(".jpg") &&
+        !fileName.endsWith(".jpeg") &&
+        !fileName.endsWith(".png") &&
+        !fileName.endsWith(".tiff")
       ) {
-        this.props.alert('', i18n.translation.t('deposit.msgInvalidFileType'))
-        e.target.value = null
-        return false
+        this.props.alert("", i18n.t("deposit.msgInvalidFileType"));
+        e.target.value = null;
+        return false;
       }
-      const fileSize = Math.round(files[0].size / 1024)
+      const fileSize = Math.round(files[0].size / 1024);
       if (fileSize > 10240) {
-        this.props.alert('', i18n.translation.t('deposit.msgInvalidFileSize'))
-        e.target.value = null
+        this.props.alert("", i18n.t("deposit.msgInvalidFileSize"));
+        e.target.value = null;
       } else {
-        this.setState({ ...this.state, files: files })
+        this.setState({ ...this.state, files: files });
       }
     }
-  }
+  };
   handleUploadClick = () => {
-    this.props.performUploadImage(this.state.files[0])
-  }
+    this.props.performUploadImage(this.state.files[0]);
+  };
   handleDepositCancelClick = (e) => {
-    this.props.appHistory.replace('/' + i18n.translation.language + '/deposit')
-  }
+    this.props.appHistory.replace("/" + i18n.language + "/deposit");
+  };
   handleOpenPopupUrl = () => {
-    if (this.state.url !== '') {
-      window.open(this.state.url, '_blank')
+    if (this.state.url !== "") {
+      window.open(this.state.url, "_blank");
     } else {
-      window.open(this.props.depositResult.data.paymenturl, '_blank')
+      window.open(this.props.depositResult.data.paymenturl, "_blank");
     }
 
     this.setState({
       ...this.state,
       openPopup: false,
-      url: ''
-    })
-  }
+      url: "",
+    });
+  };
   handleClosePopup = () => {
     this.setState({
       ...this.state,
 
-      openPopup: false
-    })
-  }
+      openPopup: false,
+    });
+  };
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   render() {
     return (
       <Container>
@@ -279,13 +279,11 @@ class Details extends Component {
               ? this.props.extended.qrCodeFileUrl && (
                   <TheQRCode src={this.props.extended.qrCodeFileUrl} />
                 )
-              : ''}
+              : ""}
             <div>
-              <BalanceLabel>
-                {i18n.translation.t('deposit.depositAmount')}：
-              </BalanceLabel>
+              <BalanceLabel>{i18n.t("deposit.depositAmount")}：</BalanceLabel>
               <DepositAmount>
-                <Textfit mode='single' forceSingleModeWidth={false}>
+                <Textfit mode="single" forceSingleModeWidth={false}>
                   {this.props.amount}
                 </Textfit>
               </DepositAmount>
@@ -293,33 +291,29 @@ class Details extends Component {
           </TheGapper>
 
           <SplitLine></SplitLine>
-          <LeftLabel>{i18n.translation.t('deposit.orderNumber')}</LeftLabel>
+          <LeftLabel>{i18n.t("deposit.orderNumber")}</LeftLabel>
           <RightLabel>
             {this.props.isManual === true
               ? this.props.depositResult.data
               : this.props.depositResult.data.formid}
           </RightLabel>
           <SplitBoth></SplitBoth>
-          <LeftLabel>{i18n.translation.t('deposit.depositMethod')}</LeftLabel>
-          <RightLabel>{i18n.translation.t(this.props.methodcode)}</RightLabel>
+          <LeftLabel>{i18n.t("deposit.depositMethod")}</LeftLabel>
+          <RightLabel>{i18n.t(this.props.methodcode)}</RightLabel>
           <SplitBoth></SplitBoth>
-          <LeftLabel>{i18n.translation.t('deposit.depositTunnel')}</LeftLabel>
+          <LeftLabel>{i18n.t("deposit.depositTunnel")}</LeftLabel>
           <RightLabel>{this.props.channel.channelname}</RightLabel>
           <SplitBoth></SplitBoth>
 
           {(() => {
             if (this.props.isCrypto === true) {
-              if (this.props.depositType === 'LeePay') {
+              if (this.props.depositType === "LeePay") {
                 return (
                   <React.Fragment>
-                    <LeftLabel>
-                      {i18n.translation.t('deposit.exchangeRate')}
-                    </LeftLabel>
+                    <LeftLabel>{i18n.t("deposit.exchangeRate")}</LeftLabel>
                     <RightLabel>{this.state.exchangeRate.buyprice}</RightLabel>
                     <SplitBoth></SplitBoth>
-                    <LeftLabel>
-                      {i18n.translation.t('deposit.expectedPayment')}
-                    </LeftLabel>
+                    <LeftLabel>{i18n.t("deposit.expectedPayment")}</LeftLabel>
                     <RightLabel>
                       {(
                         this.props.amount / this.state.exchangeRate.buyprice
@@ -327,23 +321,23 @@ class Details extends Component {
                     </RightLabel>
                     <SplitBoth></SplitBoth>
                   </React.Fragment>
-                )
+                );
               } else {
                 return Object.keys(this.state.exchangeRate).map((key) => {
                   return Object.keys(this.state.exchangeRate[key]).map(
                     (key2) => {
-                      if (key2 === 'HKD') {
+                      if (key2 === "HKD") {
                         return (
                           <React.Fragment>
                             <LeftLabel>
-                              {i18n.translation.t('deposit.exchangeRate')}
+                              {i18n.t("deposit.exchangeRate")}
                             </LeftLabel>
                             <RightLabel>
                               {this.state.exchangeRate[key][key2].rate}
                             </RightLabel>
                             <SplitBoth></SplitBoth>
                             <LeftLabel>
-                              {i18n.translation.t('deposit.expectedPayment')}
+                              {i18n.t("deposit.expectedPayment")}
                             </LeftLabel>
                             <RightLabel>
                               {(
@@ -353,11 +347,11 @@ class Details extends Component {
                             </RightLabel>
                             <SplitBoth></SplitBoth>
                           </React.Fragment>
-                        )
+                        );
                       }
                     }
-                  )
-                })
+                  );
+                });
               }
             }
           })()}
@@ -365,24 +359,20 @@ class Details extends Component {
           {(() => {
             if (
               this.props.isManual === true &&
-              this.props.methodcode === 'BankTransfer'
+              this.props.methodcode === "BankTransfer"
             ) {
               return (
                 <React.Fragment>
                   <BankImg src={this.props.extended.logo}></BankImg>
                   <SplitBoth></SplitBoth>
-                  <LeftLabel>
-                    {i18n.translation.t('deposit.receiverBank')}
-                  </LeftLabel>
+                  <LeftLabel>{i18n.t("deposit.receiverBank")}</LeftLabel>
                   <RightLabel>{this.props.extended.name}</RightLabel>
                   <SplitBoth></SplitBoth>
-                  <LeftLabel>
-                    {i18n.translation.t('deposit.receiverAccount')}
-                  </LeftLabel>
+                  <LeftLabel>{i18n.t("deposit.receiverAccount")}</LeftLabel>
                   <RightLabel>{this.props.extended.bankAccount}</RightLabel>
                   <SplitBoth></SplitBoth>
                 </React.Fragment>
-              )
+              );
             }
           })()}
 
@@ -390,18 +380,16 @@ class Details extends Component {
             if (this.props.isManual === true) {
               return (
                 <React.Fragment>
-                  <LeftLabel>
-                    {i18n.translation.t('deposit.uploadReceipt')}
-                  </LeftLabel>
+                  <LeftLabel>{i18n.t("deposit.uploadReceipt")}</LeftLabel>
                   <RightLabel>
                     <input
-                      type='file'
+                      type="file"
                       onChange={this.handleFileChange}
-                      accept='image/jpg, image/jpeg, image/png, image/tiff'
+                      accept="image/jpg, image/jpeg, image/png, image/tiff"
                     ></input>
                   </RightLabel>
                 </React.Fragment>
-              )
+              );
             }
           })()}
         </ContentBg>
@@ -409,22 +397,22 @@ class Details extends Component {
           if (this.props.isManual === true) {
             return (
               <Button
-                style={{ margin: '20px auto' }}
-                labelStyle={{ color: '#fff' }}
-                label={i18n.translation.t('deposit.uploadReceipt')}
+                style={{ margin: "20px auto" }}
+                labelStyle={{ color: "#fff" }}
+                label={i18n.t("deposit.uploadReceipt")}
                 onClick={this.handleUploadClick}
                 disabled={this.state.files.length <= 0}
               ></Button>
-            )
+            );
           }
         })()}
         <Button
-          style={{ margin: '20px auto' }}
-          labelStyle={{ color: '#fff' }}
+          style={{ margin: "20px auto" }}
+          labelStyle={{ color: "#fff" }}
           label={
             this.props.isManual === true
-              ? i18n.translation.t('common.back')
-              : i18n.translation.t('common.complete')
+              ? i18n.t("common.back")
+              : i18n.t("common.complete")
           }
           onClick={this.props.handleRestartClick}
         ></Button>
@@ -433,23 +421,23 @@ class Details extends Component {
           onClose={this.handleClosePopup}
           open={this.state.openPopup}
         >
-          <DialoMessage>{i18n.translation.t('deposit.msgDialog')}</DialoMessage>
+          <DialoMessage>{i18n.t("deposit.msgDialog")}</DialoMessage>
           <ButtonConfirm
             onClick={this.handleOpenPopupUrl}
-            style={{ float: 'left' }}
+            style={{ float: "left" }}
           >
-            {i18n.translation.t('common.confirm')}
+            {i18n.t("common.confirm")}
           </ButtonConfirm>
           <ButtonConfirm
             onClick={this.handleClosePopup}
-            style={{ float: 'right' }}
+            style={{ float: "right" }}
           >
-            {i18n.translation.t('common.cancel')}
+            {i18n.t("common.cancel")}
           </ButtonConfirm>
         </StyledModalPopup>
         <Loading show={this.state.loading}></Loading>
       </Container>
-    )
+    );
   }
 }
 
@@ -459,7 +447,7 @@ const mapStateToProps = (state) => {
     screenHeight: state.ui.screenHeight,
 
     balance: state.account.info.balance,
-    token: state.account.token
-  }
-}
-export default connect(mapStateToProps, null)(withRouter(Details))
+    token: state.account.token,
+  };
+};
+export default connect(mapStateToProps, null)(withRouter(Details));

@@ -1,25 +1,25 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import Textbox from '../Share/Textbox'
-import i18n from '../../../utils/i18n'
-import BottomNote from '../Share/BottomNote'
-import BaseProfile from './BaseProfile'
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import Textbox from "../Share/Textbox";
+import i18n from "../../../utils/i18n";
+import BottomNote from "../Share/BottomNote";
+import BaseProfile from "./BaseProfile";
 
-import { accountAction, RESET_ACCOUNTRESULT } from '@Inwoker/tgs-api'
+import { accountAction, RESET_ACCOUNTRESULT } from "@Inwoker/tgs-api";
 
 class NameVerify extends BaseProfile {
   constructor(props) {
-    super(props)
+    super(props);
 
-    const name = this.props.account.info.member_name
-    const ic = this.props.account.info.member_card_no
-    const isConfigured = this.props.account.info.check_pass_account
+    const name = this.props.account.info.member_name;
+    const ic = this.props.account.info.member_card_no;
+    const isConfigured = this.props.account.info.check_pass_account;
     this.state = {
       name: name,
       ic: ic,
-      isConfigured: isConfigured
-    }
+      isConfigured: isConfigured,
+    };
   }
 
   componentDidMount() {
@@ -30,9 +30,9 @@ class NameVerify extends BaseProfile {
       preProps.account.info.member_card_no !==
       this.props.account.info.member_card_no
     ) {
-      const ic = this.props.account.info.member_card_no
-      const isConfigured = this.props.account.info.check_pass_account
-      this.setState({ ...this.state, ic: ic, isConfigured: isConfigured })
+      const ic = this.props.account.info.member_card_no;
+      const isConfigured = this.props.account.info.check_pass_account;
+      this.setState({ ...this.state, ic: ic, isConfigured: isConfigured });
     }
     if (
       preProps.account.updateCardResult !==
@@ -40,70 +40,68 @@ class NameVerify extends BaseProfile {
       this.props.account.updateCardResult !== null
     ) {
       if (this.props.account.updateCardResult.IsSuccess) {
-        this.props.resetResult()
-        this.setState({ disableButton: true })
+        this.props.resetResult();
+        this.setState({ disableButton: true });
         // this.props.getIDCardNo();
-        this.props.appHistory.replace(
-          '/' + i18n.translation.language + '/profile'
-        )
+        this.props.appHistory.replace("/" + i18n.language + "/profile");
       } else {
-        this.props.alert('', this.props.account.updateCardResult.info)
+        this.props.alert("", this.props.account.updateCardResult.info);
         // if (this.props.account.updateCardResult.code === 401) {
         //   this.props.alert(
         //     '',
-        //     i18n.translation.t('profile.nameVerify.msgInvalidICNum')
+        //     i18n.t('profile.nameVerify.msgInvalidICNum')
         //   )
         // } else {
         //   this.props.alert('', this.props.account.updateCardResult.info)
         // }
 
-        this.showLoading(false)
+        this.showLoading(false);
       }
     }
   }
   handleChangeName = (e) => {
-    this.setState({ ...this.state, name: e.target.value })
-    this.onTextChanged()
-  }
+    this.setState({ ...this.state, name: e.target.value });
+    this.onTextChanged();
+  };
   handleChangeIC = (e) => {
-    this.setState({ ...this.state, ic: e.target.value })
-    this.onTextChanged()
-  }
+    this.setState({ ...this.state, ic: e.target.value });
+    this.onTextChanged();
+  };
   handleSubmitClicked = () => {
-    const name = this.state.name || ''
-    const ic = this.state.ic || ''
-    this.showLoading(true)
-    this.props.updateMemberCardNo(name, ic)
-    this.showLoading(false)
-  }
+    const name = this.state.name || "";
+    const ic = this.state.ic || "";
+    this.showLoading(true);
+    this.props.updateMemberCardNo(name, ic);
+    this.showLoading(false);
+  };
 
   isDisableButton = () => {
-    const name = this.state.name || ''
-    const ic = this.state.ic || ''
+    const name = this.state.name || "";
+    const ic = this.state.ic || "";
 
-    const isDisableButton = !(name && ic)
-    return isDisableButton
-  }
+    const isDisableButton = !(name && ic);
+    return isDisableButton;
+  };
   render() {
     return this.setupContent(
-      i18n.translation.t('profile.nameVerify.title'),
+      i18n.t("profile.nameVerify.title"),
       <React.Fragment>
         <Textbox
-          style={{ margin: '50px auto 20px auto' }}
+          style={{ margin: "50px auto 20px auto" }}
           value={this.state.name}
           onChange={this.handleChangeName}
-          placeholder={i18n.translation.t('profile.nameVerify.title')}
-          label={i18n.translation.t('profile.nameVerify.verifyName')}
+          placeholder={i18n.t("profile.nameVerify.title")}
+          label={i18n.t("profile.nameVerify.verifyName")}
           disabled={this.props.account.info.check_pass_account === true}
           maxLength={10}
         ></Textbox>
         {this.props.account.info.check_pass_account == false ? (
           <Textbox
-            style={{ margin: '50px auto 20px auto' }}
+            style={{ margin: "50px auto 20px auto" }}
             value={this.state.ic}
             onChange={this.handleChangeIC}
-            placeholder={i18n.translation.t('profile.nameVerify.msgEnterICNum')}
-            label={i18n.translation.t('profile.nameVerify.icNum')}
+            placeholder={i18n.t("profile.nameVerify.msgEnterICNum")}
+            label={i18n.t("profile.nameVerify.icNum")}
             disabled={this.props.account.info.check_pass_account === true}
             maxLength={30}
           ></Textbox>
@@ -112,22 +110,22 @@ class NameVerify extends BaseProfile {
         )}
       </React.Fragment>,
       this.props.account.info.check_pass_account
-        ? i18n.translation.t('common.configured')
-        : i18n.translation.t('common.complete'),
+        ? i18n.t("common.configured")
+        : i18n.t("common.complete"),
       <BottomNote
-        text1={i18n.translation.t('profile.nameVerify.toEdit')}
-        link={'../chat'}
-        text2={i18n.translation.t('common.customerService')}
+        text1={i18n.t("profile.nameVerify.toEdit")}
+        link={"../chat"}
+        text2={i18n.t("common.customerService")}
       ></BottomNote>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     getAccountProfile: () => dispatch(accountAction.getAccountProfile()),
@@ -136,11 +134,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(accountAction.updateMemberCardNo(name, number)),
     resetResult: () =>
       dispatch({
-        type: RESET_ACCOUNTRESULT
-      })
-  }
-}
+        type: RESET_ACCOUNTRESULT,
+      }),
+  };
+};
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(NameVerify))
+)(withRouter(NameVerify));

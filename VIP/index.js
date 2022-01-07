@@ -277,7 +277,7 @@
 //           </CardVIPContainer>
 //           <RulseArrow
 //             onClick={() =>
-//               this.props.appHistory.push("/" + i18n.translation.language + "/vip/details")
+//               this.props.appHistory.push("/" + i18n.language + "/vip/details")
 //             }
 //           >
 //             规则
@@ -369,7 +369,7 @@
 //         <Button
 //           label={"查看规则与特权"}
 //           style={{ margin: "20px auto" }}
-//           onClick={() => this.props.appHistory.push("/" + i18n.translation.language + "/vip/details")}
+//           onClick={() => this.props.appHistory.push("/" + i18n.language + "/vip/details")}
 //         ></Button>
 //       </Container>
 //     );

@@ -1,36 +1,36 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import styled from 'styled-components'
-import AppBar from '@material-ui/core/AppBar'
-import { withStyles } from '@material-ui/core/styles'
+import styled from "styled-components";
+import AppBar from "@material-ui/core/AppBar";
+import { withStyles } from "@material-ui/core/styles";
 import {
   accountAction,
   walletAction,
-  RESET_WALLETRESULT
-} from '@Inwoker/tgs-api'
+  RESET_WALLETRESULT,
+} from "@Inwoker/tgs-api";
 
-import Header from '../../Wap/Share/Header'
+import Header from "../../Wap/Share/Header";
 
-import Textbox from '../../Wap/Share/Textbox'
-import Button from '../../Wap/Share/Button'
-import MessageDialog from '../../Wap/Share/MessageDialog'
-import Loading from '../../Wap/Share/Loading'
+import Textbox from "../../Wap/Share/Textbox";
+import Button from "../../Wap/Share/Button";
+import MessageDialog from "../../Wap/Share/MessageDialog";
+import Loading from "../../Wap/Share/Loading";
 
-import Modal from '@material-ui/core/Dialog'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import config from '../../../config/config'
-import i18n from '../../../utils/i18n'
-import Common from '../../../utils/Common'
+import Modal from "@material-ui/core/Dialog";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import config from "../../../config/config";
+import i18n from "../../../utils/i18n";
+import Common from "../../../utils/Common";
 const Container = styled.div`
   width: 100%;
   padding-top: 170px;
-`
+`;
 const StyledAppBar = withStyles((theme) => ({
   root: {
-    height: '170px',
+    height: "170px",
     background: theme.palette.primary.main,
 
     background:
@@ -41,24 +41,24 @@ const StyledAppBar = withStyles((theme) => ({
       `, 0.8)), url(${
         process.env.PUBLIC_URL + `/assets/images/wapp/bg-profile.png`
       })`,
-    display: 'block',
-    backgroundSize: 'cover'
-  }
-}))(AppBar)
+    display: "block",
+    backgroundSize: "cover",
+  },
+}))(AppBar);
 const BalanceLabel = styled.div`
   font-size: 36px;
 
   text-align: center;
   color: #ffffff;
   margin: 0 auto 20px auto;
-`
+`;
 
 const SubTitle = styled.div`
   font-size: 34px;
   font-weight: 550;
   margin: 40px 0 0 50px;
   color: ${({ theme }) => theme.secondary};
-`
+`;
 
 const BottomInfo = styled.div`
   font-size: 22px;
@@ -71,50 +71,50 @@ const BottomInfo = styled.div`
   padding-left: 40px;
   display: table;
   margin: 0 auto;
-`
+`;
 const StyledModalBank = withStyles((theme) => ({
   paper: {
-    color: '#666666',
-    padding: '0 30px',
-    width: '750px',
-    maxWidth: '750px',
+    color: "#666666",
+    padding: "0 30px",
+    width: "750px",
+    maxWidth: "750px",
     margin: 0,
-    display: 'block',
-    position: 'absolute',
+    display: "block",
+    position: "absolute",
     bottom: 0,
-    height: 'calc(100% - 580px)'
-  }
-}))(Modal)
+    height: "calc(100% - 580px)",
+  },
+}))(Modal);
 const StyledListItemIcon = withStyles((theme) => ({
   root: {
-    marginLeft: '150px'
-  }
-}))(ListItemIcon)
+    marginLeft: "150px",
+  },
+}))(ListItemIcon);
 const StyledListItemImage = styled.img`
   width: 64px;
   height: 64px;
-`
+`;
 const StyledListItem = withStyles((theme) => ({
   root: {
-    borderBottom: '1px solid rgba(0,0,0,0.2)',
-    padding: '10px'
-  }
-}))(ListItem)
+    borderBottom: "1px solid rgba(0,0,0,0.2)",
+    padding: "10px",
+  },
+}))(ListItem);
 const StyledListItemText = withStyles((theme) => ({
   root: {
-    textAlign: 'center',
-    paddingRight: '50px',
-    '& .MuiTypography-root': {
-      fontSize: '28px'
-    }
-  }
-}))(ListItemText)
+    textAlign: "center",
+    paddingRight: "50px",
+    "& .MuiTypography-root": {
+      fontSize: "28px",
+    },
+  },
+}))(ListItemText);
 
 class AddCard extends Component {
   state = {
-    number: '',
-    bankName: '',
-    bankAccountName: '',
+    number: "",
+    bankName: "",
+    bankAccountName: "",
     channelOpen: false,
     bankTypeOpen: false,
     selectedChannelIndex: 0,
@@ -122,15 +122,15 @@ class AddCard extends Component {
     channelList: [],
     loading: false,
     showDialog: false,
-    dialogMessage: '',
+    dialogMessage: "",
 
-    name: '',
-    phone: ''
-  }
+    name: "",
+    phone: "",
+  };
   componentDidMount() {
     if (this.props.wallet.withdrawalList.length === 0)
-      this.props.getWithdrawalChannel()
-    else this.formatChannelList()
+      this.props.getWithdrawalChannel();
+    else this.formatChannelList();
   }
   componentDidUpdate(preProps, preState) {
     if (
@@ -139,224 +139,226 @@ class AddCard extends Component {
       this.props.wallet.addBankCardResult !== null
     ) {
       if (this.props.wallet.addBankCardResult.IsSuccess) {
-        this.props.resetResult()
-        this.props.getBankCardList()
-        this.props.appHistory.goBack()
+        this.props.resetResult();
+        this.props.getBankCardList();
+        this.props.appHistory.goBack();
       } else {
         this.setState({
           ...this.state,
           showDialog: true,
-          dialogMessage: this.props.wallet.addBankCardResult.info
-        })
+          dialogMessage: this.props.wallet.addBankCardResult.info,
+        });
       }
     }
     if (
       preProps.wallet.withdrawalList.length !==
       this.props.wallet.withdrawalList.length
     ) {
-      this.formatChannelList()
+      this.formatChannelList();
     }
     if (preState.selectedBankTypeIndex !== this.state.selectedBankTypeIndex) {
-      this.formatChannelList()
+      this.formatChannelList();
     }
   }
   formatChannelList = () => {
-    var channel = []
+    var channel = [];
     if (this.props.wallet.withdrawalList.length > 0) {
       var channelList =
         this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-          .channel
-      var addedChannel = []
+          .channel;
+      var addedChannel = [];
       if (this.props.wallet.withdrawalList.length > 0) {
         for (var i = 0; i < channelList.length; i++) {
           if (addedChannel.indexOf(channelList[i].channelid) < 0) {
-            addedChannel.push(channelList[i].channelid)
-            channel.push(channelList[i])
+            addedChannel.push(channelList[i].channelid);
+            channel.push(channelList[i]);
           }
         }
       }
     }
-    this.setState({ ...this.state, channelList: channel })
-    return channel
-  }
+    this.setState({ ...this.state, channelList: channel });
+    return channel;
+  };
   handleCloseDialog() {
     this.setState({
       ...this.state,
       showDialog: false,
-      dialogMessage: ''
-    })
+      dialogMessage: "",
+    });
   }
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   handleNextClick = () => {
     var selected =
-      this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
+      this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex];
     var selectedChannel =
-      this.state.channelList[this.state.selectedChannelIndex]
-    var detail = {}
-    if (selected.banktype === 'Bank') {
+      this.state.channelList[this.state.selectedChannelIndex];
+    var detail = {};
+    if (selected.banktype === "Bank") {
       if (
-        this.state.bankName === '' &&
-        selectedChannel.channelcode === 'CustomBank'
+        this.state.bankName === "" &&
+        selectedChannel.channelcode === "CustomBank"
       ) {
         this.props.alert(
-          '',
+          "",
           config.features.AddCard_DisplayFPS
-            ? i18n.translation.t('hk28.card.addCard.msgEnterBankName')
-            : i18n.translation.t('card.addCard.msgEnterBankName')
-        )
-        return
+            ? i18n.t("hk28.card.addCard.msgEnterBankName")
+            : i18n.t("card.addCard.msgEnterBankName")
+        );
+        return;
       }
 
-      if (this.state.bankAccountName === '') {
+      if (this.state.bankAccountName === "") {
         this.props.alert(
-          '',
+          "",
           config.features.AddCard_DisplayFPS
-            ? i18n.translation.t('hk28.card.addCard.msgEnterBankAccountName')
-            : i18n.translation.t('card.addCard.msgEnterBankAccountName')
-        )
-        return
+            ? i18n.t("hk28.card.addCard.msgEnterBankAccountName")
+            : i18n.t("card.addCard.msgEnterBankAccountName")
+        );
+        return;
       }
 
-      if (this.state.number === '') {
+      if (this.state.number === "") {
         this.props.alert(
-          '',
+          "",
           config.features.AddCard_DisplayFPS
-            ? i18n.translation.t('hk28.msgEnterWithdrawalNumber')
-            : i18n.translation.t('common.msgEnterWithdrawalNumber')
-        )
-        return
+            ? i18n.t("hk28.msgEnterWithdrawalNumber")
+            : i18n.t("common.msgEnterWithdrawalNumber")
+        );
+        return;
       }
 
       detail = {
         bankAccount: this.state.number,
         bankName: this.state.bankName,
         name: this.state.bankAccountName,
-        bankBranch: this.state.bankBranch
-      }
+        bankBranch: this.state.bankBranch,
+      };
     } else if (
-      selected.banktype === 'ThirdParty' ||
-      selected.banktype === 'FPS'
+      selected.banktype === "ThirdParty" ||
+      selected.banktype === "FPS"
     ) {
-      if (this.state.name === '') {
-        this.props.alert('', i18n.t('profile.nameVerify.msgPlsEnterName'))
-        return
+      if (this.state.name === "") {
+        this.props.alert("", i18n.t("profile.nameVerify.msgPlsEnterName"));
+        return;
       }
-      if (this.state.phone === '') {
-        this.props.alert('', i18n.t('common.msgEnterPhone'))
-        return
+      if (this.state.phone === "") {
+        this.props.alert("", i18n.t("common.msgEnterPhone"));
+        return;
       }
       detail = {
         username: this.state.name,
-        phone: this.state.phone
-      }
+        phone: this.state.phone,
+      };
     } else {
       detail = {
-        address: this.state.number
-      }
+        address: this.state.number,
+      };
     }
-    this.props.addBankCard(selectedChannel.channelid, selected.banktype, detail)
-  }
+    this.props.addBankCard(
+      selectedChannel.channelid,
+      selected.banktype,
+      detail
+    );
+  };
 
   handleNumberChange = (e) => {
-    this.setState({ ...this.state, number: e.target.value })
-  }
+    this.setState({ ...this.state, number: e.target.value });
+  };
   handleBankNameChange = (e) => {
-    this.setState({ ...this.state, bankName: e.target.value })
-  }
+    this.setState({ ...this.state, bankName: e.target.value });
+  };
   handleBankAccountNameChange = (e) => {
-    this.setState({ ...this.state, bankAccountName: e.target.value })
-  }
+    this.setState({ ...this.state, bankAccountName: e.target.value });
+  };
 
   handleBankBranchChange = (e) => {
-    this.setState({ ...this.state, bankBranch: e.target.value })
-  }
+    this.setState({ ...this.state, bankBranch: e.target.value });
+  };
   handleBankTypeClick = (index) => {
     this.setState({
       ...this.state,
       selectedBankTypeIndex: index,
-      bankTypeOpen: false
-    })
-  }
+      bankTypeOpen: false,
+    });
+  };
   handleChannelClick = (index) => {
     this.setState({
       ...this.state,
       selectedChannelIndex: index,
-      channelOpen: false
-    })
-  }
+      channelOpen: false,
+    });
+  };
   render() {
     return (
       <Container>
         <StyledAppBar>
           <Header
             onBackClick={this.handleBackClick}
-            title={i18n.translation.t('card.addCard.title')}
-            position={'sticky'}
-            backgroundColor={'transparent'}
+            title={i18n.t("card.addCard.title")}
+            position={"sticky"}
+            backgroundColor={"transparent"}
           ></Header>
           <BalanceLabel>
             {Common.formatNumberWithThousand(this.props.wallet.mainBalance)}
           </BalanceLabel>
         </StyledAppBar>
-        <SubTitle>{i18n.translation.t('card.addCard.title')}</SubTitle>
+        <SubTitle>{i18n.t("card.addCard.title")}</SubTitle>
         <Textbox
-          style={{ margin: '20px auto 20px auto' }}
+          style={{ margin: "20px auto 20px auto" }}
           value={
             this.props.wallet.withdrawalList.length > 0
               ? this.props.wallet.withdrawalList[
                   this.state.selectedBankTypeIndex
                 ].banktype
-              : ''
+              : ""
           }
           onClick={() => this.setState({ ...this.state, bankTypeOpen: true })}
-          type={'text'}
-          label={i18n.translation.t('common.withdrawalBankType')}
+          type={"text"}
+          label={i18n.t("common.withdrawalBankType")}
           disabled={true}
         ></Textbox>
         <Textbox
-          style={{ margin: '20px auto 20px auto' }}
+          style={{ margin: "20px auto 20px auto" }}
           value={
             this.state.channelList.length > 0
-              ? i18n.translation.t(
+              ? i18n.t(
                   this.state.channelList[this.state.selectedChannelIndex]
                     .channelcode
                 )
-              : ''
+              : ""
           }
           onClick={() => this.setState({ ...this.state, channelOpen: true })}
-          type={'text'}
-          label={i18n.translation.t('common.withdrawalChannel')}
+          type={"text"}
+          label={i18n.t("common.withdrawalChannel")}
           disabled={true}
         ></Textbox>
         {(() => {
           if (
             this.props.wallet.withdrawalList.length > 0 &&
             this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-              .banktype === 'Bank'
+              .banktype === "Bank"
           ) {
             return (
               <React.Fragment>
                 {this.state.channelList.length > 0 &&
                   this.state.channelList[this.state.selectedChannelIndex]
-                    .channelcode === 'CustomBank' && (
+                    .channelcode === "CustomBank" && (
                     <Textbox
-                      style={{ margin: '20px auto 20px auto' }}
+                      style={{ margin: "20px auto 20px auto" }}
                       value={this.state.bankName}
                       onChange={this.handleBankNameChange}
-                      type={'text'}
+                      type={"text"}
                       placeholder={
                         config.features.AddCard_DisplayFPS
-                          ? i18n.translation.t(
-                              'hk28.card.addCard.msgEnterBankName'
-                            )
-                          : i18n.translation.t('card.addCard.msgEnterBankName')
+                          ? i18n.t("hk28.card.addCard.msgEnterBankName")
+                          : i18n.t("card.addCard.msgEnterBankName")
                       }
                       label={
                         config.features.AddCard_DisplayFPS
-                          ? i18n.translation.t('hk28.card.addCard.BankName')
-                          : i18n.translation.t('card.addCard.BankName')
+                          ? i18n.t("hk28.card.addCard.BankName")
+                          : i18n.t("card.addCard.BankName")
                       }
                     ></Textbox>
                   )}
@@ -364,157 +366,149 @@ class AddCard extends Component {
                   if (config.features.AddCard_BankBranch) {
                     return (
                       <Textbox
-                        style={{ margin: '20px auto 20px auto' }}
+                        style={{ margin: "20px auto 20px auto" }}
                         value={this.state.bankBranch}
                         onChange={this.handleBankBranchChange}
-                        type={'text'}
-                        placeholder={i18n.translation.t(
-                          'card.addCard.branchPlaceHolder'
-                        )}
-                        label={i18n.translation.t('card.addCard.branch')}
+                        type={"text"}
+                        placeholder={i18n.t("card.addCard.branchPlaceHolder")}
+                        label={i18n.t("card.addCard.branch")}
                       ></Textbox>
-                    )
+                    );
                   }
                 })()}
 
                 <Textbox
-                  style={{ margin: '20px auto 20px auto' }}
+                  style={{ margin: "20px auto 20px auto" }}
                   value={this.state.bankAccountName}
                   onChange={this.handleBankAccountNameChange}
-                  type={'text'}
+                  type={"text"}
                   placeholder={
                     config.features.AddCard_DisplayFPS
-                      ? i18n.translation.t(
-                          'hk28.card.addCard.msgEnterBankAccountName'
-                        )
-                      : i18n.translation.t(
-                          'card.addCard.msgEnterBankAccountName'
-                        )
+                      ? i18n.t("hk28.card.addCard.msgEnterBankAccountName")
+                      : i18n.t("card.addCard.msgEnterBankAccountName")
                   }
                   label={
                     config.features.AddCard_DisplayFPS
-                      ? i18n.translation.t('hk28.card.addCard.BankAccountName')
-                      : i18n.translation.t('card.addCard.BankAccountName')
+                      ? i18n.t("hk28.card.addCard.BankAccountName")
+                      : i18n.t("card.addCard.BankAccountName")
                   }
                 ></Textbox>
               </React.Fragment>
-            )
+            );
           }
         })()}
 
         {this.props.wallet.withdrawalList.length > 0 &&
         (this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-          .banktype === 'ThirdParty' ||
+          .banktype === "ThirdParty" ||
           this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-            .banktype === 'FPS') ? (
+            .banktype === "FPS") ? (
           <div>
             <Textbox
-              style={{ margin: '20px auto 20px auto' }}
+              style={{ margin: "20px auto 20px auto" }}
               value={this.state.name}
               onChange={(e) => {
-                let value = e.target.value
+                let value = e.target.value;
                 this.setState({
                   ...this.state,
-                  name: value
-                })
+                  name: value,
+                });
               }}
-              type={'text'}
-              placeholder={i18n.translation.t(
-                'profile.nameVerify.msgPlsEnterName'
-              )}
-              label={i18n.translation.t('profile.nameVerify.title')}
+              type={"text"}
+              placeholder={i18n.t("profile.nameVerify.msgPlsEnterName")}
+              label={i18n.t("profile.nameVerify.title")}
             ></Textbox>
             <Textbox
-              style={{ margin: '20px auto 20px auto' }}
+              style={{ margin: "20px auto 20px auto" }}
               value={this.state.phone}
               onChange={(e) => {
-                let value = e.target.value
-                value = value.replace(/[^0-9]/gi, '')
+                let value = e.target.value;
+                value = value.replace(/[^0-9]/gi, "");
                 this.setState({
                   ...this.state,
-                  phone: value
-                })
+                  phone: value,
+                });
               }}
-              type={'text'}
+              type={"text"}
               placeholder={
                 config.features.AddCard_DisplayFPS
-                  ? i18n.translation.t('bet28.msgEnterPhone')
-                  : i18n.translation.t('common.msgEnterPhone')
+                  ? i18n.t("bet28.msgEnterPhone")
+                  : i18n.t("common.msgEnterPhone")
               }
               label={
                 config.features.AddCard_DisplayFPS
-                  ? i18n.translation.t('bet28.phoneNumber')
-                  : i18n.translation.t('common.phoneNumber')
+                  ? i18n.t("bet28.phoneNumber")
+                  : i18n.t("common.phoneNumber")
               }
             ></Textbox>
-            <BottomInfo>{i18n.translation.t('card.addCard.desc')}</BottomInfo>
+            <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>
             <Button
-              style={{ margin: '40px auto 0 auto' }}
-              label={i18n.translation.t('common.confirm')}
+              style={{ margin: "40px auto 0 auto" }}
+              label={i18n.t("common.confirm")}
               onClick={this.handleNextClick}
-              disabled={this.state.name === '' || this.state.phone === ''}
+              disabled={this.state.name === "" || this.state.phone === ""}
             ></Button>
           </div>
         ) : (
           <div>
             <Textbox
-              style={{ margin: '20px auto 20px auto' }}
+              style={{ margin: "20px auto 20px auto" }}
               value={this.state.number}
               onChange={(e) => {
-                let value = e.target.value
-                value = value.replace(/[^A-Za-z0-9]/gi, '')
+                let value = e.target.value;
+                value = value.replace(/[^A-Za-z0-9]/gi, "");
                 this.setState({
                   ...this.state,
-                  number: value
-                })
+                  number: value,
+                });
               }}
-              type={'text'}
+              type={"text"}
               placeholder={
                 config.features.AddCard_DisplayFPS
-                  ? i18n.translation.t('hk28.msgEnterWithdrawalNumber')
-                  : i18n.translation.t('common.msgEnterWithdrawalNumber')
+                  ? i18n.t("hk28.msgEnterWithdrawalNumber")
+                  : i18n.t("common.msgEnterWithdrawalNumber")
               }
               label={
                 config.features.AddCard_DisplayFPS
-                  ? i18n.translation.t('hk28.withdrawalNumber')
-                  : i18n.translation.t('common.withdrawalNumber')
+                  ? i18n.t("hk28.withdrawalNumber")
+                  : i18n.t("common.withdrawalNumber")
               }
             ></Textbox>
-            <BottomInfo>{i18n.translation.t('card.addCard.desc')}</BottomInfo>
+            <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>
             <Button
-              style={{ margin: '40px auto 0 auto' }}
-              label={i18n.translation.t('common.confirm')}
+              style={{ margin: "40px auto 0 auto" }}
+              label={i18n.t("common.confirm")}
               onClick={this.handleNextClick}
               disabled={(() => {
-                if (this.props.wallet.withdrawalList.length <= 0) return true
+                if (this.props.wallet.withdrawalList.length <= 0) return true;
                 var bankType =
                   this.props.wallet.withdrawalList[
                     this.state.selectedBankTypeIndex
-                  ].banktype
+                  ].banktype;
                 var selectedChannel =
-                  this.state.channelList[this.state.selectedChannelIndex]
-                var bankName = this.state.bankName
+                  this.state.channelList[this.state.selectedChannelIndex];
+                var bankName = this.state.bankName;
 
-                var bankAccountName = this.state.bankAccountName
+                var bankAccountName = this.state.bankAccountName;
 
-                var number = this.state.number
+                var number = this.state.number;
 
-                if (bankType === 'Bank') {
-                  if (bankAccountName === '' || number === '') {
-                    return true
+                if (bankType === "Bank") {
+                  if (bankAccountName === "" || number === "") {
+                    return true;
                   }
                   if (
-                    bankName === '' &&
-                    selectedChannel.channelcode === 'CustomBank'
+                    bankName === "" &&
+                    selectedChannel.channelcode === "CustomBank"
                   ) {
-                    return true
+                    return true;
                   }
-                } else if (bankType === 'Crypto') {
-                  if (number === '') {
-                    return true
+                } else if (bankType === "Crypto") {
+                  if (number === "") {
+                    return true;
                   }
                 }
-                return false
+                return false;
               })()}
             ></Button>
           </div>
@@ -539,7 +533,7 @@ class AddCard extends Component {
                     primary={item.banktype}
                   ></StyledListItemText>
                 </StyledListItem>
-              )
+              );
             })}
         </StyledModalBank>
         <StyledModalBank
@@ -554,10 +548,10 @@ class AddCard extends Component {
                 onClick={() => this.handleChannelClick(index)}
               >
                 <StyledListItemText
-                  primary={i18n.translation.t(item.channelcode)}
+                  primary={i18n.t(item.channelcode)}
                 ></StyledListItemText>
               </StyledListItem>
-            )
+            );
           })}
         </StyledModalBank>
 
@@ -571,15 +565,15 @@ class AddCard extends Component {
           show={this.state.loading || this.props.wallet.loading}
         ></Loading>
       </Container>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
   return {
     balance: state.account.info.balance,
-    wallet: state.wallet
-  }
-}
+    wallet: state.wallet,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -590,8 +584,8 @@ const mapDispatchToProps = (dispatch) => {
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
     resetResult: () =>
       dispatch({
-        type: RESET_WALLETRESULT
-      })
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(AddCard)
+        type: RESET_WALLETRESULT,
+      }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AddCard);

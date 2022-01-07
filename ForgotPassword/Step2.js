@@ -153,7 +153,7 @@
 //   };
 //   componentDidMount() {
 //     if (this.props.details == null) {
-//       this.props.appHistory.replace("/" + i18n.translation.language + "/forgot-password");
+//       this.props.appHistory.replace("/" + i18n.language + "/forgot-password");
 //     } else {
 //       this.setState({
 //         ...this.state,
@@ -237,7 +237,7 @@
 //         ).then(response => {
 //           if (response.IsSuccess) {
 //             this.props.appHistory.push({
-//               pathname: "/" + i18n.translation.language + "/forgot-password/reset",
+//               pathname: "/" + i18n.language + "/forgot-password/reset",
 
 //               state: { forget_token: this.state.forget_token }
 //             });
@@ -255,7 +255,7 @@
 //         ).then(response => {
 //           if (response.IsSuccess) {
 //             this.props.appHistory.push({
-//               pathname: "/" + i18n.translation.language + "/forgot-password/reset",
+//               pathname: "/" + i18n.language + "/forgot-password/reset",
 
 //               state: { forget_token: this.state.forget_token }
 //             });
@@ -276,7 +276,7 @@
 //           ).then(response => {
 //             if (response.IsSuccess) {
 //               this.props.appHistory.push({
-//                 pathname: "/" + i18n.translation.language + "/forgot-password/reset",
+//                 pathname: "/" + i18n.language + "/forgot-password/reset",
 
 //                 state: { forget_token: this.state.forget_token }
 //               });
@@ -315,7 +315,7 @@
 //     }
 //   };
 //   handleCSClick = () => {
-//     this.props.appHistory.push("/" + i18n.translation.language + "/customer-service");
+//     this.props.appHistory.push("/" + i18n.language + "/customer-service");
 //   };
 //   render() {
 //     return (

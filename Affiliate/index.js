@@ -1,26 +1,26 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import Tooltip from '@material-ui/core/Tooltip'
-import Header from '../../Wap/Share/Header'
-import copy from 'copy-to-clipboard'
-import { withStyles } from '@material-ui/core/styles'
-import Loading from '../../Wap/Share/Loading'
-import i18n from '../../../utils/i18n'
-import QRCode from 'react-qr-code'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import Tooltip from "@material-ui/core/Tooltip";
+import Header from "../../Wap/Share/Header";
+import copy from "copy-to-clipboard";
+import { withStyles } from "@material-ui/core/styles";
+import Loading from "../../Wap/Share/Loading";
+import i18n from "../../../utils/i18n";
+import QRCode from "react-qr-code";
 
 const QRCodeLabel = styled.div`
   margin: 30px auto;
   display: table;
   font-size: 30px;
   color: ${({ theme }) => theme.secondary};
-`
+`;
 const QRCodeContainer = styled.div`
   padding: 20px;
   margin: 0 auto;
   display: table;
   background-color: #fff;
-`
+`;
 const CustomText = styled.div`
   width: 700px;
   font-size: 28px;
@@ -30,13 +30,13 @@ const CustomText = styled.div`
   border-radius: 20px;
   padding: 0px 20px 0 20px;
   margin: 20px auto;
-`
+`;
 const CustomLabel = styled.div`
   font-weight: 600;
   margin: 24px 0 0 3px;
   float: left;
   color: #212e31;
-`
+`;
 const CustomInput = styled.input`
   color: ${({ theme }) => theme.secondary};
   font-size: 28px;
@@ -54,7 +54,7 @@ const CustomInput = styled.input`
     -webkit-text-fill-color: #d09f58;
     opacity: 1;
   }
-`
+`;
 const Button = styled.div`
   height: 60px;
   border-radius: 10%;
@@ -68,10 +68,10 @@ const Button = styled.div`
   float: right;
   padding: 12px 20px 0 20px;
   margin-top: 12px;
-`
+`;
 const ListView = styled.div`
   padding: 0px 30px;
-`
+`;
 const ListItem = styled.div`
   border-radius: 6px;
   box-shadow: 0px 4px 10px 0 rgba(0, 0, 0, 0.25);
@@ -98,35 +98,35 @@ const ListItem = styled.div`
   border-radius: 6px;
   box-shadow: 0px 4px 12px 0 rgba(0, 0, 0, 0.8);
   border: solid 1px #ffffff;
-`
+`;
 const LightTooltip = withStyles((theme) => ({
   tooltip: {
-    fontSize: 30
-  }
-}))(Tooltip)
+    fontSize: 30,
+  },
+}))(Tooltip);
 class Affiliate extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       loading: false,
-      copyTooltips: false
-    }
+      copyTooltips: false,
+    };
   }
 
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   handleCopyLink = () => {
-    this.setState({ ...this.state, copyTooltips: true })
+    this.setState({ ...this.state, copyTooltips: true });
     copy(
-      `${window.location.hostname}/${i18n.translation.language}/a/${this.props.account.info.promote_code}`
-    )
+      `${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`
+    );
     setTimeout(() => {
-      this.setState({ ...this.state, copyTooltips: false })
-    }, 3000)
-  }
-  handleClickAway = () => {}
+      this.setState({ ...this.state, copyTooltips: false });
+    }, 3000);
+  };
+  handleClickAway = () => {};
 
   render() {
     return (
@@ -136,37 +136,37 @@ class Affiliate extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.translation.t('affiliate.title')}
+          title={i18n.t("affiliate.title")}
         ></Header>
-        <QRCodeLabel>{i18n.translation.t('affiliate.qrCode')}</QRCodeLabel>
+        <QRCodeLabel>{i18n.t("affiliate.qrCode")}</QRCodeLabel>
         <QRCodeContainer>
           <QRCode
-            value={`http://${window.location.hostname}/${i18n.translation.language}/a/${this.props.account.info.promote_code}`}
+            value={`http://${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`}
           ></QRCode>
         </QRCodeContainer>
 
         <CustomText>
-          <CustomLabel>{i18n.translation.t('affiliate.promoId')}</CustomLabel>
+          <CustomLabel>{i18n.t("affiliate.promoId")}</CustomLabel>
           <CustomInput
-            type={'text'}
+            type={"text"}
             value={this.props.account.info.promote_code}
             readOnly={true}
           ></CustomInput>
         </CustomText>
         <CustomText>
-          <CustomLabel>{i18n.translation.t('affiliate.promoLink')}</CustomLabel>
+          <CustomLabel>{i18n.t("affiliate.promoLink")}</CustomLabel>
           <CustomInput
-            type={'text'}
-            value={`${window.location.hostname}/${i18n.translation.language}/a/${this.props.account.info.promote_code}`}
+            type={"text"}
+            value={`${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`}
             readOnly={true}
           ></CustomInput>
           <LightTooltip
             open={this.state.copyTooltips}
-            title={i18n.translation.t('affiliate.copied')}
-            placement='top'
+            title={i18n.t("affiliate.copied")}
+            placement="top"
           >
             <Button onClick={this.handleCopyLink}>
-              {i18n.translation.t('common.copy')}
+              {i18n.t("common.copy")}
             </Button>
           </LightTooltip>
         </CustomText>
@@ -176,44 +176,44 @@ class Affiliate extends Component {
               process.env.PUBLIC_URL +
               `/assets/images/wapp/icon-profile-profile.png`
             }
-            onClick={() => this.props.navigate('/affiliate/member')}
+            onClick={() => this.props.navigate("/affiliate/member")}
           >
-            {i18n.translation.t('affiliate.downline')}
+            {i18n.t("affiliate.downline")}
           </ListItem>
           <ListItem
             icon={
               process.env.PUBLIC_URL +
               `/assets/images/wapp/icon-profile-report.png`
             }
-            onClick={() => this.props.navigate('/affiliate/report')}
+            onClick={() => this.props.navigate("/affiliate/report")}
           >
-            {i18n.translation.t('affiliate.report')}
+            {i18n.t("affiliate.report")}
           </ListItem>
           <ListItem
             icon={
               process.env.PUBLIC_URL +
               `/assets/images/wapp/icon-profile-about.png`
             }
-            onClick={() => this.props.navigate('/affiliate/guide')}
+            onClick={() => this.props.navigate("/affiliate/guide")}
           >
-            {i18n.translation.t('affiliate.info')}
+            {i18n.t("affiliate.info")}
           </ListItem>
         </ListView>
 
         <Loading show={this.state.loading}></Loading>
       </React.Fragment>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatch: dispatch
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Affiliate)
+    dispatch: dispatch,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Affiliate);

@@ -1,24 +1,24 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import AppBar from '@material-ui/core/AppBar'
-import { withStyles } from '@material-ui/core/styles'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import AppBar from "@material-ui/core/AppBar";
+import { withStyles } from "@material-ui/core/styles";
 
-import Slider from './Slider'
-import DoubleMarquee from 'react-marquee-double'
-import { withRouter } from 'react-router-dom'
-import { GameTypeEnum, GameService } from '@Inwoker/tgs-api'
+import Slider from "./Slider";
+import DoubleMarquee from "react-marquee-double";
+import { withRouter } from "react-router-dom";
+import { GameTypeEnum, GameService } from "@Inwoker/tgs-api";
 
-import Common from '../../../../utils/Common'
+import Common from "../../../../utils/Common";
 
-import i18n from '../../../../utils/i18n'
-import Marquee from './Marquee'
+import i18n from "../../../../utils/i18n";
+import Marquee from "./Marquee";
 const StyledAppBar = withStyles({
   root: {
-    height: '550px',
-    boxShadow: 'none'
-  }
-})(AppBar)
+    height: "550px",
+    boxShadow: "none",
+  },
+})(AppBar);
 
 const FixedContainer = styled.div`
   background-color: #fff;
@@ -27,17 +27,17 @@ const FixedContainer = styled.div`
   width: 100%;
   position: absolute;
   bottom: -2px;
-`
+`;
 const AnnouncementContainer = styled.div`
   margin: 10px 23px;
   display: flex;
-`
+`;
 const AnnouncementTitle = styled.div`
   font-size: 28px;
 
   color: #000;
   font-weight: bold;
-`
+`;
 const MarqueeContainer = styled.div`
   white-space: nowrap;
   letter-spacing: 1.5px;
@@ -56,12 +56,12 @@ const MarqueeContainer = styled.div`
     ${({ theme }) => theme.primaryGradient},
     ${({ theme }) => theme.primary}
   );
-`
+`;
 const ProfileContainer = styled.div`
   width: 723px;
   height: 192px;
   margin: 0 auto;
-`
+`;
 const ProfileContainerTop = styled.div`
   width: 100%;
   height: 50px;
@@ -69,7 +69,7 @@ const ProfileContainerTop = styled.div`
   border-radius: 10px 10px 0 0;
 
   padding: 15px 25px 0 26px;
-`
+`;
 const ProfileContainerBottom = styled.div`
   width: 100%;
 
@@ -79,25 +79,25 @@ const ProfileContainerBottom = styled.div`
     ${({ theme }) => theme.primaryGradient},
     ${({ theme }) => theme.primary}
   );
-`
+`;
 const WelcomeLabel = styled.div`
   float: left;
 
   font-size: 22px;
 
   color: #dfdfdf;
-`
+`;
 const WelcomeUsernameLabel = styled(WelcomeLabel)`
   color: #fde73f;
   font-weight: bold;
-`
+`;
 
 const ProfileLink = styled(WelcomeLabel)`
   float: right;
-`
+`;
 const BalanceContainer = styled.div`
   float: left;
-`
+`;
 const BalanceAmount = styled.div`
   font-size: 35px;
   font-weight: bold;
@@ -105,15 +105,15 @@ const BalanceAmount = styled.div`
   text-align: center;
   width: 100%;
   margin-top: 35px;
-`
+`;
 const WalletTypeLabel = styled(WelcomeLabel)`
   text-align: center;
   width: 100%;
   margin-top: 10px;
-`
+`;
 const WalletActionContainer = styled.div`
   float: right;
-`
+`;
 const WalletActionUL = styled.ul`
   text-align: center;
 
@@ -122,13 +122,13 @@ const WalletActionUL = styled.ul`
   font-size: 28px;
 
   color: #ffffff;
-`
+`;
 const WalletActionLI = styled.li`
   display: inline-table;
   padding: 0 10px;
 
   text-align: center;
-`
+`;
 const WalletActionIcon = styled.div`
   ${(props) => `background:url(${props.img}) no-repeat center center; `}
   background-color: ${(props) => props.theme.secondary};
@@ -137,7 +137,7 @@ const WalletActionIcon = styled.div`
   background-size: 60px;
   width: 80px;
   height: 80px;
-`
+`;
 const ButtonSignup = styled.div`
   min-width: 195px;
   display: flex;
@@ -152,7 +152,7 @@ const ButtonSignup = styled.div`
   text-align: center;
   padding: 17px 0;
   font-size: 28px;
-`
+`;
 
 const ButtonStartGame = styled.div`
 width: 148px;
@@ -169,13 +169,13 @@ text-align:center;
 color:#fff;
 padding-top: 5px;
 }
-`
+`;
 const GameSelectionContainer = styled.div`
   font-size: 48px;
   position: absolute;
   top: 550px;
   left: 0;
-`
+`;
 const GameSelectionUL = styled.div`
   font-size: 35px;
   font-weight: bold;
@@ -186,11 +186,11 @@ const GameSelectionUL = styled.div`
   width: 176px;
   overflow-y: auto;
   height: calc(100vh - 640px);
-`
+`;
 const GameSelectionEmpty = styled.div`
   height: 90px;
   width: 130px;
-`
+`;
 const GameSelectionLI = styled.div`
   width: 130px;
   height: 69px;
@@ -218,22 +218,22 @@ const GameSelectionLI = styled.div`
           `);
           
           `
-      : ``
+      : ``;
   }}
-`
+`;
 
 const GameListContainer = styled.div`
   padding-top: 570px;
   padding-bottom: 100px;
   padding-left: 175px;
   background-color: #fff;
-`
+`;
 const GameListWrap = styled.div`
   width: 557px;
   padding: 25px 18px;
   border-radius: 10px;
   background-color: #ededed;
-`
+`;
 const GameFrameImg = styled.div`
   margin: 0 auto 10px auto;
   display: block;
@@ -242,7 +242,7 @@ const GameFrameImg = styled.div`
   background: url(${(props) => props.src}) no-repeat;
   background-position: center;
   background-size: 100%;
-`
+`;
 
 const Maintenance = styled.div`
   display: none;
@@ -255,7 +255,7 @@ const Maintenance = styled.div`
   z-index: 1;
   font-size: 32px;
   text-transform: capitalize;
-`
+`;
 
 const NewWrapper = styled.div`
   ${({ maintenance }) => {
@@ -268,9 +268,9 @@ const NewWrapper = styled.div`
         display: flex;
     
     }`
-      : ``
+      : ``;
   }}
-`
+`;
 
 class Home extends Component {
   state = {
@@ -284,30 +284,30 @@ class Home extends Component {
       page: 0,
       totalPage: 0,
       list: [],
-      verifyList: []
+      verifyList: [],
     },
     tab2: {
       limit: 10,
       page: 0,
       totalPage: 0,
-      list: []
+      list: [],
     },
-    loading: true
-  }
+    loading: true,
+  };
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener("scroll", this.handleScroll);
     if (this.props.game.homePageGameList.length > 0) {
-      var gameTypeListSorting = this.formatSortedGameList()
+      var gameTypeListSorting = this.formatSortedGameList();
       this.setState({
         ...this.state,
         gameTypeListSorting: gameTypeListSorting,
-        selectedGameType: gameTypeListSorting[0]
-      })
+        selectedGameType: gameTypeListSorting[0],
+      });
     }
   }
   componentDidUpdate(preProps) {
@@ -315,41 +315,41 @@ class Home extends Component {
       preProps.game.homePageGameList.length !==
       this.props.game.homePageGameList.length
     ) {
-      var gameTypeListSorting = this.formatSortedGameList()
+      var gameTypeListSorting = this.formatSortedGameList();
       this.setState({
         ...this.state,
         gameTypeListSorting: gameTypeListSorting,
-        selectedGameType: gameTypeListSorting[0]
-      })
+        selectedGameType: gameTypeListSorting[0],
+      });
     }
   }
 
   formatSortedGameList() {
-    var currentType = -1
-    var gameTypeListSorting = []
-    var displayGameType = Common.GetDisplayGameType()
+    var currentType = -1;
+    var gameTypeListSorting = [];
+    var displayGameType = Common.GetDisplayGameType();
 
     this.props.game.homePageGameList
       .filter((a) => displayGameType.indexOf(a.type) >= 0)
       .sort((a, b) => {
-        return a.type - b.type
+        return a.type - b.type;
       })
       .map((row, index) => {
         if (currentType !== row.type) {
-          gameTypeListSorting.push(row.type)
+          gameTypeListSorting.push(row.type);
         }
-        currentType = row.type
-      })
-    return gameTypeListSorting
+        currentType = row.type;
+      });
+    return gameTypeListSorting;
   }
   handleScroll = (e) => {
-    const doc = document.documentElement
+    const doc = document.documentElement;
 
-    let top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0)
+    let top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
-    top = top + 670
+    top = top + 670;
 
-    var D = document
+    var D = document;
     var docHeight = Math.max(
       D.body.scrollHeight,
       D.documentElement.scrollHeight,
@@ -357,53 +357,53 @@ class Home extends Component {
       D.documentElement.offsetHeight,
       D.body.clientHeight,
       D.documentElement.clientHeight
-    )
-    var gameTypeListSorting = this.state.gameTypeListSorting
-    let gameType = gameTypeListSorting[0]
+    );
+    var gameTypeListSorting = this.state.gameTypeListSorting;
+    let gameType = gameTypeListSorting[0];
     if (window.innerHeight + window.scrollY >= docHeight - 2) {
-      gameType = gameTypeListSorting[gameTypeListSorting.length - 1]
+      gameType = gameTypeListSorting[gameTypeListSorting.length - 1];
     } else {
       for (var i = gameTypeListSorting.length - 1; i >= 0; i--) {
         if (
           top >
-          document.getElementById('gameType' + gameTypeListSorting[i]).offsetTop
+          document.getElementById("gameType" + gameTypeListSorting[i]).offsetTop
         ) {
-          gameType = gameTypeListSorting[i]
-          break
+          gameType = gameTypeListSorting[i];
+          break;
         }
       }
     }
 
-    this.setState({ ...this.state, selectedGameType: gameType })
-  }
+    this.setState({ ...this.state, selectedGameType: gameType });
+  };
   handleGameTypeClick = (gameType) => {
-    let pos = document.getElementById('gameType' + gameType).offsetTop
+    let pos = document.getElementById("gameType" + gameType).offsetTop;
 
-    window.scrollTo({ top: pos - 575, behavior: 'smooth' })
-  }
+    window.scrollTo({ top: pos - 575, behavior: "smooth" });
+  };
   handleJoinLotteryGame = (name) => {
     if (this.props.account.token != null) {
       GameService.GetGameList(name, GameTypeEnum.LOTTERYLOBBY).then((e) => {
         if (e.IsSuccess) {
           GameService.JoinGame(e.data[0].id, name).then((response) => {
             if (response.IsSuccess) {
-              this.setState({ ...this.state, maintenance: false })
-              Common.PopupCenter(response.data.url)
+              this.setState({ ...this.state, maintenance: false });
+              Common.PopupCenter(response.data.url);
             } else {
-              this.setState({ ...this.state, maintenance: true })
+              this.setState({ ...this.state, maintenance: true });
             }
-          })
+          });
         }
-      })
+      });
     } else {
-      this.props.appHistory.push('/' + i18n.translation.language + '/login')
+      this.props.appHistory.push("/" + i18n.language + "/login");
     }
-  }
+  };
 
   handleJoinOtherGame = (type, params, game_platform_id) => {
     if (!this.props.account.token) {
-      this.props.appHistory.push('/' + i18n.translation.language + '/login')
-      return
+      this.props.appHistory.push("/" + i18n.language + "/login");
+      return;
     }
     if (
       type === GameTypeEnum.SLOT ||
@@ -411,78 +411,73 @@ class Home extends Component {
       type === GameTypeEnum.TABLEGAME ||
       type === GameTypeEnum.FISH
     ) {
-      this.props.navigate(`/slots/${params}/${type}`)
+      this.props.navigate(`/slots/${params}/${type}`);
     } else {
       Common.PopupCenter(
-        '/' +
-          i18n.translation.language +
-          '/joinlobbygame/' +
-          type +
-          '/' +
-          params
-      )
+        "/" + i18n.language + "/joinlobbygame/" + type + "/" + params
+      );
     }
-  }
+  };
 
   handleGameClick = (type, params, game_platform_id) => {
     type === GameTypeEnum.LOTTERYLOBBY || type === GameTypeEnum.LOTTERY
       ? this.handleJoinLotteryGame(params)
-      : this.handleJoinOtherGame(type, params, game_platform_id)
-  }
+      : this.handleJoinOtherGame(type, params, game_platform_id);
+  };
   handleSignupClick = () => {
-    this.props.appHistory.push('/' + i18n.translation.language + '/login')
-  }
+    this.props.appHistory.push("/" + i18n.language + "/login");
+  };
   convertGameTypeToText(gameType) {
     switch (gameType) {
       case GameTypeEnum.LIVE:
-        return i18n.translation.t('wap.main.home.gameTab.live')
+        return i18n.t("wap.main.home.gameTab.live");
       case GameTypeEnum.LIVELOBBY:
-        return i18n.translation.t('wap.main.home.gameTab.live')
+        return i18n.t("wap.main.home.gameTab.live");
       case GameTypeEnum.QIPAI:
-        return i18n.translation.t('wap.main.home.gameTab.chess')
+        return i18n.t("wap.main.home.gameTab.chess");
       case GameTypeEnum.QIPAILOBBY:
-        return i18n.translation.t('wap.main.home.gameTab.chess')
+        return i18n.t("wap.main.home.gameTab.chess");
       case GameTypeEnum.SPORTS:
-        return i18n.translation.t('wap.main.home.gameTab.sports')
+        return i18n.t("wap.main.home.gameTab.sports");
       case GameTypeEnum.ESPORTS:
-        return i18n.translation.t('wap.main.home.gameTab.esports')
+        return i18n.t("wap.main.home.gameTab.esports");
       case GameTypeEnum.LOTTERYLOBBY:
-        return i18n.translation.t('wap.main.home.gameTab.lottery')
+        return i18n.t("wap.main.home.gameTab.lottery");
       case GameTypeEnum.SLOT:
-        return i18n.translation.t('wap.main.home.gameTab.slot')
+        return i18n.t("wap.main.home.gameTab.slot");
       case GameTypeEnum.FISH:
-        return i18n.translation.t('wap.main.home.gameTab.fish')
+        return i18n.t("wap.main.home.gameTab.fish");
       case GameTypeEnum.TIGERSLOT:
       default:
-        return i18n.translation.t('wap.main.home.gameTab.electron')
+        return i18n.t("wap.main.home.gameTab.electron");
     }
   }
   getImgPrefix(gameType) {
     switch (gameType) {
       case GameTypeEnum.FISH:
-        return 'fish'
+        return "fish";
       case GameTypeEnum.LIVE:
-        return 'live'
+        return "live";
       case GameTypeEnum.LIVELOBBY:
-        return 'live'
+        return "live";
       case GameTypeEnum.LOTTERYLOBBY:
-        return 'lottery'
+        return "lottery";
       case GameTypeEnum.QIPAI:
-        return 'chess'
+        return "chess";
       case GameTypeEnum.QIPAILOBBY:
-        return 'chess'
+        return "chess";
       case GameTypeEnum.SLOT:
-        return 'slot'
+        return "slot";
       case GameTypeEnum.SPORTS:
-        return 'sports'
+        return "sports";
       case GameTypeEnum.ESPORTS:
-        return 'esports'
+        return "esports";
       case GameTypeEnum.TIGERSLOT:
-        return 'slot'
+        return "slot";
       case GameTypeEnum.TABLEGAME:
-        return 'table'
+        return "table";
       default:
-        return ''
+        return "";
     }
   }
 
@@ -490,10 +485,10 @@ class Home extends Component {
     var checkTransferWallet =
       Object.values(this.props.game.providerList).filter(
         (item) => item.transferwallet === true
-      ).length > 0
+      ).length > 0;
     return (
       <React.Fragment>
-        <StyledAppBar position='fixed' color='default'>
+        <StyledAppBar position="fixed" color="default">
           {/* {(() => {
             if (this.props.ui.board_list.length === 0) {
               return <React.Fragment></React.Fragment>;
@@ -505,7 +500,7 @@ class Home extends Component {
           <FixedContainer>
             <AnnouncementContainer>
               <AnnouncementTitle>
-                {i18n.translation.t('wap.main.home.profile.announcement')}
+                {i18n.t("wap.main.home.profile.announcement")}
               </AnnouncementTitle>
               <MarqueeContainer>
                 <Marquee />
@@ -522,29 +517,25 @@ class Home extends Component {
                     return (
                       <React.Fragment>
                         <WelcomeLabel>
-                          {i18n.translation.t(
-                            'wap.main.home.profile.welcomeBack'
-                          )}
+                          {i18n.t("wap.main.home.profile.welcomeBack")}
                         </WelcomeLabel>
                         <WelcomeUsernameLabel>
                           {this.props.account.info.member_username}(VIP
                           {this.props.account.info.member_level_id})
                         </WelcomeUsernameLabel>
                       </React.Fragment>
-                    )
+                    );
                   } else {
                     return (
                       <WelcomeLabel>
-                        {i18n.translation.t(
-                          'wap.main.home.profile.pleaseLogin'
-                        )}
+                        {i18n.t("wap.main.home.profile.pleaseLogin")}
                       </WelcomeLabel>
-                    )
+                    );
                   }
                 })()}
 
-                <ProfileLink onClick={() => this.props.navigate('/profile')}>
-                  {i18n.translation.t('wap.main.home.profile.profile')}
+                <ProfileLink onClick={() => this.props.navigate("/profile")}>
+                  {i18n.t("wap.main.home.profile.profile")}
                 </ProfileLink>
               </ProfileContainerTop>
               <ProfileContainerBottom>
@@ -554,7 +545,7 @@ class Home extends Component {
                       return (
                         <React.Fragment>
                           <BalanceAmount>
-                            {this.props.wallet.mainSymbol}{' '}
+                            {this.props.wallet.mainSymbol}{" "}
                             {Common.formatNumberWithThousand(
                               this.props.wallet.mainBalance +
                                 this.props.game.providerList
@@ -567,27 +558,23 @@ class Home extends Component {
                             )}
                           </BalanceAmount>
                           <WalletTypeLabel>
-                            {i18n.translation.t(
-                              'wap.main.home.profile.mainAccount'
-                            )}
+                            {i18n.t("wap.main.home.profile.mainAccount")}
                           </WalletTypeLabel>
                         </React.Fragment>
-                      )
+                      );
                     } else {
                       return (
                         <ButtonSignup onClick={this.handleSignupClick}>
-                          {i18n.translation.t(
-                            'wap.main.home.profile.loginRegister'
-                          )}
+                          {i18n.t("wap.main.home.profile.loginRegister")}
                         </ButtonSignup>
-                      )
+                      );
                     }
                   })()}
                 </BalanceContainer>
                 <WalletActionContainer>
                   <WalletActionUL>
                     <WalletActionLI
-                      onClick={() => this.props.navigate('/deposit')}
+                      onClick={() => this.props.navigate("/deposit")}
                     >
                       <WalletActionIcon
                         img={
@@ -595,11 +582,11 @@ class Home extends Component {
                           `/assets/images/wapp/icon-deposit.png`
                         }
                       ></WalletActionIcon>
-                      {i18n.translation.t('common.deposit')}
+                      {i18n.t("common.deposit")}
                     </WalletActionLI>
                     {checkTransferWallet && (
                       <WalletActionLI
-                        onClick={() => this.props.navigate('/transfer')}
+                        onClick={() => this.props.navigate("/transfer")}
                       >
                         <WalletActionIcon
                           img={
@@ -607,12 +594,12 @@ class Home extends Component {
                             `/assets/images/wapp/icon-transfer.png`
                           }
                         ></WalletActionIcon>
-                        {i18n.translation.t('common.transfer')}
+                        {i18n.t("common.transfer")}
                       </WalletActionLI>
                     )}
 
                     <WalletActionLI
-                      onClick={() => this.props.navigate('/withdrawal')}
+                      onClick={() => this.props.navigate("/withdrawal")}
                     >
                       <WalletActionIcon
                         img={
@@ -620,7 +607,7 @@ class Home extends Component {
                           `/assets/images/wapp/icon-withdrawal.png`
                         }
                       ></WalletActionIcon>
-                      {i18n.translation.t('common.withdrawal')}
+                      {i18n.t("common.withdrawal")}
                     </WalletActionLI>
                   </WalletActionUL>
                 </WalletActionContainer>
@@ -634,8 +621,8 @@ class Home extends Component {
                   return (
                     <GameSelectionLI
                       style={
-                        i18n.translation.language === 'en-US'
-                          ? { fontSize: '29px', paddingTop: '6px' }
+                        i18n.language === "en-US"
+                          ? { fontSize: "29px", paddingTop: "6px" }
                           : {}
                       }
                       key={index}
@@ -644,8 +631,8 @@ class Home extends Component {
                     >
                       {this.convertGameTypeToText(type)}
                     </GameSelectionLI>
-                  )
-                })
+                  );
+                });
               })()}
             </GameSelectionUL>
           </GameSelectionContainer>
@@ -653,18 +640,18 @@ class Home extends Component {
         <GameListContainer>
           <GameListWrap>
             {(() => {
-              var displayGameType = Common.GetDisplayGameType()
-              var currentType = -1
+              var displayGameType = Common.GetDisplayGameType();
+              var currentType = -1;
               return this.props.game.homePageGameList
                 .filter((a) => displayGameType.indexOf(a.type) >= 0)
                 .sort(function (a, b) {
-                  return a.type - b.type
+                  return a.type - b.type;
                 })
                 .map((row, index) => {
                   var jsx = (
                     <NewWrapper maintenance={row.status != 0}>
                       <Maintenance>
-                        {i18n.translation.t('transfer.maintenance')}
+                        {i18n.t("transfer.maintenance")}
                       </Maintenance>
                       <GameFrameImg
                         src={`${
@@ -687,19 +674,19 @@ class Home extends Component {
                         }
                       >
                         <ButtonStartGame>
-                          {i18n.translation.t('common.startGame')}
+                          {i18n.t("common.startGame")}
                         </ButtonStartGame>
                       </GameFrameImg>
                     </NewWrapper>
-                  )
-                  currentType = row.type
-                  return jsx
-                })
+                  );
+                  currentType = row.type;
+                  return jsx;
+                });
             })()}
           </GameListWrap>
         </GameListContainer>
       </React.Fragment>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -707,9 +694,9 @@ const mapStateToProps = (state) => {
     account: state.account,
     ui: state.ui,
     wallet: state.wallet,
-    game: state.game
-  }
-}
+    game: state.game,
+  };
+};
 
 // const mapDispatchToProps = dispatch => {
 //   return {
@@ -718,4 +705,4 @@ const mapStateToProps = (state) => {
 //     }
 //   };
 // };
-export default connect(mapStateToProps, null)(withRouter(Home))
+export default connect(mapStateToProps, null)(withRouter(Home));
