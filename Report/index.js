@@ -68,12 +68,10 @@ const DateContainer = styled.div`
 const DateSpliter = styled.div`
   font-size: 22px;
   font-weight: 600;
-  float: left;
   color: #4a4a4a;
   margin: 75px 0 0 10px;
 `;
 const DateInner = styled.div`
-  float: left;
   width: 320px;
   padding: 5px;
 `;
@@ -283,6 +281,12 @@ const AnotherCustomDataRow = styled.div`
   grid-template-columns: 33.33% 33.33% 33.33%;
   padding-bottom: 20px;
   border-bottom: 2px solid #d7d7d7;
+`;
+
+const FlatStraightLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
 `;
 
 class Report extends Component {
@@ -1009,46 +1013,49 @@ class Report extends Component {
         </StyledAppBar>
 
         <DateContainer>
-          <DateInner>
-            <DateLabel>{i18n.t("report.startDate")}</DateLabel>
-            <ThemeProvider theme={materialTheme}>
-              <MuiPickersUtilsProvider
-                utils={DateFnsUtils}
-                locale={localeMap["en"]}
-              >
-                <DatePicker
-                  autoOk
-                  clearable
-                  disableFuture
-                  maxDate={new Date(this.state.dateTo)}
-                  format="yyyy/MM/dd"
-                  value={this.state.dateFrom}
-                  onChange={this.handleDateFromChange}
-                />
-              </MuiPickersUtilsProvider>
-            </ThemeProvider>
-          </DateInner>
-          <DateSpliter>-</DateSpliter>
-          <DateInner style={{ float: "right" }}>
-            <DateLabel>{i18n.t("report.endDate")}</DateLabel>
-            <ThemeProvider theme={materialTheme}>
-              <MuiPickersUtilsProvider
-                utils={DateFnsUtils}
-                locale={localeMap["en"]}
-              >
-                <DatePicker
-                  autoOk
-                  clearable
-                  disableFuture
-                  minDate={new Date(this.state.dateFrom)}
-                  maxDate={new Date()}
-                  format="yyyy/MM/dd"
-                  value={this.state.dateTo}
-                  onChange={this.handleDateToChange}
-                />
-              </MuiPickersUtilsProvider>
-            </ThemeProvider>
-          </DateInner>
+          <FlatStraightLine>
+            <DateInner>
+              <DateLabel>{i18n.t("report.startDate")}</DateLabel>
+              <ThemeProvider theme={materialTheme}>
+                <MuiPickersUtilsProvider
+                  utils={DateFnsUtils}
+                  locale={localeMap["en"]}
+                >
+                  <DatePicker
+                    autoOk
+                    clearable
+                    disableFuture
+                    maxDate={new Date(this.state.dateTo)}
+                    format="yyyy/MM/dd"
+                    value={this.state.dateFrom}
+                    onChange={this.handleDateFromChange}
+                  />
+                </MuiPickersUtilsProvider>
+              </ThemeProvider>
+            </DateInner>
+            <DateSpliter>-</DateSpliter>
+            <DateInner>
+              <DateLabel>{i18n.t("report.endDate")}</DateLabel>
+              <ThemeProvider theme={materialTheme}>
+                <MuiPickersUtilsProvider
+                  utils={DateFnsUtils}
+                  locale={localeMap["en"]}
+                >
+                  <DatePicker
+                    autoOk
+                    clearable
+                    disableFuture
+                    minDate={new Date(this.state.dateFrom)}
+                    maxDate={new Date()}
+                    format="yyyy/MM/dd"
+                    value={this.state.dateTo}
+                    onChange={this.handleDateToChange}
+                  />
+                </MuiPickersUtilsProvider>
+              </ThemeProvider>
+            </DateInner>
+          </FlatStraightLine>
+
           <div className="clear"></div>
           <DateRangContainer>
             <DateRangSelection
