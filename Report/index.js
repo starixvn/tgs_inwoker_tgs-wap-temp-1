@@ -269,7 +269,7 @@ const DateTimeDisplay = styled.div``;
 
 const CustomWinLose = styled.span`
   color: ${({ value }) => {
-    return value === 0 ? "" : value > 1 ? "rgb(0,255, 0)" : "rgb(255, 0, 0)";
+    return value === 0 ? "" : value > 0 ? "rgb(0,255, 0)" : "rgb(255, 0, 0)";
   }};
 `;
 
