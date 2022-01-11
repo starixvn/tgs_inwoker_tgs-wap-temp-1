@@ -601,8 +601,16 @@ class Deposit extends Component {
                     <Textbox
                       style={{ margin: "20px auto 20px auto" }}
                       type={"text"}
-                      placeholder={i18n.t("deposit.msgPlsEnterAccount")}
-                      label={i18n.t("deposit.msgPlsEnterAccount")}
+                      placeholder={
+                        config.features.Deposit_EnglishName
+                          ? i18n.t("bet28.msgEnterBankAccountName")
+                          : i18n.t("deposit.msgPlsEnterAccount")
+                      }
+                      label={
+                        config.features.Deposit_EnglishName
+                          ? i18n.t("bet28.BankAccountName")
+                          : i18n.t("deposit.msgPlsEnterAccount")
+                      }
                       value={this.state.account}
                       onChange={(e) => {
                         this.setState({
