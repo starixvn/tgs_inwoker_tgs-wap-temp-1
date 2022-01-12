@@ -1,27 +1,27 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
 
-import AppBar from '@material-ui/core/AppBar'
-import { withStyles } from '@material-ui/core/styles'
+import AppBar from "@material-ui/core/AppBar";
+import { withStyles } from "@material-ui/core/styles";
 import {
   walletAction,
   accountAction,
-  RESET_WALLETRESULT
-} from '@Inwoker/tgs-api'
-import MessageDialog from '../../Wap/Share/MessageDialog'
-import Loading from '../../Wap/Share/Loading'
-import Header from '../../Wap/Share/Header'
-import SwipeToDelete from 'react-swipe-to-delete-component'
-import i18n from '../../../utils/i18n'
-import Common from '../../../utils/Common'
+  RESET_WALLETRESULT,
+} from "@Inwoker/tgs-api";
+import MessageDialog from "../../Wap/Share/MessageDialog";
+import Loading from "../../Wap/Share/Loading";
+import Header from "../../Wap/Share/Header";
+import SwipeToDelete from "react-swipe-to-delete-component";
+import i18n from "../../../utils/i18n";
+import Common from "../../../utils/Common";
 const Container = styled.div`
   width: 100%;
   padding-top: 170px;
-`
+`;
 const StyledAppBar = withStyles((theme) => ({
   root: {
-    height: '170px',
+    height: "170px",
     background: theme.palette.primary.main,
 
     background:
@@ -32,16 +32,16 @@ const StyledAppBar = withStyles((theme) => ({
       `, 0.8)), url(${
         process.env.PUBLIC_URL + `/assets/images/wapp/bg-profile.png`
       })`,
-    display: 'block'
-  }
-}))(AppBar)
+    display: "block",
+  },
+}))(AppBar);
 const BalanceLabel = styled.div`
   font-size: 36px;
 
   text-align: center;
   color: #ffffff;
   margin: 15px auto 20px auto;
-`
+`;
 
 const CardItem = styled.div`
   background: #fff;
@@ -52,7 +52,7 @@ const CardItem = styled.div`
   margin-left: 60px;
   padding: 0 0 0 44px;
   color: ${({ theme }) => theme.secondary};
-`
+`;
 const InfoLabel = styled.div`
   font-size: 18px;
   font-weight: 600;
@@ -67,35 +67,35 @@ const InfoLabel = styled.div`
   padding-left: 44px;
   height: 32px;
   padding-top: 4px;
-`
+`;
 const BankIcon = styled.div`
   background: url(${(props) => props.src}) no-repeat center center;
   margin: 0 20px 0 20px;
   height: 170px;
   width: 110px;
   float: left;
-`
+`;
 const BankName = styled.div`
   font-size: 24px;
 
   float: left;
   width: 480px;
   margin-top: 40px;
-`
+`;
 const BankNumber = styled.div`
   font-size: 32px;
 
   float: left;
   width: 480px;
   margin-top: 15px;
-`
+`;
 const EmptyCardItem = styled.div`
   width: 632px;
   height: 170px;
   border: 2px ${({ theme }) => theme.secondary} dashed;
   border-radius: 16px;
   margin: 30px auto 0 auto;
-`
+`;
 const EmptyCardTitle = styled.div`
   font-size: 24px;
   font-weight: 600;
@@ -104,14 +104,14 @@ const EmptyCardTitle = styled.div`
   width: 450px;
 
   margin: 50px 0 0 45px;
-`
+`;
 const EmptyCardDesc = styled.div`
   font-size: 18px;
   float: left;
   color: ${({ theme }) => theme.secondary};
   width: 450px;
   margin: 5px 0 0 45px;
-`
+`;
 const EmptyCardAdd = styled.div`
   background: url(${process.env.PUBLIC_URL +
     `/assets/images/wapp/icon-plus-circle.png`})
@@ -119,14 +119,14 @@ const EmptyCardAdd = styled.div`
   width: 100px;
   height: 170px;
   float: right;
-`
+`;
 class Card extends Component {
   state = {
     loading: false,
     bankCardList: [],
     showDialog: false,
-    dialogMessage: ''
-  }
+    dialogMessage: "",
+  };
   componentDidMount() {
     // if (
     //   this.props.account.info.member_name === '' ||
@@ -153,7 +153,7 @@ class Card extends Component {
     // }
 
     if (this.props.wallet.bankCardList.length === 0) {
-      this.props.getBankCardList()
+      this.props.getBankCardList();
     }
   }
   componentDidUpdate(preProps) {
@@ -163,40 +163,46 @@ class Card extends Component {
       this.props.wallet.deleteBankCardResult !== null
     ) {
       if (this.props.wallet.deleteBankCardResult.IsSuccess) {
-        this.props.getBankCardList()
+        this.props.getBankCardList();
       } else {
         this.setState({
           ...this.state,
           showDialog: true,
-          dialogMessage: this.props.wallet.deleteBankCardResult.info
-        })
+          dialogMessage: this.props.wallet.deleteBankCardResult.info,
+        });
       }
-      this.props.resetResult()
+      this.props.resetResult();
     }
   }
   handleCloseDialog() {
     this.setState({
       ...this.state,
       showDialog: false,
-      dialogMessage: ''
-    })
+      dialogMessage: "",
+    });
   }
 
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   handleDeleteCard = (e) => {
-    this.props.deleteBankCard(e.item.id)
-  }
+    this.props.deleteBankCard(e.item.id);
+  };
   render() {
     return (
       <Container>
         <StyledAppBar>
           <Header
             onBackClick={this.handleBackClick}
+<<<<<<< HEAD
             title={i18n.t('card.title')}
             position={'sticky'}
             backgroundColor={'transparent'}
+=======
+            title={i18n.t("card.title")}
+            position={"sticky"}
+            backgroundColor={"transparent"}
+>>>>>>> release/current
           ></Header>
           <BalanceLabel>
             {Common.formatNumberWithThousand(
@@ -227,9 +233,10 @@ class Card extends Component {
                 </BankNumber>
               </CardItem>
             </SwipeToDelete>
-          )
+          );
         })}
 
+<<<<<<< HEAD
         <InfoLabel>{i18n.t('card.msgSlideToDelete')}</InfoLabel>
         <div className='clear'></div>
         <EmptyCardItem onClick={() => this.props.navigate('/card/add')}>
@@ -240,6 +247,14 @@ class Card extends Component {
           <EmptyCardDesc>
             {i18n.t('card.msgAddCardDesc')}
           </EmptyCardDesc>
+=======
+        <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
+        <div className="clear"></div>
+        <EmptyCardItem onClick={() => this.props.navigate("/card/add")}>
+          <EmptyCardAdd></EmptyCardAdd>
+          <EmptyCardTitle>{i18n.t("card.msgAddCard")}</EmptyCardTitle>
+          <EmptyCardDesc>{i18n.t("card.msgAddCardDesc")}</EmptyCardDesc>
+>>>>>>> release/current
         </EmptyCardItem>
         <MessageDialog
           onClose={() => this.handleCloseDialog()}
@@ -251,16 +266,16 @@ class Card extends Component {
           show={this.state.loading || this.props.wallet.loading}
         ></Loading>
       </Container>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
   return {
     account: state.account,
     wallet: state.wallet,
-    game: state.game
-  }
-}
+    game: state.game,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -270,8 +285,8 @@ const mapDispatchToProps = (dispatch) => {
     deleteBankCard: (id) => dispatch(walletAction.deleteBankCard(id)),
     resetResult: () =>
       dispatch({
-        type: RESET_WALLETRESULT
-      })
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Card)
+        type: RESET_WALLETRESULT,
+      }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

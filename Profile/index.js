@@ -1,17 +1,17 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { withRouter } from 'react-router-dom'
-import Header from '../Share/Header'
-import config from '../../../config/config'
-import i18n from '../../../utils/i18n'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { withRouter } from "react-router-dom";
+import Header from "../Share/Header";
+import config from "../../../config/config";
+import i18n from "../../../utils/i18n";
 
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
 
   height: 100%;
-`
+`;
 
 const BlockLabel = styled.div`
   font-size: 32px;
@@ -19,51 +19,51 @@ const BlockLabel = styled.div`
 
   color: #2b2b2b;
   margin: 30px 0 10px 60px;
-`
+`;
 const BlockContainer = styled.div`
   background-color: #fff;
   width: 700px;
   padding: 30px 0;
   border-radius: 20px;
   margin: 30px auto;
-`
+`;
 const ItemContainer = styled.div`
   height: 100px;
 
   margin: 30px 0 0 30px;
-`
+`;
 const ItemIconContainer = styled.div`
   width: 48px;
   float: left;
   margin: 0 10px 0 30px;
-`
+`;
 const ItemIcon = styled.div`
   height: 48px;
   margin-top: 20px;
   width: 48px;
   background: url(${(props) => props.icon}) no-repeat left center;
   background-size: contain;
-`
+`;
 const ItemContentContainer = styled.div`
   float: left;
   margin: 0 0 0 10px;
-`
+`;
 const ItemTitle = styled.div`
   font-size: 32px;
   font-weight: 500;
 
   color: #2c2c2c;
-`
+`;
 const NotSetLabel = styled.div`
   margin-top: 5px;
 
   font-size: 32px;
 
   color: #afafaf;
-`
+`;
 const SettedLabel = styled(NotSetLabel)`
   color: ${({ theme }) => theme.secondary};
-`
+`;
 const BtnBack = styled.div`
   height: 100px;
 
@@ -73,19 +73,28 @@ const BtnBack = styled.div`
     no-repeat right center;
   float: right;
   margin: 0 50px 0 0px;
-`
+`;
 const ContentItem = (
   icon,
   title,
   isConfigured,
   onClickEvent,
+<<<<<<< HEAD
   configuredValue = i18n.t('profile.setted')
+=======
+  configuredValue = i18n.t("profile.setted")
+>>>>>>> release/current
 ) => {
   var configureElement = isConfigured ? (
     <SettedLabel>{configuredValue}</SettedLabel>
   ) : (
+<<<<<<< HEAD
     <NotSetLabel>{i18n.t('profile.notSet')}</NotSetLabel>
   )
+=======
+    <NotSetLabel>{i18n.t("profile.notSet")}</NotSetLabel>
+  );
+>>>>>>> release/current
   return (
     <ItemContainer onClick={onClickEvent}>
       <ItemIconContainer>
@@ -98,25 +107,34 @@ const ContentItem = (
 
       <BtnBack></BtnBack>
     </ItemContainer>
-  )
-}
+  );
+};
 
 class Profile extends Component {
-  state = {}
+  state = {};
   componentDidMount() {
     if (this.props.account.token === null) {
+<<<<<<< HEAD
       this.props.appHistory.replace('/' + i18n.language + '/')
+=======
+      this.props.appHistory.replace("/" + i18n.language + "/");
+>>>>>>> release/current
     }
   }
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   handleNavigate = (path) => {
+<<<<<<< HEAD
     this.props.appHistory.push('/' + i18n.language + path)
   }
+=======
+    this.props.appHistory.push("/" + i18n.language + path);
+  };
+>>>>>>> release/current
   isConfigured(value) {
-    if (value) return true
-    return false
+    if (value) return true;
+    return false;
   }
   render() {
     return (
@@ -126,22 +144,34 @@ class Profile extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
+<<<<<<< HEAD
           title={i18n.t('profile.title')}
+=======
+          title={i18n.t("profile.title")}
+>>>>>>> release/current
         ></Header>
 
-        <div style={{ marginBottom: '-30px' }}>
+        <div style={{ marginBottom: "-30px" }}>
           <BlockContainer>
+<<<<<<< HEAD
             <BlockLabel>{i18n.t('profile.basicInfo')}</BlockLabel>
             {config.features.ICVerification &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-user.png`,
                 i18n.t('profile.nameVerify.title'),
+=======
+            <BlockLabel>{i18n.t("profile.basicInfo")}</BlockLabel>
+            {config.features.ICVerification &&
+              ContentItem(
+                process.env.PUBLIC_URL + `/assets/images/wapp/icon-user.png`,
+                i18n.t("profile.nameVerify.title"),
+>>>>>>> release/current
                 this.isConfigured(
-                  this.props.account.info.member_name !== '' &&
+                  this.props.account.info.member_name !== "" &&
                     this.props.account.info.member_name !== null
                 ),
                 () => {
-                  this.handleNavigate('/profile/name')
+                  this.handleNavigate("/profile/name");
                 },
                 this.props.account.info.member_name
               )}
@@ -159,68 +189,95 @@ class Profile extends Component {
             {config.features.SMSVerification &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-phone.png`,
+<<<<<<< HEAD
                 i18n.t('profile.phone.title'),
+=======
+                i18n.t("profile.phone.title"),
+>>>>>>> release/current
                 this.isConfigured(this.props.account.info.member_phone),
                 () => {
-                  this.handleNavigate('/profile/phone')
+                  this.handleNavigate("/profile/phone");
                 },
                 this.props.account.info.member_phone
-                  ? this.props.account.info.member_phone.substring(0, 1) + '**'
-                  : ''
+                  ? this.props.account.info.member_phone.substring(0, 1) + "**"
+                  : ""
               )}
 
             {config.features.EmailVerification &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-email.png`,
+<<<<<<< HEAD
                 i18n.t('common.emailAddress'),
+=======
+                i18n.t("common.emailAddress"),
+>>>>>>> release/current
                 this.isConfigured(this.props.account.info.member_email),
                 () => {
-                  this.handleNavigate('/profile/email')
+                  this.handleNavigate("/profile/email");
                 },
                 this.props.account.info.member_email
               )}
           </BlockContainer>
 
           <BlockContainer>
+<<<<<<< HEAD
             <BlockLabel>{i18n.t('profile.otherInfo')}</BlockLabel>
             {config.features.QQWeChat &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`,
                 i18n.t('common.qqNumber'),
+=======
+            <BlockLabel>{i18n.t("profile.otherInfo")}</BlockLabel>
+            {config.features.QQWeChat &&
+              ContentItem(
+                process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`,
+                i18n.t("common.qqNumber"),
+>>>>>>> release/current
                 this.isConfigured(this.props.account.info.member_qq),
                 () => {
-                  this.handleNavigate('/profile/qq')
+                  this.handleNavigate("/profile/qq");
                 },
                 this.props.account.info.member_qq
-                  ? this.props.account.info.member_qq.substring(0, 1) + '**'
-                  : ''
+                  ? this.props.account.info.member_qq.substring(0, 1) + "**"
+                  : ""
               )}
 
             {config.features.QQWeChat &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-wechat.png`,
+<<<<<<< HEAD
                 i18n.t('common.wechatNumber'),
+=======
+                i18n.t("common.wechatNumber"),
+>>>>>>> release/current
                 this.isConfigured(this.props.account.info.member_wechat),
                 () => {
-                  this.handleNavigate('/profile/wechat')
+                  this.handleNavigate("/profile/wechat");
                 },
                 this.props.account.info.member_wechat
-                  ? this.props.account.info.member_wechat.substring(0, 1) + '**'
-                  : ''
+                  ? this.props.account.info.member_wechat.substring(0, 1) + "**"
+                  : ""
               )}
           </BlockContainer>
         </div>
 
         <BlockContainer>
+<<<<<<< HEAD
           <BlockLabel>{i18n.t('profile.securityInfo')}</BlockLabel>
           {ContentItem(
             process.env.PUBLIC_URL + `/assets/images/wapp/icon-unlock.png`,
             i18n.t('profile.password.title'),
+=======
+          <BlockLabel>{i18n.t("profile.securityInfo")}</BlockLabel>
+          {ContentItem(
+            process.env.PUBLIC_URL + `/assets/images/wapp/icon-unlock.png`,
+            i18n.t("profile.password.title"),
+>>>>>>> release/current
             true,
             () => {
-              this.handleNavigate('/profile/changepassword')
+              this.handleNavigate("/profile/changepassword");
             },
-            ''
+            ""
           )}
 
           {/* {ContentItem(
@@ -245,13 +302,13 @@ class Profile extends Component {
           )} */}
         </BlockContainer>
       </Container>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
-export default connect(mapStateToProps, null)(withRouter(Profile))
+    account: state.account,
+  };
+};
+export default connect(mapStateToProps, null)(withRouter(Profile));

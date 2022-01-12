@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { connect } from 'react-redux'
-import i18n from '../../../../utils/i18n'
-import QRCode from 'qrcode.react'
-import { Dialog } from '@material-ui/core'
-import { generalAction } from '@Inwoker/tgs-api'
-import IMHandler from './IMHandler'
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import i18n from "../../../../utils/i18n";
+import QRCode from "qrcode.react";
+import { Dialog } from "@material-ui/core";
+import { generalAction } from "@Inwoker/tgs-api";
+import IMHandler from "./IMHandler";
 
 //import i18n from '../../../../utils/i18n'
 
@@ -24,14 +24,14 @@ const SupportBackground = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   overflow-y: scroll;
-`
+`;
 
 const ButtonContainer = styled.div`
   margin-top: 40vh;
   display: grid;
   grid-template-columns: auto;
   padding-bottom: 100px;
-`
+`;
 
 const TheSupportButton = styled.div`
   margin: 10px 20px;
@@ -46,12 +46,12 @@ const TheSupportButton = styled.div`
   justify-content: space-between;
   padding: 0px 50px;
   font-size: 30px;
-`
+`;
 
 const TheRedText = styled.div`
   color: ${({ theme }) => theme.primary};
   font-weight: bold;
-`
+`;
 
 const TitleHeader = styled.div`
   background: linear-gradient(
@@ -62,7 +62,7 @@ const TitleHeader = styled.div`
   height: 90px;
   display: flex;
   align-items: center;
-`
+`;
 
 const BackButton = styled.div`
   background: url(${process.env.PUBLIC_URL +
@@ -71,10 +71,10 @@ const BackButton = styled.div`
   width: 80px;
   height: 90px;
   z-index: 1;
-`
+`;
 const Background = styled.div`
   min-height: 100%;
-`
+`;
 
 const QRTitle = styled.div`
   width: calc(100%);
@@ -82,14 +82,14 @@ const QRTitle = styled.div`
   text-align: center;
   color: white;
   font-size: 34px;
-`
+`;
 
 const QRCodeContainer = styled.div`
   min-height: 300px;
   display: grid;
   grid-template-columns: auto;
   padding: 30px;
-`
+`;
 
 const QRCodeHolder = styled.div`
   margin: 50px;
@@ -97,48 +97,48 @@ const QRCodeHolder = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const QRCodeText = styled.div`
   padding: 10px 0px;
   font-weight: bold;
   font-size: 34px;
-`
+`;
 
 const IDText = styled.div`
   font-size: 24px;
-`
+`;
 
 const iconSwitcher = (icon) => {
   switch (icon) {
-    case 'WeChat':
-      return 'support-wechat.svg'
-    case 'Line':
-      return 'support-line.svg'
-    case 'Telegram':
-      return 'support-telegram.svg'
-    case 'Skype':
-      return 'support-skype.svg'
-    case 'KakaoTalk':
-      return 'support-kakaotalk.svg'
-    case 'Viber':
-      return 'support-viber.svg'
-    case 'WhatsApp':
-      return 'support-whatsapp.svg'
-    case 'Zalo':
-      return 'support-zalo.svg'
-    case 'copy':
-      return 'copy.png'
+    case "WeChat":
+      return "support-wechat.svg";
+    case "Line":
+      return "support-line.svg";
+    case "Telegram":
+      return "support-telegram.svg";
+    case "Skype":
+      return "support-skype.svg";
+    case "KakaoTalk":
+      return "support-kakaotalk.svg";
+    case "Viber":
+      return "support-viber.svg";
+    case "WhatsApp":
+      return "support-whatsapp.svg";
+    case "Zalo":
+      return "support-zalo.svg";
+    case "copy":
+      return "copy.png";
     default:
-      return 'support-call.svg'
+      return "support-call.svg";
   }
-}
+};
 
 const IconTextContainer = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
-`
+`;
 
 const Icon = styled.div`
   width: 60px;
@@ -147,16 +147,16 @@ const Icon = styled.div`
   background-color: ${({ theme }) => theme.primary};
   mask: ${({ icon }) => {
     return `url(${
-      process.env.PUBLIC_URL + '/assets/images/wapp/' + iconSwitcher(icon)
+      process.env.PUBLIC_URL + "/assets/images/wapp/" + iconSwitcher(icon)
     }) no-repeat center /
-    contain;`
+    contain;`;
   }};
-`
+`;
 
 const IconTextContainerTwo = styled.div`
   display: flex;
   flex-align: center;
-`
+`;
 
 const IconTwo = styled.div`
   width: 40px;
@@ -165,11 +165,11 @@ const IconTwo = styled.div`
   background-color: ${({ theme }) => theme.primary};
   mask: ${({ icon }) => {
     return `url(${
-      process.env.PUBLIC_URL + '/assets/images/wapp/' + iconSwitcher(icon)
+      process.env.PUBLIC_URL + "/assets/images/wapp/" + iconSwitcher(icon)
     }) no-repeat center /
-    contain;`
+    contain;`;
   }};
-`
+`;
 
 const TheGirlHolder = styled.div`
   height: 575px;
@@ -188,30 +188,30 @@ const TheGirlHolder = styled.div`
       process.env.PUBLIC_URL +
       `/assets/images/wapp/resource/support/${language}.png`
     })
-      no-repeat;`
+      no-repeat;`;
   }}
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
-`
+`;
 
 const Support = (props) => {
-  const [scene, setScene] = useState('initial')
+  const [scene, setScene] = useState("initial");
 
   useEffect(() => {
-    setScene('initial')
-  }, [])
+    setScene("initial");
+  }, []);
 
   const InitialScene = () => {
-    const [open, setOpen] = useState('')
+    const [open, setOpen] = useState("");
 
     const handleClose = (value) => {
-      setOpen(false)
-    }
+      setOpen(false);
+    };
 
     function copyText(text) {
-      navigator.clipboard.writeText(text)
+      navigator.clipboard.writeText(text);
     }
     return (
       <SupportBackground language={i18n.language}>
@@ -220,14 +220,21 @@ const Support = (props) => {
           {props.general.livechat && (
             <TheSupportButton
               onClick={() => {
-                props.cs()
+                props.cs();
               }}
             >
               <IconTextContainer>
+<<<<<<< HEAD
                 <Icon icon='wechat' />
                 <div>{i18n.t('support.online')}</div>
               </IconTextContainer>
               <TheRedText>{i18n.t('support.contact')}</TheRedText>
+=======
+                <Icon icon="wechat" />
+                <div>{i18n.t("support.online")}</div>
+              </IconTextContainer>
+              <TheRedText>{i18n.t("support.contact")}</TheRedText>
+>>>>>>> release/current
             </TheSupportButton>
           )}
           {
@@ -257,9 +264,9 @@ const Support = (props) => {
                   key={index}
                   onClick={() => {
                     if (data.qrcodeurl) {
-                      setOpen(index)
+                      setOpen(index);
                     } else {
-                      IMHandler(data.type, data.phone)
+                      IMHandler(data.type, data.phone);
                     }
                   }}
                 >
@@ -271,9 +278,13 @@ const Support = (props) => {
                   </IconTextContainer>
                   <div>
                     {
+<<<<<<< HEAD
                       <TheRedText>
                         {i18n.t('support.join')}
                       </TheRedText>
+=======
+                      <TheRedText>{i18n.t("support.join")}</TheRedText>
+>>>>>>> release/current
                       //   data.qrcodeurl || data.type === 'WhatsApp' ? (
                       //     <TheRedText>
                       //       {i18n.t('support.join')}
@@ -305,8 +316,8 @@ const Support = (props) => {
                     <QRCodeHolder>
                       <QRCode
                         value={data.qrcodeurl}
-                        bgColor={'#f6f8f7'}
-                        size='128'
+                        bgColor={"#f6f8f7"}
+                        size="128"
                       />
                       <QRCodeText>{data.type}</QRCodeText>
                     </QRCodeHolder>
@@ -318,12 +329,12 @@ const Support = (props) => {
                   )}
                 </Dialog>
               </div>
-            )
+            );
           })}
         </ButtonContainer>
       </SupportBackground>
-    )
-  }
+    );
+  };
 
   const QRScene = ({ back }) => {
     return (
@@ -333,7 +344,11 @@ const Support = (props) => {
           <QRTitle>
             {
               //i18n.t('support.qr')
+<<<<<<< HEAD
               i18n.t('support.qr')
+=======
+              i18n.t("support.qr")
+>>>>>>> release/current
             }
           </QRTitle>
         </TitleHeader>
@@ -341,42 +356,42 @@ const Support = (props) => {
           {props.general.brandsSupport.map((data, index) => {
             return (
               <QRCodeHolder>
-                <QRCode value={data.qrcodeurl} bgColor={'#f6f8f7'} size='150' />
+                <QRCode value={data.qrcodeurl} bgColor={"#f6f8f7"} size="150" />
                 <QRCodeText>{data.type}</QRCodeText>
               </QRCodeHolder>
-            )
+            );
           })}
         </QRCodeContainer>
       </Background>
-    )
-  }
+    );
+  };
 
   const goBack = () => {
-    setScene('initial')
-  }
+    setScene("initial");
+  };
 
   const switchScene = (scene) => {
     switch (scene) {
-      case 'initial':
-        return <InitialScene />
-      case 'qr':
-        return <QRScene back={goBack} />
+      case "initial":
+        return <InitialScene />;
+      case "qr":
+        return <QRScene back={goBack} />;
       default:
-        return <InitialScene />
+        return <InitialScene />;
     }
-  }
+  };
 
-  return switchScene(scene)
-}
+  return switchScene(scene);
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getBrandCommunicationList: (language) =>
-      dispatch(generalAction.getBrandCommunication())
-  }
-}
+      dispatch(generalAction.getBrandCommunication()),
+  };
+};
 const mapStateToProps = (state) => {
-  return { general: state.general }
-}
+  return { general: state.general };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Support)
+export default connect(mapStateToProps, mapDispatchToProps)(Support);

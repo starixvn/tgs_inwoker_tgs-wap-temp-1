@@ -1,20 +1,20 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
 
-import Header from '../../Wap/Share/Header'
+import Header from "../../Wap/Share/Header";
 
-import { accountAction } from '@Inwoker/tgs-api'
-import BottomScrollListener from 'react-bottom-scroll-listener'
+import { accountAction } from "@Inwoker/tgs-api";
+import BottomScrollListener from "react-bottom-scroll-listener";
 
-import Loading from '../../Wap/Share/Loading'
-import i18n from '../../../utils/i18n'
+import Loading from "../../Wap/Share/Loading";
+import i18n from "../../../utils/i18n";
 
 const ListItem = styled.div`
   width: 100%;
   margin: 20px auto;
   height: 155px;
-`
+`;
 
 const ItemContainer = styled.div`
   float: right;
@@ -26,24 +26,24 @@ const ItemContainer = styled.div`
   background-color: #ffffff;
   padding: 20px 20px 0 30px;
   margin-right: 30px;
-`
+`;
 const ContentContainer = styled.div`
   float: left;
   font-size: 28px;
-`
+`;
 const AvatarImg = styled.img`
   float: left;
   height: 80px;
-`
+`;
 const ContentWrap = styled.div`
   float: left;
   width: 250px;
   margin-left: 20px;
-`
+`;
 const ContentLabel = styled.div`
   font-weight: bold;
-`
-const ContentValue = styled.div``
+`;
+const ContentValue = styled.div``;
 class Member extends Component {
   state = {
     edit: false,
@@ -52,32 +52,32 @@ class Member extends Component {
     isBottom: false,
     selected: [],
     selectedGuid: [],
-    loading: false
-  }
+    loading: false,
+  };
 
   componentDidMount() {
-    this.getPromoteUserList(0)
+    this.getPromoteUserList(0);
   }
   componentDidUpdate(preProps) {
     if (preProps.token == null && this.props.token != null) {
-      this.getPromoteUserList(0)
+      this.getPromoteUserList(0);
     }
   }
   getPromoteUserList = (page) => {
-    this.props.getPromoteUserList(this.state.limit, page)
-  }
+    this.props.getPromoteUserList(this.state.limit, page);
+  };
   handleScrollBottom = () => {
     if (
       this.props.account.promote_user.list.length <
       this.props.account.promote_user.count
     ) {
-      this.props.getPromoteUserList(this.state.limit, this.state.page + 1)
-      this.setState({ ...this.state, page: this.state.page + 1 })
+      this.props.getPromoteUserList(this.state.limit, this.state.page + 1);
+      this.setState({ ...this.state, page: this.state.page + 1 });
     }
-  }
+  };
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
 
   render() {
     return (
@@ -87,7 +87,11 @@ class Member extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
+<<<<<<< HEAD
           title={i18n.t('affiliate.downline')}
+=======
+          title={i18n.t("affiliate.downline")}
+>>>>>>> release/current
         ></Header>
         {this.props.account.promote_user.list.map((row, index) => {
           return (
@@ -97,39 +101,47 @@ class Member extends Component {
                 <ContentContainer>
                   <ContentWrap>
                     <ContentLabel>
+<<<<<<< HEAD
                       {i18n.t('affiliate.memberName')}
+=======
+                      {i18n.t("affiliate.memberName")}
+>>>>>>> release/current
                     </ContentLabel>
                     <ContentValue>{row.name}</ContentValue>
                   </ContentWrap>
                   <ContentWrap>
+<<<<<<< HEAD
                     <ContentLabel>
                       {i18n.t('affiliate.UUID')}
                     </ContentLabel>
+=======
+                    <ContentLabel>{i18n.t("affiliate.UUID")}</ContentLabel>
+>>>>>>> release/current
                     <ContentValue>{row.uuid}</ContentValue>
                   </ContentWrap>
                 </ContentContainer>
               </ItemContainer>
             </ListItem>
-          )
+          );
         })}
         <BottomScrollListener onBottom={this.handleScrollBottom} />
 
         <Loading show={this.state.loading}></Loading>
       </React.Fragment>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     getPromoteUserList: (limit, page) =>
       dispatch(accountAction.getPromoteUserList(limit, page)),
-    dispatch: dispatch
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Member)
+    dispatch: dispatch,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Member);

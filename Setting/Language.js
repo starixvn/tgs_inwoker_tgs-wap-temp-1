@@ -1,76 +1,85 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { withRouter } from 'react-router-dom'
-import Header from '../Share/Header'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { withRouter } from "react-router-dom";
+import Header from "../Share/Header";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
 
-import CheckIcon from '@material-ui/icons/Check'
-import i18n from '../../../utils/i18n'
-import { withStyles } from '@material-ui/core/styles'
-import CustomButton from '../Share/Button'
-import config from '../../../config/config'
+import CheckIcon from "@material-ui/icons/Check";
+import i18n from "../../../utils/i18n";
+import { withStyles } from "@material-ui/core/styles";
+import CustomButton from "../Share/Button";
+import config from "../../../config/config";
 const imageMap = {
-  'zh-CN': process.env.PUBLIC_URL + `/assets/images/wapp/cn.png`,
-  'zh-TW': process.env.PUBLIC_URL + `/assets/images/wapp/tw.png`,
-  'en-US': process.env.PUBLIC_URL + `/assets/images/wapp/en.png`,
-  'th-TH': process.env.PUBLIC_URL + `/assets/images/wapp/th.png`,
-  'vi-VN': process.env.PUBLIC_URL + `/assets/images/wapp/vn.png`
-}
+  "zh-CN": process.env.PUBLIC_URL + `/assets/images/wapp/cn.png`,
+  "zh-TW": process.env.PUBLIC_URL + `/assets/images/wapp/tw.png`,
+  "en-US": process.env.PUBLIC_URL + `/assets/images/wapp/en.png`,
+  "th-TH": process.env.PUBLIC_URL + `/assets/images/wapp/th.png`,
+  "vi-VN": process.env.PUBLIC_URL + `/assets/images/wapp/vn.png`,
+};
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
 
   height: 100%;
-`
+`;
 
 const CustomList = withStyles({
   root: {
-    width: '100%',
+    width: "100%",
     maxWidth: 750,
-    backgroundColor: '#fff',
-    fontSize: '30px'
-  }
-})(List)
+    backgroundColor: "#fff",
+    fontSize: "30px",
+  },
+})(List);
 const CustomListItem = withStyles({
   root: {
-    padding: '16px 20px',
-    borderBottom: 'solid 1px #000'
-  }
-})(ListItem)
+    padding: "16px 20px",
+    borderBottom: "solid 1px #000",
+  },
+})(ListItem);
 const CustomListItemText = withStyles({
   primary: {
-    padding: '0px 30px',
-    fontSize: '34px'
-  }
-})(ListItemText)
+    padding: "0px 30px",
+    fontSize: "34px",
+  },
+})(ListItemText);
 class Profile extends Component {
   state = {
+<<<<<<< HEAD
     checked: i18n.language
   }
+=======
+    checked: i18n.language,
+  };
+>>>>>>> release/current
   languages = [
-    { name: '简体中文', code: 'zh-CN' },
-    { name: '繁体中文', code: 'zh-TW' },
-    { name: 'English', code: 'en-US' }
-  ]
+    { name: "简体中文", code: "zh-CN" },
+    { name: "繁体中文", code: "zh-TW" },
+    { name: "English", code: "en-US" },
+  ];
   componentDidMount() {
     if (this.props.account.token === null) {
+<<<<<<< HEAD
       this.props.appHistory.replace('/' + i18n.language + '/')
+=======
+      this.props.appHistory.replace("/" + i18n.language + "/");
+>>>>>>> release/current
     }
   }
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   handleToggle = (value) => () => {
-    this.setState({ ...this.state, checked: value })
-  }
+    this.setState({ ...this.state, checked: value });
+  };
   handleUpdate = () => {
-    window.location.href = `/${this.state.checked}`
-  }
+    window.location.href = `/${this.state.checked}`;
+  };
   render() {
     return (
       <Container>
@@ -79,11 +88,15 @@ class Profile extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
+<<<<<<< HEAD
           title={i18n.t('profile.title')}
+=======
+          title={i18n.t("profile.title")}
+>>>>>>> release/current
         ></Header>
         <CustomList>
           {this.props.general.brandLanguage.map((value) => {
-            const labelId = `checkbox-list-label-${value.culturecode}`
+            const labelId = `checkbox-list-label-${value.culturecode}`;
 
             return (
               <CustomListItem
@@ -98,35 +111,44 @@ class Profile extends Component {
                 </ListItemIcon>
                 <CustomListItemText
                   id={labelId}
+<<<<<<< HEAD
                   primary={i18n.t('lang.' + value.culturecode)}
+=======
+                  primary={i18n.t("lang." + value.culturecode)}
+>>>>>>> release/current
                 />
                 <ListItemSecondaryAction>
                   {(() => {
                     if (this.state.checked === value.culturecode) {
-                      return <CheckIcon style={{ fontSize: 60 }}></CheckIcon>
+                      return <CheckIcon style={{ fontSize: 60 }}></CheckIcon>;
                     } else {
-                      return null
+                      return null;
                     }
                   })()}
                 </ListItemSecondaryAction>
               </CustomListItem>
-            )
+            );
           })}
         </CustomList>
         <CustomButton
+<<<<<<< HEAD
           label={i18n.t('common.update')}
           style={{ margin: '50px auto' }}
+=======
+          label={i18n.t("common.update")}
+          style={{ margin: "50px auto" }}
+>>>>>>> release/current
           onClick={this.handleUpdate}
         ></CustomButton>
       </Container>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     account: state.account,
-    general: state.general
-  }
-}
-export default connect(mapStateToProps, null)(withRouter(Profile))
+    general: state.general,
+  };
+};
+export default connect(mapStateToProps, null)(withRouter(Profile));

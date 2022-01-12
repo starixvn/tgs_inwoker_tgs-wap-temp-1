@@ -1,14 +1,14 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import Textbox from '../Share/Textbox'
-import TextboxWithButton from '../Share/TextboxWithButton'
-import BaseProfile from './BaseProfile'
-import { AccountService, accountAction } from '@Inwoker/tgs-api'
-import styled from 'styled-components'
-import BottomNote from '../Share/BottomNote'
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import Textbox from "../Share/Textbox";
+import TextboxWithButton from "../Share/TextboxWithButton";
+import BaseProfile from "./BaseProfile";
+import { AccountService, accountAction } from "@Inwoker/tgs-api";
+import styled from "styled-components";
+import BottomNote from "../Share/BottomNote";
 
-import i18n from '../../../utils/i18n'
+import i18n from "../../../utils/i18n";
 const Container = styled.div`
   margin: 0 auto;
 
@@ -17,7 +17,7 @@ const Container = styled.div`
   border-radius: 6px;
 
   background-color: #ffffff;
-`
+`;
 const SelectContainer = styled.select`
   width: 100%;
   height: 100%;
@@ -25,19 +25,19 @@ const SelectContainer = styled.select`
   color: #000;
   font-size: 30px;
   background-color: #fff;
-`
+`;
 const CustomText = styled.div`
   width: 700px;
   height: 170px;
   padding: 20px 20px 0 20px;
   margin: 20px auto;
-`
+`;
 const CustomLabel = styled.div`
   font-size: 24px;
   font-weight: 600;
   margin-left: 3px;
   color: ${({ theme }) => theme.secondary};
-`
+`;
 const CustomInput = styled.input`
   height: 50px;
   width: 405px;
@@ -59,101 +59,112 @@ const CustomInput = styled.input`
 
     opacity: 1;
   }
-`
+`;
 class Phone extends BaseProfile {
   state = {
     countdownToken: 0,
-    areacode: '+852',
-    phone: '',
-    code: '',
+    areacode: "+852",
+    phone: "",
+    code: "",
     isNew: false,
     isConfigured: false,
-    securityKey: ''
-  }
+    securityKey: "",
+  };
   componentDidMount() {
-    let isConfigured = false
-    if (this.props.account.info.check_pass_phone) isConfigured = true
+    let isConfigured = false;
+    if (this.props.account.info.check_pass_phone) isConfigured = true;
     this.setState({
       ...this.state,
-      phone: isConfigured ? this.props.account.info.member_phone : '',
-      code: '',
+      phone: isConfigured ? this.props.account.info.member_phone : "",
+      code: "",
       isNew: !this.props.account.info.check_pass_phone,
-      isConfigured: isConfigured
-    })
+      isConfigured: isConfigured,
+    });
   }
 
   handleChangePhone = (e) => {
-    this.setState({ ...this.state, phone: e.target.value })
-  }
+    this.setState({ ...this.state, phone: e.target.value });
+  };
 
   handleChangeCode = (e) => {
-    this.setState({ ...this.state, code: e.target.value })
-    this.onTextChanged()
-  }
+    this.setState({ ...this.state, code: e.target.value });
+    this.onTextChanged();
+  };
   checkCountdownToken = () => {
     if (this.state.countdownToken > 0) {
       this.setState({
         ...this.state,
-        countdownToken: this.state.countdownToken - 1
-      })
+        countdownToken: this.state.countdownToken - 1,
+      });
       setTimeout(() => {
-        this.checkCountdownToken()
-      }, 1000)
+        this.checkCountdownToken();
+      }, 1000);
     } else {
       this.setState({
         ...this.state,
-        countdownToken: this.state.countdownToken - 1
-      })
+        countdownToken: this.state.countdownToken - 1,
+      });
     }
-  }
+  };
   handleGetCodeClick = (e) => {
-    if (this.state.countdownToken > 0) return
+    if (this.state.countdownToken > 0) return;
     if (!this.state.phone)
+<<<<<<< HEAD
       return this.showErrorMessage(i18n.t('common.msgEnterPhone'))
     this.showLoading(true)
+=======
+      return this.showErrorMessage(i18n.t("common.msgEnterPhone"));
+    this.showLoading(true);
+>>>>>>> release/current
     AccountService.VerifyPhone(this.state.phone, this.state.areacode)
       .then((response) => {
         if (response.IsSuccess) {
           this.setState({
             ...this.state,
             countdownToken: 60,
+<<<<<<< HEAD
             securityKey: response.data
           })
           this.showInfoMessage(i18n.t('common.msgTokenSent'))
+=======
+            securityKey: response.data,
+          });
+          this.showInfoMessage(i18n.t("common.msgTokenSent"));
+>>>>>>> release/current
           setTimeout(() => {
-            this.checkCountdownToken()
-          }, 1000)
+            this.checkCountdownToken();
+          }, 1000);
         } else {
-          this.showErrorMessage(response.info)
+          this.showErrorMessage(response.info);
         }
-        this.showLoading(false)
+        this.showLoading(false);
       })
       .catch((err) => {
-        this.showErrorMessage(err)
+        this.showErrorMessage(err);
 
-        this.showLoading(false)
-      })
-  }
+        this.showLoading(false);
+      });
+  };
 
   isDisableButton = () => {
-    const code = this.state.code
-    const phone = this.state.phone
-    return !(code && phone)
-  }
+    const code = this.state.code;
+    const phone = this.state.phone;
+    return !(code && phone);
+  };
   showErrorMessage = (msg) => {
-    this.props.alert('', msg)
+    this.props.alert("", msg);
     // this.props.enqueueSnackbar(msg, {
     //   key: "error"
     // });
-  }
+  };
   showInfoMessage = (msg) => {
-    this.props.alert('', msg)
+    this.props.alert("", msg);
     // this.props.enqueueSnackbar(msg, {
     //   key: "info"
     // });
-  }
+  };
   handleSubmitClicked = () => {
-    this.showLoading(true)
+    this.showLoading(true);
     AccountService.UpdatePhone(this.state.securityKey, this.state.code)
       .then((response) => {
         if (response.IsSuccess) {
@@ -161,57 +172,68 @@ class Phone extends BaseProfile {
             if (responseUpdate.IsSuccess) {
               this.setState({
                 ...this.state,
-                code: '',
-                securityKey: '',
+                code: "",
+                securityKey: "",
                 countdownToken: 0,
                 isNew: false,
-                isConfigured: true
-              })
+                isConfigured: true,
+              });
             }
-            this.showLoading(false)
-          })
+            this.showLoading(false);
+          });
         } else {
-          this.showErrorMessage(response.info)
-          this.showLoading(false)
+          this.showErrorMessage(response.info);
+          this.showLoading(false);
         }
       })
       .catch((err) => {
-        this.showErrorMessage(err)
-        this.showLoading(false)
-      })
-  }
+        this.showErrorMessage(err);
+        this.showLoading(false);
+      });
+  };
 
   render() {
     return this.setupContent(
+<<<<<<< HEAD
       i18n.t('common.phoneNumber'),
       <React.Fragment>
         <CustomText>
           <CustomLabel>{i18n.t('common.phoneNumber')}</CustomLabel>
+=======
+      i18n.t("common.phoneNumber"),
+      <React.Fragment>
+        <CustomText>
+          <CustomLabel>{i18n.t("common.phoneNumber")}</CustomLabel>
+>>>>>>> release/current
           <Container
             style={{
-              margin: '18px 5px 0 0',
-              width: '180px',
-              float: 'left',
-              padding: '10px'
+              margin: "18px 5px 0 0",
+              width: "180px",
+              float: "left",
+              padding: "10px",
             }}
           >
             <SelectContainer
               value={this.state.areacode}
               onChange={(e) => {
-                this.setState({ ...this.state, areacode: e.target.value })
+                this.setState({ ...this.state, areacode: e.target.value });
               }}
               disabled={
                 this.state.isConfigured ? this.state.isConfigured : false
               }
             >
-              <option value={'+852'}>+852</option>
+              <option value={"+852"}>+852</option>
             </SelectContainer>
           </Container>
           <CustomInput
             style={this.props.color ? { color: this.props.color } : {}}
-            type={'text'}
+            type={"text"}
             value={this.state.phone}
+<<<<<<< HEAD
             placeholder={i18n.t('common.msgEnterPhone')}
+=======
+            placeholder={i18n.t("common.msgEnterPhone")}
+>>>>>>> release/current
             disabled={this.state.isConfigured ? this.state.isConfigured : false}
             onChange={this.handleChangePhone}
             maxLength={10}
@@ -224,49 +246,71 @@ class Phone extends BaseProfile {
               <TextboxWithButton
                 buttonlabel={
                   this.state.countdownToken <= 0
+<<<<<<< HEAD
                     ? i18n.t('common.msgSendToken')
                     : i18n.t('common.btnTokenResendLabel') +
                       '(' +
+=======
+                    ? i18n.t("common.msgSendToken")
+                    : i18n.t("common.btnTokenResendLabel") +
+                      "(" +
+>>>>>>> release/current
                       this.state.countdownToken +
-                      's)'
+                      "s)"
                 }
-                style={{ margin: '20px auto 20px auto' }}
+                style={{ margin: "20px auto 20px auto" }}
                 value={this.state.code}
                 onChange={this.handleChangeCode}
+<<<<<<< HEAD
                 placeholder={i18n.t('common.msgEnterPhoneCode')}
                 label={i18n.t('common.token')}
+=======
+                placeholder={i18n.t("common.msgEnterPhoneCode")}
+                label={i18n.t("common.token")}
+>>>>>>> release/current
                 onClick={this.handleGetCodeClick}
               ></TextboxWithButton>
-            )
+            );
           }
         })()}
       </React.Fragment>,
       this.state.isConfigured
+<<<<<<< HEAD
         ? i18n.t('common.configured')
         : i18n.t('common.complete'),
+=======
+        ? i18n.t("common.configured")
+        : i18n.t("common.complete"),
+>>>>>>> release/current
       (() => {
         if (this.state.isConfigured) {
           return (
             <BottomNote
+<<<<<<< HEAD
               text1={i18n.t('profile.phone.toEdit')}
               link={'./changephone'}
               text2={i18n.t('profile.phone.here')}
+=======
+              text1={i18n.t("profile.phone.toEdit")}
+              link={"./changephone"}
+              text2={i18n.t("profile.phone.here")}
+>>>>>>> release/current
             ></BottomNote>
-          )
+          );
         }
       })()
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAccountInfo: () => dispatch(accountAction.getAccountInfo())
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Phone))
+    getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Phone));

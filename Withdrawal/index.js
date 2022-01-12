@@ -1,38 +1,38 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { withRouter } from 'react-router-dom'
-import Header from '../../Wap/Share/Header'
-import { withStyles } from '@material-ui/core/styles'
-import Modal from '@material-ui/core/Dialog'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { withRouter } from "react-router-dom";
+import Header from "../../Wap/Share/Header";
+import { withStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Dialog";
 
-import Button from '../../Wap/Share/Button'
+import Button from "../../Wap/Share/Button";
 
-import Textbox from '../../Wap/Share/Textbox'
-import Common from '../../../utils/Common'
+import Textbox from "../../Wap/Share/Textbox";
+import Common from "../../../utils/Common";
 import {
   walletAction,
   RESET_WALLETRESULT,
-  WalletService
-} from '@Inwoker/tgs-api'
+  WalletService,
+} from "@Inwoker/tgs-api";
 
-import Loading from '../../Wap/Share/Loading'
+import Loading from "../../Wap/Share/Loading";
 
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import i18n from '../../../utils/i18n'
-import Slide from '@material-ui/core/Slide'
-import config from '../../../config/config'
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import i18n from "../../../utils/i18n";
+import Slide from "@material-ui/core/Slide";
+import config from "../../../config/config";
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='up' ref={ref} {...props} />
-})
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
 
   height: 100%;
-`
+`;
 const BalanceLabel = styled.div`
   float: right;
   margin: 26px 20px 0 0;
@@ -42,7 +42,7 @@ const BalanceLabel = styled.div`
 
   text-align: right;
   color: #fde73f;
-`
+`;
 const InnerContainer = styled.div`
   margin: 40px auto 40px auto;
 
@@ -51,11 +51,11 @@ const InnerContainer = styled.div`
   border-radius: 20px;
   box-shadow: 0 4px 8px 0 rgba(35, 31, 27, 0.1);
   padding 20px 0 20px 10px;
-`
+`;
 const RowContainer = styled.div`
   min-height: 80px;
   margin: 10px 0 10px 30px;
-`
+`;
 
 const LeftLabel = styled.div`
   float: left;
@@ -66,14 +66,14 @@ const LeftLabel = styled.div`
   color: #4a4a4a;
   width: 450px;
   margin: 10px 0 0 0;
-`
+`;
 const LeftLabelValue = styled.div`
   float: left;
   font-size: 28px;
   width: 450px;
   color: ${({ theme }) => theme.secondary};
   padding-left: 30px;
-`
+`;
 
 const BottomDesc = styled.div`
   margin: 0 auto;
@@ -81,7 +81,7 @@ const BottomDesc = styled.div`
   font-size: 26px;
 
   color: ${({ theme }) => theme.secondary};
-`
+`;
 const ButtonCardManage = styled.div`
   background: url(${process.env.PUBLIC_URL +
     `/assets/images/wapp//icon-card-manage.png`})
@@ -92,86 +92,86 @@ const ButtonCardManage = styled.div`
   font-size: 26px;
 
   color: ${({ theme }) => theme.secondary};
-`
+`;
 
 const StyledModalBank = withStyles((theme) => ({
   paper: {
-    color: '#666666',
-    padding: '0 30px',
-    width: '750px',
-    maxWidth: '750px',
+    color: "#666666",
+    padding: "0 30px",
+    width: "750px",
+    maxWidth: "750px",
     margin: 0,
-    display: 'block',
-    position: 'absolute',
+    display: "block",
+    position: "absolute",
     bottom: 0,
-    height: 'calc(100% - 580px)'
-  }
-}))(Modal)
+    height: "calc(100% - 580px)",
+  },
+}))(Modal);
 const StyledListItemIcon = withStyles((theme) => ({
   root: {
-    marginLeft: '150px'
-  }
-}))(ListItemIcon)
+    marginLeft: "150px",
+  },
+}))(ListItemIcon);
 const StyledListItemImage = styled.img`
   width: 64px;
   height: 64px;
-`
+`;
 const StyledListItem = withStyles((theme) => ({
   root: {
-    borderBottom: '1px solid rgba(0,0,0,0.2)',
-    padding: '10px'
-  }
-}))(ListItem)
+    borderBottom: "1px solid rgba(0,0,0,0.2)",
+    padding: "10px",
+  },
+}))(ListItem);
 const StyledListItemText = withStyles((theme) => ({
   root: {
-    textAlign: 'center',
-    paddingRight: '50px',
-    '& .MuiTypography-root': {
-      fontSize: '28px'
-    }
-  }
-}))(ListItemText)
+    textAlign: "center",
+    paddingRight: "50px",
+    "& .MuiTypography-root": {
+      fontSize: "28px",
+    },
+  },
+}))(ListItemText);
 
 const LeftText = styled(StyledListItemText)`
   text-align: left;
-`
+`;
 const RightText = styled(StyledListItemText)`
   text-align: right;
-`
+`;
 
 const StyledModalPopup = withStyles((theme) => ({
   paper: {
-    borderRadius: '50px',
-    fontSize: '28px',
-    color: '#666666',
-    padding: '30px',
-    width: '600px',
-    maxWidth: '690px',
+    borderRadius: "50px",
+    fontSize: "28px",
+    color: "#666666",
+    padding: "30px",
+    width: "600px",
+    maxWidth: "690px",
 
-    display: 'block'
-  }
-}))(Modal)
+    display: "block",
+  },
+}))(Modal);
 const DialoTitle = styled.div`
   font-size: 36px;
   font-weight: 600;
   margin: 0 auto;
   display: table;
   color: #4a4a4a;
-`
+`;
 
 const OTPContainer = styled.div`
   position: relative;
   text-align: center;
   margin: 50px 0;
   &:after {
-    content: '___   ___   ___   ___   ___   ___';
+    content: "___   ___   ___   ___   ___   ___";
     display: block;
     position: absolute;
     top: 28px;
     left: 64px;
     white-space: pre;
   }
-`
+`;
 const OTPTextBox = styled.input`
   position: relative;
   font-size: 50px;
@@ -187,7 +187,7 @@ const OTPTextBox = styled.input`
   -ms-letter-spacing: 25.6px;
   letter-spacing: 42.6px;
   font-family: Courier;
-`
+`;
 const CustomSelect = styled.select`
   font-size: 28px;
   margin-top: 25px;
@@ -195,14 +195,14 @@ const CustomSelect = styled.select`
   border: solid 1px transparent;
   width: 100%;
   color: ${({ theme }) => theme.secondary};
-`
+`;
 
 const CustomLabel = styled.div`
   font-size: 20px;
   font-weight: 600;
   margin-left: 3px;
   color: #212e31;
-`
+`;
 
 const CustomSelectContainer = styled.div`
   width: 700px;
@@ -214,29 +214,29 @@ const CustomSelectContainer = styled.div`
   border-radius: 20px;
   padding: 40px 20px 0 20px;
   margin: 20px auto;
-`
+`;
 
 class Withdrawal extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.initialState = {
       withdrawalInfo: {
-        bonus_limit_list: []
+        bonus_limit_list: [],
       },
       bankCardList: [],
       selectedBankCardIndex: 0,
-      defaultCard: '',
-      amount: '',
-      card: '',
+      defaultCard: "",
+      amount: "",
+      card: "",
       bankOpen: false,
       loading: false,
       open: false,
-      password: '',
+      password: "",
       otp: false,
       disabled: false,
-      minWithdrawLimit: 0
-    }
-    this.state = this.initialState
+      minWithdrawLimit: 0,
+    };
+    this.state = this.initialState;
   }
 
   componentDidMount() {
@@ -244,17 +244,21 @@ class Withdrawal extends Component {
       if (e.IsSuccess) {
         this.setState({
           ...this.state,
-          minWithdrawLimit: e.data
-        })
+          minWithdrawLimit: e.data,
+        });
       }
-    })
+    });
     if (
       this.props.account.info.check_pass_email === false &&
       config.features.EmailVerification
     ) {
+<<<<<<< HEAD
       this.props.appHistory.replace(
         `/${i18n.language}/profile/email`
       )
+=======
+      this.props.appHistory.replace(`/${i18n.language}/profile/email`);
+>>>>>>> release/current
       // } else if (this.props.account.info.member_safe_password !== 'set') {
       //   this.props.appHistory.replace(
       //     `/${i18n.language}/profile/withdrawalpassword/`
@@ -262,7 +266,7 @@ class Withdrawal extends Component {
     } else {
       if (this.props.token != null) {
         if (this.props.wallet.bankCardList.length === 0)
-          this.props.getBankCardList()
+          this.props.getBankCardList();
 
         // this.GetWithdrawalDetails();
       }
@@ -273,21 +277,27 @@ class Withdrawal extends Component {
       preProps.wallet.addBillingResult !== this.props.wallet.addBillingResult &&
       this.props.wallet.addBillingResult !== null
     ) {
-      this.props.getBalanceList()
+      this.props.getBalanceList();
     }
     if (
       preProps.wallet.withdrawalResult !== this.props.wallet.withdrawalResult &&
       this.props.wallet.withdrawalResult !== null
     ) {
       if (this.props.wallet.withdrawalResult.IsSuccess) {
+<<<<<<< HEAD
         this.props.resetResult()
         this.props.getBalanceList()
         this.props.alert('', i18n.t('withdrawal.msgSuccess'))
+=======
+        this.props.resetResult();
+        this.props.getBalanceList();
+        this.props.alert("", i18n.t("withdrawal.msgSuccess"));
+>>>>>>> release/current
         this.setState({
-          ...this.initialState
-        })
+          ...this.initialState,
+        });
       } else {
-        this.props.alert('', this.props.wallet.withdrawalResult.info)
+        this.props.alert("", this.props.wallet.withdrawalResult.info);
         // if (this.props.wallet.withdrawalResult.code === 207) {
         //   this.props.alert('', i18n.t('common.msgRequiredTurnover'))
         // } else if (this.props.wallet.withdrawalResult.code === 901) {
@@ -302,51 +312,56 @@ class Withdrawal extends Component {
     }
   }
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
 
   handleSubmitClick = (e) => {
-    this.setState({ ...this.state, disabled: true })
-    const amount = this.state.amount
+    this.setState({ ...this.state, disabled: true });
+    const amount = this.state.amount;
     if (config.features.Withdrawal_HundredDigit) {
       if (!/^[1-9][0-9]{0,17}00$/.test(amount)) {
+<<<<<<< HEAD
         this.props.alert('', i18n.t('withdrawal.msgMustHundred'))
         return this.setState({ ...this.state, disabled: false })
+=======
+        this.props.alert("", i18n.t("withdrawal.msgMustHundred"));
+        return this.setState({ ...this.state, disabled: false });
+>>>>>>> release/current
       }
     }
-    const formatedamount = amount.toString().replace(/,/g, '')
+    const formatedamount = amount.toString().replace(/,/g, "");
     this.props.doWithdraw(
       formatedamount,
       this.state.password,
       this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id
-    )
+    );
     setTimeout(() => {
-      this.setState({ ...this.state, disabled: false })
-    }, 1000)
-  }
+      this.setState({ ...this.state, disabled: false });
+    }, 1000);
+  };
 
   handleChangeAmount = (e) => {
-    var regex = /^\d+$/g
-    if (regex.test(e.target.value) || e.target.value === '') {
-      this.setState({ ...this.state, amount: e.target.value })
+    var regex = /^\d+$/g;
+    if (regex.test(e.target.value) || e.target.value === "") {
+      this.setState({ ...this.state, amount: e.target.value });
     }
-  }
+  };
 
   handleClose = () => {
-    this.props.resetResult()
-  }
+    this.props.resetResult();
+  };
 
   handleBankClick = (e) => {
     this.setState({
       ...this.state,
-      selectedBankCardIndex: e.target.value
+      selectedBankCardIndex: e.target.value,
       //  bankOpen: false
-    })
-  }
+    });
+  };
   handleConfirmOTP = () => {
-    const amount = this.state.amount
+    const amount = this.state.amount;
 
-    const formatedamount = amount.toString().replace(/,/g, '')
+    const formatedamount = amount.toString().replace(/,/g, "");
     // if (parseFloat(formatedamount) <= 0) {
     //   this.props.alert("", i18n.t("withdrawal.msgInvalidAmt"));
 
@@ -357,11 +372,11 @@ class Withdrawal extends Component {
       formatedamount,
       this.state.password,
       this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id
-    )
-  }
+    );
+  };
   handlePasswordChange = (e) => {
-    this.setState({ ...this.state, password: e.target.value })
-  }
+    this.setState({ ...this.state, password: e.target.value });
+  };
   render() {
     return (
       <Container>
@@ -383,6 +398,7 @@ class Withdrawal extends Component {
             </BalanceLabel>
           }
           onBackClick={this.handleBackClick}
+<<<<<<< HEAD
           title={i18n.t('withdrawal.title')}
         ></Header>
         <InnerContainer>
@@ -390,13 +406,24 @@ class Withdrawal extends Component {
             <LeftLabel>
               {i18n.t('withdrawal.msgCanWithdrawal')}
             </LeftLabel>
+=======
+          title={i18n.t("withdrawal.title")}
+        ></Header>
+        <InnerContainer>
+          <RowContainer>
+            <LeftLabel>{i18n.t("withdrawal.msgCanWithdrawal")}</LeftLabel>
+>>>>>>> release/current
             <LeftLabelValue>
               {this.props.wallet.mainSymbol}
               {Common.formatNumberWithThousand(this.props.wallet.mainBalance)}
             </LeftLabelValue>
           </RowContainer>
           <RowContainer>
+<<<<<<< HEAD
             <LeftLabel>{i18n.t('withdrawal.turnover')}</LeftLabel>
+=======
+            <LeftLabel>{i18n.t("withdrawal.turnover")}</LeftLabel>
+>>>>>>> release/current
             <LeftLabelValue>
               {this.props.wallet.mainSymbol}
               {Common.formatNumberWithThousand(this.state.minWithdrawLimit)}
@@ -405,6 +432,7 @@ class Withdrawal extends Component {
         </InnerContainer>
         <ButtonCardManage
           onClick={() =>
+<<<<<<< HEAD
             this.props.appHistory.push(
               '/' + i18n.language + '/card'
             )
@@ -415,14 +443,28 @@ class Withdrawal extends Component {
 
         <CustomSelectContainer>
           <CustomLabel>{i18n.t('withdrawal.bankCard')}</CustomLabel>
+=======
+            this.props.appHistory.push("/" + i18n.language + "/card")
+          }
+        >
+          {i18n.t("withdrawal.manageBank")}
+        </ButtonCardManage>
+
+        <CustomSelectContainer>
+          <CustomLabel>{i18n.t("withdrawal.bankCard")}</CustomLabel>
+>>>>>>> release/current
           <CustomSelect
             value={this.state.selectedBankCardIndex}
             native
             onChange={(e) => this.handleBankClick(e)}
           >
+<<<<<<< HEAD
             <option disabled>
               {i18n.t('withdrawal.msgEnterBank')}
             </option>
+=======
+            <option disabled>{i18n.t("withdrawal.msgEnterBank")}</option>
+>>>>>>> release/current
             {this.props.wallet.bankCardList.map((item, index) => {
               return (
                 <option value={index} id={`optionValue-${index}`}>
@@ -432,17 +474,23 @@ class Withdrawal extends Component {
                     item.detail.phone}
                   )
                 </option>
-              )
+              );
             })}
           </CustomSelect>
         </CustomSelectContainer>
         <Textbox
-          style={{ margin: '50px auto 20px auto' }}
+          style={{ margin: "50px auto 20px auto" }}
           value={this.state.amount}
           onChange={this.handleChangeAmount}
+<<<<<<< HEAD
           placeholder={i18n.t('withdrawal.enterAmount')}
           label={i18n.t('common.amount')}
           type={'number'}
+=======
+          placeholder={i18n.t("withdrawal.enterAmount")}
+          label={i18n.t("common.amount")}
+          type={"number"}
+>>>>>>> release/current
         ></Textbox>
 
         {/* <Textbox
@@ -453,16 +501,23 @@ class Withdrawal extends Component {
           label={i18n.t('common.withdrawalPassword')}
           type={'password'}
         ></Textbox> */}
+<<<<<<< HEAD
         <BottomDesc>{i18n.t('withdrawal.notice')}</BottomDesc>
         <Button
           style={{ margin: '40px auto 0 auto' }}
           label={i18n.t('common.submit')}
+=======
+        <BottomDesc>{i18n.t("withdrawal.notice")}</BottomDesc>
+        <Button
+          style={{ margin: "40px auto 0 auto" }}
+          label={i18n.t("common.submit")}
+>>>>>>> release/current
           onClick={this.handleSubmitClick}
           disabled={(() => {
             return (
-              parseFloat(this.state.amount.toString().replace(/,/g, '')) < 1 ||
+              parseFloat(this.state.amount.toString().replace(/,/g, "")) < 1 ||
               this.state.disabled === true
-            )
+            );
           })()}
         ></Button>
 
@@ -471,8 +526,8 @@ class Withdrawal extends Component {
           open={this.state.bankOpen}
           TransitionComponent={Transition}
           keepMounted
-          aria-labelledby='alert-dialog-slide-title'
-          aria-describedby='alert-dialog-slide-description'
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
         >
           {this.props.wallet.bankCardList.map((item, index) => {
             return (
@@ -490,7 +545,7 @@ class Withdrawal extends Component {
                   }
                 ></RightText>
               </StyledListItem>
-            )
+            );
           })}
         </StyledModalBank>
         <StyledModalPopup
@@ -498,8 +553,8 @@ class Withdrawal extends Component {
           open={this.state.otp}
           TransitionComponent={Transition}
           keepMounted
-          aria-labelledby='alert-dialog-slide-title'
-          aria-describedby='alert-dialog-slide-description'
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
         >
           {/* <DialoTitle>{i18n.t("common.withdrawalPassword")}</DialoTitle>
           <Textbox
@@ -522,23 +577,32 @@ class Withdrawal extends Component {
           </OTPContainer> */}
           <Button
             style={{
-              width: '250px',
-              float: 'left',
+              width: "250px",
+              float: "left",
 
-              backgroundImage: 'none',
-              backgroundColor: '#b7b7b7'
+              backgroundImage: "none",
+              backgroundColor: "#b7b7b7",
             }}
+<<<<<<< HEAD
             labelStyle={{ color: '#fff' }}
             label={i18n.t('common.cancel')}
+=======
+            labelStyle={{ color: "#fff" }}
+            label={i18n.t("common.cancel")}
+>>>>>>> release/current
             onClick={() => this.setState({ ...this.state, otp: false })}
           ></Button>
           <Button
             style={{
-              width: '250px',
-              float: 'right'
+              width: "250px",
+              float: "right",
             }}
             disabled={this.state.password.length < 6}
+<<<<<<< HEAD
             label={i18n.t('common.confirm')}
+=======
+            label={i18n.t("common.confirm")}
+>>>>>>> release/current
             onClick={this.handleConfirmOTP}
           ></Button>
         </StyledModalPopup>
@@ -546,7 +610,7 @@ class Withdrawal extends Component {
           show={this.state.loading || this.props.wallet.loading}
         ></Loading>
       </Container>
-    )
+    );
   }
 }
 
@@ -556,9 +620,9 @@ const mapStateToProps = (state) => {
     account: state.account,
 
     game: state.game,
-    wallet: state.wallet
-  }
-}
+    wallet: state.wallet,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     getBalanceList: (token) => dispatch(walletAction.getBalanceList()),
@@ -567,14 +631,14 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(walletAction.addBilling(card_id, amount)),
     resetResult: () =>
       dispatch({
-        type: RESET_WALLETRESULT
+        type: RESET_WALLETRESULT,
       }),
     doWithdraw: (amount, password, user_account_id) =>
-      dispatch(walletAction.doWithdraw(amount, user_account_id, password))
-  }
-}
+      dispatch(walletAction.doWithdraw(amount, user_account_id, password)),
+  };
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Withdrawal))
+)(withRouter(Withdrawal));

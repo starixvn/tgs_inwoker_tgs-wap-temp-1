@@ -1,48 +1,52 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from "react";
+import { connect } from "react-redux";
 
-import { withRouter } from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
-import Textbox from '../Share/Textbox'
+import Textbox from "../Share/Textbox";
 
-import BaseProfile from './BaseProfile'
-import i18n from '../../../utils/i18n'
-import { AccountService } from '@Inwoker/tgs-api'
+import BaseProfile from "./BaseProfile";
+import i18n from "../../../utils/i18n";
+import { AccountService } from "@Inwoker/tgs-api";
 
-import { accountAction } from '@Inwoker/tgs-api'
+import { accountAction } from "@Inwoker/tgs-api";
 class WeChat extends BaseProfile {
   state = {
-    wechat: ''
-  }
+    wechat: "",
+  };
   componentDidMount() {
-    this.setState({ wechat: this.props.account.info.member_wechat })
+    this.setState({ wechat: this.props.account.info.member_wechat });
   }
 
   handleChangeNumber = (e) => {
-    this.setState({ wechat: e.target.value })
-    this.onTextChanged()
-  }
+    this.setState({ wechat: e.target.value });
+    this.onTextChanged();
+  };
 
   isDisableButton = () => {
-    return !this.state.wechat
-  }
+    return !this.state.wechat;
+  };
   handleSubmitClicked = () => {
-    const wechat = this.state.wechat
+    const wechat = this.state.wechat;
     //validate here
     //sdasdasdasda
-    const re = new RegExp('^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$')
+    const re = new RegExp("^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$");
     if (!wechat.match(re)) {
+<<<<<<< HEAD
       this.props.alert(
         '',
         i18n.t('profile.wechat.msgInvalidWeChat')
       )
+=======
+      this.props.alert("", i18n.t("profile.wechat.msgInvalidWeChat"));
+>>>>>>> release/current
       // this.props.enqueueSnackbar("微信号码格式不正确", {
       //   key: "error"
       // });
-      return
+      return;
     }
 
-    this.showLoading(true)
+    this.showLoading(true);
     //api
     AccountService.UpdateWechat(wechat)
       .then((response) => {
@@ -51,54 +55,69 @@ class WeChat extends BaseProfile {
             if (responseUpdate.IsSuccess) {
               this.setState({
                 ...this.state,
-                wechat: wechat
-              })
+                wechat: wechat,
+              });
             }
+<<<<<<< HEAD
             this.props.alert(
               '',
               i18n.t('common.msgSuccessUpdateProfile')
             )
             this.showLoading(false)
           })
+=======
+            this.props.alert("", i18n.t("common.msgSuccessUpdateProfile"));
+            this.showLoading(false);
+          });
+>>>>>>> release/current
         } else {
-          this.props.alert('', response.msg)
-          this.showLoading(false)
+          this.props.alert("", response.msg);
+          this.showLoading(false);
           // this.props.enqueueSnackbar(response.msg, {
           //   key: "error"
           // });
         }
       })
       .catch((err) => {
-        this.props.alert('', err)
+        this.props.alert("", err);
         // this.props.enqueueSnackbar(err, {
         //   key: "error"
         // });
-        this.showLoading(false)
-      })
-  }
+        this.showLoading(false);
+      });
+  };
 
   render() {
     return this.setupContent(
+<<<<<<< HEAD
       i18n.t('common.wechatNumber'),
+=======
+      i18n.t("common.wechatNumber"),
+>>>>>>> release/current
       <Textbox
-        style={{ margin: '50px auto 20px auto' }}
+        style={{ margin: "50px auto 20px auto" }}
         value={this.state.wechat}
         onChange={this.handleChangeNumber}
+<<<<<<< HEAD
         placeholder={i18n.t('profile.wechat.plsEnterWechat')}
         label={i18n.t('common.wechatNumber')}
+=======
+        placeholder={i18n.t("profile.wechat.plsEnterWechat")}
+        label={i18n.t("common.wechatNumber")}
+>>>>>>> release/current
       ></Textbox>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAccountProfile: () => dispatch(accountAction.getAccountProfile(true))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(WeChat))
+    getAccountProfile: () => dispatch(accountAction.getAccountProfile(true)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(WeChat));

@@ -1,8 +1,8 @@
-import { Grid } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import i18n from '../../../utils/i18n'
-import IMHandler from '../Main/Support/IMHandler'
+import { Grid } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import i18n from "../../../utils/i18n";
+import IMHandler from "../Main/Support/IMHandler";
 
 const MaintenanceBg = styled.div`
   z-index: 10;
@@ -19,29 +19,29 @@ const MaintenanceBg = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   overflow-y: scroll;
-`
+`;
 
 const CustomContainer = styled(Grid)`
   padding: 140px 0px 0px 0px;
-`
+`;
 const Text = styled.div`
   color: white;
   font-size: 30px;
   text-align: center;
   padding: 20px 0px;
-`
+`;
 
 const Hyperlink = styled.span`
   :focus,
   :active {
     text-decoration: underline;
   }
-`
+`;
 
 const Overlay = styled.div`
   position: fixed;
   display: ${({ open }) => {
-    return open ? 'flex' : 'none'
+    return open ? "flex" : "none";
   }};
   width: 100vw;
   justify-content: center;
@@ -50,7 +50,7 @@ const Overlay = styled.div`
   top: 0;
   bottom: 0;
   padding: 80px;
-`
+`;
 
 const OverlayContent = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ const OverlayContent = styled.div`
   height: 100%;
   border-radius: 10px;
   background: white;
-`
+`;
 
 const OverlayHeader = styled.div`
   background: ${({ theme }) => theme.primary};
@@ -68,12 +68,12 @@ const OverlayHeader = styled.div`
   font-size: 28px;
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const OverlayBody = styled.div`
   display: grid;
   grid-template-columns: auto auto;
-`
+`;
 
 const IMWrapper = styled.div`
   display: flex;
@@ -82,7 +82,7 @@ const IMWrapper = styled.div`
   justify-content: center;
   font-size: 32px;
   padding: 20px;
-`
+`;
 
 const Icon = styled.div`
   width: 150px;
@@ -90,15 +90,15 @@ const Icon = styled.div`
 
   background: ${({ icon }) => {
     return `url(${
-      process.env.PUBLIC_URL + '/assets/images/icon/' + icon
+      process.env.PUBLIC_URL + "/assets/images/icon/" + icon
     }) no-repeat center /
-    contain;`
+    contain;`;
   }};
-`
+`;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-`
+`;
 const Button = styled.div`
   color: white;
   font-size: 30px;
@@ -111,59 +111,63 @@ const Button = styled.div`
   align-items: center;
   justify-content: center;
   margin: 20px;
-`
+`;
 
 const AnotherButton = styled(Button)`
   color: #ff8e39;
   background: none;
   border: solid 1px #ff8e39;
-`
+`;
 
 const Maintenance = (props) => {
   function csClick() {
-    props.GetSupportUrl('', '', '', '')
+    props.GetSupportUrl("", "", "", "");
   }
 
   function copyText(text) {
-    navigator.clipboard.writeText(text)
+    navigator.clipboard.writeText(text);
   }
 
-  const [open, setOpen] = useState(false)
-  const [imList, setIMList] = useState([])
+  const [open, setOpen] = useState(false);
+  const [imList, setIMList] = useState([]);
 
   useEffect(() => {
     props.brandComm().then((e) => {
       if (e.IsSuccess) {
-        setIMList(e.data)
+        setIMList(e.data);
       }
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
     if (!props.isMaintenance) {
-      props.appHistory.push('/' + i18n.language)
+      props.appHistory.push("/" + i18n.language);
     }
-  })
+  });
   return (
     <MaintenanceBg>
-      <CustomContainer container justify='center' alignItems='center'>
+      <CustomContainer container justify="center" alignItems="center">
         <Text>我们现正维护中，请稍后再试。 </Text>
         <Text>
           如您有任何问题，请<Hyperlink onClick={csClick}>联系客服</Hyperlink>。
         </Text>
         {(() => {
+<<<<<<< HEAD
           if (i18n.language === 'vi-VN') {
+=======
+          if (i18n.language === "vi-VN") {
+>>>>>>> release/current
             return (
               <React.Fragment>
                 <Text>
                   Chúng tôi hiện đang được bảo trì, vui lòng thử lại sau.
                 </Text>
                 <Text>
-                  Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi{' '}
+                  Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi{" "}
                   <Hyperlink onClick={csClick}>dịch vụ khách hàng</Hyperlink>。
                 </Text>
               </React.Fragment>
-            )
+            );
           }
         })()}
         <Text>
@@ -172,33 +176,45 @@ const Maintenance = (props) => {
         </Text>
         <Text>
           If you have any questions, <br />
-          please contact our{' '}
+          please contact our{" "}
           <Hyperlink onClick={csClick}>customer service</Hyperlink>.
         </Text>
-      </CustomContainer>{' '}
+      </CustomContainer>{" "}
       <ButtonContainer>
         <AnotherButton
           onClick={() => {
-            csClick()
+            csClick();
           }}
         >
+<<<<<<< HEAD
           {i18n.t('support.online')}
+=======
+          {i18n.t("support.online")}
+>>>>>>> release/current
         </AnotherButton>
         <Button
           onClick={() => {
-            setOpen(true)
+            setOpen(true);
           }}
         >
+<<<<<<< HEAD
           {i18n.t('panel.im')}
+=======
+          {i18n.t("panel.im")}
+>>>>>>> release/current
         </Button>
       </ButtonContainer>
       <Overlay open={open}>
         <OverlayContent>
           <OverlayHeader>
+<<<<<<< HEAD
             <div>{i18n.t('panel.im')}</div>
+=======
+            <div>{i18n.t("panel.im")}</div>
+>>>>>>> release/current
             <div
               onClick={() => {
-                setOpen(false)
+                setOpen(false);
               }}
             >
               ✖
@@ -209,20 +225,24 @@ const Maintenance = (props) => {
               return (
                 <IMWrapper
                   onClick={() => {
+<<<<<<< HEAD
                     IMHandler(data.type, data.phone)
+=======
+                    IMHandler(data.type, data.phone);
+>>>>>>> release/current
                     //  props.alert('', i18n.t('affiliate.copied'))
                   }}
                 >
                   <Icon icon={`${data.type}.png`} />
                   <div>{data.type}</div>
                 </IMWrapper>
-              )
+              );
             })}
           </OverlayBody>
         </OverlayContent>
       </Overlay>
     </MaintenanceBg>
-  )
-}
+  );
+};
 
-export default Maintenance
+export default Maintenance;

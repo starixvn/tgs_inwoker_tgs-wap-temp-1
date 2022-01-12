@@ -1,99 +1,99 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
 
-import { withRouter } from 'react-router-dom'
-import { withStyles } from '@material-ui/core/styles'
-import Modal from '@material-ui/core/Dialog'
-import Header from '../Share/Header'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
+import { withRouter } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Dialog";
+import Header from "../Share/Header";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-import 'react-lazy-load-image-component/src/effects/blur.css'
+import "react-lazy-load-image-component/src/effects/blur.css";
 
-import Button from '../Share/Button'
+import Button from "../Share/Button";
 
-import Loading from '../Share/Loading'
-import i18n from '../../../utils/i18n'
-import { walletAction, RESET_WALLETRESULT } from '@Inwoker/tgs-api'
+import Loading from "../Share/Loading";
+import i18n from "../../../utils/i18n";
+import { walletAction, RESET_WALLETRESULT } from "@Inwoker/tgs-api";
 
-import Slide from '@material-ui/core/Slide'
-const Container = styled.div``
+import Slide from "@material-ui/core/Slide";
+const Container = styled.div``;
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='up' ref={ref} {...props} />
-})
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 const ContentBg = styled.div`
   background: #fff;
   width: 100%;
 
   padding: 60px 60px 30px 60px;
   margin-bottom: 30px;
-`
+`;
 const BalanceLabel = styled.div`
   font-size: 30px;
 
   color: #979797;
-`
+`;
 const DepositAmount = styled.div`
   font-size: 80px;
   font-weight: bold;
 
   color: ${({ theme }) => theme.secondary};
-`
+`;
 const SplitLine = styled.div`
   height: 2px;
   background-color: #f1f1f1;
   margin: 50px 0;
-`
+`;
 const LeftLabel = styled.div`
   font-size: 24px;
   color: #979797;
   float: left;
-`
+`;
 const RightLabel = styled.div`
   font-size: 24px;
   color: #333333;
   float: right;
   font-weight: bold;
-`
+`;
 const SplitBoth = styled.div`
   clear: both;
   margin: 30px 0;
-`
+`;
 
 const StyledModalPopup = withStyles((theme) => ({
   paper: {
-    borderRadius: '50px',
-    fontSize: '28px',
-    color: '#666666',
-    padding: '30px',
-    width: '600px',
-    maxWidth: '690px',
+    borderRadius: "50px",
+    fontSize: "28px",
+    color: "#666666",
+    padding: "30px",
+    width: "600px",
+    maxWidth: "690px",
 
-    display: 'block'
-  }
-}))(Modal)
+    display: "block",
+  },
+}))(Modal);
 const DialoTitle = styled.div`
   font-size: 36px;
   font-weight: 600;
   margin: 0 auto;
   display: table;
   color: #4a4a4a;
-`
+`;
 
 const OTPContainer = styled.div`
   position: relative;
   text-align: center;
   margin: 50px 0;
   &:after {
-    content: '___   ___   ___   ___   ___   ___';
+    content: "___   ___   ___   ___   ___   ___";
     display: block;
     position: absolute;
     top: 28px;
     left: 64px;
     white-space: pre;
   }
-`
+`;
 const OTPTextBox = styled.input`
   position: relative;
   font-size: 50px;
@@ -109,20 +109,24 @@ const OTPTextBox = styled.input`
   -ms-letter-spacing: 25.6px;
   letter-spacing: 42.6px;
   font-family: Courier;
-`
+`;
 class Details extends Component {
   state = {
     loading: false,
     openPopup: false,
-    password: ''
-  }
+    password: "",
+  };
   componentDidMount() {
     if (this.props.order == null) {
+<<<<<<< HEAD
       this.props.appHistory.replace(
         '/' + i18n.language + '/withdrawal'
       )
+=======
+      this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
+>>>>>>> release/current
     } else {
-      this.props.addBilling(this.props.order.id, this.props.order.amount)
+      this.props.addBilling(this.props.order.id, this.props.order.amount);
     }
   }
   componentDidUpdate(preProps) {
@@ -131,97 +135,133 @@ class Details extends Component {
       this.props.wallet.withdrawalResult !== null
     ) {
       if (this.props.wallet.withdrawalResult.IsSuccess) {
+<<<<<<< HEAD
         this.props.resetResult()
         this.props.getBalanceList()
         this.props.appHistory.replace(
           '/' + i18n.language + '/withdrawal'
         )
+=======
+        this.props.resetResult();
+        this.props.getBalanceList();
+        this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
+>>>>>>> release/current
       } else {
-        this.props.alert('', this.props.wallet.withdrawalResult.info)
+        this.props.alert("", this.props.wallet.withdrawalResult.info);
       }
     }
   }
   handleWithdrawalConfirmClick = (e) => {
     if (this.props.wallet.addBillingResult !== null) {
-      this.setState({ ...this.state, otp: true, password: '' })
+      this.setState({ ...this.state, otp: true, password: "" });
     }
-  }
+  };
 
   handleWithdrawalCancelClick = (e) => {
+<<<<<<< HEAD
     this.setState({ ...this.state, loading: true })
     this.props.appHistory.replace(
       '/' + i18n.language + '/withdrawal'
     )
   }
+=======
+    this.setState({ ...this.state, loading: true });
+    this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
+  };
+>>>>>>> release/current
   handleConfirmOTP = () => {
-    this.setState({ ...this.state, otp: false })
+    this.setState({ ...this.state, otp: false });
     this.props.doWithdrawal(
       this.props.wallet.addBillingResult.data.amount,
       this.state.password,
       this.props.order.id
-    )
-  }
+    );
+  };
   handlePasswordChange = (e) => {
-    this.setState({ ...this.state, password: e.target.value })
-  }
+    this.setState({ ...this.state, password: e.target.value });
+  };
   handleOpenPopupUrl = () => {
     this.setState({
       ...this.state,
 
-      openPopup: false
-    })
-    let form = document.getElementById('form')
-    form.submit()
-  }
+      openPopup: false,
+    });
+    let form = document.getElementById("form");
+    form.submit();
+  };
   handleClosePopup = () => {
     this.setState({
       ...this.state,
 
-      openPopup: false
-    })
-  }
+      openPopup: false,
+    });
+  };
   render() {
     return (
       <Container>
         <Header
           onBackClick={this.handleWithdrawalCancelClick}
+<<<<<<< HEAD
           title={i18n.t('withdrawal.title')}
+=======
+          title={i18n.t("withdrawal.title")}
+>>>>>>> release/current
         ></Header>
         {(() => {
           if (this.props.wallet.addBillingResult !== null) {
             return (
               <React.Fragment>
                 <ContentBg>
+<<<<<<< HEAD
                   <BalanceLabel>
                     {i18n.t('common.amount')}
                   </BalanceLabel>
+=======
+                  <BalanceLabel>{i18n.t("common.amount")}</BalanceLabel>
+>>>>>>> release/current
                   <DepositAmount>
-                    {this.props.wallet.mainSymbol}{' '}
+                    {this.props.wallet.mainSymbol}{" "}
                     {this.props.wallet.addBillingResult.data.amount}
                   </DepositAmount>
                   <SplitLine></SplitLine>
+<<<<<<< HEAD
                   <LeftLabel>
                     {i18n.t('withdrawal.receiverAcc')}
                   </LeftLabel>
+=======
+                  <LeftLabel>{i18n.t("withdrawal.receiverAcc")}</LeftLabel>
+>>>>>>> release/current
                   <RightLabel>
                     {this.props.wallet.addBillingResult.data.card}
                   </RightLabel>
                   <SplitBoth></SplitBoth>
+<<<<<<< HEAD
                   <LeftLabel>
                     {i18n.t('withdrawal.receiverName')}
                   </LeftLabel>
+=======
+                  <LeftLabel>{i18n.t("withdrawal.receiverName")}</LeftLabel>
+>>>>>>> release/current
                   <RightLabel>
                     {this.props.wallet.addBillingResult.data.name}
                   </RightLabel>
                   <SplitBoth></SplitBoth>
+<<<<<<< HEAD
                   <LeftLabel>{i18n.t('withdrawal.fee')}</LeftLabel>
+=======
+                  <LeftLabel>{i18n.t("withdrawal.fee")}</LeftLabel>
+>>>>>>> release/current
                   <RightLabel>
                     {this.props.wallet.addBillingResult.data.fee}
                   </RightLabel>
                   <SplitBoth></SplitBoth>
+<<<<<<< HEAD
                   <LeftLabel>
                     {i18n.t('withdrawal.receiverAmount')}
                   </LeftLabel>
+=======
+                  <LeftLabel>{i18n.t("withdrawal.receiverAmount")}</LeftLabel>
+>>>>>>> release/current
                   <RightLabel>
                     {this.props.wallet.addBillingResult.data.bill}
                   </RightLabel>
@@ -229,28 +269,38 @@ class Details extends Component {
                 </ContentBg>
                 <Button
                   style={{
-                    width: '300px',
-                    float: 'left',
-                    marginLeft: '50px',
-                    backgroundImage: 'none',
-                    backgroundColor: '#b7b7b7'
+                    width: "300px",
+                    float: "left",
+                    marginLeft: "50px",
+                    backgroundImage: "none",
+                    backgroundColor: "#b7b7b7",
                   }}
+<<<<<<< HEAD
                   labelStyle={{ color: '#fff' }}
                   label={i18n.t('common.cancel')}
+=======
+                  labelStyle={{ color: "#fff" }}
+                  label={i18n.t("common.cancel")}
+>>>>>>> release/current
                   onClick={this.handleWithdrawalCancelClick}
                 ></Button>
                 <Button
                   style={{
-                    width: '300px',
-                    float: 'right',
-                    marginRight: '50px'
+                    width: "300px",
+                    float: "right",
+                    marginRight: "50px",
                   }}
+<<<<<<< HEAD
                   labelStyle={{ color: '#fff' }}
                   label={i18n.t('common.confirm')}
+=======
+                  labelStyle={{ color: "#fff" }}
+                  label={i18n.t("common.confirm")}
+>>>>>>> release/current
                   onClick={this.handleWithdrawalConfirmClick}
                 ></Button>
               </React.Fragment>
-            )
+            );
           }
         })()}
         <StyledModalPopup
@@ -258,16 +308,20 @@ class Details extends Component {
           open={this.state.otp}
           TransitionComponent={Transition}
           keepMounted
-          aria-labelledby='alert-dialog-slide-title'
-          aria-describedby='alert-dialog-slide-description'
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
         >
+<<<<<<< HEAD
           <DialoTitle>
             {i18n.t('common.withdrawalPassword')}
           </DialoTitle>
+=======
+          <DialoTitle>{i18n.t("common.withdrawalPassword")}</DialoTitle>
+>>>>>>> release/current
           <OTPContainer>
             <OTPTextBox
-              type={'password'}
-              inputmode='numeric'
+              type={"password"}
+              inputmode="numeric"
               minLength={6}
               maxLength={6}
               size={6}
@@ -277,23 +331,32 @@ class Details extends Component {
           </OTPContainer>
           <Button
             style={{
-              width: '250px',
-              float: 'left',
+              width: "250px",
+              float: "left",
 
-              backgroundImage: 'none',
-              backgroundColor: '#b7b7b7'
+              backgroundImage: "none",
+              backgroundColor: "#b7b7b7",
             }}
+<<<<<<< HEAD
             labelStyle={{ color: '#fff' }}
             label={i18n.t('common.cancel')}
+=======
+            labelStyle={{ color: "#fff" }}
+            label={i18n.t("common.cancel")}
+>>>>>>> release/current
             onClick={() => this.setState({ ...this.state, otp: false })}
           ></Button>
           <Button
             style={{
-              width: '250px',
-              float: 'right'
+              width: "250px",
+              float: "right",
             }}
             disabled={this.state.password.length < 6}
+<<<<<<< HEAD
             label={i18n.t('common.confirm')}
+=======
+            label={i18n.t("common.confirm")}
+>>>>>>> release/current
             onClick={this.handleConfirmOTP}
           ></Button>
         </StyledModalPopup>
@@ -301,7 +364,7 @@ class Details extends Component {
           show={this.state.loading || this.props.wallet.loading}
         ></Loading>
       </Container>
-    )
+    );
   }
 }
 
@@ -310,20 +373,23 @@ const mapStateToProps = (state) => {
     screenWidth: state.ui.screenWidth,
     screenHeight: state.ui.screenHeight,
     wallet: state.wallet,
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     addBilling: (card_id, amount) =>
       dispatch(walletAction.addBilling(card_id, amount)),
     resetResult: () =>
       dispatch({
-        type: RESET_WALLETRESULT
+        type: RESET_WALLETRESULT,
       }),
     getBalanceList: () => dispatch(walletAction.getBalanceList()),
     doWithdrawal: (amount, password, user_account_id) =>
-      dispatch(walletAction.doWithdrawal(amount, password, user_account_id))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Details))
+      dispatch(walletAction.doWithdrawal(amount, password, user_account_id)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Details));

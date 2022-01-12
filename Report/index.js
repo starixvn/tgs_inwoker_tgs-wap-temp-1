@@ -1,46 +1,46 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import styled from 'styled-components'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import styled from "styled-components";
 
-import AppBar from '@material-ui/core/AppBar'
-import { withStyles } from '@material-ui/core/styles'
+import AppBar from "@material-ui/core/AppBar";
+import { withStyles } from "@material-ui/core/styles";
 
 import {
   ReportService,
   GameService,
   accountAction,
-  GeneralService
-} from '@Inwoker/tgs-api'
+  GeneralService,
+} from "@Inwoker/tgs-api";
 
-import BottomScrollListener from 'react-bottom-scroll-listener'
-import Loading from '../../Wap/Share/Loading'
-import Header from '../../Wap/Share/Header'
-import addDays from 'date-fns/addDays'
-import addMonths from 'date-fns/addMonths'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
-import DateFnsUtils from '@date-io/date-fns' // import
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { createMuiTheme } from '@material-ui/core'
-import { ThemeProvider } from '@material-ui/styles'
-import zhLocale from 'date-fns/locale/zh-CN'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
+import BottomScrollListener from "react-bottom-scroll-listener";
+import Loading from "../../Wap/Share/Loading";
+import Header from "../../Wap/Share/Header";
+import addDays from "date-fns/addDays";
+import addMonths from "date-fns/addMonths";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import DateFnsUtils from "@date-io/date-fns"; // import
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { createMuiTheme } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
+import zhLocale from "date-fns/locale/zh-CN";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
-import i18n from '../../../utils/i18n'
-import Common from '../../../utils/Common'
-const moment = require('moment')
+import i18n from "../../../utils/i18n";
+import Common from "../../../utils/Common";
+const moment = require("moment");
 const localeMap = {
-  zh: zhLocale
-}
+  zh: zhLocale,
+};
 const Container = styled.div`
   width: 100%;
   padding-top: 230px;
-`
+`;
 const StyledAppBar = withStyles((theme) => ({
   root: {
-    height: '170px',
+    height: "170px",
     background: theme.palette.primary.main,
 
     background:
@@ -51,32 +51,30 @@ const StyledAppBar = withStyles((theme) => ({
       `, 0.8)), url(${
         process.env.PUBLIC_URL + `/assets/images/wapp/bg-profile.png`
       })`,
-    display: 'block'
-  }
-}))(AppBar)
+    display: "block",
+  },
+}))(AppBar);
 const BalanceLabel = styled.div`
   font-size: 36px;
 
   text-align: center;
   color: #fff;
   margin: 0 auto 20px auto;
-`
+`;
 
 const DateContainer = styled.div`
   padding: 30px 40px;
-`
+`;
 const DateSpliter = styled.div`
   font-size: 22px;
   font-weight: 600;
-  float: left;
   color: #4a4a4a;
   margin: 75px 0 0 10px;
-`
+`;
 const DateInner = styled.div`
-  float: left;
   width: 320px;
   padding: 5px;
-`
+`;
 const DateLabel = styled.div`
   height: 40px;
   border-left: 5px solid ${({ theme }) => theme.primary};
@@ -86,10 +84,10 @@ const DateLabel = styled.div`
   font-size: 22px;
   font-weight: 600;
   color: ${({ theme }) => theme.secondary};
-`
+`;
 const DateRangContainer = styled.div`
   margin-top: 20px;
-`
+`;
 const DateRangSelection = styled.div`
   width: 220px;
   height: 52px;
@@ -110,7 +108,7 @@ const DateRangSelection = styled.div`
   color: ` +
         props.theme.secondary +
         `;`}
-`
+`;
 const DataContent = styled.div`
   width: 690px;
 
@@ -121,7 +119,7 @@ const DataContent = styled.div`
   font-size: 26px;
   color: #4a4a4a;
   padding: 0 20px;
-`
+`;
 const DataHeader = styled.div`
   width: 690px;
   font-weight: 600;
@@ -130,47 +128,47 @@ const DataHeader = styled.div`
   font-size: 26px;
   color: ${({ theme }) => theme.secondary};
   padding: 0 20px;
-`
+`;
 const DataRowId = styled.div`
   width: 100%;
   min-height: 40px;
   padding: 14px 0px 0px 0px;
   font-weight: 600;
   font-size: 26px;
-`
+`;
 const IDCell = styled.span`
   font-weight: normal;
   font-size: 26px;
-`
+`;
 const DataRow = styled.div`
   border-bottom: 2px solid #d7d7d7;
   width: 100%;
   min-height: 78px;
   padding: 20px 0;
-`
+`;
 const DataHeaderRow = styled(DataRow)`
   border-bottom: none;
-`
+`;
 const DataDateCell3 = styled.div`
   float: left;
   width: calc(630px / 3 * 1);
   text-align: left;
-`
+`;
 const DataDateCellAmount = styled.div`
   float: left;
   width: calc(630px / 3 * 1);
   text-align: right;
-`
+`;
 const DataDateCell = styled.div`
   float: left;
   width: calc(630px / 4 * 1);
   text-align: left;
-`
+`;
 const DataWinlossCell = styled.div`
   float: left;
   width: calc(630px / 4 * 1);
   text-align: right;
-`
+`;
 const NoRecordContainer = styled.div`
   background: url(${process.env.PUBLIC_URL +
     `/assets/images/wapp/no-record.png`})
@@ -178,60 +176,60 @@ const NoRecordContainer = styled.div`
   width: 96px;
   height: 136px;
   margin: 30px auto;
-`
+`;
 const materialTheme = createMuiTheme({
   overrides: {
     MuiPickersModal: {
       dialogAction: {
-        color: 'red'
-      }
+        color: "red",
+      },
     },
     MuiPaper: {
       root: {
-        transform: 'scale(1.5)'
-      }
+        transform: "scale(1.5)",
+      },
     },
     MuiFormControl: {
       root: {
-        width: '312px',
-        height: '76px',
-        marginTop: '10px',
-        borderRadius: '20px',
-        boxShadow: '0 4px 8px 0 rgba(35, 31, 27, 0.1)',
-        border: 'solid 1px #f3f3f3',
-        backgroundColor: '#ffffff'
-      }
+        width: "312px",
+        height: "76px",
+        marginTop: "10px",
+        borderRadius: "20px",
+        boxShadow: "0 4px 8px 0 rgba(35, 31, 27, 0.1)",
+        border: "solid 1px #f3f3f3",
+        backgroundColor: "#ffffff",
+      },
     },
     MuiInput: {
       root: {
-        fontSize: '30px',
-        height: '75px',
-        '&::before': {
-          display: 'none'
+        fontSize: "30px",
+        height: "75px",
+        "&::before": {
+          display: "none",
         },
-        '& input': {
-          textAlign: 'center'
-        }
-      }
-    }
-  }
-})
+        "& input": {
+          textAlign: "center",
+        },
+      },
+    },
+  },
+});
 const CustomFormControl = withStyles((theme) => ({
   root: {
-    '& fieldset': {
-      border: 'none'
-    }
-  }
-}))(FormControl)
+    "& fieldset": {
+      border: "none",
+    },
+  },
+}))(FormControl);
 
 const CustomSelect = withStyles((theme) => ({
   root: {
-    height: '50px',
+    height: "50px",
     padding: 0,
     margin: 0,
-    width: '460px'
-  }
-}))(Select)
+    width: "460px",
+  },
+}))(Select);
 
 const SelectContainer = styled.div`
   float: left;
@@ -243,7 +241,7 @@ const SelectContainer = styled.div`
   background-color: #ffffff;
   border-radius: 20px;
   box-shadow: 0 4px 8px 0 rgba(35, 31, 27, 0.1);
-`
+`;
 
 const SelectLabel = styled.div`
   font-size: 28px;
@@ -252,7 +250,7 @@ const SelectLabel = styled.div`
   width: 140px;
   float: left;
   margin-top: 20px;
-`
+`;
 
 const TheDepositButton = styled.div`
   display: flex;
@@ -263,16 +261,47 @@ const TheDepositButton = styled.div`
   color: white;
   border-radius: 8px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+<<<<<<< HEAD
 `
 const DateTimeDisplay = styled.div``
+=======
+`;
+
+const DateTimeDisplay = styled.div``;
+
+const CustomWinLose = styled.span`
+  color: ${({ value }) => {
+    return value === 0 ? "" : value > 0 ? "rgb(3,189, 0)" : "rgb(255, 0, 0)";
+  }};
+`;
+
+const CustomDataRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const AnotherCustomDataRow = styled.div`
+  display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #d7d7d7;
+`;
+
+const FlatStraightLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+`;
+
+>>>>>>> release/current
 class Report extends Component {
   constructor(props) {
-    super(props)
-    var today = new Date()
-    today.setHours(0)
-    today.setMinutes(0)
-    today.setSeconds(0)
-    today.setMilliseconds(0)
+    super(props);
+    var today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    today.setMilliseconds(0);
     this.state = {
       selectedType:
         this.props.match.params.tab &&
@@ -289,60 +318,60 @@ class Report extends Component {
         dateFrom: today,
         dateTo: today,
         dateRange: 0,
-        type: 0
+        type: 0,
       },
       tab2: {
         dateFrom: today,
         dateTo: today,
         dateRange: 0,
 
-        type: 0
+        type: 0,
       },
       tab3: {
         dateFrom: today,
         dateTo: today,
         dateRange: 0,
-        status: ''
+        status: "",
       },
       tab4: {
         dateFrom: today,
         dateTo: today,
         dateRange: 0,
-        status: ''
+        status: "",
       },
       tab5: {
         dateFrom: today,
         dateTo: today,
-        dateRange: 0
+        dateRange: 0,
       },
       tab6: {
         dateFrom: today,
         dateTo: today,
-        dateRange: 0
+        dateRange: 0,
       },
       tab7: {
         dateFrom: today,
         dateTo: today,
-        dateRange: 0
+        dateRange: 0,
       },
 
       dateRange: 0,
       pageSize: 20,
       page: 1,
       type: 0,
-      status: '',
+      status: "",
       betType: 0,
       betType2: 0,
       dataList: [],
       gameList: [],
       isMaxPage: false,
       depositStatusList: {},
-      withdrawalStatusList: {}
-    }
+      withdrawalStatusList: {},
+    };
   }
 
   componentDidMount() {
-    this.GetDepositWithdrawalStatus()
+    this.GetDepositWithdrawalStatus();
     // this.handleAccountGetReportTrigger(
     //   this.state.page,
     //   this.state.pageSize,
@@ -351,19 +380,19 @@ class Report extends Component {
     // );
 
     if (this.state.selectedType === 1) {
-      this.handleAccountGetReportTrigger(this.state.page, this.state.type)
+      this.handleAccountGetReportTrigger(this.state.page, this.state.type);
     } else if (this.state.selectedType === 2) {
-      this.handleTransactionGetReportTrigger(this.state.page, this.state.type)
+      this.handleTransactionGetReportTrigger(this.state.page, this.state.type);
     } else if (this.state.selectedType === 3) {
-      this.handleWithdrawalGetReportTrigger(this.state.page, this.state.status)
+      this.handleWithdrawalGetReportTrigger(this.state.page, this.state.status);
     } else if (this.state.selectedType === 4) {
-      this.handleDepositGetReportTrigger(this.state.page, this.state.status)
+      this.handleDepositGetReportTrigger(this.state.page, this.state.status);
     } else if (this.state.selectedType === 5) {
-      this.handleRebateGetReportTrigger(this.state.page)
+      this.handleRebateGetReportTrigger(this.state.page);
     } else if (this.state.selectedType === 6) {
-      this.handleGetTransferReportTrigger(this.state.page)
+      this.handleGetTransferReportTrigger(this.state.page);
     } else if (this.state.selectedType === 7) {
-      this.handleGetJoinedPromo(this.state.page)
+      this.handleGetJoinedPromo(this.state.page);
     }
   }
   componentDidUpdate(preProps, preState) {
@@ -378,7 +407,7 @@ class Report extends Component {
           this.state.page,
 
           this.state.type
-        )
+        );
       }
     } else if (this.state.selectedType === 2) {
       if (
@@ -391,7 +420,7 @@ class Report extends Component {
           this.state.page,
 
           this.state.type
-        )
+        );
       }
     } else if (this.state.selectedType === 3) {
       if (
@@ -404,7 +433,7 @@ class Report extends Component {
           this.state.page,
 
           this.state.status
-        )
+        );
       }
     } else if (this.state.selectedType === 4) {
       if (
@@ -417,7 +446,7 @@ class Report extends Component {
           this.state.page,
 
           this.state.status
-        )
+        );
       }
     } else if (this.state.selectedType === 5) {
       if (
@@ -425,7 +454,7 @@ class Report extends Component {
         preState.dateTo !== this.state.dateTo ||
         preState.page !== this.state.page
       ) {
-        this.handleRebateGetReportTrigger(this.state.page)
+        this.handleRebateGetReportTrigger(this.state.page);
       }
     } else if (this.state.selectedType === 6) {
       if (
@@ -433,7 +462,7 @@ class Report extends Component {
         preState.dateTo !== this.state.dateTo ||
         preState.page !== this.state.page
       ) {
-        this.handleGetTransferReportTrigger(this.state.page)
+        this.handleGetTransferReportTrigger(this.state.page);
       }
     } else if (this.state.selectedType === 7) {
       if (
@@ -442,207 +471,207 @@ class Report extends Component {
         preState.page !== this.state.page ||
         preState.selectedType !== this.state.selectedType
       ) {
-        this.handleGetJoinedPromo(this.state.page)
+        this.handleGetJoinedPromo(this.state.page);
       }
     }
   }
   GetGameList = () => {
     GameService.GetGameList(this.props.token).then((response) => {
       if (response.IsSuccess) {
-        this.setState({ ...this.state, gameList: response.data })
+        this.setState({ ...this.state, gameList: response.data });
       }
-    })
-  }
+    });
+  };
   GetDepositWithdrawalStatus = () => {
     ReportService.GetDepositStatus().then((response) => {
       if (response.IsSuccess) {
-        this.setState({ ...this.state, depositStatusList: response.data })
+        this.setState({ ...this.state, depositStatusList: response.data });
       }
-    })
+    });
     ReportService.GetWithdrawalStatus().then((response) => {
       if (response.IsSuccess) {
-        this.setState({ ...this.state, withdrawalStatusList: response.data })
+        this.setState({ ...this.state, withdrawalStatusList: response.data });
       }
-    })
-  }
+    });
+  };
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   handleChangeTab = (e, newValue) => {
-    let json = {}
-    let setDateJson = {}
+    let json = {};
+    let setDateJson = {};
     if (this.state.selectedType === 1) {
       json = {
         tab1: {
           dateFrom: this.state.dateFrom,
           dateTo: this.state.dateTo,
           type: this.state.type,
-          dateRange: this.state.dateRange
-        }
-      }
+          dateRange: this.state.dateRange,
+        },
+      };
     } else if (this.state.selectedType === 2) {
       json = {
         tab2: {
           dateFrom: this.state.dateFrom,
           dateTo: this.state.dateTo,
           type: this.state.type,
-          dateRange: this.state.dateRange
-        }
-      }
+          dateRange: this.state.dateRange,
+        },
+      };
     } else if (this.state.selectedType === 3) {
       json = {
         tab3: {
           dateFrom: this.state.dateFrom,
           dateTo: this.state.dateTo,
           status: this.state.status,
-          dateRange: this.state.dateRange
-        }
-      }
+          dateRange: this.state.dateRange,
+        },
+      };
     } else if (this.state.selectedType === 4) {
       json = {
         tab4: {
           dateFrom: this.state.dateFrom,
           dateTo: this.state.dateTo,
           status: this.state.status,
-          dateRange: this.state.dateRange
-        }
-      }
+          dateRange: this.state.dateRange,
+        },
+      };
     } else if (this.state.selectedType === 5) {
       json = {
         tab5: {
           dateFrom: this.state.dateFrom,
           dateTo: this.state.dateTo,
-          dateRange: this.state.dateRange
-        }
-      }
+          dateRange: this.state.dateRange,
+        },
+      };
     } else if (this.state.selectedType === 6) {
       json = {
         tab6: {
           dateFrom: this.state.dateFrom,
           dateTo: this.state.dateTo,
-          dateRange: this.state.dateRange
-        }
-      }
+          dateRange: this.state.dateRange,
+        },
+      };
     } else if (this.state.selectedType === 7) {
       json = {
         tab7: {
           dateFrom: this.state.dateFrom,
           dateTo: this.state.dateTo,
-          dateRange: this.state.dateRange
-        }
-      }
+          dateRange: this.state.dateRange,
+        },
+      };
     }
     if (newValue === 1) {
       setDateJson = {
         dateFrom: this.state.tab1.dateFrom,
         dateTo: this.state.tab1.dateTo,
         type: this.state.tab1.type,
-        dateRange: this.state.tab1.dateRange
-      }
+        dateRange: this.state.tab1.dateRange,
+      };
     } else if (newValue === 2) {
       setDateJson = {
         dateFrom: this.state.tab2.dateFrom,
         dateTo: this.state.tab2.dateTo,
         type: this.state.tab2.type,
-        dateRange: this.state.tab1.dateRange
-      }
+        dateRange: this.state.tab1.dateRange,
+      };
     } else if (newValue === 3) {
       setDateJson = {
         dateFrom: this.state.tab3.dateFrom,
         dateTo: this.state.tab3.dateTo,
         status: this.state.tab3.status,
-        dateRange: this.state.tab3.dateRange
-      }
+        dateRange: this.state.tab3.dateRange,
+      };
     } else if (newValue === 4) {
       setDateJson = {
         dateFrom: this.state.tab4.dateFrom,
         dateTo: this.state.tab4.dateTo,
         status: this.state.tab4.status,
-        dateRange: this.state.tab4.dateRange
-      }
+        dateRange: this.state.tab4.dateRange,
+      };
     } else if (newValue === 5) {
       setDateJson = {
         dateFrom: this.state.tab5.dateFrom,
         dateTo: this.state.tab5.dateTo,
-        dateRange: this.state.tab5.dateRange
-      }
+        dateRange: this.state.tab5.dateRange,
+      };
     } else if (newValue === 6) {
       setDateJson = {
         dateFrom: this.state.tab6.dateFrom,
         dateTo: this.state.tab6.dateTo,
-        dateRange: this.state.tab6.dateRange
-      }
+        dateRange: this.state.tab6.dateRange,
+      };
     } else if (newValue === 7) {
       setDateJson = {
         dateFrom: this.state.tab6.dateFrom,
         dateTo: this.state.tab6.dateTo,
-        dateRange: this.state.tab6.dateRange
-      }
+        dateRange: this.state.tab6.dateRange,
+      };
     }
-    window.scrollTo({ top: 0 })
+    window.scrollTo({ top: 0 });
     this.setState({
       ...this.state,
       selectedType: newValue,
       page: 1,
       ...setDateJson,
-      ...json
-    })
-  }
+      ...json,
+    });
+  };
 
   handleWeeklyClick = () => {
-    let today = new Date()
-    today.setHours(0)
-    today.setMinutes(0)
-    today.setSeconds(0)
-    today.setMilliseconds(0)
-    let newdateFrom = addDays(today, -7)
+    let today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    today.setMilliseconds(0);
+    let newdateFrom = addDays(today, -7);
 
     this.setState({
       ...this.state,
       dateFrom: newdateFrom,
       dateTo: today,
-      dateRange: 1
-    })
-  }
+      dateRange: 1,
+    });
+  };
   handleMontlyClick = () => {
-    let today = new Date()
-    today.setHours(0)
-    today.setMinutes(0)
-    today.setSeconds(0)
-    today.setMilliseconds(0)
-    let newdateFrom = addMonths(today, -1)
+    let today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    today.setMilliseconds(0);
+    let newdateFrom = addMonths(today, -1);
 
     this.setState({
       ...this.state,
       dateFrom: newdateFrom,
       dateTo: today,
-      dateRange: 2
-    })
-  }
+      dateRange: 2,
+    });
+  };
   handleTodayClick = (date) => {
-    let today = new Date()
-    today.setHours(0)
-    today.setMinutes(0)
-    today.setSeconds(0)
-    today.setMilliseconds(0)
+    let today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    today.setMilliseconds(0);
     this.setState({
       ...this.state,
       dateFrom: today,
       dateTo: today,
-      dateRange: 0
-    })
-  }
+      dateRange: 0,
+    });
+  };
   handleDateFromChange = (e) => {
-    this.setState({ ...this.state, dateFrom: e })
-  }
+    this.setState({ ...this.state, dateFrom: e });
+  };
   handleDateToChange = (e) => {
-    this.setState({ ...this.state, dateTo: e })
-  }
+    this.setState({ ...this.state, dateTo: e });
+  };
   handleAccountGetReportTrigger = (page, type) => {
-    this.setState({ ...this.state, loading: true })
+    this.setState({ ...this.state, loading: true });
     ReportService.GetAccountDetails(
       moment(this.state.dateFrom).utc().format(),
-      moment(this.state.dateTo).utc().add(1, 'days').format(),
+      moment(this.state.dateTo).utc().add(1, "days").format(),
       page,
 
       type
@@ -651,254 +680,260 @@ class Report extends Component {
         const dataList =
           page > 1
             ? this.state.dataList.concat(response.data.list)
-            : response.data.list
+            : response.data.list;
         this.setState({
           ...this.state,
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.count == dataList.length
-        })
+          isMaxPage: response.data.count == dataList.length,
+        });
       } else {
-        this.props.alert('', response.info)
+        this.props.alert("", response.info);
         this.setState({
           ...this.state,
 
-          loading: false
-        })
+          loading: false,
+        });
       }
-    })
-  }
+    });
+  };
   handleTransactionGetReportTrigger = (page, game_platform_id) => {
-    this.setState({ ...this.state, loading: true })
+    this.setState({ ...this.state, loading: true });
     ReportService.GetTransactionDetails(
       moment(this.state.dateFrom).utc().format(),
-      moment(this.state.dateTo).utc().add(1, 'days').format(),
+      moment(this.state.dateTo).utc().add(1, "days").format(),
       page,
       this.state.pageSize,
       true,
-      '',
+      "",
       false
     ).then((response) => {
       if (response.IsSuccess) {
         const dataList =
           page > 1
             ? this.state.dataList.concat(response.data.items)
-            : response.data.items
+            : response.data.items;
         this.setState({
           ...this.state,
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length
-        })
+          isMaxPage: response.data.totalCount == dataList.length,
+        });
       } else {
-        this.props.alert('', response.info)
+        this.props.alert("", response.info);
         this.setState({
           ...this.state,
 
-          loading: false
-        })
+          loading: false,
+        });
       }
-    })
-  }
+    });
+  };
   handleWithdrawalGetReportTrigger = (page, status) => {
-    this.setState({ ...this.state, loading: true })
+    this.setState({ ...this.state, loading: true });
     ReportService.GetWithdrawalDetails(
       status,
       moment(this.state.dateFrom).utc().format(),
-      moment(this.state.dateTo).utc().add(1, 'days').format(),
+      moment(this.state.dateTo).utc().add(1, "days").format(),
       page,
       this.state.pageSize,
       true,
-      'CreatedOn',
+      "CreatedOn",
       false,
-      '1'
+      "1"
     ).then((response) => {
       if (response.IsSuccess) {
         const dataList =
           page > 1
             ? this.state.dataList.concat(response.data.items)
-            : response.data.items
+            : response.data.items;
         this.setState({
           ...this.state,
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length
-        })
+          isMaxPage: response.data.totalCount == dataList.length,
+        });
       } else {
-        this.props.alert('', response.info)
+        this.props.alert("", response.info);
         this.setState({
           ...this.state,
 
-          loading: false
-        })
+          loading: false,
+        });
       }
-    })
-  }
+    });
+  };
   handleDepositGetReportTrigger = (page, status) => {
-    this.setState({ ...this.state, loading: true })
+    this.setState({ ...this.state, loading: true });
     ReportService.GetDepositDetails(
       status,
       moment(this.state.dateFrom).utc().format(),
-      moment(this.state.dateTo).utc().add(1, 'days').format(),
+      moment(this.state.dateTo).utc().add(1, "days").format(),
       page,
       this.state.pageSize,
       true,
-      'CreatedOn',
+      "CreatedOn",
       false,
-      '1'
+      "1"
     ).then((response) => {
       if (response.IsSuccess) {
         const dataList =
           page > 1
             ? this.state.dataList.concat(response.data.items)
-            : response.data.items
+            : response.data.items;
         this.setState({
           ...this.state,
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length
-        })
+          isMaxPage: response.data.totalCount == dataList.length,
+        });
       } else {
-        this.props.alert('', response.info)
+        this.props.alert("", response.info);
         this.setState({
           ...this.state,
 
-          loading: false
-        })
+          loading: false,
+        });
       }
-    })
-  }
+    });
+  };
   handleRebateGetReportTrigger = (page) => {
-    this.setState({ ...this.state, loading: true })
+    this.setState({ ...this.state, loading: true });
     ReportService.GetRebateDetails(
       moment(this.state.dateFrom).utc().format(),
-      moment(this.state.dateTo).utc().add(1, 'days').format(),
+      moment(this.state.dateTo).utc().add(1, "days").format(),
       page
     ).then((response) => {
       if (response.IsSuccess) {
         const dataList =
           page > 1
             ? this.state.dataList.concat(response.data.list)
-            : response.data.list
+            : response.data.list;
         this.setState({
           ...this.state,
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.count == dataList.length
-        })
+          isMaxPage: response.data.count == dataList.length,
+        });
       } else {
-        this.props.alert('', response.info)
+        this.props.alert("", response.info);
         this.setState({
           ...this.state,
 
-          loading: false
-        })
+          loading: false,
+        });
       }
-    })
-  }
+    });
+  };
 
   handleGetTransferReportTrigger = (page) => {
-    this.setState({ ...this.state, loading: true })
+    this.setState({ ...this.state, loading: true });
     ReportService.GetTransferReport(
       moment(this.state.dateFrom).utc().format(),
-      moment(this.state.dateTo).utc().add(1, 'days').format(),
+      moment(this.state.dateTo).utc().add(1, "days").format(),
       page,
       this.state.pageSize,
       1,
       true,
-      'BalanceTime',
+      "BalanceTime",
       false
     ).then((response) => {
       if (response.IsSuccess) {
         const dataList =
           page > 1
             ? this.state.dataList.concat(response.data.items)
-            : response.data.items
+            : response.data.items;
         this.setState({
           ...this.state,
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length
-        })
+          isMaxPage: response.data.totalCount == dataList.length,
+        });
       } else {
-        this.props.alert('', response.info)
+        this.props.alert("", response.info);
         this.setState({
           ...this.state,
 
-          loading: false
-        })
+          loading: false,
+        });
       }
-    })
-  }
+    });
+  };
 
   handleGetJoinedPromo = (page) => {
-    this.setState({ ...this.state, loading: true })
+    this.setState({ ...this.state, loading: true });
     GeneralService.GetJoinedPromoReport(
       moment(this.state.dateFrom).utc().format(),
-      moment(this.state.dateTo).utc().add(1, 'days').format(),
+      moment(this.state.dateTo).utc().add(1, "days").format(),
       page,
       this.state.pageSize,
       false,
-      '',
+      "",
       false
     ).then((response) => {
       if (response.IsSuccess) {
         const dataList =
           page > 1
             ? this.state.dataList.concat(response.data.items)
-            : response.data.items
+            : response.data.items;
         this.setState({
           ...this.state,
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length
-        })
+          isMaxPage: response.data.totalCount == dataList.length,
+        });
       } else {
-        this.props.alert('', response.info)
+        this.props.alert("", response.info);
         this.setState({
           ...this.state,
 
-          loading: false
-        })
+          loading: false,
+        });
       }
-    })
-  }
+    });
+  };
 
   handleTypeChange = (e) => {
-    this.setState({ ...this.state, type: e.target.value, page: 1 })
-  }
+    this.setState({ ...this.state, type: e.target.value, page: 1 });
+  };
   handleStatusChange = (e) => {
-    this.setState({ ...this.state, status: e.target.value, page: 1 })
-  }
+    this.setState({ ...this.state, status: e.target.value, page: 1 });
+  };
 
   handleScrollBottom = () => {
     if (this.state.isMaxPage === false) {
       this.setState({
         ...this.state,
         page: this.state.page + 1,
-        loading: true
-      })
+        loading: true,
+      });
     }
-  }
+  };
 
   handleManualDeposit = (id) => {
     this.props.appHistory.push({
+<<<<<<< HEAD
       pathname: '/' + i18n.language + '/manual/' + id
     })
   }
+=======
+      pathname: "/" + i18n.language + "/manual/" + id,
+    });
+  };
+>>>>>>> release/current
 
   render() {
     var checkTransferWallet =
       Object.values(this.props.game.providerList).filter(
         (item) => item.transferwallet === true
-      ).length > 0
+      ).length > 0;
     return (
       <Container>
         <StyledAppBar>
@@ -907,6 +942,7 @@ class Report extends Component {
             title={(() => {
               switch (this.state.selectedType) {
                 case 1:
+<<<<<<< HEAD
                   return i18n.t('report.transferDetails')
                 case 2:
                   return i18n.t('report.bettingDetails')
@@ -914,18 +950,35 @@ class Report extends Component {
                   return i18n.t('report.withdrawalDetails')
                 case 4:
                   return i18n.t('report.depositDetails')
+=======
+                  return i18n.t("report.transferDetails");
+                case 2:
+                  return i18n.t("report.bettingDetails");
+                case 3:
+                  return i18n.t("report.withdrawalDetails");
+                case 4:
+                  return i18n.t("report.depositDetails");
+>>>>>>> release/current
                 case 5:
-                  return
+                  return;
                 case 6:
+<<<<<<< HEAD
                   return i18n.t('report.transfer.title')
                 case 7:
                   return i18n.t('report.joinedPromo.title')
                 default:
                   return i18n.t('report.rebateDetails')
+=======
+                  return i18n.t("report.transfer.title");
+                case 7:
+                  return i18n.t("report.joinedPromo.title");
+                default:
+                  return i18n.t("report.rebateDetails");
+>>>>>>> release/current
               }
             })()}
-            position={'sticky'}
-            backgroundColor={'transparent'}
+            position={"sticky"}
+            backgroundColor={"transparent"}
           ></Header>
           <BalanceLabel>
             {this.props.wallet.mainSymbol}
@@ -948,21 +1001,33 @@ class Report extends Component {
             />
           */}
             <Tab
-              style={{ width: 'calc(750px/5)' }}
+              style={{ width: "calc(750px/5)" }}
               index={2}
+<<<<<<< HEAD
               label={i18n.t('report.bettingDetails')}
+=======
+              label={i18n.t("report.bettingDetails")}
+>>>>>>> release/current
               value={2}
             />
             <Tab
-              style={{ width: 'calc(750px/5)' }}
+              style={{ width: "calc(750px/5)" }}
               index={3}
+<<<<<<< HEAD
               label={i18n.t('report.withdrawalDetails')}
+=======
+              label={i18n.t("report.withdrawalDetails")}
+>>>>>>> release/current
               value={3}
             />
             <Tab
-              style={{ width: 'calc(750px/5)' }}
+              style={{ width: "calc(750px/5)" }}
               index={4}
+<<<<<<< HEAD
               label={i18n.t('report.depositDetails')}
+=======
+              label={i18n.t("report.depositDetails")}
+>>>>>>> release/current
               value={4}
             />
             {/*<Tab
@@ -970,25 +1035,34 @@ class Report extends Component {
               index={5}
               label={i18n.t("report.rebateDetails")}
               value={5}
-            /> */}{' '}
+            /> */}{" "}
             {checkTransferWallet && (
               <Tab
-                style={{ width: 'calc(750px/5)' }}
+                style={{ width: "calc(750px/5)" }}
                 index={6}
+<<<<<<< HEAD
                 label={i18n.t('common.transfer')}
+=======
+                label={i18n.t("common.transfer")}
+>>>>>>> release/current
                 value={6}
               />
-            )}{' '}
+            )}{" "}
             <Tab
-              style={{ width: 'calc(750px/5)' }}
+              style={{ width: "calc(750px/5)" }}
               index={7}
+<<<<<<< HEAD
               label={i18n.t('report.joinedPromo.title')}
+=======
+              label={i18n.t("report.joinedPromo.title")}
+>>>>>>> release/current
               value={7}
             />
           </Tabs>
         </StyledAppBar>
 
         <DateContainer>
+<<<<<<< HEAD
           <DateInner>
             <DateLabel>{i18n.t('report.startDate')}</DateLabel>
             <ThemeProvider theme={materialTheme}>
@@ -1030,25 +1104,83 @@ class Report extends Component {
             </ThemeProvider>
           </DateInner>
           <div className='clear'></div>
+=======
+          <FlatStraightLine>
+            <DateInner>
+              <DateLabel>{i18n.t("report.startDate")}</DateLabel>
+              <ThemeProvider theme={materialTheme}>
+                <MuiPickersUtilsProvider
+                  utils={DateFnsUtils}
+                  locale={localeMap["en"]}
+                >
+                  <DatePicker
+                    autoOk
+                    clearable
+                    disableFuture
+                    maxDate={new Date(this.state.dateTo)}
+                    format="yyyy/MM/dd"
+                    value={this.state.dateFrom}
+                    onChange={this.handleDateFromChange}
+                  />
+                </MuiPickersUtilsProvider>
+              </ThemeProvider>
+            </DateInner>
+            <DateSpliter>-</DateSpliter>
+            <DateInner>
+              <DateLabel>{i18n.t("report.endDate")}</DateLabel>
+              <ThemeProvider theme={materialTheme}>
+                <MuiPickersUtilsProvider
+                  utils={DateFnsUtils}
+                  locale={localeMap["en"]}
+                >
+                  <DatePicker
+                    autoOk
+                    clearable
+                    disableFuture
+                    minDate={new Date(this.state.dateFrom)}
+                    maxDate={new Date()}
+                    format="yyyy/MM/dd"
+                    value={this.state.dateTo}
+                    onChange={this.handleDateToChange}
+                  />
+                </MuiPickersUtilsProvider>
+              </ThemeProvider>
+            </DateInner>
+          </FlatStraightLine>
+
+          <div className="clear"></div>
+>>>>>>> release/current
           <DateRangContainer>
             <DateRangSelection
               selected={true}
               onClick={this.handleTodayClick}
               selected={this.state.dateRange === 0}
             >
+<<<<<<< HEAD
               {i18n.t('report.today')}
+=======
+              {i18n.t("report.today")}
+>>>>>>> release/current
             </DateRangSelection>
             <DateRangSelection
               selected={this.state.dateRange === 1}
               onClick={this.handleWeeklyClick}
             >
+<<<<<<< HEAD
               {i18n.t('report.oneWeek')}
+=======
+              {i18n.t("report.oneWeek")}
+>>>>>>> release/current
             </DateRangSelection>
             <DateRangSelection
               selected={this.state.dateRange === 2}
               onClick={this.handleMontlyClick}
             >
+<<<<<<< HEAD
               {i18n.t('report.oneMonth')}
+=======
+              {i18n.t("report.oneMonth")}
+>>>>>>> release/current
             </DateRangSelection>
           </DateRangContainer>
         </DateContainer>
@@ -1056,27 +1188,36 @@ class Report extends Component {
           if (this.state.selectedType === 1) {
             return (
               <SelectContainer>
+<<<<<<< HEAD
                 <SelectLabel>
                   {i18n.t('report.platform')}
                 </SelectLabel>
                 <CustomFormControl variant='outlined' style={{}}>
+=======
+                <SelectLabel>{i18n.t("report.platform")}</SelectLabel>
+                <CustomFormControl variant="outlined" style={{}}>
+>>>>>>> release/current
                   <CustomSelect
                     native
                     value={this.state.type}
                     onChange={this.handleTypeChange}
                     inputProps={{
-                      name: 'age',
-                      id: 'age-native-simple'
+                      name: "age",
+                      id: "age-native-simple",
                     }}
                     style={{
-                      fontSize: '28px',
-                      height: '78px',
-                      border: 'none'
+                      fontSize: "28px",
+                      height: "78px",
+                      border: "none",
                     }}
                   >
+<<<<<<< HEAD
                     <option value={0}>
                       {i18n.t('report.all')}
                     </option>
+=======
+                    <option value={0}>{i18n.t("report.all")}</option>
+>>>>>>> release/current
 
                     {(() => {
                       return this.state.gameList.map((row) => {
@@ -1084,72 +1225,90 @@ class Report extends Component {
                           <option value={row.id} key={row.id}>
                             {row.name}
                           </option>
-                        )
-                      })
+                        );
+                      });
                     })()}
                   </CustomSelect>
                 </CustomFormControl>
               </SelectContainer>
-            )
+            );
           } else if (this.state.selectedType === 3) {
             return (
               <SelectContainer>
+<<<<<<< HEAD
                 <SelectLabel>{i18n.t('report.status')}</SelectLabel>
                 <CustomFormControl variant='outlined' style={{}}>
+=======
+                <SelectLabel>{i18n.t("report.status")}</SelectLabel>
+                <CustomFormControl variant="outlined" style={{}}>
+>>>>>>> release/current
                   <CustomSelect
                     native
                     style={{
-                      fontSize: '28px',
-                      height: '78px',
-                      border: 'none'
+                      fontSize: "28px",
+                      height: "78px",
+                      border: "none",
                     }}
                     onChange={this.handleStatusChange}
                     value={this.state.status}
                   >
+<<<<<<< HEAD
                     <option value={''}>
                       {i18n.t('report.all')}
                     </option>
+=======
+                    <option value={""}>{i18n.t("report.all")}</option>
+>>>>>>> release/current
 
                     {Object.keys(this.state.withdrawalStatusList).map((key) => {
                       return (
                         <option value={key}>
                           {i18n.t(`report.withdrawal.status${key}`)}
                         </option>
-                      )
+                      );
                     })}
                   </CustomSelect>
                 </CustomFormControl>
               </SelectContainer>
-            )
+            );
           } else if (this.state.selectedType === 4) {
             return (
               <SelectContainer>
+<<<<<<< HEAD
                 <SelectLabel>{i18n.t('report.status')}</SelectLabel>
                 <CustomFormControl variant='outlined' style={{}}>
+=======
+                <SelectLabel>{i18n.t("report.status")}</SelectLabel>
+                <CustomFormControl variant="outlined" style={{}}>
+>>>>>>> release/current
                   <CustomSelect
                     native
                     style={{
-                      fontSize: '28px',
-                      height: '78px',
-                      border: 'none'
+                      fontSize: "28px",
+                      height: "78px",
+                      border: "none",
                     }}
                     onChange={this.handleStatusChange}
                     value={this.state.status}
                   >
+<<<<<<< HEAD
                     <option value={''}>
                       {i18n.t('report.all')}
                     </option>
+=======
+                    <option value={""}>{i18n.t("report.all")}</option>
+>>>>>>> release/current
                     {Object.keys(this.state.depositStatusList).map((key) => {
                       return (
                         <option value={key}>
                           {i18n.t(`report.deposit.status${key}`)}
                         </option>
-                      )
+                      );
                     })}
                   </CustomSelect>
                 </CustomFormControl>
               </SelectContainer>
-            )
+            );
           }
         })()}
 
@@ -1159,6 +1318,7 @@ class Report extends Component {
               <React.Fragment>
                 <DataHeader>
                   <DataHeaderRow>
+<<<<<<< HEAD
                     <DataDateCell>
                       {i18n.t('report.submitDate')}
                     </DataDateCell>
@@ -1174,11 +1334,22 @@ class Report extends Component {
                     <DataWinlossCell>
                       {i18n.t('common.amount')}
                     </DataWinlossCell>
+=======
+                    <DataDateCell>{i18n.t("report.submitDate")}</DataDateCell>
+                    <DataWinlossCell>{i18n.t("report.status")}</DataWinlossCell>
+                    <DataWinlossCell>
+                      {i18n.t("report.transferOut")}
+                      <br />
+                      {i18n.t("report.transferIn")}
+                    </DataWinlossCell>
+
+                    <DataWinlossCell>{i18n.t("common.amount")}</DataWinlossCell>
+>>>>>>> release/current
                   </DataHeaderRow>
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>
+                    return <NoRecordContainer></NoRecordContainer>;
                   } else {
                     return (
                       <DataContent>
@@ -1187,7 +1358,7 @@ class Report extends Component {
                             <DataRow key={index}>
                               <DataDateCell>
                                 {moment(row.create_time_text).format(
-                                  'YYYY-MM-DD hh:mm a'
+                                  "YYYY-MM-DD hh:mm a"
                                 )}
                               </DataDateCell>
                               <DataDateCell>{row.status_text}</DataDateCell>
@@ -1199,14 +1370,14 @@ class Report extends Component {
 
                               <DataDateCell>{row.amount_text}</DataDateCell>
                             </DataRow>
-                          )
+                          );
                         })}
                       </DataContent>
-                    )
+                    );
                   }
                 })()}
               </React.Fragment>
-            )
+            );
           } else if (this.state.selectedType === 2) {
             return (
               <React.Fragment>
@@ -1229,54 +1400,74 @@ class Report extends Component {
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>
+                    return <NoRecordContainer></NoRecordContainer>;
                   } else {
                     return (
                       <DataContent>
                         {this.state.dataList.map((row, index) => {
                           const date = moment(row.createdOn).format(
-                            'YYYY-MM-DD hh:mm a'
-                          )
+                            "YYYY-MM-DD hh:mm a"
+                          );
                           return (
                             <React.Fragment key={index}>
                               <DataRowId>
+<<<<<<< HEAD
                                 {i18n.t('report.betid')} :{' '}
+=======
+                                {i18n.t("report.betid")} :{" "}
+>>>>>>> release/current
                                 <IDCell>{row.id}</IDCell>
                               </DataRowId>
                               <DataRowId>
-                                <IDCell>
-                                  {row.gameProviderName} - {row.gameName}
-                                </IDCell>
+                                <CustomDataRow>
+                                  <IDCell>
+                                    {row.gameProviderName} - {row.gameName}
+                                  </IDCell>
+                                  <IDCell> {date}</IDCell>
+                                </CustomDataRow>
                               </DataRowId>
                               <DataRowId>
-                                <IDCell>
+                                <AnotherCustomDataRow>
                                   <IDCell>
+<<<<<<< HEAD
                                     {i18n.t('report.betAmount')} :
+=======
+                                    {i18n.t("report.betAmount")} :
+>>>>>>> release/current
                                     {row.betAmount}
-                                  </IDCell>{' '}
+                                  </IDCell>{" "}
                                   <IDCell>
+                                    {i18n.t("report.validBet")} :
+                                    {row.validBetAmount}
+                                  </IDCell>{" "}
+                                  <IDCell>
+<<<<<<< HEAD
                                     {i18n.t('report.winloss')} :
                                     {row.winLoss}
+=======
+                                    {i18n.t("report.winloss")} :
+                                    <CustomWinLose value={row.winLoss}>
+                                      {row.winLoss}
+                                    </CustomWinLose>
+>>>>>>> release/current
                                   </IDCell>
-                                </IDCell>
+                                </AnotherCustomDataRow>
                               </DataRowId>
-                              <DataRow>
-                                <IDCell> {date}</IDCell>
-                              </DataRow>
                             </React.Fragment>
-                          )
+                          );
                         })}
                       </DataContent>
-                    )
+                    );
                   }
                 })()}
               </React.Fragment>
-            )
+            );
           } else if (this.state.selectedType === 3) {
             return (
               <React.Fragment>
                 <DataHeader>
                   <DataHeaderRow>
+<<<<<<< HEAD
                     <DataDateCell3>
                       {i18n.t('report.dateTime')}
                     </DataDateCell3>
@@ -1286,27 +1477,42 @@ class Report extends Component {
                     </DataDateCell3>
                     <DataDateCellAmount>
                       {i18n.t('common.amount')}
+=======
+                    <DataDateCell3>{i18n.t("report.dateTime")}</DataDateCell3>
+
+                    <DataDateCell3>{i18n.t("report.status")}</DataDateCell3>
+                    <DataDateCellAmount>
+                      {i18n.t("common.amount")}
+>>>>>>> release/current
                     </DataDateCellAmount>
                   </DataHeaderRow>
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>
+                    return <NoRecordContainer></NoRecordContainer>;
                   } else {
                     return (
                       <DataContent>
                         {this.state.dataList.map((row, index) => {
                           const date = moment(row.createdon).format(
-                            'YYYY-MM-DD hh:mm a'
-                          )
+                            "YYYY-MM-DD hh:mm a"
+                          );
                           return (
                             <React.Fragment key={index}>
                               <DataRowId>
+<<<<<<< HEAD
                                 {i18n.t('report.OrderNumber')} :{' '}
                                 <IDCell>{row.id}</IDCell>
                               </DataRowId>
                               <DataRowId>
                                 {i18n.t('report.NewOrderNumber')} :{' '}
+=======
+                                {i18n.t("report.OrderNumber")} :{" "}
+                                <IDCell>{row.id}</IDCell>
+                              </DataRowId>
+                              <DataRowId>
+                                {i18n.t("report.NewOrderNumber")} :{" "}
+>>>>>>> release/current
                                 <IDCell>{row.orderno}</IDCell>
                               </DataRowId>
                               <DataRow>
@@ -1321,19 +1527,20 @@ class Report extends Component {
                                 </DataDateCellAmount>
                               </DataRow>
                             </React.Fragment>
-                          )
+                          );
                         })}
                       </DataContent>
-                    )
+                    );
                   }
                 })()}
               </React.Fragment>
-            )
+            );
           } else if (this.state.selectedType === 4) {
             return (
               <React.Fragment>
                 <DataHeader>
                   <DataHeaderRow>
+<<<<<<< HEAD
                     <DataDateCell3>
                       {i18n.t('report.dateTime')}
                     </DataDateCell3>
@@ -1343,35 +1550,54 @@ class Report extends Component {
                     </DataDateCell3>
                     <DataDateCellAmount>
                       {i18n.t('common.amount')}
+=======
+                    <DataDateCell3>{i18n.t("report.dateTime")}</DataDateCell3>
+
+                    <DataDateCell3>{i18n.t("report.status")}</DataDateCell3>
+                    <DataDateCellAmount>
+                      {i18n.t("common.amount")}
+>>>>>>> release/current
                     </DataDateCellAmount>
                   </DataHeaderRow>
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>
+                    return <NoRecordContainer></NoRecordContainer>;
                   } else {
                     return (
                       <DataContent>
                         {this.state.dataList.map((row, index) => {
                           const date = moment(row.createdon).format(
-                            'YYYY-MM-DD hh:mm a'
-                          )
+                            "YYYY-MM-DD hh:mm a"
+                          );
                           return (
                             <React.Fragment key={index}>
                               <DataRowId>
+<<<<<<< HEAD
                                 {i18n.t('report.OrderNumber')} :{' '}
                                 <IDCell>{row.id}</IDCell>
                               </DataRowId>
                               <DataRowId>
                                 {i18n.t('report.NewOrderNumber')} :{' '}
+=======
+                                {i18n.t("report.OrderNumber")} :{" "}
+                                <IDCell>{row.id}</IDCell>
+                              </DataRowId>
+                              <DataRowId>
+                                {i18n.t("report.NewOrderNumber")} :{" "}
+>>>>>>> release/current
                                 <IDCell>{row.orderno}</IDCell>
                               </DataRowId>
                               <DataRow>
                                 <DataDateCell3>{date}</DataDateCell3>
                                 <DataDateCell3>
+<<<<<<< HEAD
                                   {i18n.t(
                                     `report.deposit.status${row.status}`
                                   )}
+=======
+                                  {i18n.t(`report.deposit.status${row.status}`)}
+>>>>>>> release/current
                                 </DataDateCell3>
                                 <DataDateCellAmount>
                                   {row.amount}
@@ -1381,31 +1607,37 @@ class Report extends Component {
                                     row.canuploadcerts === true && (
                                       <TheDepositButton
                                         onClick={() => {
-                                          this.handleManualDeposit(row.id)
+                                          this.handleManualDeposit(row.id);
                                         }}
                                       >
+<<<<<<< HEAD
                                         {i18n.t(
                                           'deposit.uploadReceipt'
                                         )}
+=======
+                                        {i18n.t("deposit.uploadReceipt")}
+>>>>>>> release/current
                                       </TheDepositButton>
                                     )}
                                 </DataDateCellAmount>
                               </DataRow>
                             </React.Fragment>
-                          )
+                          );
                         })}
                       </DataContent>
-                    )
+                    );
                   }
                 })()}
               </React.Fragment>
-            )
+            );
           } else if (this.state.selectedType === 5) {
             return (
               <React.Fragment>
                 <DataHeader>
                   <DataHeaderRow>
+                    <DataDateCell>{i18n.t("report.rebate.sn")}</DataDateCell>
                     <DataDateCell>
+<<<<<<< HEAD
                       {i18n.t('report.rebate.sn')}
                     </DataDateCell>
                     <DataDateCell>
@@ -1418,12 +1650,21 @@ class Report extends Component {
                       {i18n.t('report.rebate.validBet')}
                       <br />
                       {i18n.t('report.rebate.amount')}
+=======
+                      {i18n.t("report.rebate.cycleDate")}
+                    </DataDateCell>
+                    <DataDateCell>{i18n.t("report.status")}</DataDateCell>
+                    <DataDateCell style={{ "text-align": "right" }}>
+                      {i18n.t("report.rebate.validBet")}
+                      <br />
+                      {i18n.t("report.rebate.amount")}
+>>>>>>> release/current
                     </DataDateCell>
                   </DataHeaderRow>
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>
+                    return <NoRecordContainer></NoRecordContainer>;
                   } else {
                     return (
                       <DataContent>
@@ -1433,26 +1674,26 @@ class Report extends Component {
                               <DataDateCell>{row.sn}</DataDateCell>
                               <DataDateCell>{row.date}</DataDateCell>
                               <DataDateCell>{row.status_text}</DataDateCell>
-                              <DataDateCell style={{ 'text-align': 'right' }}>
+                              <DataDateCell style={{ "text-align": "right" }}>
                                 {row.bet_valid_text}
                                 <br />
                                 {row.rebate_amount_text}
                               </DataDateCell>
                             </DataRow>
-                          )
+                          );
                         })}
                       </DataContent>
-                    )
+                    );
                   }
                 })()}
               </React.Fragment>
-            )
+            );
           } else if (this.state.selectedType === 6) {
             return (
               <React.Fragment>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>
+                    return <NoRecordContainer></NoRecordContainer>;
                   } else {
                     return (
                       <DataContent>
@@ -1460,6 +1701,7 @@ class Report extends Component {
                           return (
                             <div key={index}>
                               <DataRowId>
+<<<<<<< HEAD
                                 {i18n.t(
                                   'report.transfer.table.from'
                                 )}{' '}
@@ -1471,43 +1713,59 @@ class Report extends Component {
                               </DataRowId>
                               <DataRowId>
                                 {i18n.t('report.amount')} :{' '}
+=======
+                                {i18n.t("report.transfer.table.from")} :{" "}
+                                <IDCell>{row.from}</IDCell>
+                              </DataRowId>
+                              <DataRowId>
+                                {i18n.t("report.transfer.table.to")} :{" "}
+                                <IDCell>{row.to}</IDCell>
+                              </DataRowId>
+                              <DataRowId>
+                                {i18n.t("report.amount")} :{" "}
+>>>>>>> release/current
                                 <IDCell>{row.amount}</IDCell>
                               </DataRowId>
                               <DataRow>
                                 <DateTimeDisplay>
                                   {moment(row.balancetime).format(
-                                    'YYYY-MM-DD hh:mm a'
+                                    "YYYY-MM-DD hh:mm a"
                                   )}
                                 </DateTimeDisplay>
                               </DataRow>
                             </div>
-                          )
+                          );
                         })}
                       </DataContent>
-                    )
+                    );
                   }
                 })()}
               </React.Fragment>
-            )
+            );
           } else if (this.state.selectedType === 7) {
             return (
               <React.Fragment>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
+<<<<<<< HEAD
                     return (
                       <NoRecordContainer language={i18n.language} />
                     )
+=======
+                    return <NoRecordContainer language={i18n.language} />;
+>>>>>>> release/current
                   } else {
                     return (
                       <DataContent>
                         {this.state.dataList.map((row, index) => {
                           const date = moment(row.joinedOn).format(
-                            'YYYY-MM-DD hh:mm a'
-                          )
+                            "YYYY-MM-DD hh:mm a"
+                          );
                           return (
                             <div key={index}>
                               <DataRow>
                                 <DataRowId>
+<<<<<<< HEAD
                                   {i18n.t(
                                     'report.joinedPromo.promoName'
                                   )}
@@ -1515,36 +1773,43 @@ class Report extends Component {
                                 </DataRowId>
                                 <DataRowId>
                                   {i18n.t('report.dateTime')} :{' '}
+=======
+                                  {i18n.t("report.joinedPromo.promoName")}:{" "}
+                                  <IDCell>{row.promotionName}</IDCell>
+                                </DataRowId>
+                                <DataRowId>
+                                  {i18n.t("report.dateTime")} :{" "}
+>>>>>>> release/current
                                   <IDCell>{date}</IDCell>
                                 </DataRowId>
                               </DataRow>
                             </div>
-                          )
+                          );
                         })}
                       </DataContent>
-                    )
+                    );
                   }
                 })()}
               </React.Fragment>
-            )
+            );
           }
         })()}
         <BottomScrollListener onBottom={this.handleScrollBottom} />
         <Loading show={this.state.loading}></Loading>
       </Container>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
   return {
     wallet: state.wallet,
-    game: state.game
-  }
-}
+    game: state.game,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    accountLogout: (token) => dispatch(accountAction.accountLogout(token))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Report))
+    accountLogout: (token) => dispatch(accountAction.accountLogout(token)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Report));

@@ -1,32 +1,32 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
 import {
   GameService,
   GameTypeEnum,
   SlotFilterType,
-  gameAction
-} from '@Inwoker/tgs-api'
-import { withRouter } from 'react-router-dom'
+  gameAction,
+} from "@Inwoker/tgs-api";
+import { withRouter } from "react-router-dom";
 
-import AppBar from '@material-ui/core/AppBar'
-import Tabs from '@material-ui/core/Tabs'
-import Modal from '@material-ui/core/Dialog'
-import Tab from '@material-ui/core/Tab'
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Modal from "@material-ui/core/Dialog";
+import Tab from "@material-ui/core/Tab";
 
-import Header from '../Share/Header'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import { withStyles } from '@material-ui/core/styles'
+import Header from "../Share/Header";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { withStyles } from "@material-ui/core/styles";
 
-import SearchIcon from '@material-ui/icons/Search'
-import Loading from '../../Wap/Share/Loading'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
-import 'react-lazy-load-image-component/src/effects/blur.css'
-import BottomScrollListener from 'react-bottom-scroll-listener'
-import i18n from '../../../utils/i18n'
-import Common from '../../../utils/Common'
-import config from '../../../config/config'
+import SearchIcon from "@material-ui/icons/Search";
+import Loading from "../../Wap/Share/Loading";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import BottomScrollListener from "react-bottom-scroll-listener";
+import i18n from "../../../utils/i18n";
+import Common from "../../../utils/Common";
+import config from "../../../config/config";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -34,11 +34,11 @@ const Container = styled.div`
   height: 100%;
 
   background-size: contain;
-`
+`;
 
 const ListView = styled.div`
   padding-top: 160px;
-`
+`;
 const ListItem = styled.div`
   position: relative;
   float: left;
@@ -49,7 +49,7 @@ const ListItem = styled.div`
   height: 415px;
   border-radius: 10px;
   background-color: ${({ theme }) => theme.secondary};
-`
+`;
 const ListitemLabelBackground = styled.div`
   width: 345px;
   height: 76px;
@@ -61,12 +61,12 @@ const ListitemLabelBackground = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
-`
+`;
 const LeftContainer = styled.div`
   position: absolute;
   top: 310px;
   left: 20px;
-`
+`;
 const GameProvider = styled.div`
   height: 40px;
   border-radius: 20px;
@@ -76,7 +76,7 @@ const GameProvider = styled.div`
   font-size: 28px;
   display: inline-block;
   padding: 0 20px;
-`
+`;
 const GameName = styled.div`
   color: #ffffff;
   font-size: 28px;
@@ -86,7 +86,7 @@ const GameName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   letter-spacing: 1px;
-`
+`;
 const Bookmark = styled.div`
   position: absolute;
   top: 215px;
@@ -102,32 +102,32 @@ const Bookmark = styled.div`
       : ` background-image: url(${
           process.env.PUBLIC_URL + `/assets/images/wapp/bookmark.png`
         });`}
-`
+`;
 const StyledAppBar = withStyles((theme) => ({
   root: {
-    top: '90px',
-    height: '135px',
+    top: "90px",
+    height: "135px",
     backgroundColor: theme.palette.tertiary.main,
-    boxShadow: 'none'
-  }
-}))(AppBar)
+    boxShadow: "none",
+  },
+}))(AppBar);
 
 const GameItemSelection = styled.div`
   width: 100%;
   height: 60px;
   margin: 12px 0;
   overflow-x: auto;
-`
+`;
 const GameItemUL = styled.ul`
   display: flex;
   list-style: none;
   margin: 0;
   padding: 0;
-`
+`;
 const GameItemLI = styled.li`
   display: inline;
   padding: 0 10px;
-`
+`;
 const GameItem = styled.div`
   padding: 6px 20px 0 20px;
   font-size: 25px;
@@ -148,32 +148,32 @@ const GameItem = styled.div`
   height: 46px;
 
   border-radius: 22.8px;
-`
+`;
 const StyleSearchIcon = styled(SearchIcon)`
   font-size: 60px;
   margin: 14px 20px 0 0;
   color: #fff;
-`
+`;
 const StyledModal = withStyles((theme) => ({
   root: {},
   paper: {
-    fontSize: '28px',
-    color: '#666666',
-    padding: '30px 0 30px 20px',
-    maxWidth: '750px',
-    width: '750px',
-    backgroundColor: '#404040',
+    fontSize: "28px",
+    color: "#666666",
+    padding: "30px 0 30px 20px",
+    maxWidth: "750px",
+    width: "750px",
+    backgroundColor: "#404040",
     margin: 0,
     // padding: 0,
-    position: 'absolute',
-    top: 0
-  }
-}))(Modal)
-const SearchContainer = styled.div``
+    position: "absolute",
+    top: 0,
+  },
+}))(Modal);
+const SearchContainer = styled.div``;
 const SearchKeywordWrap = styled.div`
   width: 750px;
   height: 90px;
-`
+`;
 
 const SearchInputBG = styled.div`
   width: 600px;
@@ -182,7 +182,7 @@ const SearchInputBG = styled.div`
   background-color: #ffffff;
   float: left;
   margin: 15px 5px 0 5px;
-`
+`;
 const SearchCancelButton = styled.div`
   font-size: 30px;
   float: right;
@@ -190,7 +190,7 @@ const SearchCancelButton = styled.div`
   margin: 30px 0 0 0;
   width: 140px;
   text-align: center;
-`
+`;
 const SearchInput = styled.input`
   color: ${({ theme }) => theme.secondary};
   float: left;
@@ -204,26 +204,26 @@ const SearchInput = styled.input`
     letter-spacing: 1px;
   }
   border: none;
-`
+`;
 const SearchInputButton = styled(SearchIcon)`
   color: #192031;
   float: right;
   font-size: 60px !important;
   margin: 5px 15px 0 0;
-`
+`;
 
 const FavButtonButton = styled.div`
   width: 20px;
   height: 20px;
 
   background: ${({ active }) => {
-    return !active ? 'white' : 'red'
+    return !active ? "white" : "red";
   }};
   -webkit-mask: url(${process.env
       .PUBLIC_URL}/assets/images/slotGame/icon-fav.png)
     no-repeat center / contain;
   background-size: 100%;
-`
+`;
 
 const FavButton = styled.div`
   width: 50px;
@@ -237,15 +237,16 @@ const FavButton = styled.div`
   :hover {
     cursor: pointer;
   }
-`
+`;
 
 class Slot extends Component {
   constructor(props) {
-    super(props)
-    var title = ''
+    super(props);
+    var title = "";
 
     switch (parseInt(this.props.match.params.type)) {
       case GameTypeEnum.TABLEGAME:
+<<<<<<< HEAD
         title = i18n.t('common.electron')
         break
       case GameTypeEnum.FISH:
@@ -257,14 +258,27 @@ class Slot extends Component {
       default:
         title = i18n.t('common.slot')
         break
+=======
+        title = i18n.t("common.electron");
+        break;
+      case GameTypeEnum.FISH:
+        title = i18n.t("common.fish");
+        break;
+      case GameTypeEnum.TIGERSLOT:
+        title = i18n.t("common.slot");
+        break;
+      default:
+        title = i18n.t("common.slot");
+        break;
+>>>>>>> release/current
     }
     this.state = {
       type: parseInt(this.props.match.params.type),
       platform: this.props.match.params.platform
         ? this.props.match.params.platform
-        : '',
+        : "",
       title: title,
-      keyword: '',
+      keyword: "",
       category: 0,
       gameList: [],
       page: 1,
@@ -273,31 +287,31 @@ class Slot extends Component {
       showSearch: false,
       showSuggest: true,
       loading: false,
-      favGame: []
-    }
+      favGame: [],
+    };
   }
-  language = null
+  language = null;
   componentDidMount() {
-    this.getGameList()
-    this.getFav()
+    this.getGameList();
+    this.getFav();
   }
 
   getFav(type = this.state.type) {
-    var result = GameService.GetFavoriteGame(type)
+    var result = GameService.GetFavoriteGame(type);
     result.then((response) => {
       if (response.IsSuccess) {
-        var data = response.data
+        var data = response.data;
         this.setState({
           ...this.state,
-          favGame: data
-        })
+          favGame: data,
+        });
       }
-    })
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.platform !== this.state.platform) {
-      this.getGameList()
+      this.getGameList();
       // if (prevProps.match.params.type !== this.props.match.params.type) {
       //   this.setState({
       //     ...this.state,
@@ -309,32 +323,32 @@ class Slot extends Component {
     }
   }
   getGameList(platform = this.state.platform, page = this.state.page) {
-    this.setState({ ...this.state, loading: true })
-    let result = null
+    this.setState({ ...this.state, loading: true });
+    let result = null;
 
-    result = GameService.GetGameList(platform, this.state.type)
+    result = GameService.GetGameList(platform, this.state.type);
     result.then((response) => {
-      this.setState({ ...this.state, loading: false })
+      this.setState({ ...this.state, loading: false });
       if (response.IsSuccess) {
-        var data = response.data
+        var data = response.data;
         if (page === 1) {
           this.setState({
             ...this.state,
-            gameList: data
-          })
+            gameList: data,
+          });
         } else {
           this.setState({
             ...this.state,
-            gameList: this.state.gameList.concat(data)
-          })
+            gameList: this.state.gameList.concat(data),
+          });
         }
       } else {
         this.setState({
           ...this.state,
-          gameList: []
-        })
+          gameList: [],
+        });
       }
-    })
+    });
   }
   // handleScrollBottom = () => {
   //   if (this.state.gameList.length < this.state.total) {
@@ -342,45 +356,45 @@ class Slot extends Component {
   //   }
   // };
   handleBackClick = () => {
-    this.props.appHistory.goBack()
-  }
+    this.props.appHistory.goBack();
+  };
   // handleParentChange = (parentId) => {
   //   this.setState({ ...this.state, parentId: parentId });
   //   window.scrollTo({ top: 0, behavior: "smooth" });
   // };
   handlePlatformChange = (platform) => {
-    this.setState({ ...this.state, platform: platform })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+    this.setState({ ...this.state, platform: platform });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   handleChangeKeyword = (e) => {
     this.setState({
       ...this.state,
-      keyword: e.target.value
+      keyword: e.target.value,
       // showSuggest: e.target.value.length <= 0,
-    })
-  }
+    });
+  };
 
   handleSearchClick = (e) => {
     this.setState({
       ...this.state,
-      showSearch: true
+      showSearch: true,
       // showSuggest: this.state.keyword.length <= 0,
       // filterGame: 0,
       // parentId: 0,
-    })
-  }
+    });
+  };
   handleCloseSearch = (e) => {
-    this.setState({ ...this.state, showSearch: false })
-  }
+    this.setState({ ...this.state, showSearch: false });
+  };
   handleResetSearch = (e) => {
     this.setState({
       ...this.state,
       showSearch: false,
       showSuggest: true,
-      keyword: ''
-    })
-  }
+      keyword: "",
+    });
+  };
   // handleCategoryChange = (e) => {
   //   this.setState({ ...this.state, category: e.target.value });
   // };
@@ -388,14 +402,20 @@ class Slot extends Component {
     if (this.props.token) {
       window.open(
         `/${i18n.language}/joingame/${this.props.match.params.type}/${gpcode}/${gpid}`
+<<<<<<< HEAD
       )
     } else {
       this.props.history.push(`/${i18n.language}/}`)
+=======
+      );
+    } else {
+      this.props.history.push(`/${i18n.language}/}`);
+>>>>>>> release/current
     }
-  }
+  };
   handleChangeTab = (event, newValue) => {
-    this.setState({ ...this.state, filterGame: newValue, page: 1 })
-  }
+    this.setState({ ...this.state, filterGame: newValue, page: 1 });
+  };
   // handleBookmarkClick = (id, collect_id) => {
   //   if (this.props.token) {
   //     if (collect_id > 0) {
@@ -444,26 +464,26 @@ class Slot extends Component {
   handleToggleFavorite = (match, id, match2) => {
     if (match) {
       this.props.removeFavoriteGame(id).then(() => {
-        var array = [...this.state.favGame]
-        var index = array.indexOf(id)
+        var array = [...this.state.favGame];
+        var index = array.indexOf(id);
         if (index !== -1) {
-          array.splice(index, 1)
-          this.setState({ ...this.state, favGame: array })
+          array.splice(index, 1);
+          this.setState({ ...this.state, favGame: array });
         }
-      })
+      });
     } else {
       this.props.setFavoriteGame(id).then(() => {
         this.setState({
           ...this.state,
-          favGame: [...this.state.favGame, id]
-        })
-      })
+          favGame: [...this.state.favGame, id],
+        });
+      });
     }
-  }
+  };
 
   render() {
     if (!this.props.game.homePageGameList) {
-      return <React.Fragment></React.Fragment>
+      return <React.Fragment></React.Fragment>;
     } else
       return (
         <Container>
@@ -474,7 +494,7 @@ class Slot extends Component {
             title={this.state.title}
             rightContent={
               <StyleSearchIcon
-                style={{ fontSize: '60px' }}
+                style={{ fontSize: "60px" }}
                 onClick={this.handleSearchClick}
               />
             }
@@ -483,10 +503,14 @@ class Slot extends Component {
             <Tabs
               value={this.state.filterGame}
               onChange={this.handleChangeTab}
-              variant='scrollable'
-              scrollButtons='auto'
+              variant="scrollable"
+              scrollButtons="auto"
             >
+              <Tab label={i18n.t("slot.allGame")} value={SlotFilterType.All} />
+              <Tab label={i18n.t("slot.hotGame")} value={SlotFilterType.Hot} />
+              <Tab label={i18n.t("slot.newGame")} value={SlotFilterType.New} />
               <Tab
+<<<<<<< HEAD
                 label={i18n.t('slot.allGame')}
                 value={SlotFilterType.All}
               />
@@ -506,15 +530,25 @@ class Slot extends Component {
                 label={i18n.t('slot.bookmarkGame')}
                 value={'fav'}
               />
+=======
+                label={i18n.t("slot.recommendGame")}
+                value={SlotFilterType.Recommend}
+              />
+              <Tab label={i18n.t("slot.bookmarkGame")} value={"fav"} />
+>>>>>>> release/current
             </Tabs>
             <GameItemSelection>
               <GameItemUL>
                 <GameItemLI>
                   <GameItem
-                    selected={this.state.platform === ''}
-                    onClick={() => this.handlePlatformChange('')}
+                    selected={this.state.platform === ""}
+                    onClick={() => this.handlePlatformChange("")}
                   >
+<<<<<<< HEAD
                     {i18n.t('slot.all')}
+=======
+                    {i18n.t("slot.all")}
+>>>>>>> release/current
                   </GameItem>
                 </GameItemLI>
 
@@ -534,8 +568,8 @@ class Slot extends Component {
                             {item.name}
                           </GameItem>
                         </GameItemLI>
-                      )
-                    })
+                      );
+                    });
                 })()}
               </GameItemUL>
             </GameItemSelection>
@@ -544,48 +578,48 @@ class Slot extends Component {
           <ListView>
             {this.state.gameList
               .filter((a) => {
-                if (this.state.filterGame === SlotFilterType.All) return true
+                if (this.state.filterGame === SlotFilterType.All) return true;
                 else {
                   if (this.state.filterGame === SlotFilterType.Hot) {
-                    return a.tag.hot === true
+                    return a.tag.hot === true;
                   } else if (this.state.filterGame === SlotFilterType.New) {
-                    return a.tag.new === true
+                    return a.tag.new === true;
                   } else if (
                     this.state.filterGame === SlotFilterType.Recommend
                   ) {
-                    return a.tag.recommend === true
-                  } else if (this.state.filterGame === 'fav') {
-                    return this.state.favGame.indexOf(a.id) > -1
+                    return a.tag.recommend === true;
+                  } else if (this.state.filterGame === "fav") {
+                    return this.state.favGame.indexOf(a.id) > -1;
                   }
                 }
 
-                return false
+                return false;
               })
               .filter((a) => {
-                if (this.state.keyword === '') return true
+                if (this.state.keyword === "") return true;
                 else
                   return a.name
                     .toUpperCase()
-                    .includes(this.state.keyword.toUpperCase())
+                    .includes(this.state.keyword.toUpperCase());
               })
               .map((row) => {
-                const match = this.state.favGame.indexOf(row.id) > -1
-                const index = this.state.favGame.indexOf(row.id)
+                const match = this.state.favGame.indexOf(row.id) > -1;
+                const index = this.state.favGame.indexOf(row.id);
 
                 return (
                   <ListItem key={row.id}>
                     <LazyLoadImage
                       width={344}
                       height={344}
-                      alt={''}
-                      effect='blur'
+                      alt={""}
+                      effect="blur"
                       src={`${
                         config.sourceUrl
                       }${row.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
                         row.code
                       }.jpg`}
                       style={{
-                        borderRadius: '20px 20px 0 0'
+                        borderRadius: "20px 20px 0 0",
                       }}
                       onClick={() => this.handleGameClick(row.gpcode, row.id)}
                     />
@@ -603,7 +637,7 @@ class Slot extends Component {
                     ></Bookmark> */}
                     <FavButton
                       onClick={() => {
-                        this.handleToggleFavorite(match, row.id, index)
+                        this.handleToggleFavorite(match, row.id, index);
                       }}
                     >
                       <FavButtonButton
@@ -611,7 +645,7 @@ class Slot extends Component {
                       ></FavButtonButton>
                     </FavButton>
                   </ListItem>
-                )
+                );
               })}
             {/* <BottomScrollListener onBottom={this.handleScrollBottom} /> */}
           </ListView>
@@ -623,8 +657,13 @@ class Slot extends Component {
               <SearchKeywordWrap>
                 <SearchInputBG>
                   <SearchInput
+<<<<<<< HEAD
                     placeholder={i18n.t('slot.search')}
                     type={'text'}
+=======
+                    placeholder={i18n.t("slot.search")}
+                    type={"text"}
+>>>>>>> release/current
                     onChange={this.handleChangeKeyword}
                     value={this.state.keyword}
                   ></SearchInput>
@@ -633,14 +672,18 @@ class Slot extends Component {
                   ></SearchInputButton>
                 </SearchInputBG>
                 <SearchCancelButton onClick={this.handleResetSearch}>
+<<<<<<< HEAD
                   {i18n.t('common.cancel')}
+=======
+                  {i18n.t("common.cancel")}
+>>>>>>> release/current
                 </SearchCancelButton>
               </SearchKeywordWrap>
             </SearchContainer>
           </StyledModal>
           <Loading show={this.state.loading}></Loading>
         </Container>
-      )
+      );
   }
 }
 
@@ -648,9 +691,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setFavoriteGame: (gameId) => dispatch(gameAction.setFavoriteGame(gameId)),
     removeFavoriteGame: (gameId) =>
-      dispatch(gameAction.removeFavoriteGame(gameId))
-  }
-}
+      dispatch(gameAction.removeFavoriteGame(gameId)),
+  };
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -658,7 +701,7 @@ const mapStateToProps = (state) => {
     screenHeight: state.ui.screenHeight,
     game: state.game,
     balance: state.account.info.member_balance,
-    token: state.account.token
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Slot))
+    token: state.account.token,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Slot));
