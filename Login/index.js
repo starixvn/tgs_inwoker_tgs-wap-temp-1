@@ -637,6 +637,7 @@ class Login extends Component {
                       onClick={this.handleLoginClick}
                     ></ButtonWap>
                     <CustomWapButton
+                      styledtype={2}
                       name={i18n.t("wap.login.browse")}
                       style={{ "margin-top": "10px" }}
                       onClick={this.handleBackToHomeClick}
