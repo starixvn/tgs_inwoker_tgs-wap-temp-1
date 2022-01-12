@@ -69,6 +69,7 @@ import CustomerServiceChat from "./CustomerService/index";
 import Maintenance from "./Maintenance";
 import Banned from "./Banned";
 import Loading from "./Share/Loading";
+import Affiliate from "./Affiliate";
 
 const baseRouteUrl = Common.baseRouteUrl;
 
@@ -168,6 +169,11 @@ const RouteMapping = [
   },
   {
     path: "/f/:promotionid",
+    component: Login,
+    alert: true,
+  },
+  {
+    path: "/p/:playername",
     component: Login,
     alert: true,
   },
@@ -384,11 +390,11 @@ const RouteMapping = [
   //   alert: true,
   // },
 
-  //{
-  //  path: "/affiliate",
-  //  component: Affiliate,
-  //  navigate: true,
-  //},
+  {
+    path: "/affiliate",
+    component: Affiliate,
+    navigate: true,
+  },
   //{
   //  path: "/affiliate/member",
   //  component: AffiliateMember,

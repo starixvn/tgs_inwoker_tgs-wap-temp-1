@@ -117,11 +117,9 @@ class Affiliate extends Component {
   handleBackClick = () => {
     this.props.appHistory.goBack();
   };
-  handleCopyLink = () => {
+  handleCopyLink = (link) => {
     this.setState({ ...this.state, copyTooltips: true });
-    copy(
-      `${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`
-    );
+    copy(link);
     setTimeout(() => {
       this.setState({ ...this.state, copyTooltips: false });
     }, 3000);
@@ -129,6 +127,7 @@ class Affiliate extends Component {
   handleClickAway = () => {};
 
   render() {
+    var affiliateLink = `https://${window.location.hostname}/p/${this.props.account.info.playercode}?do=register`;
     return (
       <React.Fragment>
         <Header
@@ -140,16 +139,14 @@ class Affiliate extends Component {
         ></Header>
         <QRCodeLabel>{i18n.t("affiliate.qrCode")}</QRCodeLabel>
         <QRCodeContainer>
-          <QRCode
-            value={`http://${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`}
-          ></QRCode>
+          <QRCode value={affiliateLink}></QRCode>
         </QRCodeContainer>
 
         <CustomText>
           <CustomLabel>{i18n.t("affiliate.promoId")}</CustomLabel>
           <CustomInput
             type={"text"}
-            value={this.props.account.info.promote_code}
+            value={this.props.account.info.playercode}
             readOnly={true}
           ></CustomInput>
         </CustomText>
@@ -157,7 +154,7 @@ class Affiliate extends Component {
           <CustomLabel>{i18n.t("affiliate.promoLink")}</CustomLabel>
           <CustomInput
             type={"text"}
-            value={`${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`}
+            value={affiliateLink}
             readOnly={true}
           ></CustomInput>
           <LightTooltip
@@ -165,40 +162,46 @@ class Affiliate extends Component {
             title={i18n.t("affiliate.copied")}
             placement="top"
           >
-            <Button onClick={this.handleCopyLink}>
+            <Button
+              onClick={() => {
+                this.handleCopyLink(affiliateLink);
+              }}
+            >
               {i18n.t("common.copy")}
             </Button>
           </LightTooltip>
         </CustomText>
-        <ListView>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-profile.png`
-            }
-            onClick={() => this.props.navigate("/affiliate/member")}
-          >
-            {i18n.t("affiliate.downline")}
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-report.png`
-            }
-            onClick={() => this.props.navigate("/affiliate/report")}
-          >
-            {i18n.t("affiliate.report")}
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-about.png`
-            }
-            onClick={() => this.props.navigate("/affiliate/guide")}
-          >
-            {i18n.t("affiliate.info")}
-          </ListItem>
-        </ListView>
+        {
+          //     <ListView>
+          //     <ListItem
+          //       icon={
+          //         process.env.PUBLIC_URL +
+          //         `/assets/images/wapp/icon-profile-profile.png`
+          //       }
+          //       onClick={() => this.props.navigate('/affiliate/member')}
+          //     >
+          //       {i18n.t('affiliate.downline')}
+          //     </ListItem>
+          //     <ListItem
+          //       icon={
+          //         process.env.PUBLIC_URL +
+          //         `/assets/images/wapp/icon-profile-report.png`
+          //       }
+          //       onClick={() => this.props.navigate('/affiliate/report')}
+          //     >
+          //       {i18n.t('affiliate.report')}
+          //     </ListItem>
+          //     <ListItem
+          //       icon={
+          //         process.env.PUBLIC_URL +
+          //         `/assets/images/wapp/icon-profile-about.png`
+          //       }
+          //       onClick={() => this.props.navigate('/affiliate/guide')}
+          //     >
+          //       {i18n.t('affiliate.info')}
+          //     </ListItem>
+          //   </ListView>
+        }
 
         <Loading show={this.state.loading}></Loading>
       </React.Fragment>

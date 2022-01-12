@@ -117,6 +117,19 @@ const CustomWapButton = styled(ButtonWap)`
   color: ${({ theme }) => theme.secondary};
 `;
 
+const CustomInvitationSelect = styled.select`
+  position: absolute;
+  right: 85px;
+  font-size: 25px;
+  bottom: 25px;
+  border: none;
+  outline: none;
+`;
+
+const CustomWrapper = styled.div`
+  position: relative;
+`;
+
 class Login extends Component {
   state = {
     selected: 0,
@@ -143,6 +156,15 @@ class Login extends Component {
     countdown: 0,
     securityKey: "",
     phone: "",
+    //TGS-357
+    upper: this.props.match.params.playername
+      ? this.props.match.params.playername
+      : "",
+    promoteType: this.props.match.params.promotionid ? "a" : "p",
+    prefill:
+      this.props.match.params.playername || this.props.match.params.promotionid
+        ? true
+        : false,
   };
   componentDidMount() {
     const promotionId = this.props.match.params.promotionid;
@@ -343,6 +365,14 @@ class Login extends Component {
       promoId: e.target.value,
     });
   };
+
+  handleUpperChange = (e) => {
+    this.setState({
+      ...this.state,
+      upper: e.target.value,
+    });
+  };
+
   handleToggleShow = () => {
     this.setState({ ...this.state, hidePassword: !this.state.hidePassword });
   };
@@ -388,6 +418,16 @@ class Login extends Component {
       }
     );
   };
+
+  handleSwitchType = (e) => {
+    this.setState({
+      ...this.state,
+      promoteType: e.target.value,
+      upper: "",
+      promoId: "",
+    });
+  };
+
   handleGetCodeClick = () => {
     const username = this.state.username;
     const password = this.state.password;
@@ -443,10 +483,8 @@ class Login extends Component {
     const username = this.state.username;
     const password = this.state.password;
     const confirmPassword = this.state.confirmPassword;
-    const withdrawalPassword = this.state.withdrawalPassword;
-    const confirmWithdrawalPassword = this.state.confirmWithdrawalPassword;
     const promotion_id = this.state.promoId;
-    const promotion_channel_id = this.state.promotionChannelId;
+    const upper = this.state.upper;
     const tnc = this.state.tnc;
     var expr = /^[a-zA-Z0-9]{6,32}$/;
     if (!expr.test(username)) {
@@ -484,7 +522,7 @@ class Login extends Component {
       // recommend_code,
       // mobile_code_id
       this.props
-        .register(username, password, confirmPassword, promotion_id)
+        .register(username, password, confirmPassword, promotion_id, upper)
         .then(async (response) => {
           if (response.IsSuccess && response.data.isnew === false) {
             this.props.alert("", i18n.t("common.msgAlreadyExist"));
@@ -560,7 +598,6 @@ class Login extends Component {
                     placeholder={i18n.t("common.password")}
                     style={{ marginTop: "20px" }}
                     password={true}
-                    maxLength="20"
                     toggleShow={this.handleToggleShow}
                     value={this.state.password}
                     onChange={this.handlePasswordChange}
@@ -685,18 +722,37 @@ class Login extends Component {
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
                   {!this.props.general.brand.hasInvitationCode && (
-                    <Textbox
-                      icon={
-                        process.env.PUBLIC_URL +
-                        `/assets/images/wapp/icon-promo.png`
-                      }
-                      type={"text"}
-                      placeholder={i18n.t("wap.register.promoteCode")}
-                      style={{ marginTop: "20px" }}
-                      value={this.state.promoId}
-                      onChange={this.handlePromoCodeChange}
-                      disabled={this.state.withPromo ? true : false}
-                    ></Textbox>
+                    <CustomWrapper>
+                      <Textbox
+                        icon={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/wapp/icon-promo.png`
+                        }
+                        type={"text"}
+                        placeholder={i18n.t("wap.register.promoteCode")}
+                        style={{ marginTop: "20px" }}
+                        value={
+                          this.state.promoteType === "a"
+                            ? this.state.promoId
+                            : this.state.upper
+                        }
+                        onChange={
+                          this.state.promoteType === "a"
+                            ? this.handlePromoCodeChange
+                            : this.handleUpperChange
+                        }
+                        disabled={this.state.prefill}
+                      ></Textbox>
+                      <CustomInvitationSelect
+                        disabled={this.state.prefill}
+                        value={this.state.promoteType}
+                        selected={this.state.promoteType}
+                        onChange={this.handleSwitchType}
+                      >
+                        <option value="a">{i18n.t("usertype.agent")}</option>
+                        <option value="p">{i18n.t("usertype.player")}</option>
+                      </CustomInvitationSelect>
+                    </CustomWrapper>
                   )}
 
                   <RememberPassContainer>
@@ -814,22 +870,14 @@ const mapDispatchToProps = (dispatch) => {
     checkGame: () => dispatch(accountAction.checkGame()),
     getAccountProfile: (token, showVip) =>
       dispatch(accountAction.getAccountProfile(token, showVip)),
-    register: (
-      user_account,
-      user_password,
-      pay_password,
-      mobile,
-      recommend_code,
-      mobile_code_id
-    ) =>
+    register: (username, pwd, confirmpwd, invitationcode, upper) =>
       dispatch(
         accountAction.registerAccount(
-          user_account,
-          user_password,
-          pay_password,
-          mobile,
-          recommend_code,
-          mobile_code_id
+          username,
+          pwd,
+          confirmpwd,
+          invitationcode,
+          upper
         )
       ),
     getDepositChannel: () => dispatch(walletAction.getDepositChannel()),
