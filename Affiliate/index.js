@@ -117,15 +117,9 @@ class Affiliate extends Component {
   handleBackClick = () => {
     this.props.appHistory.goBack();
   };
-  handleCopyLink = () => {
+  handleCopyLink = (link) => {
     this.setState({ ...this.state, copyTooltips: true });
-    copy(
-      `${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`
-<<<<<<< HEAD
-    )
-=======
-    );
->>>>>>> release/current
+    copy(link);
     setTimeout(() => {
       this.setState({ ...this.state, copyTooltips: false });
     }, 3000);
@@ -133,6 +127,7 @@ class Affiliate extends Component {
   handleClickAway = () => {};
 
   render() {
+    var affiliateLink = `https://${window.location.hostname}/p/${this.props.account.info.playercode}?do=register`;
     return (
       <React.Fragment>
         <Header
@@ -140,105 +135,73 @@ class Affiliate extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-<<<<<<< HEAD
-          title={i18n.t('affiliate.title')}
-        ></Header>
-        <QRCodeLabel>{i18n.t('affiliate.qrCode')}</QRCodeLabel>
-=======
           title={i18n.t("affiliate.title")}
         ></Header>
         <QRCodeLabel>{i18n.t("affiliate.qrCode")}</QRCodeLabel>
->>>>>>> release/current
         <QRCodeContainer>
-          <QRCode
-            value={`http://${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`}
-          ></QRCode>
+          <QRCode value={affiliateLink}></QRCode>
         </QRCodeContainer>
 
         <CustomText>
-<<<<<<< HEAD
-          <CustomLabel>{i18n.t('affiliate.promoId')}</CustomLabel>
-=======
           <CustomLabel>{i18n.t("affiliate.promoId")}</CustomLabel>
->>>>>>> release/current
           <CustomInput
             type={"text"}
-            value={this.props.account.info.promote_code}
+            value={this.props.account.info.playercode}
             readOnly={true}
           ></CustomInput>
         </CustomText>
         <CustomText>
-<<<<<<< HEAD
-          <CustomLabel>{i18n.t('affiliate.promoLink')}</CustomLabel>
-          <CustomInput
-            type={'text'}
-=======
           <CustomLabel>{i18n.t("affiliate.promoLink")}</CustomLabel>
           <CustomInput
             type={"text"}
->>>>>>> release/current
-            value={`${window.location.hostname}/${i18n.language}/a/${this.props.account.info.promote_code}`}
+            value={affiliateLink}
             readOnly={true}
           ></CustomInput>
           <LightTooltip
             open={this.state.copyTooltips}
-<<<<<<< HEAD
-            title={i18n.t('affiliate.copied')}
-            placement='top'
-          >
-            <Button onClick={this.handleCopyLink}>
-              {i18n.t('common.copy')}
-=======
             title={i18n.t("affiliate.copied")}
             placement="top"
           >
-            <Button onClick={this.handleCopyLink}>
+            <Button
+              onClick={() => {
+                this.handleCopyLink(affiliateLink);
+              }}
+            >
               {i18n.t("common.copy")}
->>>>>>> release/current
             </Button>
           </LightTooltip>
         </CustomText>
-        <ListView>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-profile.png`
-            }
-            onClick={() => this.props.navigate("/affiliate/member")}
-          >
-<<<<<<< HEAD
-            {i18n.t('affiliate.downline')}
-=======
-            {i18n.t("affiliate.downline")}
->>>>>>> release/current
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-report.png`
-            }
-            onClick={() => this.props.navigate("/affiliate/report")}
-          >
-<<<<<<< HEAD
-            {i18n.t('affiliate.report')}
-=======
-            {i18n.t("affiliate.report")}
->>>>>>> release/current
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-about.png`
-            }
-            onClick={() => this.props.navigate("/affiliate/guide")}
-          >
-<<<<<<< HEAD
-            {i18n.t('affiliate.info')}
-=======
-            {i18n.t("affiliate.info")}
->>>>>>> release/current
-          </ListItem>
-        </ListView>
+        {
+          //     <ListView>
+          //     <ListItem
+          //       icon={
+          //         process.env.PUBLIC_URL +
+          //         `/assets/images/wapp/icon-profile-profile.png`
+          //       }
+          //       onClick={() => this.props.navigate('/affiliate/member')}
+          //     >
+          //       {i18n.t('affiliate.downline')}
+          //     </ListItem>
+          //     <ListItem
+          //       icon={
+          //         process.env.PUBLIC_URL +
+          //         `/assets/images/wapp/icon-profile-report.png`
+          //       }
+          //       onClick={() => this.props.navigate('/affiliate/report')}
+          //     >
+          //       {i18n.t('affiliate.report')}
+          //     </ListItem>
+          //     <ListItem
+          //       icon={
+          //         process.env.PUBLIC_URL +
+          //         `/assets/images/wapp/icon-profile-about.png`
+          //       }
+          //       onClick={() => this.props.navigate('/affiliate/guide')}
+          //     >
+          //       {i18n.t('affiliate.info')}
+          //     </ListItem>
+          //   </ListView>
+        }
 
         <Loading show={this.state.loading}></Loading>
       </React.Fragment>

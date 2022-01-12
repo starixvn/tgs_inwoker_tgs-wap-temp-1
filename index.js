@@ -16,10 +16,6 @@ import {
   inboxAction,
 } from "@Inwoker/tgs-api";
 import debounce from "lodash.debounce";
-<<<<<<< HEAD
-
-=======
->>>>>>> release/current
 import config from "../../config/config";
 
 // import NameVerification from "./Card/NameVerification";
@@ -36,45 +32,6 @@ import i18n from "../../utils/i18n";
 import BlowFishEncryption from "../../utils/BlowFishEncryption";
 import Common from "../../utils/Common";
 import PopupAnnouncement from "../Share/PopupAnnouncement";
-<<<<<<< HEAD
-import Login from './Login/index'
-import Main from './Main/index'
-import Profile from './Profile/index'
-import NameVefiry from './Profile/NameVerify'
-import WeChat from './Profile/WeChat'
-import QQ from './Profile/QQ'
-import Email from './Profile/Email'
-import ChangeEmail from './Profile/ChangeEmail'
-import ChangePhone from './Profile/ChangePhone'
-import Phone from './Profile/Phone'
-import ChangePassword from './Profile/ChangePassword'
-import WithdrawalPassword from './Profile/WithdrawalPassword'
-import ChangeWithdrawalPassword from './Profile/ChangeWithdrawalPassword'
-import ResetWithdrawalPassword from './Profile/ResetWithdrawalPassword'
-import Slot from './Slot'
-import Promotion from './Promotion/index'
-import PromotionDetails from './Promotion/Details'
-import Aboutus from './Aboutus/index'
-import Inbox from './Inbox/index'
-import InboxDetails from './Inbox/Details'
-import Transfer from './Transfer/index'
-import Withdrawal from './Withdrawal/index'
-import Download from './Download/index'
-import WithdrawalDetails from './Withdrawal/Details'
-import Deposit from './Deposit/index'
-import DepositPayment from './Deposit/Payment'
-import DepositDetails from './Deposit/Details'
-import DepositManual from './Deposit/Manual'
-import Card from './Card/index'
-import AddCard from './Card/AddCard'
-import Report from './Report/index'
-import ForgotPassword from './ForgotPassword/index'
-import SettingLanguage from './Setting/Language'
-import CustomerServiceChat from './CustomerService/index'
-import Maintenance from './Maintenance'
-import Banned from './Banned'
-import Loading from './Share/Loading'
-=======
 import Login from "./Login/index";
 import Main from "./Main/index";
 import Profile from "./Profile/index";
@@ -112,7 +69,7 @@ import CustomerServiceChat from "./CustomerService/index";
 import Maintenance from "./Maintenance";
 import Banned from "./Banned";
 import Loading from "./Share/Loading";
->>>>>>> release/current
+import Affiliate from "./Affiliate";
 
 const baseRouteUrl = Common.baseRouteUrl;
 
@@ -212,6 +169,11 @@ const RouteMapping = [
   },
   {
     path: "/f/:promotionid",
+    component: Login,
+    alert: true,
+  },
+  {
+    path: "/p/:playername",
     component: Login,
     alert: true,
   },
@@ -428,11 +390,11 @@ const RouteMapping = [
   //   alert: true,
   // },
 
-  //{
-  //  path: "/affiliate",
-  //  component: Affiliate,
-  //  navigate: true,
-  //},
+  {
+    path: "/affiliate",
+    component: Affiliate,
+    navigate: true,
+  },
   //{
   //  path: "/affiliate/member",
   //  component: AffiliateMember,
