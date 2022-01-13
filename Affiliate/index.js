@@ -127,7 +127,7 @@ class Affiliate extends Component {
   handleClickAway = () => {};
 
   render() {
-    var affiliateLink = `https://${window.location.hostname}/p/${this.props.account.info.playercode}?do=register`;
+    var affiliateLink = `https://${window.location.hostname}/${i18n.language}/p/${this.props.account.info.playercode}?do=register`;
     return (
       <React.Fragment>
         <Header
