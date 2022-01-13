@@ -4,7 +4,8 @@ import { withRouter } from "react-router-dom";
 import Textbox from "../Share/Textbox";
 import TextboxWithButton from "../Share/TextboxWithButton";
 import BaseProfile from "./BaseProfile";
-import { AccountService, accountAction } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {AccountService} from "../../../api-services/services/AccountService";
 import styled from "styled-components";
 import BottomNote from "../Share/BottomNote";
 

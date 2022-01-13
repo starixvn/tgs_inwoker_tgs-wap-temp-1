@@ -13,7 +13,7 @@ import Loading from "../../Wap/Share/Loading";
 import { withStyles } from "@material-ui/core/styles";
 import Common from "../../../utils/Common";
 
-import { SupportService } from "@Inwoker/tgs-api";
+import {SupportService} from "../../../api-services/services/SupportService";
 import Textbox from "../../Wap/Share/Textbox";
 import Button from "../../Wap/Share/Button";
 import FormControl from "@material-ui/core/FormControl";

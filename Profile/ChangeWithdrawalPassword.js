@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import BaseProfile from "./BaseProfile";
 import ResetWithdrawalPassword from "./ResetWithdrawalPassword";
 
-import { AccountService } from "@Inwoker/tgs-api";
+import {AccountService} from "../../../api-services/services/AccountService";
 
 import { withStyles } from "@material-ui/core/styles";
 import Header from "../Share/Header";
