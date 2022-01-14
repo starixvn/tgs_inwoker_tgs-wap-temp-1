@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { accountAction } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {AccountService} from "../../../api-services/services/AccountService";
 import Textbox from "../Share/Textbox";
 import i18n from "../../../utils/i18n";
-import { AccountService } from "@Inwoker/tgs-api";
 import BaseProfile from "./BaseProfile";
 
 class QQ extends BaseProfile {

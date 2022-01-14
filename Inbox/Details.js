@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Moment from "react-moment";
 // import AppBar from "@material-ui/core/AppBar";
 // import IconInboxArrowPNG from "../../../assets/images/icon-inbox-arrow.png";
-import { InboxService } from "@Inwoker/tgs-api";
+import {InboxService} from "../../../api-services/services/InboxService";
 import Header from "../../Wap/Share/Header";
 import i18n from "../../../utils/i18n";
 const Container = styled.div``;

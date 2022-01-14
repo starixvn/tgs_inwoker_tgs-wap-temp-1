@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { withRouter } from "react-router-dom";
 
-import { WalletService } from "@Inwoker/tgs-api";
+import {WalletService} from "../../../api-services/services/WalletService";
 
 class Payment extends Component {
   componentDidMount() {

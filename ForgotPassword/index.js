@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Header from "../Share/Header";
 
-import { AccountService } from "@Inwoker/tgs-api";
+import {AccountService} from "../../../api-services/services/AccountService";
 
 import Textbox from "../../Wap/Share/Textbox";
 import TextboxWithButton from "../../Wap/Share/TextboxWithButton";

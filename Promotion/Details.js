@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Header from "../../Wap/Share/Header";
 import Button from "../../Wap/Share/Button";
-import { generalAction } from "@Inwoker/tgs-api";
+import {generalAction} from "../../../api-services/actions/generalAction";
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
 const moment = require("moment");

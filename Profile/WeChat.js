@@ -7,9 +7,8 @@ import Textbox from "../Share/Textbox";
 
 import BaseProfile from "./BaseProfile";
 import i18n from "../../../utils/i18n";
-import { AccountService } from "@Inwoker/tgs-api";
-
-import { accountAction } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {AccountService} from "../../../api-services/services/AccountService";
 class WeChat extends BaseProfile {
   state = {
     wechat: "",

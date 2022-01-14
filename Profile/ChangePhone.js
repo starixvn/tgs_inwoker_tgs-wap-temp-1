@@ -5,8 +5,8 @@ import { withRouter } from "react-router-dom";
 import TextboxWithButton from "../Share/TextboxWithButton";
 import Step from "../Share/Step";
 import BaseProfile from "./BaseProfile";
-import { AccountService } from "@Inwoker/tgs-api";
-import { accountAction } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {AccountService} from "../../../api-services/services/AccountService";
 
 import i18n from "../../../utils/i18n";
 import styled from "styled-components";

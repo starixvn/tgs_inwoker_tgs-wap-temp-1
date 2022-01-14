@@ -2,13 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import {
-  walletAction,
-  WalletService,
-  WALLET_HIDEMESSAGE,
-  RESET_WALLETRESULT,
-  generalAction,
-} from "@Inwoker/tgs-api";
+import {walletAction} from "../../../api-services/actions/walletAction";
+import {generalAction} from "../../../api-services/actions/generalAction";
+import {WalletService} from "../../../api-services/services/WalletService";
+import {RESET_WALLETRESULT,WALLET_HIDEMESSAGE} from "../../../api-services/constant/actionType";
 import { withRouter } from "react-router-dom";
 import Common from "../../../utils/Common";
 

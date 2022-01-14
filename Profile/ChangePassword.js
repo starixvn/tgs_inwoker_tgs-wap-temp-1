@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import Textbox from "../Share/Textbox";
 import BaseProfile from "./BaseProfile";
 
-import { AccountService } from "@Inwoker/tgs-api";
+import {AccountService} from "../../../api-services/services/AccountService";
 
 import i18n from "../../../utils/i18n";
 class ChangePassword extends BaseProfile {

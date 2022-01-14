@@ -4,11 +4,9 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
-import {
-  accountAction,
-  walletAction,
-  RESET_WALLETRESULT,
-} from "@Inwoker/tgs-api";
+import {walletAction} from "../../../api-services/actions/walletAction";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
 
 import Header from "../../Wap/Share/Header";
 

@@ -4,11 +4,9 @@ import styled from "styled-components";
 
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
-import {
-  walletAction,
-  accountAction,
-  RESET_WALLETRESULT,
-} from "@Inwoker/tgs-api";
+import {walletAction} from "../../../api-services/actions/walletAction";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
 import MessageDialog from "../../Wap/Share/MessageDialog";
 import Loading from "../../Wap/Share/Loading";
 import Header from "../../Wap/Share/Header";
