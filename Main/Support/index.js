@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import i18n from "../../../../utils/i18n";
 import QRCode from "qrcode.react";
 import { Dialog } from "@material-ui/core";
-import {generalAction} from "../../../../api-services/actions/generalAction";
+import { generalAction } from "../../../../api-services/actions/generalAction";
 import IMHandler from "./IMHandler";
 
 //import i18n from '../../../../utils/i18n'
@@ -217,19 +217,20 @@ const Support = (props) => {
       <SupportBackground language={i18n.language}>
         <TheGirlHolder language={i18n.language} />
         <ButtonContainer>
-          {props.general.livechat && (
-            <TheSupportButton
-              onClick={() => {
-                props.cs();
-              }}
-            >
-              <IconTextContainer>
-                <Icon icon="wechat" />
-                <div>{i18n.t("support.online")}</div>
-              </IconTextContainer>
-              <TheRedText>{i18n.t("support.contact")}</TheRedText>
-            </TheSupportButton>
-          )}
+          {props.general.livechat.setting &&
+            props.general.livechat.setting.url !== undefined && (
+              <TheSupportButton
+                onClick={() => {
+                  props.cs();
+                }}
+              >
+                <IconTextContainer>
+                  <Icon icon="wechat" />
+                  <div>{i18n.t("support.online")}</div>
+                </IconTextContainer>
+                <TheRedText>{i18n.t("support.contact")}</TheRedText>
+              </TheSupportButton>
+            )}
           {
             //     <TheSupportButton
             //     onClick={() => {
