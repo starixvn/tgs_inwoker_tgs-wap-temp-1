@@ -6,12 +6,10 @@ import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 
-import {
-  ReportService,
-  GameService,
-  accountAction,
-  GeneralService,
-} from "@Inwoker/tgs-api";
+import {ReportService} from "../../../api-services/services/ReportService";
+import {GameService} from "../../../api-services/services/GameService";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {GeneralService} from "../../../api-services/services/GeneralService";
 
 import BottomScrollListener from "react-bottom-scroll-listener";
 import Loading from "../../Wap/Share/Loading";

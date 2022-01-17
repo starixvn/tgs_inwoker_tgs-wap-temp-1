@@ -7,7 +7,9 @@ import { withStyles } from "@material-ui/core/styles";
 import Slider from "./Slider";
 import DoubleMarquee from "react-marquee-double";
 import { withRouter } from "react-router-dom";
-import { GameTypeEnum, GameService } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../../api-services/actions/accountAction";
+import {GameTypeEnum} from "../../../../api-services/utils/Enum";
+import {GameService} from "../../../../api-services/services/GameService";
 
 import Common from "../../../../utils/Common";
 

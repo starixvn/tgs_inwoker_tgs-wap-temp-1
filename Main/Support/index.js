@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import i18n from "../../../../utils/i18n";
 import QRCode from "qrcode.react";
 import { Dialog } from "@material-ui/core";
-import { generalAction } from "@Inwoker/tgs-api";
+import {generalAction} from "../../../../api-services/actions/generalAction";
 import IMHandler from "./IMHandler";
 
 //import i18n from '../../../../utils/i18n'

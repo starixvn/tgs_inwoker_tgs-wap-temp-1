@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { accountAction } from "@Inwoker/tgs-api";
 import { withRouter } from "react-router-dom";
 import Textbox from "../Share/Textbox";
 import TextboxWithButton from "../Share/TextboxWithButton";
 import Step from "../Share/Step";
 import BaseProfile from "./BaseProfile";
-import { AccountService } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {AccountService} from "../../../api-services/services/AccountService";
 
 import i18n from "../../../utils/i18n";
 class ChangeEmail extends BaseProfile {

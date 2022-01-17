@@ -10,11 +10,9 @@ import Button from "../../Wap/Share/Button";
 
 import Textbox from "../../Wap/Share/Textbox";
 import Common from "../../../utils/Common";
-import {
-  walletAction,
-  RESET_WALLETRESULT,
-  WalletService,
-} from "@Inwoker/tgs-api";
+import {walletAction} from "../../../api-services/actions/walletAction";
+import {WalletService} from "../../../api-services/services/WalletService";
+import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
 
 import Loading from "../../Wap/Share/Loading";
 

@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Common from "../../../utils/Common";
 import i18n from "../../../utils/i18n";
-import { generalAction } from "@Inwoker/tgs-api";
+import {generalAction} from "../../../api-services/actions/generalAction";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;

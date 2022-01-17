@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import Header from "../../Wap/Share/Header";
 
-import { accountAction } from "@Inwoker/tgs-api";
+import { accountAction } from '../../../api-services/actions/accountAction'
 import BottomScrollListener from "react-bottom-scroll-listener";
 
 import Loading from "../../Wap/Share/Loading";

@@ -15,7 +15,8 @@ import Button from "../Share/Button";
 
 import Loading from "../Share/Loading";
 import i18n from "../../../utils/i18n";
-import { walletAction, RESET_WALLETRESULT } from "@Inwoker/tgs-api";
+import {walletAction} from "../../../api-services/actions/walletAction";
+import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
 
 import Slide from "@material-ui/core/Slide";
 const Container = styled.div``;

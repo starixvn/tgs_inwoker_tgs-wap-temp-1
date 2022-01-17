@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import {
-  GameService,
-  GameTypeEnum,
-  SlotFilterType,
-  gameAction,
-} from "@Inwoker/tgs-api";
+import {GameService} from "../../../api-services/services/GameService";
+import {GameTypeEnum,SlotFilterType} from "../../../api-services/utils/Enum";
+import {gameAction} from "../../../api-services/actions/gameAction";
 import { withRouter } from "react-router-dom";
 
 import AppBar from "@material-ui/core/AppBar";

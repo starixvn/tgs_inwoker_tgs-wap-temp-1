@@ -11,7 +11,8 @@ import "slick-carousel/slick/slick-theme.css";
 
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-import { walletAction, RESET_WALLETRESULT } from "@Inwoker/tgs-api";
+import {walletAction} from "../../../api-services/actions/walletAction";
+import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
 import Button from "../../Wap/Share/Button";
 import Loading from "../../Wap/Share/Loading";
 import i18n from "../../../utils/i18n";

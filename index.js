@@ -5,16 +5,14 @@ import { Router, Switch, Route, Redirect } from "react-router";
 import { AppHistory } from "../../history/History";
 import { withRouter } from "react-router-dom";
 
-import {
-  UPDATING_SCREEN_SIZE,
-  SHOW_LOGIN,
-  uiAction,
-  gameAction,
-  generalAction,
-  walletAction,
-  accountAction,
-  inboxAction,
-} from "@Inwoker/tgs-api";
+import {SHOW_LOGIN,UPDATING_SCREEN_SIZE} from "../../api-services/constant/actionType";
+import {uiAction} from "../../api-services/actions/uiAction";
+import {gameAction} from "../../api-services/actions/gameAction";
+import {generalAction} from "../../api-services/actions/generalAction";
+import {walletAction} from "../../api-services/actions/walletAction";
+import {accountAction} from "../../api-services/actions/accountAction";
+import {inboxAction} from "../../api-services/actions/inboxAction";
+import {GeneralService} from "../../api-services/services/GeneralService";
 import debounce from "lodash.debounce";
 import config from "../../config/config";
 
@@ -22,7 +20,7 @@ import config from "../../config/config";
 // import PassSetting from "./Card/PassSetting";
 
 import ErrorSwitcher from "../../utils/ErrorSwitcher";
-import { GeneralService } from "@Inwoker/tgs-api";
+
 // import CustomerService from "./CustomerService/index";
 
 import { withStyles } from "@material-ui/core/styles";
