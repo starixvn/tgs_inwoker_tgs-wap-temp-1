@@ -744,15 +744,17 @@ class Login extends Component {
                         }
                         disabled={this.state.prefill}
                       ></Textbox>
-                      <CustomInvitationSelect
-                        disabled={this.state.prefill}
-                        value={this.state.promoteType}
-                        selected={this.state.promoteType}
-                        onChange={this.handleSwitchType}
-                      >
-                        <option value="a">{i18n.t("usertype.agent")}</option>
-                        <option value="p">{i18n.t("usertype.player")}</option>
-                      </CustomInvitationSelect>
+                      {config.features.HaveAffiliateFeature && (
+                        <CustomInvitationSelect
+                          disabled={this.state.prefill}
+                          value={this.state.promoteType}
+                          selected={this.state.promoteType}
+                          onChange={this.handleSwitchType}
+                        >
+                          <option value="a">{i18n.t("usertype.agent")}</option>
+                          <option value="p">{i18n.t("usertype.player")}</option>
+                        </CustomInvitationSelect>
+                      )}
                     </CustomWrapper>
                   )}
 
