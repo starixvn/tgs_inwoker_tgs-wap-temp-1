@@ -13,7 +13,7 @@ const SupportBackground = styled.div`
   z-index: 10;
   overflow-y: scroll;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: absolute;
   top: 0;
   background: url(${process.env.PUBLIC_URL +
