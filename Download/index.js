@@ -7,7 +7,7 @@ import QRCode from "react-qr-code";
 
 const Container = styled.div`
   width: 100%;
-  min-height: 1330px;
+  min-height: 100vh;
   position: relative;
   background: url(${({ language }) => {
       return (
