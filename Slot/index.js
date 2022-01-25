@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import {GameService} from "../../../api-services/services/GameService";
-import {GameTypeEnum,SlotFilterType} from "../../../api-services/utils/Enum";
-import {gameAction} from "../../../api-services/actions/gameAction";
+import { GameService } from "../../../api-services/services/GameService";
+import { GameTypeEnum, SlotFilterType } from "../../../api-services/utils/Enum";
+import { gameAction } from "../../../api-services/actions/gameAction";
 import { withRouter } from "react-router-dom";
 
 import AppBar from "@material-ui/core/AppBar";
@@ -127,7 +127,7 @@ const GameItemLI = styled.li`
 `;
 const GameItem = styled.div`
   padding: 6px 20px 0 20px;
-  font-size: 25px;
+  font-size: 20px;
 
   text-align: center;
 
@@ -141,7 +141,7 @@ const GameItem = styled.div`
         `;`
       : `color: #bdbdbd;`}
 
-  min-width: 143px;
+  min-width: 150px;
   height: 46px;
 
   border-radius: 22.8px;
