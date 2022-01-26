@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Header from "../../Wap/Share/Header";
-import { accountAction, InboxService, inboxAction } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {inboxAction} from "../../../api-services/actions/inboxAction";
 import BottomScrollListener from "react-bottom-scroll-listener";
 
 import Loading from "../../Wap/Share/Loading";

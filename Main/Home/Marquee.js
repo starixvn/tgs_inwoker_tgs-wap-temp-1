@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { UiService } from '@Inwoker/tgs-api'
 import i18n from '../../../../utils/i18n'
 const AnnounceContainer = styled.div`
   width: 1280px;

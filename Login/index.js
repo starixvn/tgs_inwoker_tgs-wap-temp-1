@@ -10,15 +10,13 @@ import Textbox from "./Textbox";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
-import {
-  accountAction,
-  generalAction,
-  walletAction,
-  gameAction,
-  GeneralService,
-  inboxAction,
-  AccountService,
-} from "@Inwoker/tgs-api";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { generalAction } from "../../../api-services/actions/generalAction";
+import { walletAction } from "../../../api-services/actions/walletAction";
+import { gameAction } from "../../../api-services/actions/gameAction";
+import { inboxAction } from "../../../api-services/actions/inboxAction";
+import { AccountService } from "../../../api-services/services/AccountService";
+import { GeneralService } from "../../../api-services/services/GeneralService";
 
 import ButtonWap from "../../Share/ButtonWap";
 import Loading from "../../Wap/Share/Loading";

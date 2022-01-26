@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 
-import { AccountService } from "@Inwoker/tgs-api";
-import { UPDATE_INFO } from "@Inwoker/tgs-api";
+import { accountAction } from '../../../api-services/actions/accountAction'
+import { AccountService } from '../../../api-services/services/AccountService'
+import {UPDATE_INFO} from "../../..api-services/constant/actionType";
 import { withStyles } from "@material-ui/core/styles";
-import { accountAction } from "@Inwoker/tgs-api";
 import Header from "../../Wap/Share/Header";
 
 import Textbox from "../../Wap/Share/Textbox";

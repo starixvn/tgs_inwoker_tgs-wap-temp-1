@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
-import { accountAction, walletAction } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../../api-services/actions/accountAction";
+import {walletAction} from "../../../../api-services/actions/walletAction";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 

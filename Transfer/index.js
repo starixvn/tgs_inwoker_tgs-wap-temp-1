@@ -11,12 +11,10 @@ import Switch from "@material-ui/core/Switch";
 import FormControl from "@material-ui/core/FormControl";
 import DynamicFont from "react-dynamic-font";
 import Select from "@material-ui/core/Select";
-import {
-  accountAction,
-  walletAction,
-  RESET_WALLETRESULT,
-  WalletType,
-} from "@Inwoker/tgs-api";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {walletAction} from "../../../api-services/actions/walletAction";
+import {WalletType} from "../../../api-services/utils/Enum";
+import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
 
 import Loading from "../../Wap/Share/Loading";
 import Common from "../../../utils/Common";

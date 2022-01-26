@@ -4,7 +4,8 @@ import styled from "styled-components";
 
 import { withRouter } from "react-router-dom";
 
-import { accountAction, AccountService } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {AccountService} from "../../../api-services/services/AccountService";
 
 import Textbox from "../../Wap/Share/Textbox";
 import TextboxWithButton from "../../Wap/Share/TextboxWithButton";

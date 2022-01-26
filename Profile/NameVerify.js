@@ -6,7 +6,8 @@ import i18n from "../../../utils/i18n";
 import BottomNote from "../Share/BottomNote";
 import BaseProfile from "./BaseProfile";
 
-import { accountAction, RESET_ACCOUNTRESULT } from "@Inwoker/tgs-api";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {RESET_ACCOUNTRESULT} from "../../../api-services/constant/actionType";
 
 class NameVerify extends BaseProfile {
   constructor(props) {

@@ -42,8 +42,10 @@ const SwitchTextContainerComponent = styled.div`
   font-size: 32px;
 
   color: #ffffff;
-
-  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
 
   background: ${({ active, theme }) => {
     return active ? theme.primary : theme.secondary;
