@@ -7,9 +7,9 @@ import { withStyles } from "@material-ui/core/styles";
 import Slider from "./Slider";
 import DoubleMarquee from "react-marquee-double";
 import { withRouter } from "react-router-dom";
-import {accountAction} from "../../../../api-services/actions/accountAction";
-import {GameTypeEnum} from "../../../../api-services/utils/Enum";
-import {GameService} from "../../../../api-services/services/GameService";
+import { accountAction } from "../../../../api-services/actions/accountAction";
+import { GameTypeEnum } from "../../../../api-services/utils/Enum";
+import { GameService } from "../../../../api-services/services/GameService";
 
 import Common from "../../../../utils/Common";
 
@@ -619,22 +619,29 @@ class Home extends Component {
           <GameSelectionContainer>
             <GameSelectionUL>
               {(() => {
-                return this.state.gameTypeListSorting.map((type, index) => {
-                  return (
-                    <GameSelectionLI
-                      style={
-                        i18n.language === "en-US"
-                          ? { fontSize: "29px", paddingTop: "6px" }
-                          : {}
-                      }
-                      key={index}
-                      selected={this.state.selectedGameType === type}
-                      onClick={() => this.handleGameTypeClick(type)}
-                    >
-                      {this.convertGameTypeToText(type)}
-                    </GameSelectionLI>
-                  );
-                });
+                return this.state.gameTypeListSorting
+                  .sort((a, b) => {
+                    var sortEsportFirst = [4];
+                    return (
+                      sortEsportFirst.indexOf(b) - sortEsportFirst.indexOf(a)
+                    );
+                  })
+                  .map((type, index) => {
+                    return (
+                      <GameSelectionLI
+                        style={
+                          i18n.language === "en-US"
+                            ? { fontSize: "29px", paddingTop: "6px" }
+                            : {}
+                        }
+                        key={index}
+                        selected={this.state.selectedGameType === type}
+                        onClick={() => this.handleGameTypeClick(type)}
+                      >
+                        {this.convertGameTypeToText(type)}
+                      </GameSelectionLI>
+                    );
+                  });
               })()}
             </GameSelectionUL>
           </GameSelectionContainer>
@@ -648,6 +655,13 @@ class Home extends Component {
                 .filter((a) => displayGameType.indexOf(a.type) >= 0)
                 .sort(function (a, b) {
                   return a.type - b.type;
+                })
+                .sort((a, b) => {
+                  var sortEsportFirst = [4];
+                  return (
+                    sortEsportFirst.indexOf(b.type) -
+                    sortEsportFirst.indexOf(a.type)
+                  );
                 })
                 .map((row, index) => {
                   var jsx = (
