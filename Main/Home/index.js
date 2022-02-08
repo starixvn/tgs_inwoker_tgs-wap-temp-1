@@ -308,7 +308,7 @@ class Home extends Component {
       this.setState({
         ...this.state,
         gameTypeListSorting: gameTypeListSorting,
-        selectedGameType: gameTypeListSorting[0],
+        selectedGameType: gameTypeListSorting[1],
       });
     }
   }
@@ -321,7 +321,7 @@ class Home extends Component {
       this.setState({
         ...this.state,
         gameTypeListSorting: gameTypeListSorting,
-        selectedGameType: gameTypeListSorting[0],
+        selectedGameType: gameTypeListSorting[1],
       });
     }
   }
