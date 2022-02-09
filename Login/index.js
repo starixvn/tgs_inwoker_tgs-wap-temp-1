@@ -389,7 +389,7 @@ class Login extends Component {
     const code = this.state.code;
     const securityKey = this.state.securityKey;
 
-    var expr = /^[a-zA-Z0-9]{6,32}$/;
+    var expr = /^[a-zA-Z0-9]{6,16}$/;
     if (!expr.test(username)) {
       this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
       return;
@@ -434,7 +434,7 @@ class Login extends Component {
     const areacode = this.state.areaCode;
     const phone = this.state.phone;
     if (countdown <= 0) {
-      var expr = /^[a-zA-Z0-9]{6,32}$/;
+      var expr = /^[a-zA-Z0-9]{6,16}$/;
       if (!expr.test(username)) {
         this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
         return;
@@ -484,7 +484,7 @@ class Login extends Component {
     const promotion_id = this.state.promoId;
     const upper = this.state.upper;
     const tnc = this.state.tnc;
-    var expr = /^[a-zA-Z0-9]{6,32}$/;
+    var expr = /^[a-zA-Z0-9]{6,16}$/;
     if (!expr.test(username)) {
       this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
       return;
