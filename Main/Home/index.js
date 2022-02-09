@@ -542,16 +542,14 @@ class Home extends Component {
                   }
                 })()}
 
-                {
-                  //     <ProfileLink onClick={() => this.props.navigate("/profile")}>
-                  //     {i18n.t("wap.main.home.profile.profile")}
-                  //   </ProfileLink>
-                }
-
-                {config.features.OnlineUser && (
+                {config.features.OnlineUser ? (
                   <DisplayerContainer>
                     <OnlineUserDisplayer color="#fff" size="20px" />
                   </DisplayerContainer>
+                ) : (
+                  <ProfileLink onClick={() => this.props.navigate("/profile")}>
+                    {i18n.t("wap.main.home.profile.profile")}
+                  </ProfileLink>
                 )}
               </ProfileContainerTop>
               <ProfileContainerBottom>
