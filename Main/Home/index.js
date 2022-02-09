@@ -15,6 +15,8 @@ import Common from "../../../../utils/Common";
 
 import i18n from "../../../../utils/i18n";
 import Marquee from "./Marquee";
+import config from "../../../../config/config";
+import OnlineUserDisplayer from "../../../Share/online-user-displayer";
 const StyledAppBar = withStyles({
   root: {
     height: "550px",
@@ -95,6 +97,10 @@ const WelcomeUsernameLabel = styled(WelcomeLabel)`
 `;
 
 const ProfileLink = styled(WelcomeLabel)`
+  float: right;
+`;
+
+const DisplayerContainer = styled.div`
   float: right;
 `;
 const BalanceContainer = styled.div`
@@ -536,9 +542,17 @@ class Home extends Component {
                   }
                 })()}
 
-                <ProfileLink onClick={() => this.props.navigate("/profile")}>
-                  {i18n.t("wap.main.home.profile.profile")}
-                </ProfileLink>
+                {
+                  //     <ProfileLink onClick={() => this.props.navigate("/profile")}>
+                  //     {i18n.t("wap.main.home.profile.profile")}
+                  //   </ProfileLink>
+                }
+
+                {config.features.OnlineUser && (
+                  <DisplayerContainer>
+                    <OnlineUserDisplayer color="#fff" size="20px" />
+                  </DisplayerContainer>
+                )}
               </ProfileContainerTop>
               <ProfileContainerBottom>
                 <BalanceContainer>
