@@ -5,14 +5,17 @@ import { Router, Switch, Route, Redirect } from "react-router";
 import { AppHistory } from "../../history/History";
 import { withRouter } from "react-router-dom";
 
-import {SHOW_LOGIN,UPDATING_SCREEN_SIZE} from "../../api-services/constant/actionType";
-import {uiAction} from "../../api-services/actions/uiAction";
-import {gameAction} from "../../api-services/actions/gameAction";
-import {generalAction} from "../../api-services/actions/generalAction";
-import {walletAction} from "../../api-services/actions/walletAction";
-import {accountAction} from "../../api-services/actions/accountAction";
-import {inboxAction} from "../../api-services/actions/inboxAction";
-import {GeneralService} from "../../api-services/services/GeneralService";
+import {
+  SHOW_LOGIN,
+  UPDATING_SCREEN_SIZE,
+} from "../../api-services/constant/actionType";
+import { uiAction } from "../../api-services/actions/uiAction";
+import { gameAction } from "../../api-services/actions/gameAction";
+import { generalAction } from "../../api-services/actions/generalAction";
+import { walletAction } from "../../api-services/actions/walletAction";
+import { accountAction } from "../../api-services/actions/accountAction";
+import { inboxAction } from "../../api-services/actions/inboxAction";
+import { GeneralService } from "../../api-services/services/GeneralService";
 import debounce from "lodash.debounce";
 import config from "../../config/config";
 
@@ -65,6 +68,7 @@ import ForgotPassword from "./ForgotPassword/index";
 import SettingLanguage from "./Setting/Language";
 import CustomerServiceChat from "./CustomerService/index";
 import Maintenance from "./Maintenance";
+import VIP from "./VIP";
 import Banned from "./Banned";
 import Loading from "./Share/Loading";
 import Affiliate from "./Affiliate";
@@ -416,6 +420,11 @@ const RouteMapping = [
   {
     path: "/banned",
     component: Banned,
+    navigate: true,
+  },
+  {
+    path: "/vip",
+    component: VIP,
     navigate: true,
   },
 ];
