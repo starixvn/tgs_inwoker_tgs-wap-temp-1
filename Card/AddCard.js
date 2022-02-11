@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
-import {walletAction} from "../../../api-services/actions/walletAction";
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
+import { walletAction } from "../../../api-services/actions/walletAction";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 
 import Header from "../../Wap/Share/Header";
 
@@ -417,8 +417,16 @@ class AddCard extends Component {
                 });
               }}
               type={"text"}
-              placeholder={i18n.t("profile.nameVerify.msgPlsEnterName")}
-              label={i18n.t("profile.nameVerify.title")}
+              placeholder={
+                config.features.AddCard_InputAddFPS
+                  ? i18n.t("custom.addcard.msgPlsEnterName")
+                  : i18n.t("profile.nameVerify.msgPlsEnterName")
+              }
+              label={
+                config.features.AddCard_InputAddFPS
+                  ? i18n.t("custom.addcard.name")
+                  : i18n.t("profile.nameVerify.title")
+              }
             ></Textbox>
             <Textbox
               style={{ margin: "20px auto 20px auto" }}
@@ -433,12 +441,16 @@ class AddCard extends Component {
               }}
               type={"text"}
               placeholder={
-                config.features.AddCard_DisplayFPS
+                config.features.AddCard_InputAddFPS
+                  ? i18n.t("custom.addcard.msgEnterPhone")
+                  : config.features.AddCard_DisplayFPS
                   ? i18n.t("bet28.msgEnterPhone")
                   : i18n.t("common.msgEnterPhone")
               }
               label={
-                config.features.AddCard_DisplayFPS
+                config.features.AddCard_InputAddFPS
+                  ? i18n.t("custom.addcard.phoneNumber")
+                  : config.features.AddCard_DisplayFPS
                   ? i18n.t("bet28.phoneNumber")
                   : i18n.t("common.phoneNumber")
               }
