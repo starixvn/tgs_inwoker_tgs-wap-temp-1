@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import {walletAction} from "../../../api-services/actions/walletAction";
-import {generalAction} from "../../../api-services/actions/generalAction";
-import {WalletService} from "../../../api-services/services/WalletService";
-import {RESET_WALLETRESULT,WALLET_HIDEMESSAGE} from "../../../api-services/constant/actionType";
+import { walletAction } from "../../../api-services/actions/walletAction";
+import { generalAction } from "../../../api-services/actions/generalAction";
+import { WalletService } from "../../../api-services/services/WalletService";
+import {
+  RESET_WALLETRESULT,
+  WALLET_HIDEMESSAGE,
+} from "../../../api-services/constant/actionType";
 import { withRouter } from "react-router-dom";
 import Common from "../../../utils/Common";
 
@@ -595,27 +598,29 @@ class Deposit extends Component {
                   ].paymentcode.toUpperCase() === "APPLEPAY"
                 ) {
                   return (
-                    <Textbox
-                      style={{ margin: "20px auto 20px auto" }}
-                      type={"text"}
-                      placeholder={
-                        config.features.Deposit_EnglishName
-                          ? i18n.t("bet28.msgEnterBankAccountName")
-                          : i18n.t("deposit.msgPlsEnterAccount")
-                      }
-                      label={
-                        config.features.Deposit_EnglishName
-                          ? i18n.t("bet28.BankAccountName")
-                          : i18n.t("deposit.msgPlsEnterAccount")
-                      }
-                      value={this.state.account}
-                      onChange={(e) => {
-                        this.setState({
-                          ...this.state,
-                          account: e.target.value,
-                        });
-                      }}
-                    ></Textbox>
+                    !config.features.Deposit_RemoveName && (
+                      <Textbox
+                        style={{ margin: "20px auto 20px auto" }}
+                        type={"text"}
+                        placeholder={
+                          config.features.Deposit_EnglishName
+                            ? i18n.t("bet28.msgEnterBankAccountName")
+                            : i18n.t("deposit.msgPlsEnterAccount")
+                        }
+                        label={
+                          config.features.Deposit_EnglishName
+                            ? i18n.t("bet28.BankAccountName")
+                            : i18n.t("deposit.msgPlsEnterAccount")
+                        }
+                        value={this.state.account}
+                        onChange={(e) => {
+                          this.setState({
+                            ...this.state,
+                            account: e.target.value,
+                          });
+                        }}
+                      ></Textbox>
+                    )
                   );
                 }
               })()}
