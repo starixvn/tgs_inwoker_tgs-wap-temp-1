@@ -201,7 +201,7 @@ class Login extends Component {
       if (result.IsSuccess) {
         this.setState({
           ...this.state,
-          invitation: result.data,
+          invitation: result,
         });
       }
     });
