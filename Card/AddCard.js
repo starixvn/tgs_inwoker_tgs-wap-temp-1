@@ -323,7 +323,7 @@ class AddCard extends Component {
             this.state.channelList.length > 0
               ? i18n.t(
                   this.state.channelList[this.state.selectedChannelIndex]
-                    .channelcode
+                    .channelname
                 )
               : ""
           }
@@ -562,7 +562,7 @@ class AddCard extends Component {
                 onClick={() => this.handleChannelClick(index)}
               >
                 <StyledListItemText
-                  primary={i18n.t(item.channelcode)}
+                  primary={i18n.t(item.channelname)}
                 ></StyledListItemText>
               </StyledListItem>
             );
