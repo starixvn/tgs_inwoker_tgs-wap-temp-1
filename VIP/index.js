@@ -74,6 +74,11 @@ const VIPText = styled.div`
   font-weight: bold;
 `;
 
+const BoldText = styled.span`
+  font-weight: bold;
+  font-size: 24px;
+`;
+
 const VIP = (props) => {
   const { getVIP } = props;
   const [vipBenefit, setVipBenefits] = useState([]);
@@ -87,9 +92,13 @@ const VIP = (props) => {
       });
     }
   }, []);
+
+  const handleBackClick = () => {
+    props.appHistory.goBack();
+  };
   return (
     <Container>
-      <Header title="VIP"></Header>
+      <Header title="VIP" onBackClick={handleBackClick}></Header>
 
       {vipBenefit.items && vipBenefit.items.length > 0 && (
         <Contents>
@@ -123,8 +132,12 @@ const VIP = (props) => {
                 return (
                   <ContentDisplayer show={index === display}>
                     <CustomTable>
-                      <Left>{i18n.t("vip.levelKeepAccumulateBetAmount")}</Left>
-                      <Right>{data.levelKeepAccumulateBetAmount}</Right>
+                      <Left style={{ marginTop: 15 }}>
+                        {i18n.t("vip.levelKeepAccumulateBetAmount")}
+                      </Left>
+                      <Right style={{ marginTop: 15 }}>
+                        {data.levelKeepAccumulateBetAmount}
+                      </Right>
                       <Left> {i18n.t("vip.levelKeepAccumulateDeposit")}</Left>
                       <Right>{data.levelKeepAccumulateDeposit}</Right>
                       <Left>{i18n.t("vip.levelUpAccumulateBetAmount")}</Left>
@@ -137,6 +150,12 @@ const VIP = (props) => {
                       <Right>{data.promotionBenefit}</Right>
                       <Left> {i18n.t("vip.quarterlyBenefit")}</Left>
                       <Right>{data.quarterlyBenefit}</Right>
+
+                      <Left style={{ marginTop: 50 }}>
+                        <BoldText>{i18n.t("vip.vipBenefit")}</BoldText>
+                      </Left>
+                      <Right></Right>
+
                       <Left>{i18n.t("vip.cardGameRebate")} </Left>
                       <Right>{data.cardGameRebate}% </Right>
                       <Left>{i18n.t("vip.liveDealerRebate")} </Left>
