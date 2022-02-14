@@ -299,7 +299,14 @@ class AddCard extends Component {
             backgroundColor={"transparent"}
           ></Header>
           <BalanceLabel>
-            {Common.formatNumberWithThousand(this.props.wallet.mainBalance)}
+            {Common.formatNumberWithThousand(
+              this.props.wallet.mainBalance +
+                this.props.game.providerList
+                  .filter(
+                    (item) => item.status === 0 && item.transferwallet === true
+                  )
+                  .reduce((a, v) => (a = a + v.balance), 0)
+            )}
           </BalanceLabel>
         </StyledAppBar>
         <SubTitle>{i18n.t("card.addCard.title")}</SubTitle>
@@ -586,6 +593,7 @@ const mapStateToProps = (state) => {
   return {
     balance: state.account.info.balance,
     wallet: state.wallet,
+    game: state.game,
   };
 };
 
