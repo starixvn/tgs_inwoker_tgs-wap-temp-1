@@ -37,6 +37,7 @@ import Details from "./Details";
 import Manual from "./Manual";
 import DetailsManual from "./DetailsManual";
 import config from "../../../config/config";
+import PopupAnnouncement from "../../Share/PopupAnnouncement";
 const UnderConstructionWrap = styled.div`
   background: url(${process.env.PUBLIC_URL +
     `/assets/images/wapp/underconstruction.png`})
@@ -216,6 +217,7 @@ class Deposit extends Component {
       methodcode: "",
       bankaccount: "",
       disabled: false,
+      openAnnouncement: config.features.DepositNotification,
     };
     this.state = { ...this.initialState };
   }
@@ -868,6 +870,16 @@ class Deposit extends Component {
     };
     return (
       <Container>
+        {config.features.DepositNotification && (
+          <PopupAnnouncement
+            open={this.state.openAnnouncement}
+            onClose={() => {
+              this.setState({ ...this.state, openAnnouncement: false });
+            }}
+            text={i18n.t("depositNotification.content")}
+            header={i18n.t("depositNotification.title")}
+          ></PopupAnnouncement>
+        )}
         <Header
           onBackClick={this.handleBackClick}
           title={i18n.t("deposit.title")}
