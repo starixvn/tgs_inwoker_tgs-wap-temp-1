@@ -91,6 +91,21 @@ const LanguageWrap = styled.div`
   font-size: 28px;
   margin-top: 20px;
 `;
+
+const DownloadButtonHolder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DownloadButton = styled(LanguageWrap)`
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+`;
 const LanguageLink = styled.span`
   text-align: center;
   ${(props) =>
@@ -126,6 +141,19 @@ const CustomInvitationSelect = styled.select`
 
 const CustomWrapper = styled.div`
   position: relative;
+`;
+
+const Icon = styled.div`
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  background-color: black;
+  mask: ${({ icon }) => {
+    return `url(${
+      process.env.PUBLIC_URL + `/assets/images/wapp/${icon}.svg`
+    }) no-repeat center /
+    contain;`;
+  }};
 `;
 
 class Login extends Component {
@@ -669,9 +697,12 @@ class Login extends Component {
                     })()}
                   </LanguageWrap>
                   {config.features.HaveDownloadFeature && (
-                    <LanguageWrap onClick={this.handleGoDownloadPage}>
-                      {i18n.t("wap.main.account.appDownload")}
-                    </LanguageWrap>
+                    <DownloadButtonHolder>
+                      <DownloadButton onClick={this.handleGoDownloadPage}>
+                        <Icon icon="icon-download" />
+                        {i18n.t("wap.main.account.appDownload")}
+                      </DownloadButton>
+                    </DownloadButtonHolder>
                   )}
                 </React.Fragment>
               );
@@ -830,6 +861,7 @@ class Login extends Component {
                     value={this.state.code}
                     onChange={this.handleCodeChange}
                     countdown={this.state.countdown}
+                    placeholder={i18n.t("common.msgEnterCode")}
                     handleGetCodeClick={this.handleGetCodeClick}
                   ></VerificationCode>
                   <ButtonWap
@@ -856,6 +888,7 @@ const mapStateToProps = (state) => {
   return {
     screenHeight: state.ui.screenHeight,
     token: state.account.token,
+    mobilePrefix: state.general.mobilePrefix,
     general: state.general,
   };
 };

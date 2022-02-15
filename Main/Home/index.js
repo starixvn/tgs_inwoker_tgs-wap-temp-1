@@ -7,14 +7,16 @@ import { withStyles } from "@material-ui/core/styles";
 import Slider from "./Slider";
 import DoubleMarquee from "react-marquee-double";
 import { withRouter } from "react-router-dom";
-import {accountAction} from "../../../../api-services/actions/accountAction";
-import {GameTypeEnum} from "../../../../api-services/utils/Enum";
-import {GameService} from "../../../../api-services/services/GameService";
+import { accountAction } from "../../../../api-services/actions/accountAction";
+import { GameTypeEnum } from "../../../../api-services/utils/Enum";
+import { GameService } from "../../../../api-services/services/GameService";
 
 import Common from "../../../../utils/Common";
 
 import i18n from "../../../../utils/i18n";
 import Marquee from "./Marquee";
+import config from "../../../../config/config";
+import OnlineUserDisplayer from "../../../Share/online-user-displayer";
 const StyledAppBar = withStyles({
   root: {
     height: "550px",
@@ -95,6 +97,10 @@ const WelcomeUsernameLabel = styled(WelcomeLabel)`
 `;
 
 const ProfileLink = styled(WelcomeLabel)`
+  float: right;
+`;
+
+const DisplayerContainer = styled.div`
   float: right;
 `;
 const BalanceContainer = styled.div`
@@ -308,7 +314,7 @@ class Home extends Component {
       this.setState({
         ...this.state,
         gameTypeListSorting: gameTypeListSorting,
-        selectedGameType: gameTypeListSorting[0],
+        selectedGameType: gameTypeListSorting[1],
       });
     }
   }
@@ -321,7 +327,7 @@ class Home extends Component {
       this.setState({
         ...this.state,
         gameTypeListSorting: gameTypeListSorting,
-        selectedGameType: gameTypeListSorting[0],
+        selectedGameType: gameTypeListSorting[1],
       });
     }
   }
@@ -536,9 +542,15 @@ class Home extends Component {
                   }
                 })()}
 
-                <ProfileLink onClick={() => this.props.navigate("/profile")}>
-                  {i18n.t("wap.main.home.profile.profile")}
-                </ProfileLink>
+                {config.features.OnlineUser ? (
+                  <DisplayerContainer>
+                    <OnlineUserDisplayer color="#fff" size="20px" />
+                  </DisplayerContainer>
+                ) : (
+                  <ProfileLink onClick={() => this.props.navigate("/profile")}>
+                    {i18n.t("wap.main.home.profile.profile")}
+                  </ProfileLink>
+                )}
               </ProfileContainerTop>
               <ProfileContainerBottom>
                 <BalanceContainer>
@@ -619,22 +631,29 @@ class Home extends Component {
           <GameSelectionContainer>
             <GameSelectionUL>
               {(() => {
-                return this.state.gameTypeListSorting.map((type, index) => {
-                  return (
-                    <GameSelectionLI
-                      style={
-                        i18n.language === "en-US"
-                          ? { fontSize: "29px", paddingTop: "6px" }
-                          : {}
-                      }
-                      key={index}
-                      selected={this.state.selectedGameType === type}
-                      onClick={() => this.handleGameTypeClick(type)}
-                    >
-                      {this.convertGameTypeToText(type)}
-                    </GameSelectionLI>
-                  );
-                });
+                return this.state.gameTypeListSorting
+                  .sort((a, b) => {
+                    var sortEsportFirst = [4];
+                    return (
+                      sortEsportFirst.indexOf(b) - sortEsportFirst.indexOf(a)
+                    );
+                  })
+                  .map((type, index) => {
+                    return (
+                      <GameSelectionLI
+                        style={
+                          i18n.language === "en-US"
+                            ? { fontSize: "29px", paddingTop: "6px" }
+                            : {}
+                        }
+                        key={index}
+                        selected={this.state.selectedGameType === type}
+                        onClick={() => this.handleGameTypeClick(type)}
+                      >
+                        {this.convertGameTypeToText(type)}
+                      </GameSelectionLI>
+                    );
+                  });
               })()}
             </GameSelectionUL>
           </GameSelectionContainer>
@@ -648,6 +667,13 @@ class Home extends Component {
                 .filter((a) => displayGameType.indexOf(a.type) >= 0)
                 .sort(function (a, b) {
                   return a.type - b.type;
+                })
+                .sort((a, b) => {
+                  var sortEsportFirst = [4];
+                  return (
+                    sortEsportFirst.indexOf(b.type) -
+                    sortEsportFirst.indexOf(a.type)
+                  );
                 })
                 .map((row, index) => {
                   var jsx = (
