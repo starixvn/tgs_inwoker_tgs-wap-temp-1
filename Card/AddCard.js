@@ -300,17 +300,17 @@ class AddCard extends Component {
   render() {
     const bankList = [
       "กสิกรไทย (Kasikorn Bank- KKR)",
-      "ไทยพาณิชย์ (Siam Commercial Bank - SCB )",
-      "กรุงไทย (KrungThai Bank - KTB )",
-      "กรุงเทพ (Bankok Bank - BBL )",
-      "ออมสิน (Government Savings Bank - GSB )",
-      "ทหารไทยธนาชาต (TMBThanachart Bank - TTB )",
-      "กรุงศรี (Bank of Ayudhya - KrungSri )",
-      "ธ.ก.ส( Bank for Agriculture and Agricultural Cooperatives - BAAC )",
-      "ยูโอบี ( United Overseas Bank - UOB )",
-      "ซีไอเอ็มบีไทย ( CIMB THAI - CIMB )",
-      "เกียรตินาคินภทัร ( Kiatnakin Phatra Bank - KKP )",
-      "อาคารสงเคราะห์( Government Housing Bank - GH )",
+      "ไทยพาณิชย์ (Siam Commercial Bank - SCB)",
+      "กรุงไทย (KrungThai Bank - KTB)",
+      "กรุงเทพ (Bankok Bank - BBL)",
+      "ออมสิน (Government Savings Bank - GSB)",
+      "ทหารไทยธนาชาต (TMBThanachart Bank - TTB)",
+      "กรุงศรี (Bank of Ayudhya - KrungSri)",
+      "ธ.ก.ส (Bank for Agriculture and Agricultural Cooperatives - BAAC)",
+      "ยูโอบี (United Overseas Bank - UOB)",
+      "ซีไอเอ็มบีไทย (CIMB THAI - CIMB)",
+      "เกียรตินาคินภทัร (Kiatnakin Phatra Bank - KKP)",
+      "อาคารสงเคราะห์ (Government Housing Bank - GH)",
     ];
 
     return (
