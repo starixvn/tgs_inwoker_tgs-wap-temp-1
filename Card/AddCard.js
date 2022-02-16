@@ -374,29 +374,27 @@ class AddCard extends Component {
           ) {
             return (
               <React.Fragment>
-                {this.state.channelList.length > 0 &&
-                  this.state.channelList[this.state.selectedChannelIndex]
-                    .channelcode === "CustomBank" && (
-                    <Textbox
-                      style={{ margin: "20px auto 20px auto" }}
-                      value={this.state.bankName}
-                      onChange={this.handleBankNameChange}
-                      type={"text"}
-                      onClick={() =>
-                        this.setState({ ...this.state, bankNameOpen: true })
-                      }
-                      placeholder={
-                        config.features.AddCard_DisplayFPS
-                          ? i18n.t("hk28.card.addCard.msgEnterBankName")
-                          : i18n.t("card.addCard.msgEnterBankName")
-                      }
-                      label={
-                        config.features.AddCard_DisplayFPS
-                          ? i18n.t("hk28.card.addCard.BankName")
-                          : i18n.t("card.addCard.BankName")
-                      }
-                    ></Textbox>
-                  )}
+                {this.state.channelList.length > 0 && (
+                  <Textbox
+                    style={{ margin: "20px auto 20px auto" }}
+                    value={this.state.bankName}
+                    onChange={this.handleBankNameChange}
+                    type={"text"}
+                    onClick={() =>
+                      this.setState({ ...this.state, bankNameOpen: true })
+                    }
+                    placeholder={
+                      config.features.AddCard_DisplayFPS
+                        ? i18n.t("hk28.card.addCard.msgEnterBankName")
+                        : i18n.t("card.addCard.msgEnterBankName")
+                    }
+                    label={
+                      config.features.AddCard_DisplayFPS
+                        ? i18n.t("hk28.card.addCard.BankName")
+                        : i18n.t("card.addCard.BankName")
+                    }
+                  ></Textbox>
+                )}
                 {(() => {
                   if (config.features.AddCard_BankBranch) {
                     return (
