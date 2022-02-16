@@ -380,6 +380,7 @@ class AddCard extends Component {
                     value={this.state.bankName}
                     onChange={this.handleBankNameChange}
                     type={"text"}
+                    disabled={config.features.AddCard_BankDropdown}
                     onClick={() =>
                       this.setState({ ...this.state, bankNameOpen: true })
                     }
@@ -452,8 +453,16 @@ class AddCard extends Component {
                 });
               }}
               type={"text"}
-              placeholder={i18n.t("profile.nameVerify.msgPlsEnterName")}
-              label={i18n.t("profile.nameVerify.title")}
+              placeholder={
+                config.features.AddCard_InputAddFPS
+                  ? i18n.t("custom.addcard.msgPlsEnterName")
+                  : i18n.t("profile.nameVerify.msgPlsEnterName")
+              }
+              label={
+                config.features.AddCard_InputAddFPS
+                  ? i18n.t("custom.addcard.name")
+                  : i18n.t("profile.nameVerify.title")
+              }
             ></Textbox>
             <Textbox
               style={{ margin: "20px auto 20px auto" }}
@@ -468,12 +477,16 @@ class AddCard extends Component {
               }}
               type={"text"}
               placeholder={
-                config.features.AddCard_DisplayFPS
+                config.features.AddCard_InputAddFPS
+                  ? i18n.t("custom.addcard.msgEnterPhone")
+                  : config.features.AddCard_DisplayFPS
                   ? i18n.t("bet28.msgEnterPhone")
                   : i18n.t("common.msgEnterPhone")
               }
               label={
-                config.features.AddCard_DisplayFPS
+                config.features.AddCard_InputAddFPS
+                  ? i18n.t("custom.addcard.phoneNumber")
+                  : config.features.AddCard_DisplayFPS
                   ? i18n.t("bet28.phoneNumber")
                   : i18n.t("common.phoneNumber")
               }
