@@ -380,6 +380,7 @@ class AddCard extends Component {
                     value={this.state.bankName}
                     onChange={this.handleBankNameChange}
                     type={"text"}
+                    disabled={config.features.AddCard_BankDropdown}
                     onClick={() =>
                       this.setState({ ...this.state, bankNameOpen: true })
                     }
