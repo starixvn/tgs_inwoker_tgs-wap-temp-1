@@ -115,6 +115,7 @@ class AddCard extends Component {
     bankAccountName: "",
     channelOpen: false,
     bankTypeOpen: false,
+    bankNameOpen: false,
     selectedChannelIndex: 0,
     selectedBankTypeIndex: 0,
     channelList: [],
@@ -288,7 +289,30 @@ class AddCard extends Component {
       channelOpen: false,
     });
   };
+
+  handleBankNameClick = (name) => {
+    this.setState({
+      ...this.state,
+      bankName: name,
+      bankNameOpen: false,
+    });
+  };
   render() {
+    const bankList = [
+      "กสิกรไทย (Kasikorn Bank- KKR)",
+      "ไทยพาณิชย์ (Siam Commercial Bank - SCB )",
+      "กรุงไทย (KrungThai Bank - KTB )",
+      "กรุงเทพ (Bankok Bank - BBL )",
+      "ออมสิน (Government Savings Bank - GSB )",
+      "ทหารไทยธนาชาต (TMBThanachart Bank - TTB )",
+      "กรุงศรี (Bank of Ayudhya - KrungSri )",
+      "ธ.ก.ส( Bank for Agriculture and Agricultural Cooperatives - BAAC )",
+      "ยูโอบี ( United Overseas Bank - UOB )",
+      "ซีไอเอ็มบีไทย ( CIMB THAI - CIMB )",
+      "เกียรตินาคินภทัร ( Kiatnakin Phatra Bank - KKP )",
+      "อาคารสงเคราะห์( Government Housing Bank - GH )",
+    ];
+
     return (
       <Container>
         <StyledAppBar>
@@ -324,21 +348,24 @@ class AddCard extends Component {
           label={i18n.t("common.withdrawalBankType")}
           disabled={true}
         ></Textbox>
-        <Textbox
-          style={{ margin: "20px auto 20px auto" }}
-          value={
-            this.state.channelList.length > 0
-              ? i18n.t(
-                  this.state.channelList[this.state.selectedChannelIndex]
-                    .channelname
-                )
-              : ""
-          }
-          onClick={() => this.setState({ ...this.state, channelOpen: true })}
-          type={"text"}
-          label={i18n.t("common.withdrawalChannel")}
-          disabled={true}
-        ></Textbox>
+        {!config.features.AddCard_HideChannel && (
+          <Textbox
+            style={{ margin: "20px auto 20px auto" }}
+            value={
+              this.state.channelList.length > 0
+                ? i18n.t(
+                    this.state.channelList[this.state.selectedChannelIndex]
+                      .channelname
+                  )
+                : ""
+            }
+            onClick={() => this.setState({ ...this.state, channelOpen: true })}
+            type={"text"}
+            label={i18n.t("common.withdrawalChannel")}
+            disabled={true}
+          ></Textbox>
+        )}
+
         {(() => {
           if (
             this.props.wallet.withdrawalList.length > 0 &&
@@ -355,6 +382,9 @@ class AddCard extends Component {
                       value={this.state.bankName}
                       onChange={this.handleBankNameChange}
                       type={"text"}
+                      onClick={() =>
+                        this.setState({ ...this.state, bankNameOpen: true })
+                      }
                       placeholder={
                         config.features.AddCard_DisplayFPS
                           ? i18n.t("hk28.card.addCard.msgEnterBankName")
@@ -571,6 +601,22 @@ class AddCard extends Component {
                 <StyledListItemText
                   primary={i18n.t(item.channelname)}
                 ></StyledListItemText>
+              </StyledListItem>
+            );
+          })}
+        </StyledModalBank>
+        <StyledModalBank
+          onClose={() => this.setState({ ...this.state, bankNameOpen: false })}
+          open={config.features.AddCard_BankDropdown && this.state.bankNameOpen}
+        >
+          {bankList.map((item, index) => {
+            return (
+              <StyledListItem
+                button
+                key={index}
+                onClick={() => this.handleBankNameClick(item)}
+              >
+                <StyledListItemText primary={i18n.t(item)}></StyledListItemText>
               </StyledListItem>
             );
           })}
