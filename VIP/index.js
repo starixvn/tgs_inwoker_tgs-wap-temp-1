@@ -96,6 +96,12 @@ const VIP = (props) => {
   const handleBackClick = () => {
     props.appHistory.goBack();
   };
+
+  var vipBenefitList =
+    vipBenefit.items &&
+    vipBenefit.items.sort((a, b) => {
+      return a.level < b.level ? -1 : a.level > b.level ? 1 : 0;
+    });
   return (
     <Container>
       <Header title="VIP" onBackClick={handleBackClick}></Header>
@@ -104,7 +110,7 @@ const VIP = (props) => {
         <Contents>
           {vipBenefit.items && vipBenefit.items.length > 0 && (
             <VipEmblemHolder>
-              {vipBenefit.items.map((data, index) => {
+              {vipBenefitList.map((data, index) => {
                 return (
                   <VipEmlemContainer
                     key={index}
@@ -128,7 +134,7 @@ const VIP = (props) => {
           )}
           {vipBenefit.items && vipBenefit.items.length > 0 && (
             <div>
-              {vipBenefit.items.map((data, index) => {
+              {vipBenefitList.map((data, index) => {
                 return (
                   <ContentDisplayer show={index === display}>
                     <CustomTable>
