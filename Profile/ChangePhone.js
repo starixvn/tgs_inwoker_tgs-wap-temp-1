@@ -5,8 +5,8 @@ import { withRouter } from "react-router-dom";
 import TextboxWithButton from "../Share/TextboxWithButton";
 import Step from "../Share/Step";
 import BaseProfile from "./BaseProfile";
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {AccountService} from "../../../api-services/services/AccountService";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { AccountService } from "../../../api-services/services/AccountService";
 
 import i18n from "../../../utils/i18n";
 import styled from "styled-components";
@@ -99,8 +99,10 @@ class ChangePhone extends BaseProfile {
   };
   handleGetCodeClick = (e) => {
     if (this.state.countdownToken > 0) return;
-    if (!this.state.phone)
-      return this.showErrorMessage(i18n.t("common.msgEnterPhone"));
+    var expr = /^[0-9]{8,10}$/;
+    if (!expr.test(this.state.phone)) {
+      return this.showErrorMessage(i18n.t("common.noReachMin"));
+    }
     this.showLoading(true);
     AccountService.VerifyPhone(this.state.phone, this.state.areacode)
       .then((response) => {

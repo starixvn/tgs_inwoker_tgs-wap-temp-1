@@ -495,6 +495,11 @@ class Login extends Component {
         return;
       }
 
+      var expr = /^[0-9]{8,10}$/;
+      if (!expr.test(phone)) {
+        return this.props.alert("", i18n.t("common.noReachMin"));
+      }
+
       AccountService.Activation(username, password, areacode, phone).then(
         async (response) => {
           if (response.IsSuccess) {

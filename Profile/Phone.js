@@ -4,8 +4,8 @@ import { withRouter } from "react-router-dom";
 import Textbox from "../Share/Textbox";
 import TextboxWithButton from "../Share/TextboxWithButton";
 import BaseProfile from "./BaseProfile";
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {AccountService} from "../../../api-services/services/AccountService";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { AccountService } from "../../../api-services/services/AccountService";
 import styled from "styled-components";
 import BottomNote from "../Share/BottomNote";
 
@@ -108,9 +108,13 @@ class Phone extends BaseProfile {
     }
   };
   handleGetCodeClick = (e) => {
+    var expr = /^[0-9]{8,10}$/;
     if (this.state.countdownToken > 0) return;
-    if (!this.state.phone)
-      return this.showErrorMessage(i18n.t("common.msgEnterPhone"));
+
+    if (!expr.test(this.state.phone)) {
+      return this.showErrorMessage(i18n.t("common.noReachMin"));
+    }
+
     this.showLoading(true);
     AccountService.VerifyPhone(this.state.phone, this.state.areacode)
       .then((response) => {
