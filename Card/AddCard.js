@@ -242,8 +242,9 @@ class AddCard extends Component {
         this.props.alert("", i18n.t("profile.nameVerify.msgPlsEnterName"));
         return;
       }
-      if (this.state.phone === "") {
-        this.props.alert("", i18n.t("common.msgEnterPhone"));
+      var expr = /^[0-9]{8,10}$/;
+      if (!expr.test(this.state.phone)) {
+        this.props.alert("", i18n.t("common.noReachMin"));
         return;
       }
       detail = {
