@@ -136,6 +136,9 @@ class NameVerify extends BaseProfile {
     this.onTextChanged();
   };
   handleSubmitClicked = () => {
+    if (config.features.ICVerificationUpload && this.state.icUpload === "") {
+      return this.props.alert("", i18n.t("deposit.msgPlsSelectFile"));
+    }
     const name = this.state.name || "";
     const ic = this.state.ic || "";
     this.showLoading(true);
@@ -163,17 +166,13 @@ class NameVerify extends BaseProfile {
         !fileName.endsWith(".png") &&
         !fileName.endsWith(".tiff")
       ) {
-        this.props.enqueueSnackbar(i18n.t("deposit.msgInvalidFileType"), {
-          variant: "error",
-        });
+        this.props.alert("", i18n.t("deposit.msgInvalidFileType"));
         e.target.value = null;
         return false;
       }
       const fileSize = Math.round(files[0].size / 1024);
       if (fileSize > 2048) {
-        this.props.enqueueSnackbar(i18n.t("deposit.msgInvalidFileSize"), {
-          variant: "error",
-        });
+        this.props.alert("", i18n.t("deposit.msgInvalidFileSize"));
         e.target.value = null;
       } else {
         this.setState({
