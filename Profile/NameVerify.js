@@ -120,7 +120,7 @@ class NameVerify extends BaseProfile {
         this.props.account.info.member_name !== "" &&
         this.props.account.info.member_name !== null
       ) {
-        check_pass_account = true;
+        check_pass_account = this.props.account.info.check_pass_account;
       }
     } else {
       check_pass_account = this.props.account.info.check_pass_account;
