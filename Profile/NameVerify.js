@@ -189,7 +189,9 @@ class NameVerify extends BaseProfile {
       <React.Fragment>
         <Textbox
           style={{ margin: "50px auto 20px auto" }}
-          value={this.state.name}
+          value={
+            this.props.account.info.check_pass_account ? this.state.name : ""
+          }
           onChange={this.handleChangeName}
           placeholder={
             config.features.Profile_CustomIdentityPageTranslation
