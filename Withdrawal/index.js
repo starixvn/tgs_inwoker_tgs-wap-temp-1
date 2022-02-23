@@ -10,9 +10,9 @@ import Button from "../../Wap/Share/Button";
 
 import Textbox from "../../Wap/Share/Textbox";
 import Common from "../../../utils/Common";
-import {walletAction} from "../../../api-services/actions/walletAction";
-import {WalletService} from "../../../api-services/services/WalletService";
-import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
+import { walletAction } from "../../../api-services/actions/walletAction";
+import { WalletService } from "../../../api-services/services/WalletService";
+import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 
 import Loading from "../../Wap/Share/Loading";
 
@@ -22,6 +22,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import i18n from "../../../utils/i18n";
 import Slide from "@material-ui/core/Slide";
 import config from "../../../config/config";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -278,7 +279,22 @@ class Withdrawal extends Component {
       if (this.props.wallet.withdrawalResult.IsSuccess) {
         this.props.resetResult();
         this.props.getBalanceList();
-        this.props.alert("", i18n.t("withdrawal.msgSuccess"));
+        this.props.alert(
+          "",
+          i18n.t("withdrawal.msgSuccess"),
+          !this.props.account.info.check_pass_account && (
+            <div
+              style={{ textAlign: "center", marginTop: 10 }}
+              onClick={() => {
+                this.props.appHistory.push({
+                  pathname: "/" + i18n.language + "/profile/name",
+                });
+              }}
+            >
+              {i18n.t("verified.goVerify")}
+            </div>
+          )
+        );
         this.setState({
           ...this.initialState,
         });

@@ -442,6 +442,7 @@ class Wap extends Component {
     message: "",
     loading: true,
     openAnnouncement: true,
+    action: "",
   };
   GetSupportUrl = (userid, name, question, email) => {
     var newURL = this.props.general.livechat
@@ -693,12 +694,13 @@ class Wap extends Component {
 
     AppHistory.push(page);
   };
-  handleAlert = (title, message) => {
+  handleAlert = (title, message, action) => {
     this.setState({
       ...this.state,
       title: title,
       message: message,
       open: true,
+      action: action,
     });
   };
   handlePopup = (url) => {
@@ -886,13 +888,24 @@ class Wap extends Component {
                 );
               } else {
                 return (
-                  <ButtonConfirm
-                    onClick={() =>
-                      this.setState({ ...this.state, open: false })
-                    }
-                  >
-                    {i18n.t("common.confirm")}
-                  </ButtonConfirm>
+                  <div>
+                    <ButtonConfirm
+                      onClick={() =>
+                        this.setState({ ...this.state, open: false })
+                      }
+                    >
+                      {i18n.t("common.confirm")}
+                    </ButtonConfirm>
+                    {this.state.action && (
+                      <div
+                        onClick={() =>
+                          this.setState({ ...this.state, open: false })
+                        }
+                      >
+                        {this.state.action}
+                      </div>
+                    )}
+                  </div>
                 );
               }
             })()}

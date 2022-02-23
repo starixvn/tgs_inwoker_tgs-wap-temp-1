@@ -143,7 +143,11 @@ class Profile extends Component {
                 () => {
                   this.handleNavigate("/profile/name");
                 },
-                this.props.account.info.member_name
+                this.props.account.info.member_name +
+                  (this.props.account.info.member_name &&
+                  this.props.account.info.check_pass_account
+                    ? "(" + i18n.t("verified.yes") + ")"
+                    : "(" + i18n.t("verified.no") + ")")
               )}
 
             {/* {ContentItem(
