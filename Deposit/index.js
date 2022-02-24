@@ -605,14 +605,21 @@ class Deposit extends Component {
                         style={{ margin: "20px auto 20px auto" }}
                         type={"text"}
                         placeholder={
-                          config.features.Deposit_EnglishName
+                          config.features.Deposit_CustomBankNameTranslation
+                            ? i18n.t("mgm.msgPlsEnterAccount")
+                            : config.features.Deposit_EnglishName
                             ? i18n.t("bet28.msgEnterBankAccountName")
                             : i18n.t("deposit.msgPlsEnterAccount")
                         }
                         label={
-                          config.features.Deposit_EnglishName
+                          (config.features.Deposit_CustomBankNameTranslation
+                            ? i18n.t("mgm.msgPlsEnterAccount")
+                            : config.features.Deposit_EnglishName
                             ? i18n.t("bet28.BankAccountName")
-                            : i18n.t("deposit.msgPlsEnterAccount")
+                            : i18n.t("deposit.msgPlsEnterAccount")) +
+                          (config.features.Deposit_AddTips
+                            ? " *" + i18n.t("mgm.depositTips")
+                            : "")
                         }
                         value={this.state.account}
                         onChange={(e) => {

@@ -242,8 +242,9 @@ class AddCard extends Component {
         this.props.alert("", i18n.t("profile.nameVerify.msgPlsEnterName"));
         return;
       }
-      if (this.state.phone === "") {
-        this.props.alert("", i18n.t("common.msgEnterPhone"));
+      var expr = /^[0-9]{8,10}$/;
+      if (!expr.test(this.state.phone)) {
+        this.props.alert("", i18n.t("common.noReachMin"));
         return;
       }
       detail = {
@@ -514,12 +515,16 @@ class AddCard extends Component {
               }}
               type={"text"}
               placeholder={
-                config.features.AddCard_DisplayFPS
+                config.features.AddCard_DisplayGCash
+                  ? i18n.t("piso.msgEnterWithdrawalNumber")
+                  : config.features.AddCard_DisplayFPS
                   ? i18n.t("hk28.msgEnterWithdrawalNumber")
                   : i18n.t("common.msgEnterWithdrawalNumber")
               }
               label={
-                config.features.AddCard_DisplayFPS
+                config.features.AddCard_DisplayGCash
+                  ? i18n.t("piso.withdrawalNumber")
+                  : config.features.AddCard_DisplayFPS
                   ? i18n.t("hk28.withdrawalNumber")
                   : i18n.t("common.withdrawalNumber")
               }

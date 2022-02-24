@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
-import {accountAction} from "../../../../api-services/actions/accountAction";
-import {walletAction} from "../../../../api-services/actions/walletAction";
+import { accountAction } from "../../../../api-services/actions/accountAction";
+import { walletAction } from "../../../../api-services/actions/walletAction";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -432,6 +432,12 @@ class My extends Component {
             onClick={() => this.props.navigate("/setting/language")}
           >
             {i18n.t("common.language")}
+          </ListItem>
+          <ListItem
+            icon={process.env.PUBLIC_URL + `/assets/images/wapp/icon-vip.svg`}
+            onClick={() => this.props.navigate("/vip")}
+          >
+            VIP
           </ListItem>
           {config.features.HaveDownloadFeature && (
             <ListItem

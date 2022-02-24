@@ -191,10 +191,21 @@ class Login extends Component {
       this.props.match.params.playername || this.props.match.params.promotionid
         ? true
         : false,
+    invitation: {},
   };
   componentDidMount() {
     const promotionId = this.props.match.params.promotionid;
     const promotionChannelId = this.props.match.params.promotionchannelid;
+
+    this.props.getInvitationCode().then((result) => {
+      if (result.IsSuccess) {
+        this.setState({
+          ...this.state,
+          invitation: result,
+        });
+      }
+    });
+
     if (!isNaN(promotionId) && !isNaN(promotionChannelId)) {
       GeneralService.AffiliateClick(promotionId, promotionChannelId);
     }
@@ -233,7 +244,18 @@ class Login extends Component {
       }
     }
   }
-  componentDidUpdate() {}
+  componentDidUpdate(nextProps, prevState) {
+    if (prevState.invitation !== this.state.invitation) {
+      if (this.state.invitation.data !== undefined) {
+        this.setState({
+          ...this.state,
+          promoteType: "a",
+          promoId: this.state.invitation.data.invitationCode,
+          prefill: true,
+        });
+      }
+    }
+  }
   handleChangeSelection = (index) => {
     if (this.state.selected !== index) {
       this.setState({
@@ -417,7 +439,7 @@ class Login extends Component {
     const code = this.state.code;
     const securityKey = this.state.securityKey;
 
-    var expr = /^[a-zA-Z0-9]{6,32}$/;
+    var expr = /^[a-zA-Z0-9]{6,16}$/;
     if (!expr.test(username)) {
       this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
       return;
@@ -462,7 +484,7 @@ class Login extends Component {
     const areacode = this.state.areaCode;
     const phone = this.state.phone;
     if (countdown <= 0) {
-      var expr = /^[a-zA-Z0-9]{6,32}$/;
+      var expr = /^[a-zA-Z0-9]{6,16}$/;
       if (!expr.test(username)) {
         this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
         return;
@@ -471,6 +493,11 @@ class Login extends Component {
       if (!expr.test(password)) {
         this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
         return;
+      }
+
+      var expr = /^[0-9]{8,10}$/;
+      if (!expr.test(phone)) {
+        return this.props.alert("", i18n.t("common.noReachMin"));
       }
 
       AccountService.Activation(username, password, areacode, phone).then(
@@ -512,7 +539,7 @@ class Login extends Component {
     const promotion_id = this.state.promoId;
     const upper = this.state.upper;
     const tnc = this.state.tnc;
-    var expr = /^[a-zA-Z0-9]{6,32}$/;
+    var expr = /^[a-zA-Z0-9]{6,16}$/;
     if (!expr.test(username)) {
       this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
       return;
@@ -751,41 +778,40 @@ class Login extends Component {
                     value={this.state.confirmPassword}
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
-                  {!this.props.general.brand.hasInvitationCode && (
-                    <CustomWrapper>
-                      <Textbox
-                        icon={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/icon-promo.png`
-                        }
-                        type={"text"}
-                        placeholder={i18n.t("wap.register.promoteCode")}
-                        style={{ marginTop: "20px" }}
-                        value={
-                          this.state.promoteType === "a"
-                            ? this.state.promoId
-                            : this.state.upper
-                        }
-                        onChange={
-                          this.state.promoteType === "a"
-                            ? this.handlePromoCodeChange
-                            : this.handleUpperChange
-                        }
+
+                  <CustomWrapper>
+                    <Textbox
+                      icon={
+                        process.env.PUBLIC_URL +
+                        `/assets/images/wapp/icon-promo.png`
+                      }
+                      type={"text"}
+                      placeholder={i18n.t("wap.register.promoteCode")}
+                      style={{ marginTop: "20px" }}
+                      value={
+                        this.state.promoteType === "a"
+                          ? this.state.promoId
+                          : this.state.upper
+                      }
+                      onChange={
+                        this.state.promoteType === "a"
+                          ? this.handlePromoCodeChange
+                          : this.handleUpperChange
+                      }
+                      disabled={this.state.prefill}
+                    ></Textbox>
+                    {config.features.HaveAffiliateFeature && (
+                      <CustomInvitationSelect
                         disabled={this.state.prefill}
-                      ></Textbox>
-                      {config.features.HaveAffiliateFeature && (
-                        <CustomInvitationSelect
-                          disabled={this.state.prefill}
-                          value={this.state.promoteType}
-                          selected={this.state.promoteType}
-                          onChange={this.handleSwitchType}
-                        >
-                          <option value="a">{i18n.t("usertype.agent")}</option>
-                          <option value="p">{i18n.t("usertype.player")}</option>
-                        </CustomInvitationSelect>
-                      )}
-                    </CustomWrapper>
-                  )}
+                        value={this.state.promoteType}
+                        selected={this.state.promoteType}
+                        onChange={this.handleSwitchType}
+                      >
+                        <option value="a">{i18n.t("usertype.agent")}</option>
+                        <option value="p">{i18n.t("usertype.player")}</option>
+                      </CustomInvitationSelect>
+                    )}
+                  </CustomWrapper>
 
                   <RememberPassContainer>
                     <CustomCheck
@@ -895,6 +921,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getInvitationCode: () => dispatch(generalAction.getInvitationCode()),
     closeModal: () => {
       dispatch({ type: "close" });
     },

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Header from "../Share/Header";
 
-import {AccountService} from "../../../api-services/services/AccountService";
+import { AccountService } from "../../../api-services/services/AccountService";
 
 import Textbox from "../../Wap/Share/Textbox";
 import TextboxWithButton from "../../Wap/Share/TextboxWithButton";
@@ -91,6 +91,10 @@ class ForgotPassword extends Component {
   };
   handleGetCodeClick = (e) => {
     if (this.state.countdownToken > 0) return;
+    var expr = /^[0-9]{8,10}$/;
+    if (!expr.test(this.state.phone)) {
+      return this.props.alert("", i18n.t("common.noReachMin"));
+    }
 
     if (config.features.SMSVerification) {
       AccountService.VerifyForgotPassword(
