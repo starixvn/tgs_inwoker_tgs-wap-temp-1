@@ -36,7 +36,7 @@ import PopupAnnouncement from "../Share/PopupAnnouncement";
 import Login from "./Login/index";
 import Main from "./Main/index";
 import Profile from "./Profile/index";
-import NameVefiry from "./Profile/NameVerify";
+import NameVerify from "./Profile/id-verification";
 import WeChat from "./Profile/WeChat";
 import QQ from "./Profile/QQ";
 import Email from "./Profile/Email";
@@ -186,7 +186,7 @@ const RouteMapping = [
   },
   {
     path: "/profile/name",
-    component: NameVefiry,
+    component: NameVerify,
     alert: true,
   },
   {
