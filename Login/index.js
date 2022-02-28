@@ -295,7 +295,15 @@ class Login extends Component {
 
       localStorage.removeItem("username");
     }
-    this.props.appHistory.replace("/" + i18n.language + "/main/home");
+    if (this.state.selected === 2) {
+      if (config.features.NavigateToAddCard) {
+        this.props.appHistory.replace("/" + i18n.language + "/card");
+      } else {
+        this.props.appHistory.replace("/" + i18n.language + "/main/home");
+      }
+    } else {
+      this.props.appHistory.replace("/" + i18n.language + "/main/home");
+    }
   };
   handleBackToHomeClick = () => {
     this.props.appHistory.replace("/" + i18n.language + "/main/home");
