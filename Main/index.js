@@ -15,6 +15,7 @@ import Home from "./Home/index";
 import i18n from "../../../utils/i18n";
 import Support from "./Support/index";
 import Download from "../Download";
+import config from "../../../config/config";
 
 const StyledBottomAppBar = withStyles({
   root: {
@@ -218,6 +219,7 @@ class Main extends Component {
           <Home
             navigate={this.props.navigate}
             appHistory={this.props.appHistory}
+            alert={this.props.alert}
           />
         );
       case "profile":
@@ -225,6 +227,7 @@ class Main extends Component {
           <My
             navigate={this.props.navigate}
             appHistory={this.props.appHistory}
+            alert={this.props.alert}
           />
         );
       case "support":
@@ -242,6 +245,7 @@ class Main extends Component {
           <Home
             navigate={this.props.navigate}
             appHistory={this.props.appHistory}
+            alert={this.props.alert}
           />
         );
     }
@@ -287,7 +291,22 @@ class Main extends Component {
               )}
 
               <Menuitem
-                onClick={() => this.handleChangeSelection("/withdrawal")}
+                onClick={() => {
+                  if (
+                    this.props.wallet.bankCardList != null &&
+                    this.props.wallet.bankCardList.length === 0 &&
+                    config.features.AddCard_NotAllowedEditDelete
+                  ) {
+                    this.props.alert(
+                      "",
+                      i18n.t("disabledAddCard.title") +
+                        " " +
+                        i18n.t("disabledAddCard.description")
+                    );
+                  } else {
+                    this.handleChangeSelection("/withdrawal");
+                  }
+                }}
               >
                 <MenuImage
                   img={
@@ -337,7 +356,19 @@ class Main extends Component {
                   {i18n.t("wap.main.menuDrawer.depositReport")}
                 </MenuLabel>
               </Menuitem>
-              <Menuitem onClick={() => this.handleChangeSelection("/card")}>
+              <Menuitem
+                onClick={() => {
+                  if (
+                    this.props.wallet.bankCardList != null &&
+                    this.props.wallet.bankCardList.length === 0 &&
+                    config.features.AddCard_NotAllowedEditDelete
+                  ) {
+                    this.props.alert("", i18n.t("card.toEdit"));
+                  } else {
+                    this.handleChangeSelection("/card");
+                  }
+                }}
+              >
                 <MenuImage
                   img={
                     process.env.PUBLIC_URL +
@@ -436,6 +467,7 @@ const mapStateToProps = (state) => {
   return {
     account: state.account,
     game: state.game,
+    wallet: state.wallet,
   };
 };
 

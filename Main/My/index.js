@@ -394,7 +394,17 @@ class My extends Component {
               process.env.PUBLIC_URL +
               `/assets/images/wapp/icon-profile-card.svg`
             }
-            onClick={() => this.props.navigate("/card")}
+            onClick={() => {
+              if (
+                this.props.wallet.bankCardList != null &&
+                this.props.wallet.bankCardList.length === 0 &&
+                config.features.AddCard_NotAllowedEditDelete
+              ) {
+                this.props.alert("", i18n.t("card.toEdit"));
+              } else {
+                this.props.navigate("/card");
+              }
+            }}
           >
             {i18n.t("wap.main.account.manageBank")}
           </ListItem>

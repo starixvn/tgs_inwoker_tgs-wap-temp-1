@@ -613,7 +613,22 @@ class Home extends Component {
                     )}
 
                     <WalletActionLI
-                      onClick={() => this.props.navigate("/withdrawal")}
+                      onClick={() => {
+                        if (
+                          this.props.wallet.bankCardList != null &&
+                          this.props.wallet.bankCardList.length === 0 &&
+                          config.features.AddCard_NotAllowedEditDelete
+                        ) {
+                          this.props.alert(
+                            "",
+                            i18n.t("disabledAddCard.title") +
+                              " " +
+                              i18n.t("disabledAddCard.description")
+                          );
+                        } else {
+                          this.props.navigate("/withdrawal");
+                        }
+                      }}
                     >
                       <WalletActionIcon
                         img={
