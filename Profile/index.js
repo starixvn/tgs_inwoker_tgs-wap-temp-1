@@ -134,7 +134,7 @@ class Profile extends Component {
     }
     if (currentFormStatus === 2 && hasSubmitted === true) {
       //有給表單id但是狀態是拒絕，也可以上傳
-      return (status = "no");
+      return (status = "rejected");
     }
     if (currentFormStatus === 0 && hasSubmitted === true) {
       //有給表單id但狀態沒驗證，不能上傳
