@@ -118,6 +118,31 @@ class Profile extends Component {
     if (value) return true;
     return false;
   }
+
+  getStatus = () => {
+    var currentFormStatus = this.props.account.info.identityformstatus;
+    var hasSubmitted = this.props.account.info.identityformid ? true : false;
+
+    var status = "";
+
+    if (currentFormStatus === 0 && hasSubmitted === false) {
+      //api沒給表單id ，表示可以上傳
+      return (status = "");
+    }
+    if (currentFormStatus === 1 && hasSubmitted === true) {
+      return (status = "yes");
+    }
+    if (currentFormStatus === 2 && hasSubmitted === true) {
+      //有給表單id但是狀態是拒絕，也可以上傳
+      return (status = "rejected");
+    }
+    if (currentFormStatus === 0 && hasSubmitted === true) {
+      //有給表單id但狀態沒驗證，不能上傳
+      return (status = "verifying");
+    }
+    return status;
+  };
+
   render() {
     return (
       <Container>
@@ -135,7 +160,7 @@ class Profile extends Component {
             {config.features.ICVerification &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-user.png`,
-                i18n.t("profile.nameVerify.title"),
+                i18n.t("profile.nameVerify.icNum"),
                 this.isConfigured(
                   this.props.account.info.member_name !== "" &&
                     this.props.account.info.member_name !== null
@@ -144,10 +169,9 @@ class Profile extends Component {
                   this.handleNavigate("/profile/name");
                 },
                 this.props.account.info.member_name +
-                  (this.props.account.info.member_name &&
-                  this.props.account.info.check_pass_account
-                    ? "(" + i18n.t("verified.yes") + ")"
-                    : "(" + i18n.t("verified.no") + ")")
+                  (this.props.account.info.member_name +
+                    this.props.account.info.check_pass_account &&
+                    "(" + i18n.t("verified." + this.getStatus()) + ")")
               )}
 
             {/* {ContentItem(

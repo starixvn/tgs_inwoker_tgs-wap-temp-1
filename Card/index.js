@@ -4,15 +4,17 @@ import styled from "styled-components";
 
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
-import {walletAction} from "../../../api-services/actions/walletAction";
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
+
+import { walletAction } from "../../../api-services/actions/walletAction";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 import MessageDialog from "../../Wap/Share/MessageDialog";
 import Loading from "../../Wap/Share/Loading";
 import Header from "../../Wap/Share/Header";
 import SwipeToDelete from "react-swipe-to-delete-component";
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
+import config from "../../../config/config";
 const Container = styled.div`
   width: 100%;
   padding-top: 170px;
@@ -132,6 +134,7 @@ class Card extends Component {
     // ) {
     //   this.props.appHistory.replace({
     //     pathname: '/' + i18n.language + '/profile/name',
+    //
     //     state: { from: 'card' }
     //   })
     // } else {
@@ -184,7 +187,17 @@ class Card extends Component {
     this.props.appHistory.goBack();
   };
   handleDeleteCard = (e) => {
-    this.props.deleteBankCard(e.item.id);
+    if (
+      this.props.wallet.bankCardList.length > 0 &&
+      (config.features.ChangesNotAllowed ||
+        config.features.AddCard_NotAllowedEditDelete)
+    ) {
+      this.props.alert("", i18n.t("card.toEdit"));
+
+      this.props.getBankCardList();
+    } else {
+      this.props.deleteBankCard(e.item.id);
+    }
   };
   render() {
     return (
@@ -230,7 +243,15 @@ class Card extends Component {
 
         <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
         <div className="clear"></div>
-        <EmptyCardItem onClick={() => this.props.navigate("/card/add")}>
+        <EmptyCardItem
+          onClick={() => {
+            this.props.wallet.bankCardList.length > 0 &&
+            (config.features.ChangesNotAllowed ||
+              config.features.AddCard_NotAllowedEditDelete)
+              ? this.props.alert("", i18n.t("card.toEdit"))
+              : this.props.navigate("/card/add");
+          }}
+        >
           <EmptyCardAdd></EmptyCardAdd>
           <EmptyCardTitle>{i18n.t("card.msgAddCard")}</EmptyCardTitle>
           <EmptyCardDesc>{i18n.t("card.msgAddCardDesc")}</EmptyCardDesc>
