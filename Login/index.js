@@ -247,12 +247,14 @@ class Login extends Component {
   componentDidUpdate(nextProps, prevState) {
     if (prevState.invitation !== this.state.invitation) {
       if (this.state.invitation.data !== undefined) {
-        this.setState({
-          ...this.state,
-          promoteType: "a",
-          promoId: this.state.invitation.data.invitationCode,
-          prefill: true,
-        });
+        if (this.state.invitation.data.invitationCode !== undefined) {
+          this.setState({
+            ...this.state,
+            promoteType: "a",
+            promoId: this.state.invitation.data.invitationCode,
+            prefill: true,
+          });
+        }
       }
     }
   }
