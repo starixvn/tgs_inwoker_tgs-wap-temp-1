@@ -41,22 +41,25 @@ class NameVerify extends BaseProfile {
         ...this.state,
         scene: "waiting-submit",
       });
-      console.log("waiting-submit");
     }
-    if (this.currentFormStatus === 1 && this.hasSubmitted === true) {
+    if (
+      (this.currentFormStatus === 1 && this.hasSubmitted === true) ||
+      this.currentFormStatus === 1
+    ) {
       this.setState({
         ...this.state,
         scene: "approved",
       });
-      console.log("approved");
     }
-    if (this.currentFormStatus === 2 && this.hasSubmitted === true) {
+    if (
+      (this.currentFormStatus === 2 && this.hasSubmitted === true) ||
+      this.currentFormStatus === 2
+    ) {
       //有給表單id但是狀態是拒絕，也可以上傳
       this.setState({
         ...this.state,
         scene: "rejected",
       });
-      console.log("rejected");
     }
     if (this.currentFormStatus === 0 && this.hasSubmitted === true) {
       //有給表單id但狀態沒驗證，不能上傳
@@ -64,7 +67,6 @@ class NameVerify extends BaseProfile {
         ...this.state,
         scene: "waiting-verification",
       });
-      console.log("waiting-verification");
     }
   }
   componentDidUpdate(preProps, prevState) {
