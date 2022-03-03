@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Header from "../Share/Header";
-import config from "../../../config/config";
-import i18n from "../../../utils/i18n";
 
+import i18n from "../../../utils/i18n";
+import config from "../../../config/config";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -79,15 +79,22 @@ const ContentItem = (
   title,
   isConfigured,
   onClickEvent,
-  configuredValue = i18n.t("profile.setted")
+  configuredValue = i18n.t("profile.setted"),
+  category
 ) => {
   var configureElement = isConfigured ? (
     <SettedLabel>{configuredValue}</SettedLabel>
   ) : (
     <NotSetLabel>{i18n.t("profile.notSet")}</NotSetLabel>
   );
+  var disable = false;
+  if (category === "member_phone") {
+    if (config.features.Profile_NotAllowChangePhone && isConfigured) {
+      disable = true;
+    }
+  }
   return (
-    <ItemContainer onClick={onClickEvent}>
+    <ItemContainer onClick={!disable && onClickEvent}>
       <ItemIconContainer>
         <ItemIcon icon={icon}></ItemIcon>
       </ItemIconContainer>
@@ -95,8 +102,7 @@ const ContentItem = (
         <ItemTitle>{title}</ItemTitle>
         {configureElement}
       </ItemContentContainer>
-
-      <BtnBack></BtnBack>
+      {!disable && <BtnBack></BtnBack>}
     </ItemContainer>
   );
 };
@@ -105,7 +111,7 @@ class Profile extends Component {
   state = {};
   componentDidMount() {
     if (this.props.account.token === null) {
-      this.props.appHistory.replace("/" + i18n.language + "/");
+      this.props.appHistory.replace("/" + i18n.language + "/login");
     }
   }
   handleBackClick = () => {
@@ -129,10 +135,16 @@ class Profile extends Component {
       //api沒給表單id ，表示可以上傳
       return (status = "");
     }
-    if (currentFormStatus === 1 && hasSubmitted === true) {
+    if (
+      (currentFormStatus === 1 && hasSubmitted === true) ||
+      currentFormStatus === 1
+    ) {
       return (status = "yes");
     }
-    if (currentFormStatus === 2 && hasSubmitted === true) {
+    if (
+      (currentFormStatus === 2 && hasSubmitted === true) ||
+      currentFormStatus === 2
+    ) {
       //有給表單id但是狀態是拒絕，也可以上傳
       return (status = "rejected");
     }
@@ -194,9 +206,9 @@ class Profile extends Component {
                 },
                 this.props.account.info.member_phone
                   ? this.props.account.info.member_phone.substring(0, 1) + "**"
-                  : ""
+                  : "",
+                "member_phone"
               )}
-
             {config.features.EmailVerification &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-email.png`,
@@ -251,26 +263,30 @@ class Profile extends Component {
             ""
           )}
 
-          {/* {ContentItem(
-            process.env.PUBLIC_URL + `/assets/images/wapp/icon-piggy.png`,
-            i18n.t('profile.withdrawalPassword.title'),
-            this.isConfigured(this.props.account.info.member_safe_password),
-            () => {
-              if (this.props.account.info.check_pass_email === false) {
-                this.props.alert(
-                  '',
-                  i18n.t('profile.msgPlsBindEmailAddress')
-                )
-                this.handleNavigate('/profile/email')
-              } else {
-                if (this.props.account.info.member_safe_password === 'set') {
-                  this.handleNavigate('/profile/changewithdrawalpassword')
-                } else {
-                  this.handleNavigate('/profile/withdrawalpassword')
+          {/* {config.brand !== 'HKJP' && config.brand !== 'GPI'
+            ? ContentItem(
+                process.env.PUBLIC_URL + `/assets/images/wapp/icon-piggy.png`,
+                i18n.t('profile.withdrawalPassword.title'),
+                this.isConfigured(this.props.account.info.member_safe_password),
+                () => {
+                  if (this.props.account.info.check_pass_email === false) {
+                    this.props.alert(
+                      '',
+                      i18n.t('profile.msgPlsBindEmailAddress')
+                    )
+                    this.handleNavigate('/profile/email')
+                  } else {
+                    if (
+                      this.props.account.info.member_safe_password === 'set'
+                    ) {
+                      this.handleNavigate('/profile/changewithdrawalpassword')
+                    } else {
+                      this.handleNavigate('/profile/withdrawalpassword')
+                    }
+                  }
                 }
-              }
-            }
-          )} */}
+              )
+            : null} */}
         </BlockContainer>
       </Container>
     );

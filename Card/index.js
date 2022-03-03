@@ -120,6 +120,12 @@ const EmptyCardAdd = styled.div`
   height: 170px;
   float: right;
 `;
+
+const DisableSwipe = styled.div`
+  pointer-events: ${({ disable }) => {
+    return disable ? "none" : "auto";
+  }};
+`;
 class Card extends Component {
   state = {
     loading: false,
@@ -223,39 +229,53 @@ class Card extends Component {
         </StyledAppBar>
         {this.props.wallet.bankCardList.map((row) => {
           return (
-            <SwipeToDelete
-              key={row.id}
-              item={row}
-              deleteSwipe={0.1}
-              onDelete={this.handleDeleteCard}
+            <DisableSwipe
+              disable={
+                config.features.AddCard_NotAllowedEditDelete ||
+                config.features.ChangesNotAllowed
+              }
             >
-              <CardItem>
-                <BankName>{row.banktype}</BankName>
-                <BankNumber>
-                  {row.detail.address ||
-                    row.detail.bankAccount ||
-                    row.detail.phone}
-                </BankNumber>
-              </CardItem>
-            </SwipeToDelete>
+              <SwipeToDelete
+                key={row.id}
+                item={row}
+                deleteSwipe={0.1}
+                onDelete={this.handleDeleteCard}
+              >
+                <CardItem>
+                  <BankName>{row.banktype}</BankName>
+                  <BankNumber>
+                    {row.detail.address ||
+                      row.detail.bankAccount ||
+                      row.detail.phone}
+                  </BankNumber>
+                </CardItem>
+              </SwipeToDelete>
+            </DisableSwipe>
           );
         })}
 
-        <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
-        <div className="clear"></div>
-        <EmptyCardItem
-          onClick={() => {
-            this.props.wallet.bankCardList.length > 0 &&
-            (config.features.ChangesNotAllowed ||
-              config.features.AddCard_NotAllowedEditDelete)
-              ? this.props.alert("", i18n.t("card.toEdit"))
-              : this.props.navigate("/card/add");
-          }}
-        >
-          <EmptyCardAdd></EmptyCardAdd>
-          <EmptyCardTitle>{i18n.t("card.msgAddCard")}</EmptyCardTitle>
-          <EmptyCardDesc>{i18n.t("card.msgAddCardDesc")}</EmptyCardDesc>
-        </EmptyCardItem>
+        {!(
+          config.features.AddCard_NotAllowedEditDelete ||
+          config.features.ChangesNotAllowed
+        ) && (
+          <>
+            <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
+            <div className="clear"></div>
+            <EmptyCardItem
+              onClick={() => {
+                this.props.wallet.bankCardList.length > 0 &&
+                (config.features.ChangesNotAllowed ||
+                  config.features.AddCard_NotAllowedEditDelete)
+                  ? this.props.alert("", i18n.t("card.toEdit"))
+                  : this.props.navigate("/card/add");
+              }}
+            >
+              <EmptyCardAdd></EmptyCardAdd>
+              <EmptyCardTitle>{i18n.t("card.msgAddCard")}</EmptyCardTitle>
+              <EmptyCardDesc>{i18n.t("card.msgAddCardDesc")}</EmptyCardDesc>
+            </EmptyCardItem>
+          </>
+        )}
         <MessageDialog
           onClose={() => this.handleCloseDialog()}
           open={this.state.showDialog}

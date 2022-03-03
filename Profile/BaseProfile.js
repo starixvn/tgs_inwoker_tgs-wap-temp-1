@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Header from "../Share/Header";
 import Loading from "../Share/Loading";
 import i18n from "../../../utils/i18n";
-import {UPDATE_INFO} from "../../../api-services/constant/actionType";
+import { UPDATE_INFO } from "../../../api-services/constant/actionType";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;

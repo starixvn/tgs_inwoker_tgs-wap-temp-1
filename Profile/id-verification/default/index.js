@@ -1,0 +1,139 @@
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import Textbox from "../../../Share/Textbox";
+import i18n from "../../../../../utils/i18n";
+import BottomNote from "../../../Share/BottomNote";
+import BaseProfile from "./../../BaseProfile";
+import styled from "styled-components";
+
+import { accountAction } from "../../../../../api-services/actions/accountAction";
+import { RESET_ACCOUNTRESULT } from "../../../../../api-services/constant/actionType";
+import config from "../../../../../config/config";
+import { AccountService } from "../../../../../api-services/services/AccountService";
+
+const CustomInput = styled.input`
+  font-size: 28px;
+  margin-top: 10px;
+  font-weight: 500;
+  border: 0;
+  width: 100%;
+  padding: 0;
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    color: #c3c3c3;
+  }
+  &:disabled {
+    background: #fff;
+    -webkit-text-fill-color: #000;
+    opacity: 1;
+  }
+`;
+
+const AnotherWrapper = styled.div`
+  width: 700px;
+  height: 170px;
+
+  box-shadow: 0 2px 6px 0 rgba(58, 58, 58, 0.2);
+  border: solid 1px #f3f3f3;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 40px 20px 0 20px;
+  margin: 20px auto;
+`;
+
+const InputWrapper = styled.div`
+  background: #fff;
+
+  width: 700px;
+  margin-top: 10px;
+  padding-right: 100px;
+  width: 100%;
+`;
+
+const CustomLabel = styled.div`
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 3px;
+  color: #212e31;
+`;
+
+class Default extends BaseProfile {
+  render() {
+    return (
+      <React.Fragment>
+        <Textbox
+          style={{ margin: "50px auto 20px auto" }}
+          value={this.props.name}
+          onChange={this.props.handleChangeName}
+          placeholder={
+            config.features.Profile_CustomIdentityPageTranslation
+              ? i18n.t("piso.profile.enterFullName")
+              : i18n.t("profile.nameVerify.title")
+          }
+          label={
+            config.features.Profile_CustomIdentityPageTranslation
+              ? i18n.t("piso.profile.fullName")
+              : i18n.t("profile.nameVerify.verifyName")
+          }
+          disabled={false}
+          maxLength={256}
+        ></Textbox>
+        {config.features.ICVerification && (
+          <Textbox
+            style={{ margin: "50px auto 20px auto" }}
+            value={this.props.ic}
+            onChange={this.props.handleChangeIC}
+            placeholder={
+              config.features.Profile_CustomIdentityPageTranslation
+                ? i18n.t("piso.profile.enterDocumentNumber")
+                : i18n.t("profile.nameVerify.msgEnterICNum")
+            }
+            label={
+              config.features.Profile_CustomIdentityPageTranslation
+                ? i18n.t("piso.profile.documentNumber")
+                : i18n.t("profile.nameVerify.icNum")
+            }
+            disabled={false}
+            maxLength={256}
+          ></Textbox>
+        )}
+
+        {config.features.ICVerificationUpload && (
+          <AnotherWrapper>
+            <CustomLabel>{i18n.t("common.upload")}</CustomLabel>
+            <InputWrapper style={{}}>
+              <CustomInput
+                type="file"
+                accept="image/jpg, image/jpeg, image/png, image/tiff"
+                onChange={this.props.handleFileChange}
+              ></CustomInput>
+            </InputWrapper>
+          </AnotherWrapper>
+        )}
+      </React.Fragment>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    account: state.account,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAccountProfile: () => dispatch(accountAction.getAccountProfile()),
+    getIDCardNo: () => dispatch(accountAction.getIDCardNo()),
+    updateMemberCardNo: (name, number) =>
+      dispatch(accountAction.updateMemberCardNo(name, number)),
+    resetResult: () =>
+      dispatch({
+        type: RESET_ACCOUNTRESULT,
+      }),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Default));
