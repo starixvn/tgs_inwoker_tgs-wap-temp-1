@@ -472,19 +472,25 @@ class Wap extends Component {
     Common.loadScript("/js/config.js", () => {
       Common.loadScript("/js/iovation.js", () => {});
     });
-    let promotionId = "";
 
-    if (this.props.match.path === "/:locale(zh-CN|zh-TW|en-US)/") {
-      const param = this.props.location.pathname.split("/");
+    const urlpath = this.props.location.pathname.split("/");
 
-      if (param.length === 4) {
-        if (param[2] === "a") {
-          promotionId = param[3] || "";
-        }
+    if (urlpath.length === 4) {
+      if (urlpath[2] === "a") {
+        localStorage.setItem("promotionId", urlpath[3] || "");
+        localStorage.setItem("upper", ""); //reset
+        localStorage.setItem("invitationtype", "a");
       }
+      if (urlpath[2] === "p") {
+        localStorage.setItem("upper", urlpath[3] || "");
+        localStorage.setItem("promotionId", ""); //reset
+        localStorage.setItem("invitationtype", "p");
+      }
+    } else {
+      localStorage.setItem("invitationtype", "");
+      localStorage.setItem("upper", ""); //reset
+      localStorage.setItem("promotionId", ""); //reset
     }
-
-    localStorage.setItem("promotionId", promotionId);
 
     window.addEventListener(
       "resize",

@@ -164,10 +164,17 @@ class Login extends Component {
     hideConfirmPassword: true,
     username: "",
     password: "",
-    withPromo: localStorage.getItem("promotionId") === "" ? false : true,
-    promoId: this.props.match.params.promotionid
-      ? this.props.match.params.promotionid
-      : localStorage.getItem("promotionId"),
+    withPromo:
+      config.affiliateId === "" &&
+      localStorage.getItem("promotionId") === "" &&
+      !localStorage.getItem("promotionId")
+        ? false
+        : true,
+    promoId:
+      config.affiliateId !== ""
+        ? config.affiliateId
+        : localStorage.getItem("promotionId"),
+
     promotionChannelId: localStorage.getItem("promotionChannelId"),
     withdrawalPassword: "",
     confirmWithdrawalPassword: "",
@@ -177,34 +184,29 @@ class Login extends Component {
     tnc: true,
     rememberMe: false,
     loading: false,
-    areaCode: "+852",
+    areaCode: config.features.PhonePrefix,
     code: "",
     countdown: 0,
     securityKey: "",
     phone: "",
     //TGS-357
-    upper: this.props.match.params.playername
-      ? this.props.match.params.playername
-      : "",
-    promoteType: this.props.match.params.promotionid ? "a" : "p",
+    upper: localStorage.getItem("upper"),
+    promoteType: localStorage.getItem("invitationtype"),
     prefill:
-      this.props.match.params.playername || this.props.match.params.promotionid
+      localStorage.getItem("upper") ||
+      localStorage.getItem("promotionId") ||
+      localStorage.getItem("invitationtype") !== ""
         ? true
         : false,
-    invitation: {},
   };
+
   componentDidMount() {
     const promotionId = this.props.match.params.promotionid;
     const promotionChannelId = this.props.match.params.promotionchannelid;
 
-    this.props.getInvitationCode().then((result) => {
-      if (result.IsSuccess) {
-        this.setState({
-          ...this.state,
-          invitation: result,
-        });
-      }
-    });
+    if (this.props.general.brand.hasInvitationCode) {
+      this.getInvitationCode();
+    }
 
     if (!isNaN(promotionId) && !isNaN(promotionChannelId)) {
       GeneralService.AffiliateClick(promotionId, promotionChannelId);
@@ -244,18 +246,25 @@ class Login extends Component {
       }
     }
   }
-  componentDidUpdate(nextProps, prevState) {
-    if (prevState.invitation !== this.state.invitation) {
-      if (this.state.invitation.data !== undefined) {
-        if (this.state.invitation.data.invitationCode !== undefined) {
-          this.setState({
-            ...this.state,
-            promoteType: "a",
-            promoId: this.state.invitation.data.invitationCode,
-            prefill: true,
-          });
-        }
+  getInvitationCode = () => {
+    this.props.getInvitationCode().then((result) => {
+      if (result.IsSuccess && result.data.invitationCode) {
+        this.setState({
+          ...this.state,
+          promoteType: "a",
+          promoId: result.data.invitationCode,
+          prefill: true,
+        });
       }
+    });
+  };
+  componentDidUpdate(preProps, prevState) {
+    if (
+      preProps.general.brand.hasInvitationCode !==
+        this.props.general.brand.hasInvitationCode &&
+      this.props.general.brand.hasInvitationCode == true
+    ) {
+      this.getInvitationCode();
     }
   }
   handleChangeSelection = (index) => {
@@ -270,11 +279,11 @@ class Login extends Component {
   handleLoginSuccess = (token) => {
     let urlParams = new URLSearchParams(this.props.location.search);
     if (urlParams.has("return_url")) {
-      const returnValue = urlParams.get("return_url");
-      if (returnValue) {
-        window.location.href =
-          returnValue + "?token=" + BlowFishEncryption.Encrypt(token);
-      }
+      // const returnValue = urlParams.get('return_url')
+      // if (returnValue) {
+      //   window.location.href =
+      //     returnValue + '?token=' + BlowFishEncryption.Encrypt(token)
+      // }
     }
     // this.props.getAccountInfo(token);
     // this.props.getAccountProfile(token, true);
@@ -507,7 +516,8 @@ class Login extends Component {
 
       var expr = /^[0-9]{8,10}$/;
       if (!expr.test(phone)) {
-        return this.props.alert("", i18n.t("common.noReachMin"));
+        this.props.alert("", i18n.t("common.noReachMin"));
+        return;
       }
 
       AccountService.Activation(username, password, areacode, phone).then(
@@ -864,7 +874,7 @@ class Login extends Component {
                     type={"text"}
                     placeholder={i18n.t("wap.register.username")}
                     style={{ marginTop: "60px" }}
-                    maxLength="32"
+                    maxLength="16"
                     value={this.state.username}
                     onChange={this.handleUsernameChange}
                   ></Textbox>
