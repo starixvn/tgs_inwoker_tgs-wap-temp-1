@@ -133,7 +133,7 @@ class Profile extends Component {
 
     if (currentFormStatus === 0 && hasSubmitted === false) {
       //api沒給表單id ，表示可以上傳
-      return (status = "");
+      return (status = "no");
     }
     if (
       (currentFormStatus === 1 && hasSubmitted === true) ||
