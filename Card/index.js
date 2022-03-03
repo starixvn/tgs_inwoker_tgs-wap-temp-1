@@ -120,6 +120,12 @@ const EmptyCardAdd = styled.div`
   height: 170px;
   float: right;
 `;
+
+const DisableSwipe = styled.div`
+  pointer-events: ${({ disable }) => {
+    return disable ? "none" : "auto";
+  }};
+`;
 class Card extends Component {
   state = {
     loading: false,
@@ -223,21 +229,28 @@ class Card extends Component {
         </StyledAppBar>
         {this.props.wallet.bankCardList.map((row) => {
           return (
-            <SwipeToDelete
-              key={row.id}
-              item={row}
-              deleteSwipe={0.1}
-              onDelete={this.handleDeleteCard}
+            <DisableSwipe
+              disable={
+                config.features.AddCard_NotAllowedEditDelete ||
+                config.features.ChangesNotAllowed
+              }
             >
-              <CardItem>
-                <BankName>{row.banktype}</BankName>
-                <BankNumber>
-                  {row.detail.address ||
-                    row.detail.bankAccount ||
-                    row.detail.phone}
-                </BankNumber>
-              </CardItem>
-            </SwipeToDelete>
+              <SwipeToDelete
+                key={row.id}
+                item={row}
+                deleteSwipe={0.1}
+                onDelete={this.handleDeleteCard}
+              >
+                <CardItem>
+                  <BankName>{row.banktype}</BankName>
+                  <BankNumber>
+                    {row.detail.address ||
+                      row.detail.bankAccount ||
+                      row.detail.phone}
+                  </BankNumber>
+                </CardItem>
+              </SwipeToDelete>
+            </DisableSwipe>
           );
         })}
 
