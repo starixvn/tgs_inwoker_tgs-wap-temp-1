@@ -241,21 +241,28 @@ class Card extends Component {
           );
         })}
 
-        <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
-        <div className="clear"></div>
-        <EmptyCardItem
-          onClick={() => {
-            this.props.wallet.bankCardList.length > 0 &&
-            (config.features.ChangesNotAllowed ||
-              config.features.AddCard_NotAllowedEditDelete)
-              ? this.props.alert("", i18n.t("card.toEdit"))
-              : this.props.navigate("/card/add");
-          }}
-        >
-          <EmptyCardAdd></EmptyCardAdd>
-          <EmptyCardTitle>{i18n.t("card.msgAddCard")}</EmptyCardTitle>
-          <EmptyCardDesc>{i18n.t("card.msgAddCardDesc")}</EmptyCardDesc>
-        </EmptyCardItem>
+        {!(
+          config.features.AddCard_NotAllowedEditDelete ||
+          config.features.ChangesNotAllowed
+        ) && (
+          <>
+            <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
+            <div className="clear"></div>
+            <EmptyCardItem
+              onClick={() => {
+                this.props.wallet.bankCardList.length > 0 &&
+                (config.features.ChangesNotAllowed ||
+                  config.features.AddCard_NotAllowedEditDelete)
+                  ? this.props.alert("", i18n.t("card.toEdit"))
+                  : this.props.navigate("/card/add");
+              }}
+            >
+              <EmptyCardAdd></EmptyCardAdd>
+              <EmptyCardTitle>{i18n.t("card.msgAddCard")}</EmptyCardTitle>
+              <EmptyCardDesc>{i18n.t("card.msgAddCardDesc")}</EmptyCardDesc>
+            </EmptyCardItem>
+          </>
+        )}
         <MessageDialog
           onClose={() => this.handleCloseDialog()}
           open={this.state.showDialog}
