@@ -453,6 +453,14 @@ class Deposit extends Component {
           this.state.depositPromotion
         );
       }
+      if (method.methodcode === "FPS") {
+        this.props.doFPSDeposit(
+          this.state.account,
+          this.state.amount.replace(/,/g, ""),
+          channel.id,
+          this.state.depositPromotion
+        );
+      }
       if (method.methodcode === "ThirdParty") {
         this.props.doThirdPartyDeposit(
           this.state.amount.replace(/,/g, ""),
@@ -972,6 +980,17 @@ const mapDispatchToProps = (dispatch) => {
     doBankDeposit: (account, amount, paymentid, promotionid, banktype) => {
       dispatch(
         walletAction.doBankDeposit(
+          account,
+          amount,
+          paymentid,
+          promotionid,
+          banktype
+        )
+      );
+    },
+    doFPSDeposit: (account, amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doFPSDeposit(
           account,
           amount,
           paymentid,
