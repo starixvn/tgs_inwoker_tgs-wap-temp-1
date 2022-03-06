@@ -215,6 +215,7 @@ class Deposit extends Component {
       depositDetail: "",
       channelname: "",
       methodcode: "",
+      name: "",
       bankaccount: "",
       disabled: false,
       openAnnouncement: config.features.DepositNotification,
@@ -447,6 +448,7 @@ class Deposit extends Component {
       // handle manual deposit
       if (method.methodcode === "BankTransfer") {
         this.props.doBankDeposit(
+          this.state.name,
           this.state.account,
           this.state.amount.replace(/,/g, ""),
           channel.id,
@@ -612,28 +614,15 @@ class Deposit extends Component {
                       <Textbox
                         style={{ margin: "20px auto 20px auto" }}
                         type={"text"}
-                        placeholder={
-                          config.features.Deposit_CustomBankNameTranslation
-                            ? i18n.t("mgm.msgPlsEnterAccount")
-                            : config.features.Deposit_EnglishName
-                            ? i18n.t("bet28.msgEnterBankAccountName")
-                            : i18n.t("deposit.msgPlsEnterAccount")
-                        }
-                        label={
-                          (config.features.Deposit_CustomBankNameTranslation
-                            ? i18n.t("mgm.msgPlsEnterAccount")
-                            : config.features.Deposit_EnglishName
-                            ? i18n.t("bet28.BankAccountName")
-                            : i18n.t("deposit.msgPlsEnterAccount")) +
-                          (config.features.Deposit_AddTips
-                            ? " *" + i18n.t("mgm.depositTips")
-                            : "")
-                        }
-                        value={this.state.account}
+                        placeholder={i18n.t(
+                          "profile.nameVerify.msgPlsEnterName"
+                        )}
+                        label={i18n.t("profile.nameVerify.msgPlsEnterName")}
+                        value={this.state.name}
                         onChange={(e) => {
                           this.setState({
                             ...this.state,
-                            account: e.target.value,
+                            name: e.target.value,
                           });
                         }}
                       ></Textbox>
@@ -641,6 +630,34 @@ class Deposit extends Component {
                   );
                 }
               })()}
+              <Textbox
+                style={{ margin: "20px auto 20px auto" }}
+                type={"text"}
+                placeholder={
+                  config.features.Deposit_CustomBankNameTranslation
+                    ? i18n.t("mgm.msgPlsEnterAccount")
+                    : config.features.Deposit_EnglishName
+                    ? i18n.t("bet28.msgEnterBankAccountName")
+                    : i18n.t("deposit.msgPlsEnterAccount")
+                }
+                label={
+                  (config.features.Deposit_CustomBankNameTranslation
+                    ? i18n.t("mgm.msgPlsEnterAccount")
+                    : config.features.Deposit_EnglishName
+                    ? i18n.t("bet28.BankAccountName")
+                    : i18n.t("deposit.msgPlsEnterAccount")) +
+                  (config.features.Deposit_AddTips
+                    ? " *" + i18n.t("mgm.depositTips")
+                    : "")
+                }
+                value={this.state.account}
+                onChange={(e) => {
+                  this.setState({
+                    ...this.state,
+                    account: e.target.value,
+                  });
+                }}
+              ></Textbox>
               <Textbox
                 style={{ margin: "20px auto 20px auto" }}
                 value={this.state.amount}
@@ -977,9 +994,17 @@ const mapDispatchToProps = (dispatch) => {
     doDepositUpload: (file, fileType, orderId) =>
       dispatch(walletAction.doManualDepositUpload(file, fileType, orderId)),
     getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
-    doBankDeposit: (account, amount, paymentid, promotionid, banktype) => {
+    doBankDeposit: (
+      name,
+      account,
+      amount,
+      paymentid,
+      promotionid,
+      banktype
+    ) => {
       dispatch(
         walletAction.doBankDeposit(
+          name,
           account,
           amount,
           paymentid,
