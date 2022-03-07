@@ -614,10 +614,13 @@ class Deposit extends Component {
                       <Textbox
                         style={{ margin: "20px auto 20px auto" }}
                         type={"text"}
-                        placeholder={i18n.t(
-                          "profile.nameVerify.msgPlsEnterName"
-                        )}
-                        label={i18n.t("profile.nameVerify.msgPlsEnterName")}
+                        placeholder={i18n.t("common.pleaseEnterAccountName")}
+                        label={
+                          i18n.t("common.pleaseEnterAccountName") +
+                          (config.features.Deposit_AddTips
+                            ? " *" + i18n.t("mgm.depositTips2")
+                            : "")
+                        }
                         value={this.state.name}
                         onChange={(e) => {
                           this.setState({
