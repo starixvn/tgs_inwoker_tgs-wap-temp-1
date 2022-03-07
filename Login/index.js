@@ -725,7 +725,10 @@ class Login extends Component {
                               <LanguageLink
                                 selected={i18n.language === lang.culturecode}
                                 onClick={() => {
-                                  window.location.href = `/${lang.culturecode}`;
+                                  i18n.changeLanguage(lang.culturecode);
+                                  this.props.appHistory.replace(
+                                    lang.culturecode
+                                  );
                                 }}
                               >
                                 {i18n.t("lang." + lang.culturecode)}
