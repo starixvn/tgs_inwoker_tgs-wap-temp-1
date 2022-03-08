@@ -599,6 +599,24 @@ class Deposit extends Component {
                   </CustomSelect>
                 </CustomFormControl>
               </CustomText>
+              <Textbox
+                style={{ margin: "20px auto 20px auto" }}
+                type={"text"}
+                placeholder={i18n.t("common.pleaseEnterAccountName")}
+                label={
+                  i18n.t("common.pleaseEnterAccountName") +
+                  (config.features.Deposit_AddTips
+                    ? " *" + i18n.t("mgm.depositTips")
+                    : "")
+                }
+                value={this.state.account}
+                onChange={(e) => {
+                  this.setState({
+                    ...this.state,
+                    account: e.target.value,
+                  });
+                }}
+              ></Textbox>
 
               {(() => {
                 if (
@@ -614,9 +632,19 @@ class Deposit extends Component {
                       <Textbox
                         style={{ margin: "20px auto 20px auto" }}
                         type={"text"}
-                        placeholder={i18n.t("common.pleaseEnterAccountName")}
+                        placeholder={
+                          config.features.Deposit_CustomBankNameTranslation
+                            ? i18n.t("mgm.msgPlsEnterAccount")
+                            : config.features.Deposit_EnglishName
+                            ? i18n.t("bet28.msgEnterBankAccountName")
+                            : i18n.t("deposit.msgPlsEnterAccount")
+                        }
                         label={
-                          i18n.t("common.pleaseEnterAccountName") +
+                          (config.features.Deposit_CustomBankNameTranslation
+                            ? i18n.t("mgm.msgPlsEnterAccount")
+                            : config.features.Deposit_EnglishName
+                            ? i18n.t("bet28.BankAccountName")
+                            : i18n.t("deposit.msgPlsEnterAccount")) +
                           (config.features.Deposit_AddTips
                             ? " *" + i18n.t("mgm.depositTips2")
                             : "")
@@ -633,34 +661,7 @@ class Deposit extends Component {
                   );
                 }
               })()}
-              <Textbox
-                style={{ margin: "20px auto 20px auto" }}
-                type={"text"}
-                placeholder={
-                  config.features.Deposit_CustomBankNameTranslation
-                    ? i18n.t("mgm.msgPlsEnterAccount")
-                    : config.features.Deposit_EnglishName
-                    ? i18n.t("bet28.msgEnterBankAccountName")
-                    : i18n.t("deposit.msgPlsEnterAccount")
-                }
-                label={
-                  (config.features.Deposit_CustomBankNameTranslation
-                    ? i18n.t("mgm.msgPlsEnterAccount")
-                    : config.features.Deposit_EnglishName
-                    ? i18n.t("bet28.BankAccountName")
-                    : i18n.t("deposit.msgPlsEnterAccount")) +
-                  (config.features.Deposit_AddTips
-                    ? " *" + i18n.t("mgm.depositTips")
-                    : "")
-                }
-                value={this.state.account}
-                onChange={(e) => {
-                  this.setState({
-                    ...this.state,
-                    account: e.target.value,
-                  });
-                }}
-              ></Textbox>
+
               <Textbox
                 style={{ margin: "20px auto 20px auto" }}
                 value={this.state.amount}
