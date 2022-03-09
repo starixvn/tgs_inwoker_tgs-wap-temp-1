@@ -191,7 +191,10 @@ class Login extends Component {
     phone: "",
     //TGS-357
     upper: localStorage.getItem("upper"),
-    promoteType: localStorage.getItem("invitationtype"),
+    promoteType:
+      localStorage.getItem("invitationtype") === ""
+        ? "a"
+        : localStorage.getItem("invitationtype"),
     prefill:
       localStorage.getItem("upper") ||
       localStorage.getItem("promotionId") ||
