@@ -606,7 +606,7 @@ class Deposit extends Component {
                 label={
                   i18n.t("common.pleaseEnterAccountName") +
                   (config.features.Deposit_AddTips
-                    ? " *" + i18n.t("mgm.depositTips")
+                    ? " *" + i18n.t("mgm.accountDepositTips")
                     : "")
                 }
                 value={this.state.account}
@@ -646,7 +646,7 @@ class Deposit extends Component {
                             ? i18n.t("bet28.BankAccountName")
                             : i18n.t("deposit.msgPlsEnterAccount")) +
                           (config.features.Deposit_AddTips
-                            ? " *" + i18n.t("mgm.depositTips2")
+                            ? " *" + i18n.t("mgm.nameaccountDepositTips")
                             : "")
                         }
                         value={this.state.name}
