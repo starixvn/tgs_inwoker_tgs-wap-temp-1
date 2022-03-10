@@ -702,11 +702,28 @@ class Login extends Component {
                       {i18n.t("wap.login.rememberMe")}
                     </RememberPassLabel>
                   </RememberPassContainer>
-                  <ForgotPassContainer onClick={this.handleForgotpasswordClick}>
-                    <ForgotPassLabel>
-                      {i18n.t("wap.login.forgetPass")}
-                    </ForgotPassLabel>
-                  </ForgotPassContainer>
+                  {(() => {
+                    var brand = [
+                      "HK28",
+                      "WLGHK",
+                      "21GEN",
+                      "MESS8",
+                      "PISO",
+                      "BUNNY",
+                    ];
+                    if (brand.indexOf(config.brand) <= 0) {
+                      return (
+                        <ForgotPassContainer
+                          onClick={this.handleForgotpasswordClick}
+                        >
+                          <ForgotPassLabel>
+                            {i18n.t("wap.login.forgetPass")}
+                          </ForgotPassLabel>
+                        </ForgotPassContainer>
+                      );
+                    }
+                  })()}
+
                   <LoginActionContainer>
                     <ButtonWap
                       name={i18n.t("common.login")}
