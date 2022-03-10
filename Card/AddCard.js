@@ -280,6 +280,7 @@ class AddCard extends Component {
     this.setState({
       ...this.state,
       selectedBankTypeIndex: index,
+      selectedChannelIndex: 0,
       bankTypeOpen: false,
     });
   };
