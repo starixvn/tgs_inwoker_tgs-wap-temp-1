@@ -327,11 +327,19 @@ class Withdrawal extends Component {
       }
     }
     const formatedamount = amount.toString().replace(/,/g, "");
-    this.props.doWithdraw(
-      formatedamount,
-      this.state.password,
-      this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id
-    );
+
+    if (
+      parseFloat(formatedamount) > parseFloat(this.props.wallet.mainBalance)
+    ) {
+      this.props.alert("", i18n.t("withdrawal.msgInsufficient"));
+    } else {
+      this.props.doWithdraw(
+        formatedamount,
+        this.state.password,
+        this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id
+      );
+    }
+
     setTimeout(() => {
       this.setState({ ...this.state, disabled: false });
     }, 1000);
