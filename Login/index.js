@@ -754,8 +754,8 @@ class Login extends Component {
                                 selected={i18n.language === lang.culturecode}
                                 onClick={() => {
                                   i18n.changeLanguage(lang.culturecode);
-                                  this.props.appHistory.replace(
-                                    lang.culturecode
+                                  this.props.appHistory.push(
+                                    `/${lang.culturecode}`
                                   );
                                   this.props.getBanner();
                                   this.props.getMarquee(lang.culturecode);
