@@ -247,6 +247,10 @@ class Withdrawal extends Component {
         });
       }
     });
+
+    if (this.props.wallet.withdrawalList.length === 0)
+      this.props.getWithdrawalChannel();
+
     if (
       this.props.account.info.check_pass_email === false &&
       config.features.EmailVerification
@@ -327,11 +331,29 @@ class Withdrawal extends Component {
       }
     }
     const formatedamount = amount.toString().replace(/,/g, "");
-    this.props.doWithdraw(
-      formatedamount,
-      this.state.password,
-      this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id
-    );
+
+    if (
+      parseFloat(formatedamount) > parseFloat(this.props.wallet.mainBalance)
+    ) {
+      this.props.alert("", i18n.t("withdrawal.msgInsufficient"));
+    } else if (
+      parseFloat(formatedamount) <
+      parseFloat(this.props.wallet.withdrawalMinLimit)
+    ) {
+      this.props.alert("", i18n.t("withdrawal.notReachMin"));
+    } else if (
+      parseFloat(formatedamount) >
+      parseFloat(this.props.wallet.withdrawalMaxLimit)
+    ) {
+      this.props.alert("", i18n.t("withdrawal.reachedMax"));
+    } else {
+      this.props.doWithdraw(
+        formatedamount,
+        this.state.password,
+        this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id
+      );
+    }
+
     setTimeout(() => {
       this.setState({ ...this.state, disabled: false });
     }, 1000);
@@ -567,6 +589,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     getBalanceList: (token) => dispatch(walletAction.getBalanceList()),
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
     addBilling: (card_id, amount) =>

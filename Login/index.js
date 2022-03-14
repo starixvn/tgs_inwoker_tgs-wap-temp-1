@@ -24,6 +24,8 @@ import Loading from "../../Wap/Share/Loading";
 import i18n from "../../../utils/i18n";
 import BlowFishEncryption from "../../../utils/BlowFishEncryption";
 import config from "../../../config/config";
+import { uiAction } from "../../../api-services/actions/uiAction";
+import ErrorSwitcher from "../../../utils/ErrorSwitcher";
 const Container = styled.div`
   z-index: 10;
   overflow-y: scroll;
@@ -752,8 +754,19 @@ class Login extends Component {
                                 selected={i18n.language === lang.culturecode}
                                 onClick={() => {
                                   i18n.changeLanguage(lang.culturecode);
-                                  this.props.appHistory.replace(
-                                    lang.culturecode
+                                  this.props.appHistory.push(
+                                    `/${lang.culturecode}`
+                                  );
+                                  this.props.getBanner();
+                                  this.props.getMarquee(lang.culturecode);
+                                  GeneralService.GetLocalization().then(
+                                    (response) => {
+                                      if (response.IsSuccess) {
+                                        ErrorSwitcher.setTranslation(
+                                          response.data
+                                        );
+                                      }
+                                    }
                                   );
                                 }}
                               >
@@ -970,6 +983,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getBanner: () => dispatch(generalAction.getBanner()),
+    getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
     getInvitationCode: () => dispatch(generalAction.getInvitationCode()),
     closeModal: () => {
       dispatch({ type: "close" });
