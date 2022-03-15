@@ -22,7 +22,7 @@ const Contents = styled.div`
 
 const VipEmblemHolder = styled.div`
   display: flex;
-
+  overflow-x: auto;
   padding: 20px 20px;
 `;
 
@@ -30,6 +30,7 @@ const VipEmlemContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
+  min-width: 150px;
   align-items: center;
   padding: 10px 20px;
   max-height: 200px;
