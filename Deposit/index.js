@@ -249,6 +249,16 @@ class Deposit extends Component {
     }
   }
   componentDidUpdate(preProps, preState) {
+    if (config.features.Deposit_AutofillFirstCard) {
+      if (preProps.wallet.bankCardList !== this.props.wallet.bankCardList) {
+        if (this.props.wallet.bankCardList.length > 0) {
+          this.setState({
+            account: this.props.wallet.bankCardList[0].detail.bankAccount,
+            name: this.props.wallet.bankCardList[0].detail.name,
+          });
+        }
+      }
+    }
     if (
       preProps.wallet.depositResult != this.props.wallet.depositResult &&
       this.props.wallet.depositResult !== null
