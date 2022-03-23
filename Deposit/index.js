@@ -202,7 +202,6 @@ class Deposit extends Component {
 
       selectedChannelIndex: 0,
       depositPromotion: this.props.match.params.promotionid,
-      account: "",
       amount: "",
       exchangeRate: { buyprice: 0, sellprice: 0 },
       step: 1,
@@ -215,12 +214,11 @@ class Deposit extends Component {
       depositDetail: "",
       channelname: "",
       methodcode: "",
-      name: "",
       bankaccount: "",
       disabled: false,
       openAnnouncement: config.features.DepositNotification,
     };
-    this.state = { ...this.initialState };
+    this.state = { ...this.initialState, name: "", account: "" };
   }
   bankInfo = null;
 
@@ -249,6 +247,14 @@ class Deposit extends Component {
     }
   }
   componentDidUpdate(preProps, preState) {
+    if (config.features.Deposit_AutofillFirstCard) {
+      if (preProps.wallet !== this.props.wallet) {
+          this.setState({
+            account: this.props.wallet.bankCardList.length > 0 ? this.props.wallet.bankCardList[0].detail.bankAccount : "",
+            name: this.props.account.info.member_name,
+          });
+      }
+    }
     if (
       preProps.wallet.depositResult != this.props.wallet.depositResult &&
       this.props.wallet.depositResult !== null
@@ -631,7 +637,6 @@ class Deposit extends Component {
                           }}
                         ></Textbox>
                       )}
-
                       {!config.features.Deposit_RemoveName && (
                         <Textbox
                           style={{ margin: "20px auto 20px auto" }}

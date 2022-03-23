@@ -196,6 +196,11 @@ const TheGirlHolder = styled.div`
   background-size: cover;
 `;
 
+const QRCodeImage = styled.img`
+  height: 350px;
+  width: 350px;
+`;
+
 const Support = (props) => {
   const [scene, setScene] = useState("initial");
 
@@ -302,11 +307,7 @@ const Support = (props) => {
                 <Dialog open={open === index} onClose={handleClose}>
                   {data.qrcodeurl ? (
                     <QRCodeHolder>
-                      <QRCode
-                        value={data.qrcodeurl}
-                        bgColor={"#f6f8f7"}
-                        size="128"
-                      />
+                      <QRCodeImage src={data.qrcodeurl} />
                       <QRCodeText>{data.type}</QRCodeText>
                     </QRCodeHolder>
                   ) : (

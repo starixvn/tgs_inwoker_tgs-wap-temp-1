@@ -391,18 +391,7 @@ class Home extends Component {
   };
   handleJoinLotteryGame = (name) => {
     if (this.props.account.token != null) {
-      GameService.GetGameList(name, GameTypeEnum.LOTTERYLOBBY).then((e) => {
-        if (e.IsSuccess) {
-          GameService.JoinGame(e.data[0].id, name).then((response) => {
-            if (response.IsSuccess) {
-              this.setState({ ...this.state, maintenance: false });
-              Common.PopupCenter(response.data.url);
-            } else {
-              this.setState({ ...this.state, maintenance: true });
-            }
-          });
-        }
-      });
+      Common.PopupCenter("/" + i18n.language + "/joinlottery/" + name);
     } else {
       this.props.appHistory.push("/" + i18n.language + "/login");
     }
