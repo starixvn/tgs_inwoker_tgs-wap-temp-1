@@ -182,13 +182,13 @@ const TransferContainer = styled.div`
 `;
 const TransferLabel = styled.div`
   color: #747474;
-  font-size: 30px;
+  font-size: 28px;
   float: left;
   font-weight: bold;
 `;
 const TransferValue = styled.div`
   color: #747474;
-  font-size: 30px;
+  font-size: 28px;
   float: left;
   margin-left: 10px;
 `;
