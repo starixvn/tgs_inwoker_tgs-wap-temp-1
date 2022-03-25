@@ -196,7 +196,8 @@ class Card extends Component {
     if (
       this.props.wallet.bankCardList.length > 0 &&
       (config.features.ChangesNotAllowed ||
-        config.features.AddCard_NotAllowedEditDelete)
+        config.features.AddCard_NotAllowedEditDelete ||
+        config.features.AddCard_DisableCreateUpdateDelete)
     ) {
       this.props.alert("", i18n.t("card.toEdit"));
 
@@ -232,7 +233,8 @@ class Card extends Component {
             <DisableSwipe
               disable={
                 config.features.AddCard_NotAllowedEditDelete ||
-                config.features.ChangesNotAllowed
+                config.features.ChangesNotAllowed ||
+                config.features.AddCard_DisableCreateUpdateDelete
               }
             >
               <SwipeToDelete
@@ -265,7 +267,9 @@ class Card extends Component {
               onClick={() => {
                 this.props.wallet.bankCardList.length > 0 &&
                 (config.features.ChangesNotAllowed ||
-                  config.features.AddCard_NotAllowedEditDelete)
+                  config.features.AddCard_NotAllowedEditDelete ||
+                  this.props.wallet.bankCardList.length >=
+                    config.features.AddCard_MaximumCardAllowed)
                   ? this.props.alert("", i18n.t("card.toEdit"))
                   : this.props.navigate("/card/add");
               }}
