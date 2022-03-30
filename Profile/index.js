@@ -28,7 +28,7 @@ const BlockContainer = styled.div`
   margin: 30px auto;
 `;
 const ItemContainer = styled.div`
-  min-height: 100px;
+  height: 100px;
 
   margin: 30px 0 0 30px;
 `;

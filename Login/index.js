@@ -203,7 +203,6 @@ class Login extends Component {
       localStorage.getItem("invitationtype") !== ""
         ? true
         : false,
-    fromCustomDomain: false,
   };
 
   componentDidMount() {
@@ -260,7 +259,6 @@ class Login extends Component {
           promoteType: "a",
           promoId: result.data.invitationCode,
           prefill: true,
-          fromCustomDomain: true,
         });
       }
     });
@@ -843,44 +841,39 @@ class Login extends Component {
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
 
-                  {!(
-                    config.features.Register_HideInvitation &&
-                    this.state.fromCustomDomain
-                  ) && (
-                    <CustomWrapper>
-                      <Textbox
-                        icon={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/icon-promo.png`
-                        }
-                        type={"text"}
-                        placeholder={i18n.t("wap.register.promoteCode")}
-                        style={{ marginTop: "20px" }}
-                        value={
-                          this.state.promoteType === "a"
-                            ? this.state.promoId
-                            : this.state.upper
-                        }
-                        onChange={
-                          this.state.promoteType === "a"
-                            ? this.handlePromoCodeChange
-                            : this.handleUpperChange
-                        }
+                  <CustomWrapper>
+                    <Textbox
+                      icon={
+                        process.env.PUBLIC_URL +
+                        `/assets/images/wapp/icon-promo.png`
+                      }
+                      type={"text"}
+                      placeholder={i18n.t("wap.register.promoteCode")}
+                      style={{ marginTop: "20px" }}
+                      value={
+                        this.state.promoteType === "a"
+                          ? this.state.promoId
+                          : this.state.upper
+                      }
+                      onChange={
+                        this.state.promoteType === "a"
+                          ? this.handlePromoCodeChange
+                          : this.handleUpperChange
+                      }
+                      disabled={this.state.prefill}
+                    ></Textbox>
+                    {config.features.HaveAffiliateFeature && (
+                      <CustomInvitationSelect
                         disabled={this.state.prefill}
-                      ></Textbox>
-                      {config.features.HaveAffiliateFeature && (
-                        <CustomInvitationSelect
-                          disabled={this.state.prefill}
-                          value={this.state.promoteType}
-                          selected={this.state.promoteType}
-                          onChange={this.handleSwitchType}
-                        >
-                          <option value="a">{i18n.t("usertype.agent")}</option>
-                          <option value="p">{i18n.t("usertype.player")}</option>
-                        </CustomInvitationSelect>
-                      )}
-                    </CustomWrapper>
-                  )}
+                        value={this.state.promoteType}
+                        selected={this.state.promoteType}
+                        onChange={this.handleSwitchType}
+                      >
+                        <option value="a">{i18n.t("usertype.agent")}</option>
+                        <option value="p">{i18n.t("usertype.player")}</option>
+                      </CustomInvitationSelect>
+                    )}
+                  </CustomWrapper>
 
                   <RememberPassContainer>
                     <CustomCheck
