@@ -504,23 +504,34 @@ class Slot extends Component {
                 </GameItemLI>
 
                 {(() => {
-                  return this.props.game.homePageGameList
-                    .filter((item) => item.type === this.state.type)
-                    .map((item, index) => {
-                      return (
-                        <GameItemLI>
-                          <GameItem
-                            key={index}
-                            selected={this.state.platform === item.abbreviation}
-                            onClick={() =>
-                              this.handlePlatformChange(item.abbreviation)
-                            }
-                          >
-                            {item.name}
-                          </GameItem>
-                        </GameItemLI>
-                      );
-                    });
+                  return (
+                    this.props.game.homePageGameList
+                      .filter((item) => item.type === this.state.type)
+                      .filter((game) => game.status === 0)
+                      //.sort((a, b) => {
+                      //  return (
+                      //    selected.indexOf(b.abbreviation) -
+                      //    selected.indexOf(a.abbreviation)
+                      //  );
+                      //})
+                      .map((item, index) => {
+                        return (
+                          <GameItemLI>
+                            <GameItem
+                              key={index}
+                              selected={
+                                this.state.platform === item.abbreviation
+                              }
+                              onClick={() =>
+                                this.handlePlatformChange(item.abbreviation)
+                              }
+                            >
+                              {item.name}
+                            </GameItem>
+                          </GameItemLI>
+                        );
+                      })
+                  );
                 })()}
               </GameItemUL>
             </GameItemSelection>

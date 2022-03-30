@@ -38,6 +38,8 @@ import Manual from "./Manual";
 import DetailsManual from "./DetailsManual";
 import config from "../../../config/config";
 import PopupAnnouncement from "../../Share/PopupAnnouncement";
+import copy from "copy-to-clipboard";
+
 const UnderConstructionWrap = styled.div`
   background: url(${process.env.PUBLIC_URL +
     `/assets/images/wapp/underconstruction.png`})
@@ -112,13 +114,13 @@ const CustomSelect = withStyles((theme) => ({
 }))(Select);
 const CustomText = styled.div`
   width: 700px;
-  height: 170px;
+  // height: 170px;
 
   box-shadow: 0 2px 6px 0 rgba(58, 58, 58, 0.2);
   border: solid 1px #f3f3f3;
   background-color: #ffffff;
   border-radius: 20px;
-  padding: 40px 20px 0 20px;
+  padding: 40px 20px 10px 20px;
   margin: 20px auto;
 `;
 const CustomLabel = styled.div`
@@ -172,6 +174,25 @@ const ButtonConfirm = styled.div`
       ${({ theme }) => theme.primary}));
   color: #ffffff;
 `;
+
+const TransferContainer = styled.div`
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+`;
+const TransferLabel = styled.div`
+  color: #747474;
+  font-size: 28px;
+  float: left;
+  font-weight: bold;
+`;
+const TransferValue = styled.div`
+  color: #747474;
+  font-size: 28px;
+  float: left;
+  margin-left: 10px;
+`;
+
 const LimitLabel = styled.span`
   color: #747474;
 `;
@@ -190,6 +211,23 @@ const Remark = styled.div`
   padding: 0px 50px;
   color: ${({ theme }) => theme.secondary};
   opacity: 0.75;
+`;
+
+const QRCodeImg = styled.img`
+  display: block;
+  margin-top: 10px;
+  width: 200px;
+  height: 200px;
+`;
+
+const CopyIcon = styled.div`
+  width: 30px;
+  height: 30px;
+  margin-left: 20px;
+  background-color: ${({ theme }) => theme.primary};
+  mask: url(${process.env.PUBLIC_URL + `/assets/images/wapp/copy.png`})
+    no-repeat center / contain;
+  cursor: pointer;
 `;
 
 class Deposit extends Component {
@@ -249,10 +287,13 @@ class Deposit extends Component {
   componentDidUpdate(preProps, preState) {
     if (config.features.Deposit_AutofillFirstCard) {
       if (preProps.wallet !== this.props.wallet) {
-          this.setState({
-            account: this.props.wallet.bankCardList.length > 0 ? this.props.wallet.bankCardList[0].detail.bankAccount : "",
-            name: this.props.account.info.member_name,
-          });
+        this.setState({
+          account:
+            this.props.wallet.bankCardList.length > 0
+              ? this.props.wallet.bankCardList[0].detail.bankAccount
+              : "",
+          name: this.props.account.info.member_name,
+        });
       }
     }
     if (
@@ -526,6 +567,21 @@ class Deposit extends Component {
   };
 
   render() {
+    const performCopy = (content) => {
+      this.props.alert("", i18n.t("affiliate.copied"));
+
+      copy(content);
+    };
+
+    const CopyFeature = ({ copyContent }) => {
+      return (
+        <CopyIcon
+          onClick={() => {
+            performCopy(copyContent);
+          }}
+        />
+      );
+    };
     const switchView = (view) => {
       switch (view) {
         case 1:
@@ -605,7 +661,97 @@ class Deposit extends Component {
                   </CustomSelect>
                 </CustomFormControl>
               </CustomText>
+              {(() => {
+                if (
+                  this.props.wallet.depositTypeList[
+                    this.state.selectedPaymentIndex
+                  ].paymentcode.toUpperCase() === "MANUAL"
+                ) {
+                  var channelExtend =
+                    this.props.wallet.depositTypeList[
+                      this.state.selectedPaymentIndex
+                    ].method[this.state.selectedMethodIndex].channel[
+                      this.state.selectedChannelIndex
+                    ].extended;
+                  if (
+                    this.props.wallet.depositTypeList[
+                      this.state.selectedPaymentIndex
+                    ].method[
+                      this.state.selectedMethodIndex
+                    ].methodcode.toUpperCase() === "THIRDPARTY"
+                  ) {
+                    return (
+                      <CustomText>
+                        <CustomLabel>
+                          {i18n.t("deposit.transferAccount")}
+                        </CustomLabel>
+                        <QRCodeImg src={channelExtend.qrCodeFileUrl} />
+                      </CustomText>
+                    );
+                  } else {
+                    return (
+                      <CustomText>
+                        <CustomLabel>
+                          {i18n.t("deposit.transferAccount")}
+                        </CustomLabel>
+                        {channelExtend.qrCodeFileUrl && (
+                          <QRCodeImg src={channelExtend.qrCodeFileUrl} />
+                        )}
+                        {channelExtend.name && (
+                          <TransferContainer>
+                            <TransferLabel>
+                              {i18n.t("deposit.accName")}:
+                            </TransferLabel>
+                            <TransferValue>{channelExtend.name}</TransferValue>
+                            <CopyFeature copyContent={channelExtend.name} />
+                          </TransferContainer>
+                        )}
+                        {channelExtend.bankAccount && (
+                          <TransferContainer>
+                            <TransferLabel>
+                              {i18n.t("deposit.cardNum")}:
+                            </TransferLabel>
+                            <TransferValue>
+                              {channelExtend.bankAccount}
+                            </TransferValue>
+                            <CopyFeature
+                              copyContent={channelExtend.bankAccount}
+                            />
+                          </TransferContainer>
+                        )}
+                        {channelExtend.phone && (
+                          <TransferContainer>
+                            <TransferLabel>
+                              {i18n.t("deposit.phone")}:
+                            </TransferLabel>
+                            <TransferValue>{channelExtend.phone}</TransferValue>
+                            <CopyFeature copyContent={channelExtend.phone} />
+                          </TransferContainer>
+                        )}
+                        {channelExtend.email && (
+                          <TransferContainer>
+                            <TransferLabel>
+                              {i18n.t("deposit.email")}:
+                            </TransferLabel>
+                            <TransferValue>{channelExtend.email}</TransferValue>
+                            <CopyFeature copyContent={channelExtend.email} />
+                          </TransferContainer>
+                        )}
 
+                        {channelExtend.fpsId && (
+                          <TransferContainer>
+                            <TransferLabel>
+                              {i18n.t("deposit.fpsId")}:
+                            </TransferLabel>
+                            <TransferValue>{channelExtend.fpsId}</TransferValue>
+                            <CopyFeature copyContent={channelExtend.fpsId} />
+                          </TransferContainer>
+                        )}
+                      </CustomText>
+                    );
+                  }
+                }
+              })()}
               {(() => {
                 if (
                   this.props.wallet.depositTypeList[
@@ -912,6 +1058,8 @@ class Deposit extends Component {
               }
             ></DetailsManual>
           );
+        default:
+          return <></>;
       }
     };
     return (

@@ -122,6 +122,7 @@ class AddCard extends Component {
     loading: false,
     showDialog: false,
     dialogMessage: "",
+    disableBankNameInput: false,
 
     name: "",
     phone: "",
@@ -285,11 +286,14 @@ class AddCard extends Component {
     });
   };
   handleChannelClick = (index) => {
-    this.setState({
-      ...this.state,
-      selectedChannelIndex: index,
-      channelOpen: false,
-    });
+    var disableInput = false;
+    var bankName = "";
+    if(this.state.channelList[index].channelcode !== "CustomBank")
+    {
+      disableInput=true;
+      bankName = this.state.channelList[index].channelcode;
+    }
+    this.setState({...this.state, selectedChannelIndex: index, bankName: bankName, disableBankNameInput: disableInput, channelOpen: false })
   };
 
   handleBankNameClick = (name) => {
@@ -382,7 +386,7 @@ class AddCard extends Component {
                     value={this.state.bankName}
                     onChange={this.handleBankNameChange}
                     type={"text"}
-                    disabled={config.features.AddCard_BankDropdown}
+                    disabled={config.features.AddCard_BankDropdown||this.state.disableBankNameInput}
                     onClick={() =>
                       this.setState({ ...this.state, bankNameOpen: true })
                     }
@@ -396,6 +400,7 @@ class AddCard extends Component {
                         ? i18n.t("hk28.card.addCard.BankName")
                         : i18n.t("card.addCard.BankName")
                     }
+                    maxLength={255}
                   ></Textbox>
                 )}
                 {(() => {
@@ -408,6 +413,7 @@ class AddCard extends Component {
                         type={"text"}
                         placeholder={i18n.t("card.addCard.branchPlaceHolder")}
                         label={i18n.t("card.addCard.branch")}
+                        maxLength={255}
                       ></Textbox>
                     );
                   }
@@ -432,6 +438,7 @@ class AddCard extends Component {
                       ? i18n.t("hk28.card.addCard.BankAccountName")
                       : i18n.t("card.addCard.BankAccountName")
                   }
+                  maxLength={255}
                 ></Textbox>
               </React.Fragment>
             );
