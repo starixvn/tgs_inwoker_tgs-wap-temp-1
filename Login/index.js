@@ -203,6 +203,7 @@ class Login extends Component {
       localStorage.getItem("invitationtype") !== ""
         ? true
         : false,
+    fromCustomDomain: false,
   };
 
   componentDidMount() {
@@ -259,6 +260,7 @@ class Login extends Component {
           promoteType: "a",
           promoId: result.data.invitationCode,
           prefill: true,
+          fromCustomDomain: true,
         });
       }
     });
@@ -841,7 +843,10 @@ class Login extends Component {
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
 
-                  {!config.features.Register_HideInvitation && (
+                  {!(
+                    config.features.Register_HideInvitation &&
+                    this.state.fromCustomDomain
+                  ) && (
                     <CustomWrapper>
                       <Textbox
                         icon={
