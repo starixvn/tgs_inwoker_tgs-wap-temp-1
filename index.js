@@ -441,7 +441,8 @@ class Wap extends Component {
     title: "",
     message: "",
     loading: true,
-    openAnnouncement: true,
+    openAnnouncement: config.features.PopupAnnouncement,
+    showPromotion: config.features.PopupAnnouncement ? false : true,
     action: "",
   };
   GetSupportUrl = (userid, name, question, email) => {
@@ -519,6 +520,7 @@ class Wap extends Component {
       this.props.getBrand();
       this.props.getBrandCommunicationList();
       this.props.getLiveChatURL();
+      this.props.getPlayerPromotionList(i18n.language);
     }
 
     // this.props.getMobilePrefix();
@@ -637,6 +639,7 @@ class Wap extends Component {
         this.props.getBrand();
         this.props.getBrandCommunicationList();
         this.props.getLiveChatURL();
+        this.props.getPromotionList(i18n.language);
       }
     }
     if (
@@ -866,7 +869,11 @@ class Wap extends Component {
                 <PopupAnnouncement
                   open={this.state.openAnnouncement}
                   onClose={() => {
-                    this.setState({ ...this.state, openAnnouncement: false });
+                    this.setState({
+                      ...this.state,
+                      openAnnouncement: false,
+                      showPromotion: true,
+                    });
                   }}
                   text={
                     row.localization !== null && row.localization.content
@@ -882,6 +889,21 @@ class Wap extends Component {
               );
             }
           })()}
+          {config.features.PopupPromotion &&
+            this.props.general.promotionList.totalcount > 0 && (
+              <PopupAnnouncement
+                open={this.state.showPromotion}
+                type="promo"
+                onClose={() => {
+                  if (document.getElementById("audio") != null)
+                    document.getElementById("audio").play();
+                  this.setState({ ...this.state, showPromotion: false });
+                }}
+                content={this.props.general.promotionList.items}
+                header={i18n.t("promotion.title")}
+              ></PopupAnnouncement>
+            )}
+
           <StyledModal onClose={this.handleClose} open={this.state.open}>
             <DialoTitle>{this.state.title}</DialoTitle>
             <DialoMessage>{this.state.message}</DialoMessage>
@@ -987,6 +1009,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     getLiveChatURL: () => dispatch(generalAction.getLiveChatURL()),
     getAutoTransferStatus: () => dispatch(walletAction.getAutoTransferStatus()),
+    getPromotionList: (language) =>
+      dispatch(generalAction.getPromotionList(language, 1, 99, true, "", true)),
+    getPlayerPromotionList: (language) =>
+      dispatch(
+        generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
+      ),
   };
 };
 
