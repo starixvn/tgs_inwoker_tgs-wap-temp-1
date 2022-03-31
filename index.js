@@ -432,9 +432,6 @@ class Wap extends Component {
   constructor(props) {
     super(props);
 
-    var ifAnnouncementValid =
-      config.features.PopupAnnouncement && this.props.ui.marqueeText.length > 0;
-
     this.state = {
       showCS: false,
       isIpRestrict: false,
@@ -444,10 +441,8 @@ class Wap extends Component {
       title: "",
       message: "",
       loading: true,
-      openAnnouncement: ifAnnouncementValid,
-      showPromotion: ifAnnouncementValid
-        ? false
-        : config.features.PopupPromotion,
+      openAnnouncement: false,
+      showPromotion: false,
       action: "",
     };
   }
