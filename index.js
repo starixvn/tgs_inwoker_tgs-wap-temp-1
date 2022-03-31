@@ -431,20 +431,24 @@ const RouteMapping = [
 class Wap extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      showCS: false,
+      isIpRestrict: false,
+      open: false,
+      openPopup: false,
+      popupUrl: "",
+      title: "",
+      message: "",
+      loading: true,
+      openAnnouncement: config.features.PopupAnnouncement,
+      showPromotion: config.features.PopupAnnouncement
+        ? false
+        : config.features.PopupPromotion,
+      action: "",
+    };
   }
-  state = {
-    showCS: false,
-    isIpRestrict: false,
-    open: false,
-    openPopup: false,
-    popupUrl: "",
-    title: "",
-    message: "",
-    loading: true,
-    openAnnouncement: config.features.PopupAnnouncement,
-    showPromotion: config.features.PopupAnnouncement ? false : true,
-    action: "",
-  };
+
   GetSupportUrl = (userid, name, question, email) => {
     var newURL = this.props.general.livechat
       ? this.props.general.livechat.setting.url
@@ -620,6 +624,24 @@ class Wap extends Component {
     }
   };
   componentDidUpdate(preProps) {
+    if (config.features.PopupAnnouncement) {
+      if (this.props.ui.marqueeText !== preProps.ui.marqueeText) {
+        this.setState({
+          openAnnouncement: true,
+          showPromotion: false,
+        });
+      }
+    }
+
+    if (config.features.PopupPromotion) {
+      if (this.props.general.promotionList !== preProps.general.promotionList) {
+        if (!this.state.openAnnouncement) {
+          this.setState({
+            showPromotion: true,
+          });
+        }
+      }
+    }
     if (preProps.general.token !== this.props.general.token) {
       if (this.props.general.token == null || this.props.general.token == "") {
         this.props.getSiteToken();
