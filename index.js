@@ -432,6 +432,9 @@ class Wap extends Component {
   constructor(props) {
     super(props);
 
+    var ifAnnouncementValid =
+      config.features.PopupAnnouncement && this.props.ui.marqueeText.length > 0;
+
     this.state = {
       showCS: false,
       isIpRestrict: false,
@@ -442,7 +445,7 @@ class Wap extends Component {
       message: "",
       loading: true,
       openAnnouncement: config.features.PopupAnnouncement,
-      showPromotion: config.features.PopupAnnouncement
+      showPromotion: ifAnnouncementValid
         ? false
         : config.features.PopupPromotion,
       action: "",
@@ -625,7 +628,10 @@ class Wap extends Component {
   };
   componentDidUpdate(preProps) {
     if (config.features.PopupAnnouncement) {
-      if (this.props.ui.marqueeText !== preProps.ui.marqueeText) {
+      if (
+        this.props.ui.marqueeText !== preProps.ui.marqueeText &&
+        this.props.ui.marqueeText.length > 0
+      ) {
         this.setState({
           openAnnouncement: true,
           showPromotion: false,
@@ -634,7 +640,11 @@ class Wap extends Component {
     }
 
     if (config.features.PopupPromotion) {
-      if (this.props.general.promotionList !== preProps.general.promotionList) {
+      if (
+        this.props.general.promotionList.items !==
+          preProps.general.promotionList.items &&
+        this.props.general.promotionList.items.length > 0
+      ) {
         if (!this.state.openAnnouncement) {
           this.setState({
             showPromotion: true,
