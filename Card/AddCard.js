@@ -178,10 +178,13 @@ class AddCard extends Component {
     }
     var disableInput = false;
     var bankName = "";
-    if(channel[this.state.selectedChannelIndex].channelcode !== "CustomBank")
+    if(channel.length>0)
     {
-      disableInput=true;
-      bankName = channel[this.state.selectedChannelIndex].channelcode;
+      if(channel[this.state.selectedChannelIndex].channelcode !== "CustomBank")
+      {
+        disableInput=true;
+        bankName = channel[this.state.selectedChannelIndex].channelcode;
+      }
     }
     this.setState({ ...this.state, channelList: channel, bankName: bankName, disableBankNameInput: disableInput });
     return channel;
