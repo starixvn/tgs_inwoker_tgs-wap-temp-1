@@ -444,7 +444,7 @@ class Wap extends Component {
       title: "",
       message: "",
       loading: true,
-      openAnnouncement: config.features.PopupAnnouncement,
+      openAnnouncement: ifAnnouncementValid,
       showPromotion: ifAnnouncementValid
         ? false
         : config.features.PopupPromotion,
