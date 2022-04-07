@@ -431,19 +431,22 @@ const RouteMapping = [
 class Wap extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      showCS: false,
+      isIpRestrict: false,
+      open: false,
+      openPopup: false,
+      popupUrl: "",
+      title: "",
+      message: "",
+      loading: true,
+      openAnnouncement: false,
+      showPromotion: false,
+      action: "",
+    };
   }
-  state = {
-    showCS: false,
-    isIpRestrict: false,
-    open: false,
-    openPopup: false,
-    popupUrl: "",
-    title: "",
-    message: "",
-    loading: true,
-    openAnnouncement: true,
-    action: "",
-  };
+
   GetSupportUrl = (userid, name, question, email) => {
     var newURL = this.props.general.livechat
       ? this.props.general.livechat.setting.url
@@ -519,6 +522,7 @@ class Wap extends Component {
       this.props.getBrand();
       this.props.getBrandCommunicationList();
       this.props.getLiveChatURL();
+      this.props.getPlayerPromotionList(i18n.language);
     }
 
     // this.props.getMobilePrefix();
@@ -618,6 +622,31 @@ class Wap extends Component {
     }
   };
   componentDidUpdate(preProps) {
+    if (config.features.PopupAnnouncement) {
+      if (
+        this.props.ui.marqueeText !== preProps.ui.marqueeText &&
+        this.props.ui.marqueeText.length > 0
+      ) {
+        this.setState({
+          openAnnouncement: true,
+          showPromotion: false,
+        });
+      }
+    }
+
+    if (config.features.PopupPromotion) {
+      if (
+        this.props.general.promotionList.items !==
+          preProps.general.promotionList.items &&
+        this.props.general.promotionList.items.length > 0
+      ) {
+        if (!this.state.openAnnouncement) {
+          this.setState({
+            showPromotion: true,
+          });
+        }
+      }
+    }
     if (preProps.general.token !== this.props.general.token) {
       if (this.props.general.token == null || this.props.general.token == "") {
         this.props.getSiteToken();
@@ -637,6 +666,7 @@ class Wap extends Component {
         this.props.getBrand();
         this.props.getBrandCommunicationList();
         this.props.getLiveChatURL();
+        this.props.getPromotionList(i18n.language);
       }
     }
     if (
@@ -866,7 +896,11 @@ class Wap extends Component {
                 <PopupAnnouncement
                   open={this.state.openAnnouncement}
                   onClose={() => {
-                    this.setState({ ...this.state, openAnnouncement: false });
+                    this.setState({
+                      ...this.state,
+                      openAnnouncement: false,
+                      showPromotion: true,
+                    });
                   }}
                   text={
                     row.localization !== null && row.localization.content
@@ -882,6 +916,21 @@ class Wap extends Component {
               );
             }
           })()}
+          {config.features.PopupPromotion &&
+            this.props.general.promotionList.totalcount > 0 && (
+              <PopupAnnouncement
+                open={this.state.showPromotion}
+                type="promo"
+                onClose={() => {
+                  if (document.getElementById("audio") != null)
+                    document.getElementById("audio").play();
+                  this.setState({ ...this.state, showPromotion: false });
+                }}
+                content={this.props.general.promotionList.items}
+                header={i18n.t("promotion.title")}
+              ></PopupAnnouncement>
+            )}
+
           <StyledModal onClose={this.handleClose} open={this.state.open}>
             <DialoTitle>{this.state.title}</DialoTitle>
             <DialoMessage>{this.state.message}</DialoMessage>
@@ -987,6 +1036,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     getLiveChatURL: () => dispatch(generalAction.getLiveChatURL()),
     getAutoTransferStatus: () => dispatch(walletAction.getAutoTransferStatus()),
+    getPromotionList: (language) =>
+      dispatch(generalAction.getPromotionList(language, 1, 99, true, "", true)),
+    getPlayerPromotionList: (language) =>
+      dispatch(
+        generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
+      ),
   };
 };
 

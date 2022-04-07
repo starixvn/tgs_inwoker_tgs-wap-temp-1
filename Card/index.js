@@ -256,7 +256,7 @@ class Card extends Component {
 
         {!(
           config.features.AddCard_NotAllowedEditDelete ||
-          config.features.ChangesNotAllowed
+          !(config.features.AddCard_AllowedAdd)
         ) && (
           <>
             <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
