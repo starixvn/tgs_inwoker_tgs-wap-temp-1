@@ -248,6 +248,21 @@ class Profile extends Component {
                   ? this.props.account.info.member_wechat.substring(0, 1) + "**"
                   : ""
               )}
+
+            {config.features.CustomMessaging &&
+              config.features.CustomMessaging.map((platform)=>{
+                return ContentItem(
+                  process.env.PUBLIC_URL + `/assets/images/wapp/icon-${platform}.png`,
+                  i18n.t("common."+platform),
+                  this.isConfigured(this.props.account.info["member_"+platform]),
+                  () => {
+                    this.handleNavigate("/profile/"+platform);
+                  },
+                  this.props.account.info["member_"+platform]
+                    ? this.props.account.info["member_"+platform].substring(0, 1) + "**"
+                    : ""
+                )
+              })}
           </BlockContainer>
         </div>
 

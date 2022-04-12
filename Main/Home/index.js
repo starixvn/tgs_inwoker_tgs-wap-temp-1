@@ -17,6 +17,7 @@ import i18n from "../../../../utils/i18n";
 import Marquee from "./Marquee";
 import config from "../../../../config/config";
 import OnlineUserDisplayer from "../../../Share/online-user-displayer";
+import LiveChat from "../../../Share/live-chat";
 const StyledAppBar = withStyles({
   root: {
     height: "550px",
@@ -717,6 +718,13 @@ class Home extends Component {
             })()}
           </GameListWrap>
         </GameListContainer>
+        {config.features.LiveChatVendor.brand &&
+          config.features.LiveChatVendor.license && (
+            <LiveChat
+              license={config.features.LiveChatVendor.license}
+              vendor={config.features.LiveChatVendor.brand}
+            />
+          )}
       </React.Fragment>
     );
   }

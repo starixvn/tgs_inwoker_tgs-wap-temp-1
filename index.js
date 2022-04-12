@@ -39,6 +39,11 @@ import Profile from "./Profile/index";
 import NameVerify from "./Profile/id-verification";
 import WeChat from "./Profile/WeChat";
 import QQ from "./Profile/QQ";
+import FacebookMessenger from "./Profile/FacebookMessenger";
+import Telegram from "./Profile/Telegram";
+import Line from "./Profile/Line";
+import Viber from "./Profile/Viber";
+import Whatsapp from "./Profile/Whatsapp";
 import Email from "./Profile/Email";
 import ChangeEmail from "./Profile/ChangeEmail";
 import ChangePhone from "./Profile/ChangePhone";
@@ -197,6 +202,31 @@ const RouteMapping = [
   {
     path: "/profile/qq",
     component: QQ,
+    alert: true,
+  },
+  {
+    path: "/profile/fb",
+    component: FacebookMessenger,
+    alert: true,
+  },
+  {
+    path: "/profile/telegram",
+    component: Telegram,
+    alert: true,
+  },
+  {
+    path: "/profile/line",
+    component: Line,
+    alert: true,
+  },
+  {
+    path: "/profile/viber",
+    component: Viber,
+    alert: true,
+  },
+  {
+    path: "/profile/whatsapp",
+    component: Whatsapp,
     alert: true,
   },
   {
