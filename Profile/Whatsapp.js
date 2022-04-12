@@ -1,0 +1,97 @@
+import React from "react";
+import { connect } from "react-redux";
+
+import { withRouter } from "react-router-dom";
+
+import Textbox from "../Share/Textbox";
+
+import BaseProfile from "./BaseProfile";
+import i18n from "../../../utils/i18n";
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {AccountService} from "../../../api-services/services/AccountService";
+class Whatsapp extends BaseProfile {
+  state = {
+    whatsapp: "",
+  };
+  componentDidMount() {
+    this.setState({ whatsapp: this.props.account.info.member_whatsapp });
+  }
+
+  handleChangeNumber = (e) => {
+    this.setState({ whatsapp: e.target.value });
+    this.onTextChanged();
+  };
+
+  isDisableButton = () => {
+    return !this.state.whatsapp;
+  };
+  handleSubmitClicked = () => {
+    const whatsapp = this.state.whatsapp;
+    //validate here
+    //sdasdasdasda
+    const re = new RegExp("^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$");
+    if (!whatsapp.match(re)) {
+      this.props.alert("", i18n.t("profile.whatsapp.msgInvalidWhatsapp"));
+      // this.props.enqueueSnackbar("微信号码格式不正确", {
+      //   key: "error"
+      // });
+      return;
+    }
+
+    this.showLoading(true);
+    //api
+    AccountService.UpdateWhatsapp(whatsapp)
+      .then((response) => {
+        if (response.IsSuccess) {
+          this.props.getAccountProfile().then((responseUpdate) => {
+            if (responseUpdate.IsSuccess) {
+              this.setState({
+                ...this.state,
+                whatsapp: whatsapp,
+              });
+            }
+            this.props.alert("", i18n.t("common.msgSuccessUpdateProfile"));
+            this.showLoading(false);
+          });
+        } else {
+          this.props.alert("", response.msg);
+          this.showLoading(false);
+          // this.props.enqueueSnackbar(response.msg, {
+          //   key: "error"
+          // });
+        }
+      })
+      .catch((err) => {
+        this.props.alert("", err);
+        // this.props.enqueueSnackbar(err, {
+        //   key: "error"
+        // });
+        this.showLoading(false);
+      });
+  };
+
+  render() {
+    return this.setupContent(
+      i18n.t("common.whatsapp"),
+      <Textbox
+        style={{ margin: "50px auto 20px auto" }}
+        value={this.state.whatsapp}
+        onChange={this.handleChangeNumber}
+        placeholder={i18n.t("profile.whatsapp.plsEnterWhatsapp")}
+        label={i18n.t("common.whatsapp")}
+      ></Textbox>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    account: state.account,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAccountProfile: () => dispatch(accountAction.getAccountProfile(true)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Whatsapp));
