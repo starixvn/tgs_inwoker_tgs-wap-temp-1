@@ -29,7 +29,7 @@ class FacebookMessenger extends BaseProfile {
     const fb = this.state.fb;
     //validate here
     //sdasdasdasda
-    const re = new RegExp("^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$");
+    const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
     if (!fb.match(re)) {
       this.props.alert("", i18n.t("profile.fb.msgInvalidFB"));
       // this.props.enqueueSnackbar("微信号码格式不正确", {
@@ -79,6 +79,7 @@ class FacebookMessenger extends BaseProfile {
         onChange={this.handleChangeNumber}
         placeholder={i18n.t("profile.fb.plsEnterFB")}
         label={i18n.t("common.fb")}
+        maxLength={15}
       ></Textbox>
     );
   }
