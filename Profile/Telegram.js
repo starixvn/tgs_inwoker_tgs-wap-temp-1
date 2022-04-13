@@ -29,7 +29,7 @@ class Telegram extends BaseProfile {
     const telegram = this.state.telegram;
     //validate here
     //sdasdasdasda
-    const re = new RegExp("^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$");
+    const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
     if (!telegram.match(re)) {
       this.props.alert("", i18n.t("profile.telegram.msgInvalidTelegram"));
       // this.props.enqueueSnackbar("微信号码格式不正确", {
@@ -79,6 +79,7 @@ class Telegram extends BaseProfile {
         onChange={this.handleChangeNumber}
         placeholder={i18n.t("profile.telegram.plsEnterTelegram")}
         label={i18n.t("common.telegram")}
+        maxLength={15}
       ></Textbox>
     );
   }

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Header from "../../Wap/Share/Header";
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {inboxAction} from "../../../api-services/actions/inboxAction";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { inboxAction } from "../../../api-services/actions/inboxAction";
 import BottomScrollListener from "react-bottom-scroll-listener";
 
 import Loading from "../../Wap/Share/Loading";
@@ -134,7 +134,7 @@ class Inbox extends Component {
   handleItemClick = (id) => {
     if (this.state.edit === false) {
       this.props.setMessageRead([id]).then((response) => {
-        this.props.getMessages(1, 99, true, true);
+        this.props.getMessages(i18n.language, 1, 99, true, true);
       });
 
       this.setState({
