@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Common from "../../../utils/Common";
 import i18n from "../../../utils/i18n";
-import {generalAction} from "../../../api-services/actions/generalAction";
+import { generalAction } from "../../../api-services/actions/generalAction";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -172,8 +172,11 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    //TODO: Revert the 4th param to true after testing.
     getPromotionList: (language) =>
-      dispatch(generalAction.getPromotionList(language, 1, 99, true, "", true)),
+      dispatch(
+        generalAction.getPromotionList(language, 1, 99, false, "", true)
+      ),
     getPlayerPromotionList: (language) =>
       dispatch(
         generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
