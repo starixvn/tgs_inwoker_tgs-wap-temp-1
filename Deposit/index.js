@@ -288,10 +288,10 @@ class Deposit extends Component {
     if (config.features.Deposit_AutofillFirstCard) {
       if (preProps.wallet !== this.props.wallet) {
         this.setState({
-          account:
+          account: (preState.account === "") ?
             this.props.wallet.bankCardList.length > 0
               ? this.props.wallet.bankCardList[0].detail.bankAccount
-              : "",
+              : "" : preState.account,
           name: this.props.account.info.member_name,
         });
       }
