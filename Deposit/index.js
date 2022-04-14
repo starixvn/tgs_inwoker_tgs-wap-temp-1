@@ -288,11 +288,18 @@ class Deposit extends Component {
     if (config.features.Deposit_AutofillFirstCard) {
       if (preProps.wallet !== this.props.wallet) {
         this.setState({
-          account: (preState.account === "") ?
-            this.props.wallet.bankCardList.length > 0
-              ? this.props.wallet.bankCardList[0].detail.bankAccount
-              : "" : preState.account,
-          name: this.props.account.info.member_name,
+          account:
+            preState.account === ""
+              ? this.props.wallet.bankCardList.length > 0
+                ? this.props.wallet.bankCardList[0].detail.bankAccount
+                : ""
+              : preState.account,
+          name:
+            preState.account === ""
+              ? this.props.account.info.member_name !== ""
+                ? this.props.account.info.member_name
+                : ""
+              : preState.name,
         });
       }
     }
@@ -504,6 +511,7 @@ class Deposit extends Component {
       }
       if (method.methodcode === "FPS") {
         this.props.doFPSDeposit(
+          this.state.name,
           this.state.account,
           this.state.amount.replace(/,/g, ""),
           channel.id,
@@ -801,7 +809,7 @@ class Deposit extends Component {
                               ? i18n.t("bet28.BankAccountName")
                               : i18n.t("deposit.msgPlsEnterAccount")) +
                             (config.features.Deposit_AddTips
-                              ? " *" + i18n.t("mgm.nameaccountDepositTips")
+                              ? " *" + i18n.t("mgm.nameDepositTips")
                               : "")
                           }
                           value={this.state.name}
@@ -1175,9 +1183,10 @@ const mapDispatchToProps = (dispatch) => {
         )
       );
     },
-    doFPSDeposit: (account, amount, paymentid, promotionid, banktype) => {
+    doFPSDeposit: (name, account, amount, paymentid, promotionid, banktype) => {
       dispatch(
         walletAction.doFPSDeposit(
+          name,
           account,
           amount,
           paymentid,
