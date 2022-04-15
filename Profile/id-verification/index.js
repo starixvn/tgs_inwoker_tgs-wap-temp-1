@@ -175,7 +175,7 @@ class NameVerify extends BaseProfile {
         return false;
       }
       const fileSize = Math.round(files[0].size / 1024);
-      if (fileSize > 2048) {
+      if (fileSize > 5120) {
         this.props.alert("", i18n.t("deposit.msgInvalidFileSize"));
         e.target.value = null;
       } else {
