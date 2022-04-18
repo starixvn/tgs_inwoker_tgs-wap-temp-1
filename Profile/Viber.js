@@ -29,14 +29,14 @@ class Viber extends BaseProfile {
     const viber = this.state.viber;
     //validate here
     //sdasdasdasda
-    const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
-    if (!viber.match(re)) {
-      this.props.alert("", i18n.t("profile.viber.msgInvalidViber"));
-      // this.props.enqueueSnackbar("微信号码格式不正确", {
-      //   key: "error"
-      // });
-      return;
-    }
+    // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
+    // if (!viber.match(re)) {
+    //   this.props.alert("", i18n.t("profile.viber.msgInvalidViber"));
+    //   // this.props.enqueueSnackbar("微信号码格式不正确", {
+    //   //   key: "error"
+    //   // });
+    //   return;
+    // }
 
     this.showLoading(true);
     //api

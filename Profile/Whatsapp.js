@@ -29,14 +29,14 @@ class Whatsapp extends BaseProfile {
     const whatsapp = this.state.whatsapp;
     //validate here
     //sdasdasdasda
-    const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
-    if (!whatsapp.match(re)) {
-      this.props.alert("", i18n.t("profile.whatsapp.msgInvalidWhatsapp"));
-      // this.props.enqueueSnackbar("微信号码格式不正确", {
-      //   key: "error"
-      // });
-      return;
-    }
+    // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
+    // if (!whatsapp.match(re)) {
+    //   this.props.alert("", i18n.t("profile.whatsapp.msgInvalidWhatsapp"));
+    //   // this.props.enqueueSnackbar("微信号码格式不正确", {
+    //   //   key: "error"
+    //   // });
+    //   return;
+    // }
 
     this.showLoading(true);
     //api
