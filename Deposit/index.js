@@ -504,6 +504,8 @@ class Deposit extends Component {
           return "bank";
         case "crypto":
           return "crypto";
+        case "thirdparty":
+          return "thirdparty";
         default:
           return "bank";
       }
