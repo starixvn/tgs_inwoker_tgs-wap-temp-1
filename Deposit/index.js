@@ -521,13 +521,25 @@ class Deposit extends Component {
         );
       }
       if (method.methodcode === "FPS") {
-        this.props.doFPSDeposit(
-          this.state.name,
-          this.state.account,
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion
-        );
+        if(config.features.Deposit_FPSWithName)
+        {
+          this.props.doFPSDepositWithName(
+            this.state.name,
+            this.state.account,
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion
+          );        
+        }
+        else 
+        {
+          this.props.doFPSDeposit(
+            this.state.account,
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion
+          );
+        }
       }
       if (method.methodcode === "ThirdParty") {
         this.props.doThirdPartyDeposit(
@@ -594,6 +606,11 @@ class Deposit extends Component {
   };
 
   render() {
+    var isFPS =
+    this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
+      this.props.selectedMethodIndex
+    ].methodcode.toUpperCase() === "FPS";
+    
     const performCopy = (content) => {
       this.props.alert("", i18n.t("affiliate.copied"));
 
@@ -810,7 +827,7 @@ class Deposit extends Component {
                           }}
                         ></Textbox>
                       )}
-                      {!config.features.Deposit_RemoveName && (
+                      {(!(config.features.Deposit_RemoveName || isFPS) || config.features.Deposit_FPSWithName) && (
                         <Textbox
                           style={{ margin: "20px auto 20px auto" }}
                           type={"text"}
@@ -1202,9 +1219,20 @@ const mapDispatchToProps = (dispatch) => {
         )
       );
     },
-    doFPSDeposit: (name, account, amount, paymentid, promotionid, banktype) => {
+    doFPSDeposit: (account, amount, paymentid, promotionid, banktype) => {
       dispatch(
         walletAction.doFPSDeposit(
+          account,
+          amount,
+          paymentid,
+          promotionid,
+          banktype
+        )
+      );
+    },
+    doFPSDepositWithName: (name, account, amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doFPSDepositWithName(
           name,
           account,
           amount,
