@@ -252,7 +252,7 @@ class Profile extends Component {
             {config.features.CustomMessaging &&
               config.features.CustomMessaging.map((platform)=>{
                 return ContentItem(
-                  process.env.PUBLIC_URL + `/assets/images/wapp/icon-${platform}.png`,
+                  process.env.PUBLIC_URL + `/assets/images/wapp/icon-${platform}.svg`,
                   i18n.t("common."+platform),
                   this.isConfigured(this.props.account.info["member_"+platform]),
                   () => {
