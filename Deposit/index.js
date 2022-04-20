@@ -523,18 +523,15 @@ class Deposit extends Component {
         );
       }
       if (method.methodcode === "FPS") {
-        if(config.features.Deposit_FPSWithName)
-        {
+        if (config.features.Deposit_FPSWithName) {
           this.props.doFPSDepositWithName(
             this.state.name,
             this.state.account,
             this.state.amount.replace(/,/g, ""),
             channel.id,
             this.state.depositPromotion
-          );        
-        }
-        else 
-        {
+          );
+        } else {
           this.props.doFPSDeposit(
             this.state.account,
             this.state.amount.replace(/,/g, ""),
@@ -608,11 +605,6 @@ class Deposit extends Component {
   };
 
   render() {
-    var isFPS =
-    this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
-      this.props.selectedMethodIndex
-    ].methodcode.toUpperCase() === "FPS";
-    
     const performCopy = (content) => {
       this.props.alert("", i18n.t("affiliate.copied"));
 
@@ -743,6 +735,9 @@ class Deposit extends Component {
                         {channelExtend.qrCodeFileUrl && (
                           <QRCodeImg src={channelExtend.qrCodeFileUrl} />
                         )}
+                        {channelExtend.logo && (
+                          <QRCodeImg src={channelExtend.logo} />
+                        )}
                         {channelExtend.name && (
                           <TransferContainer>
                             <TransferLabel>
@@ -829,7 +824,15 @@ class Deposit extends Component {
                           }}
                         ></Textbox>
                       )}
-                      {(!(config.features.Deposit_RemoveName || isFPS) || config.features.Deposit_FPSWithName) && (
+                      {(!(
+                        config.features.Deposit_RemoveName ||
+                        this.props.wallet.depositTypeList[
+                          this.props.selectedPaymentIndex
+                        ].method[
+                          this.props.selectedMethodIndex
+                        ].methodcode.toUpperCase() === "FPS"
+                      ) ||
+                        config.features.Deposit_FPSWithName) && (
                         <Textbox
                           style={{ margin: "20px auto 20px auto" }}
                           type={"text"}
@@ -1232,7 +1235,14 @@ const mapDispatchToProps = (dispatch) => {
         )
       );
     },
-    doFPSDepositWithName: (name, account, amount, paymentid, promotionid, banktype) => {
+    doFPSDepositWithName: (
+      name,
+      account,
+      amount,
+      paymentid,
+      promotionid,
+      banktype
+    ) => {
       dispatch(
         walletAction.doFPSDepositWithName(
           name,

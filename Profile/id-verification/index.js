@@ -208,7 +208,7 @@ class NameVerify extends BaseProfile {
       // case "reject":
       //   return <Default {...this.commonprops} />;
       default:
-        return <Default {...this.commonprops} />;
+        return <Default {...this.commonprops} icUpload={this.state.icUpload} />;
     }
   };
 

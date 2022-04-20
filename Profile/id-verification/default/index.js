@@ -102,12 +102,29 @@ class Default extends BaseProfile {
         {config.features.ICVerificationUpload && (
           <AnotherWrapper>
             <CustomLabel>{i18n.t("common.upload")}</CustomLabel>
-            <InputWrapper style={{}}>
-              <CustomInput
+            <InputWrapper style={{ padding: 10 }}>
+              <button
+                onClick={() => {
+                  document.getElementById("getFile").click();
+                }}
+                style={{
+                  marginRight: 10,
+
+                  minWidth: 200,
+                  fontSize: 24,
+                }}
+              >
+                {i18n.t("common.upload")}
+                {console.log(this.props)}
+              </button>
+              <input
                 type="file"
-                accept="image/jpg, image/jpeg, image/png, image/tiff"
+                id="getFile"
                 onChange={this.props.handleFileChange}
-              ></CustomInput>
+                accept="image/jpg, image/jpeg, image/png, image/tiff"
+                style={{ display: "none" }}
+              />
+              {this.props.icUpload ? this.props.icUpload[0].name : ""}
             </InputWrapper>
           </AnotherWrapper>
         )}

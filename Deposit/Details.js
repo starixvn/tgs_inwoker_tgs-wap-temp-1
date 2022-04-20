@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import {WalletService} from "../../../api-services/services/WalletService";
+import { WalletService } from "../../../api-services/services/WalletService";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Dialog";
@@ -382,11 +382,24 @@ class Details extends Component {
                 <React.Fragment>
                   <LeftLabel>{i18n.t("deposit.uploadReceipt")}</LeftLabel>
                   <RightLabel>
-                    <input
-                      type="file"
-                      onChange={this.handleFileChange}
-                      accept="image/jpg, image/jpeg, image/png, image/tiff"
-                    ></input>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <button
+                        onClick={() => {
+                          document.getElementById("getFile").click();
+                        }}
+                        style={{ marginRight: 10, height: 30 }}
+                      >
+                        {i18n.t("common.upload")}
+                      </button>
+                      <input
+                        type="file"
+                        id="getFile"
+                        onChange={this.handleFileChange}
+                        accept="image/jpg, image/jpeg, image/png, image/tiff"
+                        style={{ display: "none" }}
+                      />
+                      {this.state.files[0] ? this.state.files[0].name : ""}
+                    </div>
                   </RightLabel>
                 </React.Fragment>
               );
