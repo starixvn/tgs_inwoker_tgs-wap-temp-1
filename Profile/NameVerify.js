@@ -233,11 +233,28 @@ class NameVerify extends BaseProfile {
           <AnotherWrapper>
             <CustomLabel>{i18n.t("common.upload")}</CustomLabel>
             <InputWrapper style={{}}>
-              <CustomInput
+              <button
+                onClick={() => {
+                  document.getElementById("getFile").click();
+                }}
+                style={{
+                  marginRight: 10,
+
+                  minWidth: 200,
+                  fontSize: 24,
+                }}
+              >
+                {i18n.t("common.upload")}
+                {console.log(this.props)}
+              </button>
+              <input
                 type="file"
-                accept="image/jpg, image/jpeg, image/png, image/tiff"
+                id="getFile"
                 onChange={this.handleFileChange}
-              ></CustomInput>
+                accept="image/jpg, image/jpeg, image/png, image/tiff"
+                style={{ display: "none" }}
+              />
+              {this.state.icUpload ? this.state.icUpload[0].name : ""}
             </InputWrapper>
           </AnotherWrapper>
         ) : (

@@ -140,11 +140,24 @@ class DetailsManual extends Component {
                 <React.Fragment>
                   <LeftLabel>{i18n.t("deposit.uploadReceipt")}</LeftLabel>
                   <RightLabel>
-                    <input
-                      type="file"
-                      onChange={this.handleFileChange}
-                      accept="image/jpg, image/jpeg, image/png, image/tiff"
-                    ></input>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <button
+                        onClick={() => {
+                          document.getElementById("getFile").click();
+                        }}
+                        style={{ marginRight: 10, height: 30 }}
+                      >
+                        {i18n.t("common.upload")}
+                      </button>
+                      <input
+                        type="file"
+                        id="getFile"
+                        onChange={this.handleFileChange}
+                        accept="image/jpg, image/jpeg, image/png, image/tiff"
+                        style={{ display: "none" }}
+                      />
+                      {this.state.files[0] ? this.state.files[0].name : ""}
+                    </div>
                   </RightLabel>
                   <SplitBoth></SplitBoth>
                 </React.Fragment>
