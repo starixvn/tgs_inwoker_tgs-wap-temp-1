@@ -196,7 +196,8 @@ class Profile extends Component {
             this.props.account.info.member_phone
           )} */}
 
-            {config.features.SMSVerification &&
+            {(config.features.SMSVerification ||
+              config.features.Register_ShowPhone) &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-phone.png`,
                 i18n.t("profile.phone.title"),
@@ -250,18 +251,24 @@ class Profile extends Component {
               )}
 
             {config.features.CustomMessaging &&
-              config.features.CustomMessaging.map((platform)=>{
+              config.features.CustomMessaging.map((platform) => {
                 return ContentItem(
-                  process.env.PUBLIC_URL + `/assets/images/wapp/icon-${platform}.svg`,
-                  i18n.t("common."+platform),
-                  this.isConfigured(this.props.account.info["member_"+platform]),
+                  process.env.PUBLIC_URL +
+                    `/assets/images/wapp/icon-${platform}.svg`,
+                  i18n.t("common." + platform),
+                  this.isConfigured(
+                    this.props.account.info["member_" + platform]
+                  ),
                   () => {
-                    this.handleNavigate("/profile/"+platform);
+                    this.handleNavigate("/profile/" + platform);
                   },
-                  this.props.account.info["member_"+platform]
-                    ? this.props.account.info["member_"+platform].substring(0, 1) + "**"
+                  this.props.account.info["member_" + platform]
+                    ? this.props.account.info["member_" + platform].substring(
+                        0,
+                        1
+                      ) + "**"
                     : ""
-                )
+                );
               })}
           </BlockContainer>
         </div>
