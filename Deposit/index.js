@@ -735,6 +735,9 @@ class Deposit extends Component {
                         {channelExtend.qrCodeFileUrl && (
                           <QRCodeImg src={channelExtend.qrCodeFileUrl} />
                         )}
+                        {channelExtend.logo && (
+                          <QRCodeImg src={channelExtend.logo} />
+                        )}
                         {channelExtend.name && (
                           <TransferContainer>
                             <TransferLabel>
