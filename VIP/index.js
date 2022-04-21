@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { generalAction } from "../../../api-services/actions/generalAction";
 import i18n from "../../../utils/i18n";
-
+import config from "../../../config/config";
 import Header from "../Share/Header";
 
 const Container = styled.div`
@@ -103,6 +103,14 @@ const VIP = (props) => {
     vipBenefit.items.sort((a, b) => {
       return a.level < b.level ? -1 : a.level > b.level ? 1 : 0;
     });
+
+  const getVIPTitle = (level) => {
+    // currently bunny only has 6 levels
+    if (config.features.VIP_CustomLevel_BUNNY && level < 7)
+      return i18n.t("vip.bunny.level" + level);
+    else return "VIP" + level;
+  };
+
   return (
     <Container>
       <Header title="VIP" onBackClick={handleBackClick}></Header>
@@ -127,7 +135,7 @@ const VIP = (props) => {
                         `/assets/images/vip/${data.level}.png`
                       }
                     />
-                    <VIPText>VIP {data.level}</VIPText>
+                    <VIPText>{getVIPTitle(data.level)}</VIPText>
                   </VipEmlemContainer>
                 );
               })}
