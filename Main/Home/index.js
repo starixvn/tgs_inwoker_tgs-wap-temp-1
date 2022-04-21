@@ -280,7 +280,60 @@ const NewWrapper = styled.div`
       : ``;
   }}
 `;
+var sortingHK28 = [
+  GameTypeEnum.LIVELOBBY,
+  GameTypeEnum.SPORTS,
+  GameTypeEnum.ESPORTS,
+  GameTypeEnum.QIPAILOBBY,
+  GameTypeEnum.SLOT,
+  GameTypeEnum.FISH,
+  GameTypeEnum.TABLEGAME,
+  GameTypeEnum.LOTTERYLOBBY,
+];
 
+var sortingSKY = [
+  GameTypeEnum.LIVELOBBY,
+  GameTypeEnum.QIPAILOBBY,
+  GameTypeEnum.SPORTS,
+  GameTypeEnum.FISH,
+  GameTypeEnum.SLOT,
+  GameTypeEnum.TABLEGAME,
+  GameTypeEnum.ESPORTS,
+  GameTypeEnum.LOTTERYLOBBY,
+];
+
+var sortingPB = [
+  GameTypeEnum.SLOT,
+  GameTypeEnum.LIVELOBBY,
+  GameTypeEnum.SPORTS,
+  GameTypeEnum.ESPORTS,
+  GameTypeEnum.TABLEGAME,
+  GameTypeEnum.FISH,
+  GameTypeEnum.LOTTERYLOBBY,
+  GameTypeEnum.QIPAILOBBY,
+];
+
+var sortingWLGHK = [
+  GameTypeEnum.LIVELOBBY,
+  GameTypeEnum.QIPAILOBBY,
+  GameTypeEnum.SPORTS,
+  GameTypeEnum.ESPORTS,
+  GameTypeEnum.FISH,
+  GameTypeEnum.LOTTERYLOBBY,
+  GameTypeEnum.SLOT,
+  GameTypeEnum.TABLEGAME,
+];
+
+var sortingGMO = [
+  GameTypeEnum.LIVELOBBY,
+  GameTypeEnum.QIPAILOBBY,
+  GameTypeEnum.TABLEGAME,
+  GameTypeEnum.FISH,
+  GameTypeEnum.SPORTS,
+  GameTypeEnum.LOTTERYLOBBY,
+  GameTypeEnum.ESPORTS,
+  GameTypeEnum.SLOT,
+]
 class Home extends Component {
   state = {
     value: 0,
@@ -349,7 +402,19 @@ class Home extends Component {
         }
         currentType = row.type;
       });
-    return gameTypeListSorting;
+      return gameTypeListSorting.sort((a, b) => {
+        if (config.features.MenuItem_Sorting_WLGHK)
+          return sortingWLGHK.indexOf(a) - sortingWLGHK.indexOf(b);
+        else if (config.features.MenuItem_Sorting_HK28)
+          return sortingHK28.indexOf(a) - sortingHK28.indexOf(b);
+        else if (config.features.MenuItem_Sorting_SKY)
+          return sortingSKY.indexOf(a) - sortingSKY.indexOf(b);
+        else if (config.features.MenuItem_Sorting_PB)
+          return sortingPB.indexOf(a) - sortingPB.indexOf(b);
+        else if (config.features.MenuItem_Sorting_GMO)
+          return sortingGMO.indexOf(a) - sortingGMO.indexOf(b);
+        else return a - b;
+      });
   }
   handleScroll = (e) => {
     const doc = document.documentElement;
@@ -671,7 +736,18 @@ class Home extends Component {
               return this.props.game.homePageGameList
                 .filter((a) => displayGameType.indexOf(a.type) >= 0)
                 .sort(function (a, b) {
-                  return a.type - b.type;
+                  if(config.features.MenuItem_Sorting_HK28)
+                    return sortingHK28.indexOf(a.type) - sortingHK28.indexOf(b.type);
+                  else if(config.features.MenuItem_Sorting_WLGHK)
+                    return sortingWLGHK.indexOf(a.type) - sortingWLGHK.indexOf(b.type);
+                  else if(config.features.MenuItem_Sorting_SKY)
+                    return sortingSKY.indexOf(a.type) - sortingSKY.indexOf(b.type);
+                  else if(config.features.MenuItem_Sorting_PB)
+                    return sortingPB.indexOf(a.type) - sortingPB.indexOf(b.type);
+                  else if(config.features.MenuItem_Sorting_GMO)
+                    return sortingGMO.indexOf(a.type) - sortingGMO.indexOf(b.type);
+                  else
+                    return a.type - b.type;
                 })
                 .sort((a, b) => {
                   var sortEsportFirst = [4];
