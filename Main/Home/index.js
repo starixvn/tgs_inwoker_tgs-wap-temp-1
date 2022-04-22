@@ -735,6 +735,15 @@ class Home extends Component {
               var currentType = -1;
               return this.props.game.homePageGameList
                 .filter((a) => displayGameType.indexOf(a.type) >= 0)
+                .sort((a, b) => {
+                  if (config.features.LiveGame_Sorting_SKY) {
+                    var sortDGFirst = ["DG"];
+                    return (
+                      sortDGFirst.indexOf(b.abbreviation) -
+                      sortDGFirst.indexOf(a.abbreviation)
+                    );
+                  } else return b - a;
+                })
                 .sort(function (a, b) {
                   if(config.features.MenuItem_Sorting_HK28)
                     return sortingHK28.indexOf(a.type) - sortingHK28.indexOf(b.type);
