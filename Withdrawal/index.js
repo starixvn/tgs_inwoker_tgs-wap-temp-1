@@ -106,15 +106,7 @@ const StyledModalBank = withStyles((theme) => ({
     height: "calc(100% - 580px)",
   },
 }))(Modal);
-const StyledListItemIcon = withStyles((theme) => ({
-  root: {
-    marginLeft: "150px",
-  },
-}))(ListItemIcon);
-const StyledListItemImage = styled.img`
-  width: 64px;
-  height: 64px;
-`;
+
 const StyledListItem = withStyles((theme) => ({
   root: {
     borderBottom: "1px solid rgba(0,0,0,0.2)",
@@ -150,43 +142,7 @@ const StyledModalPopup = withStyles((theme) => ({
     display: "block",
   },
 }))(Modal);
-const DialoTitle = styled.div`
-  font-size: 36px;
-  font-weight: 600;
-  margin: 0 auto;
-  display: table;
-  color: #4a4a4a;
-`;
 
-const OTPContainer = styled.div`
-  position: relative;
-  text-align: center;
-  margin: 50px 0;
-  &:after {
-    content: "___   ___   ___   ___   ___   ___";
-    display: block;
-    position: absolute;
-    top: 28px;
-    left: 64px;
-    white-space: pre;
-  }
-`;
-const OTPTextBox = styled.input`
-  position: relative;
-  font-size: 50px;
-  z-index: 2;
-  border: none;
-  background: transparent;
-  width: 500px;
-  text-indent: 9px;
-  padding-left: 64px;
-  color: ${({ theme }) => theme.secondary};
-  -webkit-letter-spacing: 25.6px;
-  -moz-letter-spacing: 25.6px;
-  -ms-letter-spacing: 25.6px;
-  letter-spacing: 42.6px;
-  font-family: Courier;
-`;
 const CustomSelect = styled.select`
   font-size: 28px;
   margin-top: 25px;
@@ -223,7 +179,7 @@ class Withdrawal extends Component {
         bonus_limit_list: [],
       },
       bankCardList: [],
-      selectedBankCardIndex: 0,
+      selectedBankCardIndex: "",
       defaultCard: "",
       amount: "",
       card: "",
@@ -234,6 +190,9 @@ class Withdrawal extends Component {
       otp: false,
       disabled: false,
       minWithdrawLimit: 0,
+
+      min: 0,
+      max: 0,
     };
     this.state = this.initialState;
   }
@@ -336,15 +295,9 @@ class Withdrawal extends Component {
       parseFloat(formatedamount) > parseFloat(this.props.wallet.mainBalance)
     ) {
       this.props.alert("", i18n.t("withdrawal.msgInsufficient"));
-    } else if (
-      parseFloat(formatedamount) <
-      parseFloat(this.props.wallet.withdrawalMinLimit)
-    ) {
+    } else if (parseFloat(formatedamount) < parseFloat(this.state.min)) {
       this.props.alert("", i18n.t("withdrawal.notReachMin"));
-    } else if (
-      parseFloat(formatedamount) >
-      parseFloat(this.props.wallet.withdrawalMaxLimit)
-    ) {
+    } else if (parseFloat(formatedamount) > parseFloat(this.state.max)) {
       this.props.alert("", i18n.t("withdrawal.reachedMax"));
     } else {
       this.props.doWithdraw(
@@ -377,6 +330,38 @@ class Withdrawal extends Component {
       //  bankOpen: false
     });
   };
+
+  getTransferLimit = (channelId) => {
+    //reset everything
+    var minValue = [];
+    var maxValue = [];
+    this.setState({
+      min: 0,
+      max: 0,
+    });
+    //update new data.
+    for (var i = 0; i < this.props.wallet.depositTypeList.length; i++) {
+      const methodList = this.props.wallet.depositTypeList[i].method;
+      if (methodList) {
+        for (var inner = 0; inner < methodList.length; inner++) {
+          const channelList = methodList[inner].channel;
+          for (var channel = 0; channel < channelList.length; channel++)
+            if (channelList[channel]) {
+              if (channelList[channel].channelid === channelId) {
+                minValue.push(channelList[channel].transferlimit.from);
+                maxValue.push(channelList[channel].transferlimit.to);
+
+                this.setState({
+                  min: Math.min(...minValue),
+                  max: Math.max(...maxValue),
+                });
+              }
+            }
+        }
+      }
+    }
+  };
+
   handleConfirmOTP = () => {
     const amount = this.state.amount;
 
@@ -448,9 +433,16 @@ class Withdrawal extends Component {
           <CustomSelect
             value={this.state.selectedBankCardIndex}
             native
-            onChange={(e) => this.handleBankClick(e)}
+            onChange={(e) => {
+              this.handleBankClick(e);
+              this.getTransferLimit(
+                this.props.wallet.bankCardList[e.target.value].paymentchannelid
+              );
+            }}
           >
-            <option disabled>{i18n.t("withdrawal.msgEnterBank")}</option>
+            <option disabled value="">
+              {i18n.t("withdrawal.msgEnterBank")}
+            </option>
             {this.props.wallet.bankCardList.map((item, index) => {
               return (
                 <option value={index} id={`optionValue-${index}`}>
@@ -582,7 +574,6 @@ const mapStateToProps = (state) => {
   return {
     token: state.account.token,
     account: state.account,
-
     game: state.game,
     wallet: state.wallet,
   };

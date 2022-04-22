@@ -553,6 +553,8 @@ class Wap extends Component {
       this.props.getBrandCommunicationList();
       this.props.getLiveChatURL();
       this.props.getPlayerPromotionList(i18n.language);
+      this.props.getDepositMethod();
+      this.props.getWithdrawalChannel();
     }
 
     // this.props.getMobilePrefix();
@@ -587,6 +589,8 @@ class Wap extends Component {
           localStorage.setItem("token1", decryptedToken);
           AppHistory.replace("/");
           break;
+        default:
+          return "";
       }
     }
     const localStorageToken = localStorage.getItem("token1");
@@ -616,6 +620,8 @@ class Wap extends Component {
         this.props.getMessageList(i18n.language, 1, 99);
         this.props.getBankCardList();
         this.props.getAutoTransferStatus();
+        this.props.getDepositMethod();
+        this.props.getWithdrawalChannel();
         // this.props.getIDCardNo();
         //this.props.getDepositChannel();
 
@@ -810,8 +816,8 @@ class Wap extends Component {
 
     if (
       (this.state.loading === true ||
-        this.props.general.token == "" ||
-        this.props.general.token == null) &&
+        this.props.general.token === "" ||
+        this.props.general.token === null) &&
       this.props.general.isMaintenance === false
     ) {
       return <Loading show={this.state.loading}></Loading>;
@@ -860,12 +866,6 @@ class Wap extends Component {
                       }
                       if (row.path === "/deposit/details") {
                         propsObj["order"] = props.location.state;
-                        {
-                          /* propsObj["form"] =
-                          props.location.state != null
-                            ? props.location.state.form
-                            : null; */
-                        }
                       }
                       if (row.path === "/withdrawal/details") {
                         propsObj["order"] =
@@ -1075,6 +1075,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
       ),
+    getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
+    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
   };
 };
 
