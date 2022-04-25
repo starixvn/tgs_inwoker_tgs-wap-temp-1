@@ -6,10 +6,10 @@ import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 
-import {ReportService} from "../../../api-services/services/ReportService";
-import {GameService} from "../../../api-services/services/GameService";
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {GeneralService} from "../../../api-services/services/GeneralService";
+import { ReportService } from "../../../api-services/services/ReportService";
+import { GameService } from "../../../api-services/services/GameService";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { GeneralService } from "../../../api-services/services/GeneralService";
 
 import BottomScrollListener from "react-bottom-scroll-listener";
 import Loading from "../../Wap/Share/Loading";
@@ -28,6 +28,7 @@ import Select from "@material-ui/core/Select";
 
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
+import config from "../../../config/config";
 const moment = require("moment");
 const localeMap = {
   zh: zhLocale,
@@ -758,6 +759,22 @@ class Report extends Component {
         });
       }
     });
+
+    config.features.Report_ShowRoundsTotal &&
+      ReportService.GetRoundsTotal(
+        moment(this.state.dateFrom).utc().format(),
+        moment(this.state.dateTo).utc().add(1, "days").format()
+      ).then((result) => {
+        if (result.IsSuccess) {
+          this.setState({
+            ...this.state,
+            tab2: {
+              ...this.state.tab2,
+              roundTotal: result.data,
+            },
+          });
+        }
+      });
   };
   handleDepositGetReportTrigger = (page, status) => {
     this.setState({ ...this.state, loading: true });
@@ -1057,7 +1074,6 @@ class Report extends Component {
           <div className="clear"></div>
           <DateRangContainer>
             <DateRangSelection
-              selected={true}
               onClick={this.handleTodayClick}
               selected={this.state.dateRange === 0}
             >
@@ -1238,6 +1254,44 @@ class Report extends Component {
                     //    </DataHeaderRow>
                   }
                 </DataHeader>
+                {config.features.Report_ShowRoundsTotal &&
+                  this.state.tab2.roundTotal &&
+                  (this.state.tab2.roundTotal.betAmount ||
+                    this.state.tab2.roundTotal.validBetAmount ||
+                    this.state.tab2.roundTotal.validBetAmount) && (
+                    <DataContent
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                      }}
+                    >
+                      <div style={{ textAlign: "center" }}>
+                        {this.state.tab2.roundTotal &&
+                          i18n.t("report.totalBetAmount") +
+                            ": " +
+                            this.state.tab2.roundTotal.betAmount}
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        {this.state.tab2.roundTotal &&
+                          i18n.t("report.totalValidBet") +
+                            ": " +
+                            this.state.tab2.roundTotal.validBetAmount}
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        {i18n.t("report.totalWinLose") + ": "}
+                        <CustomWinLose
+                          value={
+                            this.state.tab2.roundTotal &&
+                            this.state.tab2.roundTotal.winLoss
+                          }
+                        >
+                          {this.state.tab2.roundTotal &&
+                            this.state.tab2.roundTotal.winLoss}
+                        </CustomWinLose>
+                      </div>
+                    </DataContent>
+                  )}
+
                 {(() => {
                   if (this.state.dataList.length <= 0) {
                     return <NoRecordContainer></NoRecordContainer>;
