@@ -340,28 +340,24 @@ class Withdrawal extends Component {
       max: 0,
     });
     //update new data.
-    for (var i = 0; i < this.props.wallet.depositTypeList.length; i++) {
-      const methodList = this.props.wallet.depositTypeList[i].method;
+    for (var i = 0; i < this.props.wallet.withdrawalList.length; i++) {
+      const methodList = this.props.wallet.withdrawalList[i].channel;
       if (methodList) {
         for (var inner = 0; inner < methodList.length; inner++) {
-          const channelList = methodList[inner].channel;
-          for (var channel = 0; channel < channelList.length; channel++)
-            if (channelList[channel]) {
-              if (channelList[channel].channelid === channelId) {
-                minValue.push(channelList[channel].transferlimit.from);
-                maxValue.push(channelList[channel].transferlimit.to);
-
-                this.setState({
-                  min: Math.min(...minValue),
-                  max: Math.max(...maxValue),
-                });
-              }
-            }
+          const channelList = methodList[inner];
+          if (channelList.channelid === channelId) {
+            console.log(channelList.transferlimit);
+            minValue.push(channelList.transferlimit.from);
+            maxValue.push(channelList.transferlimit.to);
+            this.setState({
+              min: Math.min(...minValue),
+              max: Math.max(...maxValue),
+            });
+          }
         }
       }
     }
   };
-
   handleConfirmOTP = () => {
     const amount = this.state.amount;
 
