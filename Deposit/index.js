@@ -540,6 +540,13 @@ class Deposit extends Component {
           );
         }
       }
+      if (method.methodcode === "Usdt") {
+        this.props.doUsdtDeposit(
+          this.state.amount.replace(/,/g, ""),
+          channel.id,
+          this.state.depositPromotion
+        );
+      }
       if (method.methodcode === "ThirdParty") {
         this.props.doThirdPartyDeposit(
           this.state.amount.replace(/,/g, ""),
@@ -610,6 +617,11 @@ class Deposit extends Component {
 
       copy(content);
     };
+
+    const isUsdt =
+      this.props.wallet.depositTypeList[this.state.selectedPaymentIndex].method[
+        this.state.selectedMethodIndex
+      ].methodcode.toUpperCase();
 
     const CopyFeature = ({ copyContent }) => {
       return (
@@ -804,7 +816,10 @@ class Deposit extends Component {
                 ) {
                   return (
                     <>
-                      {!config.features.Deposit_RemoveAccount && (
+                      {!(
+                        config.features.Deposit_RemoveAccount ||
+                        isUsdt === "USDT"
+                      ) && (
                         <Textbox
                           style={{ margin: "20px auto 20px auto" }}
                           type={"text"}
@@ -1262,6 +1277,12 @@ const mapDispatchToProps = (dispatch) => {
           promotionid,
           banktype
         )
+      );
+    },
+
+    doUsdtDeposit: (amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doUsdtDeposit(amount, paymentid, promotionid, banktype)
       );
     },
     getPlayerPromotionList: (language) =>
