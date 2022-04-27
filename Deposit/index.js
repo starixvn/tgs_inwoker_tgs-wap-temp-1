@@ -750,6 +750,20 @@ class Deposit extends Component {
                         {channelExtend.logo && (
                           <QRCodeImg src={channelExtend.logo} />
                         )}
+                        {channelExtend.qrCode && (
+                          <QRCodeImg src={channelExtend.qrCode} />
+                        )}
+                        {channelExtend.address && (
+                          <TransferContainer>
+                            <TransferLabel>
+                              {i18n.t("deposit.address")}:
+                            </TransferLabel>
+                            <TransferValue>
+                              {channelExtend.address}
+                            </TransferValue>
+                            <CopyFeature copyContent={channelExtend.address} />
+                          </TransferContainer>
+                        )}
                         {channelExtend.name && (
                           <TransferContainer>
                             <TransferLabel>
