@@ -6,10 +6,10 @@ import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 
-import {ReportService} from "../../../api-services/services/ReportService";
-import {GameService} from "../../../api-services/services/GameService";
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {GeneralService} from "../../../api-services/services/GeneralService";
+import { ReportService } from "../../../api-services/services/ReportService";
+import { GameService } from "../../../api-services/services/GameService";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { GeneralService } from "../../../api-services/services/GeneralService";
 
 import BottomScrollListener from "react-bottom-scroll-listener";
 import Loading from "../../Wap/Share/Loading";
@@ -23,18 +23,25 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { createMuiTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import zhLocale from "date-fns/locale/zh-CN";
+import enLocale from "date-fns/locale/en-US";
+import thLocale from "date-fns/locale/th";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
 import i18n from "../../../utils/i18n";
+import config from "../../../config/config";
 import Common from "../../../utils/Common";
+
 const moment = require("moment");
 const localeMap = {
   zh: zhLocale,
+  en: enLocale,
+  th: thLocale,
 };
 const Container = styled.div`
   width: 100%;
-  padding-top: 230px;
+  padding-top: 170px;
+  min-height: 100vh;
 `;
 const StyledAppBar = withStyles((theme) => ({
   root: {
@@ -261,6 +268,59 @@ const TheDepositButton = styled.div`
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 `;
 
+const CustomTabs = styled.div`
+  height: 80px;
+  font-size: 25px;
+  display: flex;
+`;
+
+const CustomTabText = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CustomBorderBottom = styled.div`
+  height: 5px;
+`;
+
+const CustomTab = styled.div`
+  width: calc(100vw / 4);
+  display: flex;
+  flex-direction: column;
+  padding: 0px 10px;
+
+  ${CustomTabText} {
+    color: ${({ selected, theme }) => {
+      return selected ? theme.primary : theme.secondary;
+    }};
+  }
+
+  ${CustomBorderBottom} {
+    background: ${({ selected, theme }) => {
+      return selected ? theme.primary : theme.secondary;
+    }};
+  }
+`;
+
+const CustomDatepicker = styled.div`
+  background: white;
+  zoom: 1.5;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-top: 10px;
+
+  .MuiInputBase-input {
+    background: none;
+  }
+
+  .MuiInput-underline:before,
+  .MuiInput-underline:after {
+    border-bottom: 0px;
+  }
+`;
+
 const DateTimeDisplay = styled.div``;
 
 const CustomWinLose = styled.span`
@@ -317,7 +377,7 @@ class Report extends Component {
         dateFrom: today,
         dateTo: today,
         dateRange: 0,
-
+        roundTotal: {},
         type: 0,
       },
       tab3: {
@@ -363,6 +423,59 @@ class Report extends Component {
     };
   }
 
+  theMenu = [
+    {
+      index: 2,
+      label: i18n.t("report.bettingDetails"),
+    },
+    {
+      index: 3,
+      label: i18n.t("report.withdrawalDetails"),
+    },
+    {
+      index: 4,
+      label: i18n.t("report.depositDetails"),
+    },
+    {
+      index: 6,
+      label: i18n.t("common.transfer"),
+    },
+    {
+      index: 7,
+      label: i18n.t("report.joinedPromo.title"),
+    },
+  ];
+
+  noTransfer = [
+    {
+      index: 2,
+      label: i18n.t("report.bettingDetails"),
+    },
+    {
+      index: 3,
+      label: i18n.t("report.withdrawalDetails"),
+    },
+    {
+      index: 4,
+      label: i18n.t("report.depositDetails"),
+    },
+    {
+      index: 7,
+      label: i18n.t("report.joinedPromo.title"),
+    },
+  ];
+
+  CTabs = (index, label) => {
+    return (
+      <Tab
+        selected={index === this.state.selectedType}
+        index={index}
+        label={label}
+        value={index}
+      ></Tab>
+    );
+  };
+
   componentDidMount() {
     this.GetDepositWithdrawalStatus();
     // this.handleAccountGetReportTrigger(
@@ -394,24 +507,21 @@ class Report extends Component {
         preState.type !== this.state.type ||
         preState.dateFrom !== this.state.dateFrom ||
         preState.dateTo !== this.state.dateTo ||
-        preState.page !== this.state.page
+        preState.page !== this.state.page ||
+        preState.selectedType !== this.state.selectedType
       ) {
-        this.handleAccountGetReportTrigger(
-          this.state.page,
-
-          this.state.type
-        );
+        this.handleAccountGetReportTrigger(this.state.page, this.state.type);
       }
     } else if (this.state.selectedType === 2) {
       if (
         preState.dateFrom !== this.state.dateFrom ||
         preState.dateTo !== this.state.dateTo ||
         preState.type !== this.state.type ||
-        preState.page !== this.state.page
+        preState.page !== this.state.page ||
+        preState.selectedType !== this.state.selectedType
       ) {
         this.handleTransactionGetReportTrigger(
           this.state.page,
-
           this.state.type
         );
       }
@@ -420,11 +530,11 @@ class Report extends Component {
         preState.dateFrom !== this.state.dateFrom ||
         preState.dateTo !== this.state.dateTo ||
         preState.status !== this.state.status ||
-        preState.page !== this.state.page
+        preState.page !== this.state.page ||
+        preState.selectedType !== this.state.selectedType
       ) {
         this.handleWithdrawalGetReportTrigger(
           this.state.page,
-
           this.state.status
         );
       }
@@ -433,19 +543,17 @@ class Report extends Component {
         preState.dateFrom !== this.state.dateFrom ||
         preState.dateTo !== this.state.dateTo ||
         preState.status !== this.state.status ||
-        preState.page !== this.state.page
+        preState.page !== this.state.page ||
+        preState.selectedType !== this.state.selectedType
       ) {
-        this.handleDepositGetReportTrigger(
-          this.state.page,
-
-          this.state.status
-        );
+        this.handleDepositGetReportTrigger(this.state.page, this.state.status);
       }
     } else if (this.state.selectedType === 5) {
       if (
         preState.dateFrom !== this.state.dateFrom ||
         preState.dateTo !== this.state.dateTo ||
-        preState.page !== this.state.page
+        preState.page !== this.state.page ||
+        preState.selectedType !== this.state.selectedType
       ) {
         this.handleRebateGetReportTrigger(this.state.page);
       }
@@ -453,7 +561,8 @@ class Report extends Component {
       if (
         preState.dateFrom !== this.state.dateFrom ||
         preState.dateTo !== this.state.dateTo ||
-        preState.page !== this.state.page
+        preState.page !== this.state.page ||
+        preState.selectedType !== this.state.selectedType
       ) {
         this.handleGetTransferReportTrigger(this.state.page);
       }
@@ -493,122 +602,126 @@ class Report extends Component {
   handleChangeTab = (e, newValue) => {
     let json = {};
     let setDateJson = {};
-    if (this.state.selectedType === 1) {
-      json = {
-        tab1: {
-          dateFrom: this.state.dateFrom,
-          dateTo: this.state.dateTo,
-          type: this.state.type,
-          dateRange: this.state.dateRange,
-        },
-      };
-    } else if (this.state.selectedType === 2) {
-      json = {
-        tab2: {
-          dateFrom: this.state.dateFrom,
-          dateTo: this.state.dateTo,
-          type: this.state.type,
-          dateRange: this.state.dateRange,
-        },
-      };
-    } else if (this.state.selectedType === 3) {
-      json = {
-        tab3: {
-          dateFrom: this.state.dateFrom,
-          dateTo: this.state.dateTo,
-          status: this.state.status,
-          dateRange: this.state.dateRange,
-        },
-      };
-    } else if (this.state.selectedType === 4) {
-      json = {
-        tab4: {
-          dateFrom: this.state.dateFrom,
-          dateTo: this.state.dateTo,
-          status: this.state.status,
-          dateRange: this.state.dateRange,
-        },
-      };
-    } else if (this.state.selectedType === 5) {
-      json = {
-        tab5: {
-          dateFrom: this.state.dateFrom,
-          dateTo: this.state.dateTo,
-          dateRange: this.state.dateRange,
-        },
-      };
-    } else if (this.state.selectedType === 6) {
-      json = {
-        tab6: {
-          dateFrom: this.state.dateFrom,
-          dateTo: this.state.dateTo,
-          dateRange: this.state.dateRange,
-        },
-      };
-    } else if (this.state.selectedType === 7) {
-      json = {
-        tab7: {
-          dateFrom: this.state.dateFrom,
-          dateTo: this.state.dateTo,
-          dateRange: this.state.dateRange,
-        },
-      };
+
+    if (this.state.selectedType !== newValue) {
+      if (this.state.selectedType === 1) {
+        json = {
+          tab1: {
+            dateFrom: this.state.dateFrom,
+            dateTo: this.state.dateTo,
+            type: this.state.type,
+            dateRange: this.state.dateRange,
+          },
+        };
+      } else if (this.state.selectedType === 2) {
+        json = {
+          tab2: {
+            dateFrom: this.state.dateFrom,
+            dateTo: this.state.dateTo,
+            type: this.state.type,
+            dateRange: this.state.dateRange,
+          },
+        };
+      } else if (this.state.selectedType === 3) {
+        json = {
+          tab3: {
+            dateFrom: this.state.dateFrom,
+            dateTo: this.state.dateTo,
+            status: this.state.status,
+            dateRange: this.state.dateRange,
+          },
+        };
+      } else if (this.state.selectedType === 4) {
+        json = {
+          tab4: {
+            dateFrom: this.state.dateFrom,
+            dateTo: this.state.dateTo,
+            status: this.state.status,
+            dateRange: this.state.dateRange,
+          },
+        };
+      } else if (this.state.selectedType === 5) {
+        json = {
+          tab5: {
+            dateFrom: this.state.dateFrom,
+            dateTo: this.state.dateTo,
+            dateRange: this.state.dateRange,
+          },
+        };
+      } else if (this.state.selectedType === 6) {
+        json = {
+          tab6: {
+            dateFrom: this.state.dateFrom,
+            dateTo: this.state.dateTo,
+            dateRange: this.state.dateRange,
+          },
+        };
+      } else if (this.state.selectedType === 7) {
+        json = {
+          tab7: {
+            dateFrom: this.state.dateFrom,
+            dateTo: this.state.dateTo,
+            dateRange: this.state.dateRange,
+          },
+        };
+      }
+      if (newValue === 1) {
+        setDateJson = {
+          dateFrom: this.state.tab1.dateFrom,
+          dateTo: this.state.tab1.dateTo,
+          type: this.state.tab1.type,
+          dateRange: this.state.tab1.dateRange,
+        };
+      } else if (newValue === 2) {
+        setDateJson = {
+          dateFrom: this.state.tab2.dateFrom,
+          dateTo: this.state.tab2.dateTo,
+          type: this.state.tab2.type,
+          dateRange: this.state.tab1.dateRange,
+        };
+      } else if (newValue === 3) {
+        setDateJson = {
+          dateFrom: this.state.tab3.dateFrom,
+          dateTo: this.state.tab3.dateTo,
+          status: this.state.tab3.status,
+          dateRange: this.state.tab3.dateRange,
+        };
+      } else if (newValue === 4) {
+        setDateJson = {
+          dateFrom: this.state.tab4.dateFrom,
+          dateTo: this.state.tab4.dateTo,
+          status: this.state.tab4.status,
+          dateRange: this.state.tab4.dateRange,
+        };
+      } else if (newValue === 5) {
+        setDateJson = {
+          dateFrom: this.state.tab5.dateFrom,
+          dateTo: this.state.tab5.dateTo,
+          dateRange: this.state.tab5.dateRange,
+        };
+      } else if (newValue === 6) {
+        setDateJson = {
+          dateFrom: this.state.tab6.dateFrom,
+          dateTo: this.state.tab6.dateTo,
+          dateRange: this.state.tab6.dateRange,
+        };
+      } else if (newValue === 7) {
+        setDateJson = {
+          dateFrom: this.state.tab6.dateFrom,
+          dateTo: this.state.tab6.dateTo,
+          dateRange: this.state.tab6.dateRange,
+        };
+      }
+      window.scrollTo({ top: 0 });
+      this.setState({
+        ...this.state,
+        dataList: [],
+        selectedType: newValue,
+        page: 1,
+        ...setDateJson,
+        ...json,
+      });
     }
-    if (newValue === 1) {
-      setDateJson = {
-        dateFrom: this.state.tab1.dateFrom,
-        dateTo: this.state.tab1.dateTo,
-        type: this.state.tab1.type,
-        dateRange: this.state.tab1.dateRange,
-      };
-    } else if (newValue === 2) {
-      setDateJson = {
-        dateFrom: this.state.tab2.dateFrom,
-        dateTo: this.state.tab2.dateTo,
-        type: this.state.tab2.type,
-        dateRange: this.state.tab1.dateRange,
-      };
-    } else if (newValue === 3) {
-      setDateJson = {
-        dateFrom: this.state.tab3.dateFrom,
-        dateTo: this.state.tab3.dateTo,
-        status: this.state.tab3.status,
-        dateRange: this.state.tab3.dateRange,
-      };
-    } else if (newValue === 4) {
-      setDateJson = {
-        dateFrom: this.state.tab4.dateFrom,
-        dateTo: this.state.tab4.dateTo,
-        status: this.state.tab4.status,
-        dateRange: this.state.tab4.dateRange,
-      };
-    } else if (newValue === 5) {
-      setDateJson = {
-        dateFrom: this.state.tab5.dateFrom,
-        dateTo: this.state.tab5.dateTo,
-        dateRange: this.state.tab5.dateRange,
-      };
-    } else if (newValue === 6) {
-      setDateJson = {
-        dateFrom: this.state.tab6.dateFrom,
-        dateTo: this.state.tab6.dateTo,
-        dateRange: this.state.tab6.dateRange,
-      };
-    } else if (newValue === 7) {
-      setDateJson = {
-        dateFrom: this.state.tab6.dateFrom,
-        dateTo: this.state.tab6.dateTo,
-        dateRange: this.state.tab6.dateRange,
-      };
-    }
-    window.scrollTo({ top: 0 });
-    this.setState({
-      ...this.state,
-      selectedType: newValue,
-      page: 1,
-      ...setDateJson,
-      ...json,
-    });
   };
 
   handleWeeklyClick = () => {
@@ -624,6 +737,9 @@ class Report extends Component {
       dateFrom: newdateFrom,
       dateTo: today,
       dateRange: 1,
+      dataList: [],
+      isMaxPage: false,
+      page: 1,
     });
   };
   handleMontlyClick = () => {
@@ -639,6 +755,9 @@ class Report extends Component {
       dateFrom: newdateFrom,
       dateTo: today,
       dateRange: 2,
+      dataList: [],
+      isMaxPage: false,
+      page: 1,
     });
   };
   handleTodayClick = (date) => {
@@ -652,6 +771,9 @@ class Report extends Component {
       dateFrom: today,
       dateTo: today,
       dateRange: 0,
+      dataList: [],
+      isMaxPage: false,
+      page: 1,
     });
   };
   handleDateFromChange = (e) => {
@@ -723,6 +845,22 @@ class Report extends Component {
         });
       }
     });
+
+    config.features.Report_ShowRoundsTotal &&
+      ReportService.GetRoundsTotal(
+        moment(this.state.dateFrom).utc().format(),
+        moment(this.state.dateTo).utc().add(1, "days").format()
+      ).then((result) => {
+        if (result.IsSuccess) {
+          this.setState({
+            ...this.state,
+            tab2: {
+              ...this.state.tab2,
+              roundTotal: result.data,
+            },
+          });
+        }
+      });
   };
   handleWithdrawalGetReportTrigger = (page, status) => {
     this.setState({ ...this.state, loading: true });
@@ -917,10 +1055,6 @@ class Report extends Component {
   };
 
   render() {
-    var checkTransferWallet =
-      Object.values(this.props.game.providerList).filter(
-        (item) => item.transferwallet === true
-      ).length > 0;
     return (
       <Container>
         <StyledAppBar>
@@ -960,55 +1094,57 @@ class Report extends Component {
                   .reduce((a, v) => (a = a + v.balance), 0)
             )}
           </BalanceLabel>
-          <Tabs value={this.state.selectedType} onChange={this.handleChangeTab}>
-            {/*
-          <Tab
-              style={{ width: "calc(750px/5)" }}
-              index={1}
-              label={i18n.t("report.transferDetails")}
-              value={1}
-            />
-          */}
-            <Tab
-              style={{ width: "calc(750px/5)" }}
-              index={2}
-              label={i18n.t("report.bettingDetails")}
-              value={2}
-            />
-            <Tab
-              style={{ width: "calc(750px/5)" }}
-              index={3}
-              label={i18n.t("report.withdrawalDetails")}
-              value={3}
-            />
-            <Tab
-              style={{ width: "calc(750px/5)" }}
-              index={4}
-              label={i18n.t("report.depositDetails")}
-              value={4}
-            />
-            {/*<Tab
-              style={{ width: "calc(750px/5)" }}
-              index={5}
-              label={i18n.t("report.rebateDetails")}
-              value={5}
-            /> */}{" "}
-            {checkTransferWallet && (
-              <Tab
-                style={{ width: "calc(750px/5)" }}
-                index={6}
-                label={i18n.t("common.transfer")}
-                value={6}
-              />
-            )}{" "}
-            <Tab
-              style={{ width: "calc(750px/5)" }}
-              index={7}
-              label={i18n.t("report.joinedPromo.title")}
-              value={7}
-            />
-          </Tabs>
+          {
+            //         <Tabs value={this.state.selectedType} onChange={this.handleChangeTab}>
+            //         {/*
+            //       <Tab
+            //           style={{ width: "calc(750px/5)" }}
+            //           index={1}
+            //           label={i18n.t("report.transferDetails")}
+            //           value={1}
+            //         />
+            //       */}
+            //         <Tab
+            //           style={{ width: 'calc(750px/4)' }}
+            //           index={2}
+            //           label={i18n.t('report.bettingDetails')}
+            //           value={2}
+            //         />
+            //         <Tab
+            //           style={{ width: 'calc(750px/4)' }}
+            //           index={3}
+            //           label={i18n.t('report.withdrawalDetails')}
+            //           value={3}
+            //         />
+            //         <Tab
+            //           style={{ width: 'calc(750px/4)' }}
+            //           index={4}
+            //           label={i18n.t('report.depositDetails')}
+            //           value={4}
+            //         />
+            //         {/*<Tab
+            //           style={{ width: "calc(750px/5)" }}
+            //           index={5}
+            //           label={i18n.t("report.rebateDetails")}
+            //           value={5}
+            //         /> */}{' '}
+            //         <Tab
+            //           style={{ width: 'calc(750px/4)' }}
+            //           index={6}
+            //           label={i18n.t('common.transfer')}
+            //           value={6}
+            //         />
+            //       </Tabs>
+          }
         </StyledAppBar>
+        <Tabs value={this.state.selectedType} onChange={this.handleChangeTab}>
+          {(this.props.game.containTransferWallet
+            ? this.theMenu
+            : this.noTransfer
+          ).map((data, index) => {
+            return this.CTabs(data.index, data.label);
+          })}
+        </Tabs>
 
         <DateContainer>
           <FlatStraightLine>
@@ -1017,7 +1153,7 @@ class Report extends Component {
               <ThemeProvider theme={materialTheme}>
                 <MuiPickersUtilsProvider
                   utils={DateFnsUtils}
-                  locale={localeMap["en"]}
+                  locale={localeMap[i18n.language.substring(0, 2)]}
                 >
                   <DatePicker
                     autoOk
@@ -1037,7 +1173,7 @@ class Report extends Component {
               <ThemeProvider theme={materialTheme}>
                 <MuiPickersUtilsProvider
                   utils={DateFnsUtils}
-                  locale={localeMap["en"]}
+                  locale={localeMap[i18n.language.substring(0, 2)]}
                 >
                   <DatePicker
                     autoOk
@@ -1053,11 +1189,9 @@ class Report extends Component {
               </ThemeProvider>
             </DateInner>
           </FlatStraightLine>
-
           <div className="clear"></div>
           <DateRangContainer>
             <DateRangSelection
-              selected={true}
               onClick={this.handleTodayClick}
               selected={this.state.dateRange === 0}
             >
@@ -1189,7 +1323,7 @@ class Report extends Component {
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>;
+                    return <NoRecordContainer language={i18n.language} />;
                   } else {
                     return (
                       <DataContent>
@@ -1238,9 +1372,47 @@ class Report extends Component {
                     //    </DataHeaderRow>
                   }
                 </DataHeader>
+                {config.features.Report_ShowRoundsTotal &&
+                  this.state.tab2.roundTotal &&
+                  (this.state.tab2.roundTotal.betAmount ||
+                    this.state.tab2.roundTotal.validBetAmount ||
+                    this.state.tab2.roundTotal.validBetAmount) && (
+                    <DataContent
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                      }}
+                    >
+                      <div style={{ textAlign: "center" }}>
+                        {this.state.tab2.roundTotal &&
+                          i18n.t("report.totalBetAmount") +
+                            ": " +
+                            this.state.tab2.roundTotal.betAmount}
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        {this.state.tab2.roundTotal &&
+                          i18n.t("report.totalValidBet") +
+                            ": " +
+                            this.state.tab2.roundTotal.validBetAmount}
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        {i18n.t("report.totalWinLose") + ": "}
+                        <CustomWinLose
+                          value={
+                            this.state.tab2.roundTotal &&
+                            this.state.tab2.roundTotal.winLoss
+                          }
+                        >
+                          {this.state.tab2.roundTotal &&
+                            this.state.tab2.roundTotal.winLoss}
+                        </CustomWinLose>
+                      </div>
+                    </DataContent>
+                  )}
+
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>;
+                    return <NoRecordContainer language={i18n.language} />;
                   } else {
                     return (
                       <DataContent>
@@ -1304,7 +1476,7 @@ class Report extends Component {
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>;
+                    return <NoRecordContainer language={i18n.language} />;
                   } else {
                     return (
                       <DataContent>
@@ -1314,10 +1486,6 @@ class Report extends Component {
                           );
                           return (
                             <React.Fragment key={index}>
-                              <DataRowId>
-                                {i18n.t("report.OrderNumber")} :{" "}
-                                <IDCell>{row.id}</IDCell>
-                              </DataRowId>
                               <DataRowId>
                                 {i18n.t("report.NewOrderNumber")} :{" "}
                                 <IDCell>{row.orderno}</IDCell>
@@ -1345,19 +1513,9 @@ class Report extends Component {
           } else if (this.state.selectedType === 4) {
             return (
               <React.Fragment>
-                <DataHeader>
-                  <DataHeaderRow>
-                    <DataDateCell3>{i18n.t("report.dateTime")}</DataDateCell3>
-
-                    <DataDateCell3>{i18n.t("report.status")}</DataDateCell3>
-                    <DataDateCellAmount>
-                      {i18n.t("common.amount")}
-                    </DataDateCellAmount>
-                  </DataHeaderRow>
-                </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>;
+                    return <NoRecordContainer language={i18n.language} />;
                   } else {
                     return (
                       <DataContent>
@@ -1368,21 +1526,15 @@ class Report extends Component {
                           return (
                             <React.Fragment key={index}>
                               <DataRowId>
-                                {i18n.t("report.OrderNumber")} :{" "}
-                                <IDCell>{row.id}</IDCell>
-                              </DataRowId>
-                              <DataRowId>
                                 {i18n.t("report.NewOrderNumber")} :{" "}
                                 <IDCell>{row.orderno}</IDCell>
                               </DataRowId>
                               <DataRow>
-                                <DataDateCell3>{date}</DataDateCell3>
+                                <DataDateCell3></DataDateCell3>
                                 <DataDateCell3>
                                   {i18n.t(`report.deposit.status${row.status}`)}
                                 </DataDateCell3>
-                                <DataDateCellAmount>
-                                  {row.amount}
-                                </DataDateCellAmount>
+                                <DataDateCell3>{row.amount}</DataDateCell3>
                                 <DataDateCellAmount>
                                   {row.status === 1 &&
                                     row.canuploadcerts === true && (
@@ -1395,6 +1547,9 @@ class Report extends Component {
                                       </TheDepositButton>
                                     )}
                                 </DataDateCellAmount>
+                                <DataRowId>
+                                  <DateTimeDisplay>{date}</DateTimeDisplay>
+                                </DataRowId>
                               </DataRow>
                             </React.Fragment>
                           );
@@ -1424,7 +1579,7 @@ class Report extends Component {
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>;
+                    return <NoRecordContainer language={i18n.language} />;
                   } else {
                     return (
                       <DataContent>
@@ -1453,7 +1608,7 @@ class Report extends Component {
               <React.Fragment>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer></NoRecordContainer>;
+                    return <NoRecordContainer language={i18n.language} />;
                   } else {
                     return (
                       <DataContent>
@@ -1505,12 +1660,12 @@ class Report extends Component {
                             <div key={index}>
                               <DataRow>
                                 <DataRowId>
-                                  {i18n.t("report.joinedPromo.promoName")}:{" "}
-                                  <IDCell>{row.promotionName}</IDCell>
-                                </DataRowId>
-                                <DataRowId>
                                   {i18n.t("report.dateTime")} :{" "}
                                   <IDCell>{date}</IDCell>
+                                </DataRowId>
+                                <DataRowId>
+                                  {i18n.t("report.joinedPromo.promoName")}:{" "}
+                                  <IDCell>{row.promotionName}</IDCell>
                                 </DataRowId>
                               </DataRow>
                             </div>

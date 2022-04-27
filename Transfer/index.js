@@ -11,10 +11,10 @@ import Switch from "@material-ui/core/Switch";
 import FormControl from "@material-ui/core/FormControl";
 import DynamicFont from "react-dynamic-font";
 import Select from "@material-ui/core/Select";
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {walletAction} from "../../../api-services/actions/walletAction";
-import {WalletType} from "../../../api-services/utils/Enum";
-import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { walletAction } from "../../../api-services/actions/walletAction";
+import { WalletType } from "../../../api-services/utils/Enum";
+import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 
 import Loading from "../../Wap/Share/Loading";
 import Common from "../../../utils/Common";
@@ -279,6 +279,24 @@ const CustomSwitchContainer = styled.div`
   font-weight: normal;
   padding: 0px 30px;
   zoom: 1.75;
+`;
+
+const ButtonWrapper = styled.div`
+  display: block;
+  padding-left: 50px;
+  font-size: 24px;
+  padding-top: 10px;
+`;
+
+const CustomButton = styled.div`
+  background: ${({ theme }) => theme.primary};
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  width: 200px;
+  padding: 10px 20px;
 `;
 
 class Transfer extends Component {
@@ -597,6 +615,15 @@ class Transfer extends Component {
             />
           </CustomSwitchContainer>
         </AutoTransferContainer>
+        <ButtonWrapper>
+          <CustomButton
+            onClick={() => {
+              this.props.performWithdrawFromEveryBrand();
+            }}
+          >
+            {i18n.t("transfer.oneKeyTransfer")}
+          </CustomButton>
+        </ButtonWrapper>
 
         <InnerContainer>
           <RowContainer>
@@ -779,6 +806,8 @@ const mapDispatchToProps = (dispatch) => {
     updateAutoTransferStatus: () =>
       dispatch(walletAction.updateAutoTransferStatus()),
     getAutoTransferStatus: () => dispatch(walletAction.getAutoTransferStatus()),
+    performWithdrawFromEveryBrand: () =>
+      dispatch(walletAction.performWithdrawFromEveryBrand()),
   };
 };
 
