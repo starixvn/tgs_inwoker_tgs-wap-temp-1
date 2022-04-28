@@ -166,6 +166,8 @@ class Login extends Component {
     hideConfirmPassword: true,
     username: "",
     password: "",
+    phone: "",
+    areaCode: config.features.PhonePrefix,
     withPromo:
       config.affiliateId === "" &&
       localStorage.getItem("promotionId") === "" &&
@@ -378,6 +380,99 @@ class Login extends Component {
       }
     });
   };
+  doLoginWithHp = (username, password, phone, areacode) => {
+    this.setState({ ...this.state, loading: true });
+    AccountService.Activation(username, password, areacode, phone).then(
+      async (response) => {
+        if (response.IsSuccess) {
+          
+          // setSecurityKey(response.data);
+          // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
+          //   variant: "info",
+          // });
+          AccountService.VerifyActivation(response.data, "123456").then(
+            async (response) => {
+              // if (response.IsSuccess) {
+                // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
+                //   variant: "success",
+                // });
+                this.doLogin(username,password);
+              // } else {
+                // props.enqueueSnackbar(response.info, {
+                //   variant: "warning",
+                // });
+              // }
+              this.doLogin(username,password);
+            }
+          );
+        } else{
+          this.doLogin(username,password);
+        }
+      }
+    );
+
+    // console.log("entererherer???")
+    // if (username === "") {
+    //   this.props.alert("", i18n.t("web.login.errorMsg.emptyUsername"));
+    //   // this.props.enqueueSnackbar("???????", {
+    //   //   variant: "warning"
+    //   // });
+    //   return;
+    // }
+    // if (username === "") {
+    //   this.props.alert("", i18n.t("web.login.errorMsg.emptyPassword"));
+    //   // this.props.enqueueSnackbar("??????", {
+    //   //   variant: "warning"
+    //   // });
+    //   return;
+    // }
+    
+    // this.props.accountLogin(username, password).then((result) => {
+    //   if (result.IsSuccess) {
+    //     AccountService.VerifyPhone(
+    //       phone,
+    //       areacode
+    //     ).then(async (response) => {
+    //         // security key = response.data, default validatecode = 123456
+    //         AccountService.UpdatePhone(response.data, "123456").then(
+    //           async (response) => {
+    //             this.handleLoginSuccess(result.data);
+    //               // props.doLogin(username, password);
+    //               this.props.appHistory.push(
+    //                 "/" + i18n.language + "/registersuccess/" + username
+    //               );
+    //           }
+    //         );
+    //     });
+       
+    //   } else {
+    //     if (result.code === 210) {
+    //       this.props.appHistory.push("/" + i18n.language + "/banned");
+    //     } else {
+    //       if (result.data.self_control === 1) {
+    //         this.props.showLogin(false);
+    //         this.setState({
+    //           ...this.state,
+    //           expired_time: result.data.expired_time,
+    //           openSelfControlDialog: true,
+    //           openDialog: false,
+    //           loading: false,
+    //         });
+    //       } else {
+    //         this.props.alert("", i18n.t("common.msgInvalidUsername"));
+    //         // this.props.enqueueSnackbar(result.msg, {
+    //         //   variant: "warning"
+    //         // });
+    //         this.setState({
+    //           ...this.state,
+
+    //           loading: false,
+    //         });
+    //       }
+    //     }
+    //   }
+    // });
+  };
   handleForgotpasswordClick = () => {
     this.props.appHistory.push("/" + i18n.language + "/forgot-password");
   };
@@ -509,6 +604,7 @@ class Login extends Component {
     const countdown = this.state.countdown;
     const areacode = this.state.areaCode;
     const phone = this.state.phone;
+
     if (countdown <= 0) {
       var expr = /^[a-zA-Z0-9]{6,16}$/;
       if (!expr.test(username)) {
@@ -562,6 +658,9 @@ class Login extends Component {
   handleRegisterClick = () => {
     const username = this.state.username;
     const password = this.state.password;
+    const phone = this.state.phone;
+    const code = this.state.code;
+    const areaCode = this.state.areaCode;
     const confirmPassword = this.state.confirmPassword;
     const promotion_id = this.state.promoId;
     const upper = this.state.upper;
@@ -582,6 +681,22 @@ class Login extends Component {
       this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
 
       return;
+    }
+    var expr = /^[0-9]{8,10}$/;
+    if (config.features.Register_ShowPhone || config.features.Register_ShowSMSVerification) {
+      if (!expr.test(phone)) {
+        this.props.alert("", i18n.t("common.noReachMin"));
+        return;
+      }
+    }
+
+    var expr = /^[a-zA-Z0-9]{6}$/;
+    if(config.features.Register_ShowSMSVerification)
+    {
+      if (!expr.test(code)) {
+        this.props.alert("", i18n.t("common.msgEnterCode"));
+        return;
+      }
     }
     // if (withdrawalPassword.length < 6) {
     //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassInvalid"));
@@ -609,12 +724,31 @@ class Login extends Component {
             this.setState({ ...this.state, loading: false });
           } else if (response.IsSuccess) {
             if (config.features.SMSVerification) {
-              this.setState({
-                ...this.state,
-                selected: 2,
-                loading: false,
-              });
-            } else {
+              if(!config.features.Register_ShowSMSVerification)
+              {
+                this.setState({
+                  ...this.state,
+                  selected: 2,
+                  loading: false,
+                });
+              }
+              else
+              {
+                this.doLogin(username, password);
+              }
+            } else if (config.features.Register_ShowPhone) {
+              this.doLoginWithHp(username, password, phone, areaCode);
+              // AccountService.VerifyPhone(areaCode,phone).then(
+              //   async (response) => {
+              //     // security key = response.data, default validatecode = 123456
+              //     AccountService.UpdatePhone(response.data, "123456").then(
+              //       async (response) => {
+              //           this.doLogin(username, password);
+              //       }
+              //     );
+              // });
+            }
+            else {
               this.doLogin(username, password);
             }
           } else {
@@ -843,6 +977,33 @@ class Login extends Component {
                     value={this.state.confirmPassword}
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
+
+                  {(config.features.Register_ShowPhone || 
+                  config.features.Register_ShowSMSVerification) && (
+                    <CustomWrapper>
+                      <Select
+                        type={"text"}
+                        placeholder={i18n.t(
+                          "forgotPassword.plsEnterPhoneNumber"
+                        )}
+                        selectValue={this.state.areaCode}
+                        onSelectChange={this.handleAreaCodeChange}
+                        value={this.state.phone}
+                        onChange={this.handlePhoneChange}
+                      ></Select>
+                    </CustomWrapper>
+                  )}
+                  {config.features.Register_ShowSMSVerification && (
+                    <CustomWrapper style={{marginBottom: "-20px"}}>
+                      <VerificationCode 
+                        value={this.state.code}
+                        onChange={this.handleCodeChange}
+                        countdown={this.state.countdown}
+                        placeholder={i18n.t("common.msgEnterCode")}
+                        handleGetCodeClick={this.handleGetCodeClick}
+                      ></VerificationCode>
+                    </CustomWrapper>
+                  )}
 
                   {!(
                     config.features.Register_HideInvitation &&
