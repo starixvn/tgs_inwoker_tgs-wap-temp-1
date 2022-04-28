@@ -26,13 +26,22 @@ class ChangePassword extends BaseProfile {
     const oldpassword = this.state.oldpassword;
     const newpassword = this.state.newpassword;
     const newpassword2 = this.state.newpassword2;
-    if (newpassword !== newpassword2) {
-      this.props.alert("", i18n.t("common.msgInvalidConfirmPass"));
-      // this.props.enqueueSnackbar("确认密码错误", {
-      //   key: "error"
-      // });
+    var expr = /^.{6,20}$/;
+    if (!expr.test(newpassword)) {
+      this.props.alert('', i18n.t('common.msgRegisterPassInvalid'))
       return;
     }
+    if (newpassword !== newpassword2) {
+      this.props.alert('', i18n.t('common.msgInvalidConfirmPass'))
+      return;
+    } 
+    // if (newpassword !== newpassword2) {
+    //   this.props.alert("", i18n.t("common.msgInvalidConfirmPass"));
+    //   // this.props.enqueueSnackbar("确认密码错误", {
+    //   //   key: "error"
+    //   // });
+    //   return;
+    // }
     this.showLoading(true);
     AccountService.UpdatePassword(oldpassword, newpassword)
       .then((response) => {
