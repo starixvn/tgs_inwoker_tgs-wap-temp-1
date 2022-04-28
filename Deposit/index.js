@@ -1142,16 +1142,34 @@ class Deposit extends Component {
     };
     return (
       <Container>
-        {config.features.DepositNotification && (
-          <PopupAnnouncement
-            open={this.state.openAnnouncement}
-            onClose={() => {
-              this.setState({ ...this.state, openAnnouncement: false });
-            }}
-            text={i18n.t("depositNotification.content")}
-            header={i18n.t("depositNotification.title")}
-          ></PopupAnnouncement>
-        )}
+        {(() => {
+          if (
+            config.features.DepositNotification &&
+            this.props.ui.deposits &&
+            this.props.ui.deposits.length > 0
+          ) {
+            var row = this.props.ui.deposits[0];
+
+            return (
+              <PopupAnnouncement
+                open={this.state.openAnnouncement}
+                onClose={() => {
+                  this.setState({ ...this.state, openAnnouncement: false });
+                }}
+                text={
+                  row.localization !== null && row.localization.content
+                    ? row.localization.content
+                    : row.content
+                }
+                header={
+                  row.localization !== null && row.localization.subject
+                    ? row.localization.subject
+                    : row.subject
+                }
+              ></PopupAnnouncement>
+            );
+          }
+        })()}
         <Header
           onBackClick={this.handleBackClick}
           title={i18n.t("deposit.title")}
@@ -1227,6 +1245,7 @@ const mapStateToProps = (state) => {
     wallet: state.wallet,
     general: state.general,
     game: state.game,
+    ui: state.ui,
   };
 };
 const mapDispatchToProps = (dispatch) => {

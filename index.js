@@ -548,6 +548,7 @@ class Wap extends Component {
     } else {
       this.props.getBrandLanguage();
       this.props.getMarquee(i18n.language);
+      this.props.getAnnouncement(i18n.language);
       this.props.getBanner();
       this.props.getBrand();
       this.props.getBrandCommunicationList();
@@ -660,8 +661,9 @@ class Wap extends Component {
   componentDidUpdate(preProps) {
     if (config.features.PopupAnnouncement) {
       if (
-        this.props.ui.marqueeText !== preProps.ui.marqueeText &&
-        this.props.ui.marqueeText.length > 0
+        this.props.ui.mains &&
+        this.props.ui.mains !== preProps.ui.mains &&
+        this.props.ui.mains.length > 0
       ) {
         this.setState({
           openAnnouncement: true,
@@ -698,6 +700,7 @@ class Wap extends Component {
         this.props.getHomePageGameList();
         this.props.getBrandLanguage();
         this.props.getMarquee(i18n.language);
+        this.props.getAnnouncement(i18n.language);
         this.props.getBanner();
         this.props.getBrand();
         this.props.getBrandCommunicationList();
@@ -917,10 +920,11 @@ class Wap extends Component {
                 "/" + i18n.language + "/main/home";
             if (
               config.features.PopupAnnouncement &&
-              this.props.ui.marqueeText.length > 0 &&
+              this.props.ui.mains &&
+              this.props.ui.mains.length > 0 &&
               matchingpath
             ) {
-              var row = this.props.ui.marqueeText[0];
+              var row = this.props.ui.mains[0];
 
               return (
                 <PopupAnnouncement
@@ -1045,6 +1049,7 @@ const mapDispatchToProps = (dispatch) => {
     getMobilePrefix: () => dispatch(generalAction.getMobilePrefix()),
     checkTokenIsValid: () => dispatch(accountAction.checkTokenIsValid()),
     getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
+    getAnnouncement: (language) => dispatch(uiAction.getAnnouncement(language)),
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
     getBrand: () => dispatch(generalAction.getBrand()),
     // getBanner: () => dispatch(uiAction.getBanner()),
