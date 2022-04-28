@@ -77,6 +77,7 @@ import VIP from "./VIP";
 import Banned from "./Banned";
 import Loading from "./Share/Loading";
 import Affiliate from "./Affiliate";
+import Birthdate from "./Profile/Birthdate";
 
 const baseRouteUrl = Common.baseRouteUrl;
 
@@ -197,6 +198,11 @@ const RouteMapping = [
   {
     path: "/profile/wechat",
     component: WeChat,
+    alert: true,
+  },
+  {
+    path: "/profile/birthdate",
+    component: Birthdate,
     alert: true,
   },
   {

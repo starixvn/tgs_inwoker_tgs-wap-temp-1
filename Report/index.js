@@ -1383,19 +1383,19 @@ class Report extends Component {
                         gridTemplateColumns: "1fr 1fr 1fr",
                       }}
                     >
-                      <div style={{ textAlign: "center" }}>
+                      <div style={{ textAlign: "left" }}>
                         {this.state.tab2.roundTotal &&
                           i18n.t("report.totalBetAmount") +
                             ": " +
                             this.state.tab2.roundTotal.betAmount}
                       </div>
-                      <div style={{ textAlign: "center" }}>
+                      <div style={{ textAlign: "left" }}>
                         {this.state.tab2.roundTotal &&
                           i18n.t("report.totalValidBet") +
                             ": " +
                             this.state.tab2.roundTotal.validBetAmount}
                       </div>
-                      <div style={{ textAlign: "center" }}>
+                      <div style={{ textAlign: "left" }}>
                         {i18n.t("report.totalWinLose") + ": "}
                         <CustomWinLose
                           value={
