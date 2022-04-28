@@ -27,6 +27,9 @@ const DatepickerWrapper = styled.div`
 `;
 
 const CustomDatepicker = styled.div`
+  ${({ disabled }) => {
+    return disabled && `pointer-events: none;`;
+  }}
   background: white;
   zoom: 1.5;
   padding: 10px 20px;
@@ -121,7 +124,11 @@ class Birthdate extends BaseProfile {
             utils={DateFnsUtils}
             locale={localeMap[i18n.language.substring(0, 2)]}
           >
-            <CustomDatepicker>
+            <CustomDatepicker
+              disabled={
+                this.state.isConfigured && config.features.ChangesNotAllowed
+              }
+            >
               <DatePicker
                 maxDate={new Date()}
                 format="yyyy/MM/dd"
