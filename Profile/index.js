@@ -220,6 +220,18 @@ class Profile extends Component {
                 },
                 this.props.account.info.member_email
               )}
+
+            {ContentItem(
+              process.env.PUBLIC_URL + `/assets/images/wapp/icon-birthdate.png`,
+              i18n.t("profile.birthdate.title"),
+              this.isConfigured(this.props.account.info.member_birthdate),
+              () => {
+                this.handleNavigate("/profile/birthdate");
+              },
+              this.props.account.info.member_birthdate
+                ? this.props.account.info.member_birthdate
+                : ""
+            )}
           </BlockContainer>
 
           <BlockContainer>
