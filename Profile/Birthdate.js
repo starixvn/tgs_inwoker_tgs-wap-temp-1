@@ -72,7 +72,12 @@ class Birthdate extends BaseProfile {
   }
 
   handleChangeNumber = (e) => {
-    this.setState({ birthdate: moment(e).format("YYYY/MM/DD") });
+    if (moment(e).isAfter(new Date())) {
+      this.setState({ birthdate: moment(new Date()).format("YYYY/MM/DD") });
+    } else {
+      this.setState({ birthdate: moment(e).format("YYYY/MM/DD") });
+    }
+
     this.onTextChanged();
   };
 
@@ -131,6 +136,7 @@ class Birthdate extends BaseProfile {
             >
               <DatePicker
                 maxDate={new Date()}
+                invalidDateMessage={false}
                 format="yyyy/MM/dd"
                 value={this.state.birthdate}
                 onChange={this.handleChangeNumber}
