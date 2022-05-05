@@ -280,6 +280,9 @@ class Deposit extends Component {
           }
         );
       }
+      this.countDownInterval=setInterval(()=>{   
+        this.props.getDepositMethod(i18n.language); // call api every 30 mins
+      },30*60*1000);
     } else {
       this.props.appHistory.replace("/" + i18n.language + "/");
     }
@@ -399,6 +402,9 @@ class Deposit extends Component {
         });
       }
     }
+  }
+  componentWillUnmount() {
+    clearInterval(this.countDownInterval);
   }
   handleRestartClick = (e) => {
     this.setState({ ...this.initialState });
