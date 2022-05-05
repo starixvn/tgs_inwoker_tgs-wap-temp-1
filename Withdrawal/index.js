@@ -282,16 +282,21 @@ class Withdrawal extends Component {
 
   handleSubmitClick = (e) => {
     this.setState({ ...this.state, disabled: true });
+    const selectedBankCardIndex = this.state.selectedBankCardIndex;
     const amount = this.state.amount;
-    if (config.features.Withdrawal_HundredDigit) {
+    const formatedamount = amount.toString().replace(/,/g, "");
+    if(selectedBankCardIndex===""||selectedBankCardIndex===null)
+    {
+      this.props.alert("",i18n.t("withdrawal.msgEnterBank"));
+      return this.setState({ ...this.state, disabled: false });
+    }
+    else if (config.features.Withdrawal_HundredDigit) {
       if (!/^[1-9][0-9]{0,17}00$/.test(amount)) {
         this.props.alert("", i18n.t("withdrawal.msgMustHundred"));
         return this.setState({ ...this.state, disabled: false });
       }
     }
-    const formatedamount = amount.toString().replace(/,/g, "");
-
-    if (
+    else if (
       parseFloat(formatedamount) > parseFloat(this.props.wallet.mainBalance)
     ) {
       this.props.alert("", i18n.t("withdrawal.msgInsufficient"));
