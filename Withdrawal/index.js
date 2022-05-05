@@ -225,6 +225,9 @@ class Withdrawal extends Component {
           this.props.getBankCardList();
 
         // this.GetWithdrawalDetails();
+        this.countDownInterval=setInterval(()=>{   
+          this.props.getWithdrawalChannel(); // call api every 30 mins
+        },30*60*1000);
       }
     }
   }
@@ -275,6 +278,9 @@ class Withdrawal extends Component {
         // }
       }
     }
+  }
+  componentWillUnmount() {
+    clearInterval(this.countDownInterval);
   }
   handleBackClick = () => {
     this.props.appHistory.goBack();
