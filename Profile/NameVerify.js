@@ -92,7 +92,12 @@ class NameVerify extends BaseProfile {
     ) {
       if (this.props.account.updateCardResult.IsSuccess) {
         if (config.features.ICVerificationUpload) {
-          AccountService.UploadIC(this.state.icUpload[0]);
+          AccountService.UploadIC(this.state.icUpload[0]).then((response)=>{
+            if(!response.IsSuccess)
+            {
+              this.props.alert("", response.info);
+            }
+          });
         }
         this.props.resetResult();
         this.setState({ disableButton: true });
