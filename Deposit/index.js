@@ -860,12 +860,18 @@ class Deposit extends Component {
                         <Textbox
                           style={{ margin: "20px auto 20px auto" }}
                           type={"text"}
-                          placeholder={i18n.t("common.pleaseEnterAccountName")}
+                          placeholder={
+                            config.features.Deposit_OriginAccount
+                              ? i18n.t("idr1.pleaseEnterAccountName")
+                              : i18n.t("common.pleaseEnterAccountName")
+                          }
                           label={
-                            i18n.t("common.pleaseEnterAccountName") +
-                            (config.features.Deposit_AddTips
-                              ? " *" + i18n.t("mgm.accountDepositTips")
-                              : "")
+                            config.features.Deposit_OriginAccount
+                              ? i18n.t("idr1.pleaseEnterAccountName")
+                              : i18n.t("common.pleaseEnterAccountName") +
+                                (config.features.Deposit_AddTips
+                                  ? " *" + i18n.t("mgm.accountDepositTips")
+                                  : "")
                           }
                           value={this.state.account}
                           onChange={(e) => {
