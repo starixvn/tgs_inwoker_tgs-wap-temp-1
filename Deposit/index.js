@@ -230,6 +230,10 @@ const CopyIcon = styled.div`
   cursor: pointer;
 `;
 
+const HintText = styled.div`
+  color: ${({ theme }) => theme.primary};
+`;
+
 class Deposit extends Component {
   constructor(props) {
     super(props);
@@ -280,9 +284,9 @@ class Deposit extends Component {
           }
         );
       }
-      this.countDownInterval=setInterval(()=>{   
+      this.countDownInterval = setInterval(() => {
         this.props.getDepositMethod(i18n.language); // call api every 30 mins
-      },30*60*1000);
+      }, 30 * 60 * 1000);
     } else {
       this.props.appHistory.replace("/" + i18n.language + "/");
     }
@@ -625,6 +629,7 @@ class Deposit extends Component {
     };
 
     const isUsdt =
+      this.props.wallet.depositTypeList.length > 0 &&
       this.props.wallet.depositTypeList[this.state.selectedPaymentIndex].method[
         this.state.selectedMethodIndex
       ].methodcode.toUpperCase();
@@ -638,11 +643,23 @@ class Deposit extends Component {
         />
       );
     };
+
+    console.log(this.props.wallet.depositTypeList);
     const switchView = (view) => {
       switch (view) {
         case 1:
           return (
             <React.Fragment>
+              {this.props.wallet.depositTypeList &&
+                this.props.wallet.depositTypeList[
+                  this.state.selectedPaymentIndex
+                ].paymentcode === "ZeroNineNinePay" && (
+                  <CustomText style={{ paddingTop: 10 }}>
+                    <CustomLabel>
+                      <HintText>{i18n.t("hint._099")}</HintText>
+                    </CustomLabel>
+                  </CustomText>
+                )}
               <CustomText>
                 <CustomLabel>
                   {i18n.t("deposit.msgPlsSelectPayment")}
