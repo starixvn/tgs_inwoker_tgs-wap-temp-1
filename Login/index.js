@@ -315,7 +315,7 @@ class Login extends Component {
 
       localStorage.removeItem("username");
     }
-    if (this.state.selected === 2) {
+    if (this.state.selected === 1 || this.state.selected === 2) {
       if (config.features.NavigateToAddCard) {
         this.props.appHistory.replace("/" + i18n.language + "/card");
       } else {
@@ -385,7 +385,6 @@ class Login extends Component {
     AccountService.Activation(username, password, areacode, phone).then(
       async (response) => {
         if (response.IsSuccess) {
-          
           // setSecurityKey(response.data);
           // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
           //   variant: "info",
@@ -393,20 +392,20 @@ class Login extends Component {
           AccountService.VerifyActivation(response.data, "123456").then(
             async (response) => {
               // if (response.IsSuccess) {
-                // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
-                //   variant: "success",
-                // });
-                this.doLogin(username,password);
+              // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
+              //   variant: "success",
+              // });
+              this.doLogin(username, password);
               // } else {
-                // props.enqueueSnackbar(response.info, {
-                //   variant: "warning",
-                // });
+              // props.enqueueSnackbar(response.info, {
+              //   variant: "warning",
+              // });
               // }
-              this.doLogin(username,password);
+              this.doLogin(username, password);
             }
           );
-        } else{
-          this.doLogin(username,password);
+        } else {
+          this.doLogin(username, password);
         }
       }
     );
@@ -426,7 +425,7 @@ class Login extends Component {
     //   // });
     //   return;
     // }
-    
+
     // this.props.accountLogin(username, password).then((result) => {
     //   if (result.IsSuccess) {
     //     AccountService.VerifyPhone(
@@ -444,7 +443,7 @@ class Login extends Component {
     //           }
     //         );
     //     });
-       
+
     //   } else {
     //     if (result.code === 210) {
     //       this.props.appHistory.push("/" + i18n.language + "/banned");
@@ -683,7 +682,10 @@ class Login extends Component {
       return;
     }
     var expr = /^[0-9]{8,10}$/;
-    if (config.features.Register_ShowPhone || config.features.Register_ShowSMSVerification) {
+    if (
+      config.features.Register_ShowPhone ||
+      config.features.Register_ShowSMSVerification
+    ) {
       if (!expr.test(phone)) {
         this.props.alert("", i18n.t("common.noReachMin"));
         return;
@@ -691,8 +693,7 @@ class Login extends Component {
     }
 
     var expr = /^[a-zA-Z0-9]{6}$/;
-    if(config.features.Register_ShowSMSVerification)
-    {
+    if (config.features.Register_ShowSMSVerification) {
       if (!expr.test(code)) {
         this.props.alert("", i18n.t("common.msgEnterCode"));
         return;
@@ -724,16 +725,13 @@ class Login extends Component {
             this.setState({ ...this.state, loading: false });
           } else if (response.IsSuccess) {
             if (config.features.SMSVerification) {
-              if(!config.features.Register_ShowSMSVerification)
-              {
+              if (!config.features.Register_ShowSMSVerification) {
                 this.setState({
                   ...this.state,
                   selected: 2,
                   loading: false,
                 });
-              }
-              else
-              {
+              } else {
                 this.doLogin(username, password);
               }
             } else if (config.features.Register_ShowPhone) {
@@ -747,8 +745,7 @@ class Login extends Component {
               //       }
               //     );
               // });
-            }
-            else {
+            } else {
               this.doLogin(username, password);
             }
           } else {
@@ -978,8 +975,8 @@ class Login extends Component {
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
 
-                  {(config.features.Register_ShowPhone || 
-                  config.features.Register_ShowSMSVerification) && (
+                  {(config.features.Register_ShowPhone ||
+                    config.features.Register_ShowSMSVerification) && (
                     <CustomWrapper>
                       <Select
                         type={"text"}
@@ -994,8 +991,8 @@ class Login extends Component {
                     </CustomWrapper>
                   )}
                   {config.features.Register_ShowSMSVerification && (
-                    <CustomWrapper style={{marginBottom: "-20px"}}>
-                      <VerificationCode 
+                    <CustomWrapper style={{ marginBottom: "-20px" }}>
+                      <VerificationCode
                         value={this.state.code}
                         onChange={this.handleCodeChange}
                         countdown={this.state.countdown}
