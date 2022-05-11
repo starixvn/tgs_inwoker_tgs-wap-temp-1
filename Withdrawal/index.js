@@ -467,7 +467,12 @@ class Withdrawal extends Component {
           style={{ margin: "50px auto 20px auto" }}
           value={this.state.amount}
           onChange={this.handleChangeAmount}
-          placeholder={i18n.t("withdrawal.enterAmount")}
+          placeholder={
+            this.state.selectedBankCardIndex
+              ? i18n.t("withdrawal.enterAmount") +
+                ` (${Common.formatNumberWithThousand(this.state.min)} - ${Common.formatNumberWithThousand(this.state.max)})`
+              : i18n.t("withdrawal.enterAmount")
+          }
           label={i18n.t("common.amount")}
           type={"number"}
         ></Textbox>
@@ -487,7 +492,8 @@ class Withdrawal extends Component {
           onClick={this.handleSubmitClick}
           disabled={(() => {
             return (
-              parseFloat(this.state.amount.toString().replace(/,/g, "")) < 1 ||
+              parseFloat(this.state.amount.toString().replace(/,/g, "")) < this.state.min ||
+              parseFloat(this.state.amount.toString().replace(/,/g, "")) > this.state.max ||
               this.state.disabled === true
             );
           })()}
