@@ -226,9 +226,9 @@ class Withdrawal extends Component {
         this.props.getBankCardList();
 
       // this.GetWithdrawalDetails();
-      this.countDownInterval=setInterval(()=>{   
+      this.countDownInterval = setInterval(() => {
         this.props.getWithdrawalChannel(); // call api every 30 mins
-      },30*60*1000);
+      }, 30 * 60 * 1000);
     }
   }
   componentDidUpdate(preProps) {
@@ -291,18 +291,16 @@ class Withdrawal extends Component {
     const selectedBankCardIndex = this.state.selectedBankCardIndex;
     const amount = this.state.amount;
     const formatedamount = amount.toString().replace(/,/g, "");
-    if(selectedBankCardIndex===""||selectedBankCardIndex===null)
-    {
-      this.props.alert("",i18n.t("withdrawal.msgEnterBank"));
+    if (selectedBankCardIndex === "" || selectedBankCardIndex === null) {
+      this.props.alert("", i18n.t("withdrawal.msgEnterBank"));
       return this.setState({ ...this.state, disabled: false });
-    }
-    else if (config.features.Withdrawal_HundredDigit) {
+    } else if (config.features.Withdrawal_HundredDigit) {
       if (!/^[1-9][0-9]{0,17}00$/.test(amount)) {
         this.props.alert("", i18n.t("withdrawal.msgMustHundred"));
         return this.setState({ ...this.state, disabled: false });
       }
     }
-    else if (
+    if (
       parseFloat(formatedamount) > parseFloat(this.props.wallet.mainBalance)
     ) {
       this.props.alert("", i18n.t("withdrawal.msgInsufficient"));
