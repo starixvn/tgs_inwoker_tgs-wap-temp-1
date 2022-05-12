@@ -316,7 +316,7 @@ class Login extends Component {
 
       localStorage.removeItem("username");
     }
-    if (this.state.selected === 2) {
+    if (this.state.selected === 1 || this.state.selected === 2) {
       if (config.features.NavigateToAddCard) {
         this.props.appHistory.replace("/" + i18n.language + "/card");
       } else {

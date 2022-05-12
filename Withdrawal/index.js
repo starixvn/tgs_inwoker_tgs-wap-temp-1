@@ -208,26 +208,28 @@ class Withdrawal extends Component {
     });
 
     if (this.props.wallet.withdrawalList.length === 0)
-      if (
-        this.props.account.info.check_pass_email === false &&
-        config.features.EmailVerification
-      ) {
-        this.props.appHistory.replace(`/${i18n.language}/profile/email`);
-        // } else if (this.props.account.info.member_safe_password !== 'set') {
-        //   this.props.appHistory.replace(
-        //     `/${i18n.language}/profile/withdrawalpassword/`
-        //   )
-      } else {
-        if (this.props.token != null) {
-          if (this.props.wallet.bankCardList.length === 0)
-            this.props.getBankCardList();
+      this.props.getWithdrawalChannel();
 
-          // this.GetWithdrawalDetails();
-          this.countDownInterval = setInterval(() => {
-            this.props.getWithdrawalChannel(); // call api every 30 mins
-          }, 30 * 60 * 1000);
-        }
-      }
+    // if (
+    //   this.props.account.info.check_pass_email === false &&
+    //   config.features.EmailVerification
+    // ) {
+    //   this.props.appHistory.replace(`/${i18n.language}/profile/email`);
+    //   // } else if (this.props.account.info.member_safe_password !== 'set') {
+    //   //   this.props.appHistory.replace(
+    //   //     `/${i18n.language}/profile/withdrawalpassword/`
+    //   //   )
+    // } else {
+    // }
+    if (this.props.token != null) {
+      if (this.props.wallet.bankCardList.length === 0)
+        this.props.getBankCardList();
+
+      // this.GetWithdrawalDetails();
+      this.countDownInterval = setInterval(() => {
+        this.props.getWithdrawalChannel(); // call api every 30 mins
+      }, 30 * 60 * 1000);
+    }
   }
   componentDidUpdate(preProps) {
     if (
@@ -297,7 +299,12 @@ class Withdrawal extends Component {
         this.props.alert("", i18n.t("withdrawal.msgMustHundred"));
         return this.setState({ ...this.state, disabled: false });
       }
+<<<<<<< HEAD
     } else if (
+=======
+    }
+    if (
+>>>>>>> hotfix-1.20/1.20.1.1
       parseFloat(formatedamount) > parseFloat(this.props.wallet.mainBalance)
     ) {
       this.props.alert("", i18n.t("withdrawal.msgInsufficient"));

@@ -10,6 +10,7 @@ import styled from "styled-components";
 import BottomNote from "../Share/BottomNote";
 
 import i18n from "../../../utils/i18n";
+import config from "../../../config/config";
 const Container = styled.div`
   margin: 0 auto;
 
@@ -108,13 +109,13 @@ class Phone extends BaseProfile {
     }
   };
   handleGetCodeClick = (e) => {
-    var expr = /^[0-9]{8,10}$/;
     if (this.state.countdownToken > 0) return;
-
-    if (!expr.test(this.state.phone)) {
-      return this.showErrorMessage(i18n.t("common.noReachMin"));
+    if (!this.state.phone)
+      return this.showErrorMessage(i18n.t("common.msgEnterPhone"));
+    if (this.state.phone.length < 8 || this.state.phone.length > 10) {
+      this.props.alert("", i18n.t("common.noReachMin"));
+      return;
     }
-
     this.showLoading(true);
     AccountService.VerifyPhone(this.state.phone, this.state.areacode)
       .then((response) => {
@@ -254,8 +255,14 @@ class Phone extends BaseProfile {
           return (
             <BottomNote
               text1={i18n.t("profile.phone.toEdit")}
-              link={"./changephone"}
-              text2={i18n.t("profile.phone.here")}
+              link={
+                (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly) ? "../chat" : "./changephone"
+              }
+              text2={i18n.t(
+                (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)
+                  ? "common.customerService"
+                  : "profile.phone.here"
+              )}
             ></BottomNote>
           );
         }
