@@ -297,7 +297,8 @@ class Withdrawal extends Component {
         this.props.alert("", i18n.t("withdrawal.msgMustHundred"));
         return this.setState({ ...this.state, disabled: false });
       }
-    } else if (
+    }
+    if (
       parseFloat(formatedamount) > parseFloat(this.props.wallet.mainBalance)
     ) {
       this.props.alert("", i18n.t("withdrawal.msgInsufficient"));
