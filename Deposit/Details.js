@@ -109,6 +109,12 @@ const ButtonConfirm = styled.div`
   );
   color: #ffffff;
 `;
+
+const Remark = styled.div`
+  font-size: 20px;
+  color: ${({ theme }) => theme.secondary};
+  opacity: 0.75;
+`;
 class Details extends Component {
   state = {
     expired_time: 0,
@@ -401,6 +407,8 @@ class Details extends Component {
                       {this.state.files[0] ? this.state.files[0].name : ""}
                     </div>
                   </RightLabel>
+                  <SplitBoth></SplitBoth>
+                  <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
                 </React.Fragment>
               );
             }
