@@ -55,7 +55,11 @@ const SplitBoth = styled.div`
   clear: both;
   margin: 30px 0;
 `;
-
+const Remark = styled.div`
+  font-size: 20px;
+  color: ${({ theme }) => theme.secondary};
+  opacity: 0.75;
+`;
 class DetailsManual extends Component {
   state = {
     expired_time: 0,
@@ -160,6 +164,7 @@ class DetailsManual extends Component {
                     </div>
                   </RightLabel>
                   <SplitBoth></SplitBoth>
+                  <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
                 </React.Fragment>
               );
             }
