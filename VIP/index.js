@@ -5,11 +5,12 @@ import { generalAction } from "../../../api-services/actions/generalAction";
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 import Header from "../Share/Header";
+import Common from "../../../utils/Common";
 
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
-  height: 100%;
+  min-height: 100vh;
   padding: 20px;
 `;
 
@@ -29,8 +30,8 @@ const VipEmblemHolder = styled.div`
 const VipEmlemContainer = styled.div`
   display: flex;
   justify-content: flex-start;
-  flex-direction: column;
   min-width: 150px;
+  flex-direction: column;
   align-items: center;
   padding: 10px 20px;
   max-height: 200px;
@@ -94,15 +95,15 @@ const VIP = (props) => {
     }
   }, []);
 
-  const handleBackClick = () => {
-    props.appHistory.goBack();
-  };
-
   var vipBenefitList =
     vipBenefit.items &&
     vipBenefit.items.sort((a, b) => {
       return a.level < b.level ? -1 : a.level > b.level ? 1 : 0;
     });
+
+  const handleBackClick = () => {
+    props.appHistory.goBack();
+  };
 
   const getVIPTitle = (level) => {
     // currently bunny only has 6 levels
@@ -114,6 +115,7 @@ const VIP = (props) => {
   return (
     <Container>
       <Header title="VIP" onBackClick={handleBackClick}></Header>
+      <div style={{ height: 90 }} />
 
       {vipBenefit.items && vipBenefit.items.length > 0 && (
         <Contents>
@@ -151,20 +153,26 @@ const VIP = (props) => {
                         {i18n.t("vip.levelKeepAccumulateBetAmount")}
                       </Left>
                       <Right style={{ marginTop: 15 }}>
-                        {data.levelKeepAccumulateBetAmount}
+                        {Common.addComma(data.levelKeepAccumulateBetAmount)}
                       </Right>
                       <Left> {i18n.t("vip.levelKeepAccumulateDeposit")}</Left>
-                      <Right>{data.levelKeepAccumulateDeposit}</Right>
+                      <Right>
+                        {Common.addComma(data.levelKeepAccumulateDeposit)}
+                      </Right>
                       <Left>{i18n.t("vip.levelUpAccumulateBetAmount")}</Left>
-                      <Right>{data.levelUpAccumulateBetAmount}</Right>
+                      <Right>
+                        {Common.addComma(data.levelUpAccumulateBetAmount)}
+                      </Right>
                       <Left>{i18n.t("vip.levelUpAccumulateDeposit")}</Left>
-                      <Right>{data.levelUpAccumulateDeposit}</Right>
+                      <Right>
+                        {Common.addComma(data.levelUpAccumulateDeposit)}
+                      </Right>
                       <Left> {i18n.t("vip.birthBenefit")}</Left>
-                      <Right>{data.birthBenefit}</Right>
+                      <Right>{Common.addComma(data.birthBenefit)}</Right>
                       <Left>{i18n.t("vip.promotionBenefit")}</Left>
-                      <Right>{data.promotionBenefit}</Right>
+                      <Right>{Common.addComma(data.promotionBenefit)}</Right>
                       <Left> {i18n.t("vip.quarterlyBenefit")}</Left>
-                      <Right>{data.quarterlyBenefit}</Right>
+                      <Right>{Common.addComma(data.quarterlyBenefit)}</Right>
 
                       <Left style={{ marginTop: 50 }}>
                         <BoldText>{i18n.t("vip.vipBenefit")}</BoldText>
