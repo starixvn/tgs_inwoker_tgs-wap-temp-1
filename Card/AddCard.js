@@ -7,7 +7,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { walletAction } from "../../../api-services/actions/walletAction";
 import { accountAction } from "../../../api-services/actions/accountAction";
 import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
-
 import Header from "../../Wap/Share/Header";
 
 import Textbox from "../../Wap/Share/Textbox";
@@ -19,8 +18,9 @@ import Modal from "@material-ui/core/Dialog";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import config from "../../../config/config";
+
 import i18n from "../../../utils/i18n";
+import config from "../../../config/config";
 import Common from "../../../utils/Common";
 const Container = styled.div`
   width: 100%;
@@ -122,7 +122,7 @@ class AddCard extends Component {
     loading: false,
     showDialog: false,
     dialogMessage: "",
-    disableBankNameInput: false,
+    disabledBankNameInput: false,
 
     name: "",
     phone: "",
@@ -178,15 +178,20 @@ class AddCard extends Component {
     }
     var disableInput = false;
     var bankName = "";
-    if(channel.length>0)
-    {
-      if(channel[this.state.selectedChannelIndex].channelcode !== "CustomBank")
-      {
-        disableInput=true;
+    if (channel.length > 0) {
+      if (
+        channel[this.state.selectedChannelIndex].channelcode !== "CustomBank"
+      ) {
+        disableInput = true;
         bankName = channel[this.state.selectedChannelIndex].channelcode;
       }
     }
-    this.setState({ ...this.state, channelList: channel, bankName: bankName, disableBankNameInput: disableInput });
+    this.setState({
+      ...this.state,
+      channelList: channel,
+      bankName: bankName,
+      disableBankNameInput: disableInput,
+    });
     return channel;
   };
   handleCloseDialog() {
@@ -205,6 +210,7 @@ class AddCard extends Component {
     var selectedChannel =
       this.state.channelList[this.state.selectedChannelIndex];
     var detail = {};
+
     if (selected.banktype === "Bank") {
       if (
         this.state.bankName === "" &&
@@ -249,15 +255,15 @@ class AddCard extends Component {
       selected.banktype === "ThirdParty" ||
       selected.banktype === "FPS"
     ) {
+      if (this.state.phone.length < 8 || this.state.phone.length > 10) {
+        this.props.alert("", i18n.t("common.noReachMin"));
+        return;
+      }
       if (this.state.name === "") {
         this.props.alert("", i18n.t("profile.nameVerify.msgPlsEnterName"));
         return;
       }
-      var expr = /^[0-9]{8,10}$/;
-      if (!expr.test(this.state.phone)) {
-        this.props.alert("", i18n.t("common.noReachMin"));
-        return;
-      }
+
       detail = {
         username: this.state.name,
         phone: this.state.phone,
@@ -287,6 +293,7 @@ class AddCard extends Component {
   handleBankBranchChange = (e) => {
     this.setState({ ...this.state, bankBranch: e.target.value });
   };
+
   handleBankTypeClick = (index) => {
     this.setState({
       ...this.state,
@@ -298,12 +305,17 @@ class AddCard extends Component {
   handleChannelClick = (index) => {
     var disableInput = false;
     var bankName = "";
-    if(this.state.channelList[index].channelcode !== "CustomBank")
-    {
-      disableInput=true;
+    if (this.state.channelList[index].channelcode !== "CustomBank") {
+      disableInput = true;
       bankName = this.state.channelList[index].channelcode;
     }
-    this.setState({...this.state, selectedChannelIndex: index, bankName: bankName, disableBankNameInput: disableInput, channelOpen: false })
+    this.setState({
+      ...this.state,
+      selectedChannelIndex: index,
+      bankName: bankName,
+      disableBankNameInput: disableInput,
+      channelOpen: false,
+    });
   };
 
   handleBankNameClick = (name) => {
@@ -350,20 +362,22 @@ class AddCard extends Component {
           </BalanceLabel>
         </StyledAppBar>
         <SubTitle>{i18n.t("card.addCard.title")}</SubTitle>
-        <Textbox
-          style={{ margin: "20px auto 20px auto" }}
-          value={
-            this.props.wallet.withdrawalList.length > 0
-              ? this.props.wallet.withdrawalList[
-                  this.state.selectedBankTypeIndex
-                ].banktype
-              : ""
-          }
-          onClick={() => this.setState({ ...this.state, bankTypeOpen: true })}
-          type={"text"}
-          label={i18n.t("common.withdrawalBankType")}
-          disabled={true}
-        ></Textbox>
+        {!config.features.AddCard_HideCertainField && (
+          <Textbox
+            style={{ margin: "20px auto 20px auto" }}
+            value={
+              this.props.wallet.withdrawalList.length > 0
+                ? this.props.wallet.withdrawalList[
+                    this.state.selectedBankTypeIndex
+                  ].banktype
+                : ""
+            }
+            onClick={() => this.setState({ ...this.state, bankTypeOpen: true })}
+            type={"text"}
+            label={i18n.t("common.withdrawalBankType")}
+            disabled={true}
+          ></Textbox>
+        )}
         {!config.features.AddCard_HideChannel && (
           <Textbox
             style={{ margin: "20px auto 20px auto" }}
@@ -381,7 +395,6 @@ class AddCard extends Component {
             disabled={true}
           ></Textbox>
         )}
-
         {(() => {
           if (
             this.props.wallet.withdrawalList.length > 0 &&
@@ -390,44 +403,51 @@ class AddCard extends Component {
           ) {
             return (
               <React.Fragment>
-                {this.state.channelList.length > 0 && (
-                  <Textbox
-                    style={{ margin: "20px auto 20px auto" }}
-                    value={this.state.bankName}
-                    onChange={this.handleBankNameChange}
-                    type={"text"}
-                    disabled={config.features.AddCard_BankDropdown||this.state.disableBankNameInput}
-                    onClick={() =>
-                      this.setState({ ...this.state, bankNameOpen: true })
-                    }
-                    placeholder={
-                      config.features.AddCard_DisplayFPS
-                        ? i18n.t("hk28.card.addCard.msgEnterBankName")
-                        : i18n.t("card.addCard.msgEnterBankName")
-                    }
-                    label={
-                      config.features.AddCard_DisplayFPS
-                        ? i18n.t("hk28.card.addCard.BankName")
-                        : i18n.t("card.addCard.BankName")
-                    }
-                    maxLength={255}
-                  ></Textbox>
+                {!config.features.AddCard_HideCertainField && (
+                  <>
+                    <Textbox
+                      style={{ margin: "20px auto 20px auto" }}
+                      value={this.state.bankName}
+                      onChange={this.handleBankNameChange}
+                      type={"text"}
+                      disabled={
+                        config.features.AddCard_BankDropdown ||
+                        this.state.disabledBankNameInput
+                      }
+                      onClick={() =>
+                        this.setState({ ...this.state, bankNameOpen: true })
+                      }
+                      placeholder={
+                        config.features.AddCard_DisplayFPS
+                          ? i18n.t("hk28.card.addCard.msgEnterBankName")
+                          : i18n.t("card.addCard.msgEnterBankName")
+                      }
+                      label={
+                        config.features.AddCard_DisplayFPS
+                          ? i18n.t("hk28.card.addCard.BankName")
+                          : i18n.t("card.addCard.BankName")
+                      }
+                      maxLength={255}
+                    ></Textbox>
+                    {(() => {
+                      if (config.features.AddCard_BankBranch) {
+                        return (
+                          <Textbox
+                            style={{ margin: "20px auto 20px auto" }}
+                            value={this.state.bankBranch}
+                            onChange={this.handleBankBranchChange}
+                            type={"text"}
+                            placeholder={i18n.t(
+                              "card.addCard.branchPlaceHolder"
+                            )}
+                            label={i18n.t("card.addCard.branch")}
+                            maxLength={255}
+                          ></Textbox>
+                        );
+                      }
+                    })()}
+                  </>
                 )}
-                {(() => {
-                  if (config.features.AddCard_BankBranch) {
-                    return (
-                      <Textbox
-                        style={{ margin: "20px auto 20px auto" }}
-                        value={this.state.bankBranch}
-                        onChange={this.handleBankBranchChange}
-                        type={"text"}
-                        placeholder={i18n.t("card.addCard.branchPlaceHolder")}
-                        label={i18n.t("card.addCard.branch")}
-                        maxLength={255}
-                      ></Textbox>
-                    );
-                  }
-                })()}
 
                 <Textbox
                   style={{ margin: "20px auto 20px auto" }}
@@ -435,16 +455,12 @@ class AddCard extends Component {
                   onChange={this.handleBankAccountNameChange}
                   type={"text"}
                   placeholder={
-                    config.features.AddCard_EnglishName
-                      ? i18n.t("bet28.msgEnterBankAccountName")
-                      : config.features.AddCard_DisplayFPS
+                    config.features.AddCard_DisplayFPS
                       ? i18n.t("hk28.card.addCard.msgEnterBankAccountName")
                       : i18n.t("card.addCard.msgEnterBankAccountName")
                   }
                   label={
-                    config.features.AddCard_EnglishName
-                      ? i18n.t("bet28.BankAccountName")
-                      : config.features.AddCard_DisplayFPS
+                    config.features.AddCard_DisplayFPS
                       ? i18n.t("hk28.card.addCard.BankAccountName")
                       : i18n.t("card.addCard.BankAccountName")
                   }
@@ -454,7 +470,6 @@ class AddCard extends Component {
             );
           }
         })()}
-
         {this.props.wallet.withdrawalList.length > 0 &&
         (this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
           .banktype === "ThirdParty" ||
@@ -586,7 +601,6 @@ class AddCard extends Component {
             ></Button>
           </div>
         )}
-
         <StyledModalBank
           onClose={() => this.setState({ ...this.state, bankTypeOpen: false })}
           open={this.state.bankTypeOpen}
@@ -643,7 +657,6 @@ class AddCard extends Component {
             );
           })}
         </StyledModalBank>
-
         <MessageDialog
           onClose={() => this.handleCloseDialog()}
           open={this.state.showDialog}
