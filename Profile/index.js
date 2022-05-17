@@ -235,55 +235,60 @@ class Profile extends Component {
             )}
           </BlockContainer>
 
-          <BlockContainer>
-            <BlockLabel>{i18n.t("profile.otherInfo")}</BlockLabel>
-            {config.features.QQWeChat &&
-              ContentItem(
-                process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`,
-                i18n.t("common.qqNumber"),
-                this.isConfigured(this.props.account.info.member_qq),
-                () => {
-                  this.handleNavigate("/profile/qq");
-                },
-                this.props.account.info.member_qq
-                  ? this.props.account.info.member_qq.substring(0, 1) + "**"
-                  : ""
-              )}
-
-            {config.features.QQWeChat &&
-              ContentItem(
-                process.env.PUBLIC_URL + `/assets/images/wapp/icon-wechat.png`,
-                i18n.t("common.wechatNumber"),
-                this.isConfigured(this.props.account.info.member_wechat),
-                () => {
-                  this.handleNavigate("/profile/wechat");
-                },
-                this.props.account.info.member_wechat
-                  ? this.props.account.info.member_wechat.substring(0, 1) + "**"
-                  : ""
-              )}
-
-            {config.features.CustomMessaging &&
-              config.features.CustomMessaging.map((platform) => {
-                return ContentItem(
-                  process.env.PUBLIC_URL +
-                    `/assets/images/wapp/icon-${platform}.svg`,
-                  i18n.t("common." + platform),
-                  this.isConfigured(
-                    this.props.account.info["member_" + platform]
-                  ),
+          {(config.features.QQWeChat ||
+            config.features.CustomMessaging.length > 0) && (
+            <BlockContainer>
+              <BlockLabel>{i18n.t("profile.otherInfo")}</BlockLabel>
+              {config.features.QQWeChat &&
+                ContentItem(
+                  process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`,
+                  i18n.t("common.qqNumber"),
+                  this.isConfigured(this.props.account.info.member_qq),
                   () => {
-                    this.handleNavigate("/profile/" + platform);
+                    this.handleNavigate("/profile/qq");
                   },
-                  this.props.account.info["member_" + platform]
-                    ? this.props.account.info["member_" + platform].substring(
-                        0,
-                        1
-                      ) + "**"
+                  this.props.account.info.member_qq
+                    ? this.props.account.info.member_qq.substring(0, 1) + "**"
                     : ""
-                );
-              })}
-          </BlockContainer>
+                )}
+
+              {config.features.QQWeChat &&
+                ContentItem(
+                  process.env.PUBLIC_URL +
+                    `/assets/images/wapp/icon-wechat.png`,
+                  i18n.t("common.wechatNumber"),
+                  this.isConfigured(this.props.account.info.member_wechat),
+                  () => {
+                    this.handleNavigate("/profile/wechat");
+                  },
+                  this.props.account.info.member_wechat
+                    ? this.props.account.info.member_wechat.substring(0, 1) +
+                        "**"
+                    : ""
+                )}
+
+              {config.features.CustomMessaging &&
+                config.features.CustomMessaging.map((platform) => {
+                  return ContentItem(
+                    process.env.PUBLIC_URL +
+                      `/assets/images/wapp/icon-${platform}.svg`,
+                    i18n.t("common." + platform),
+                    this.isConfigured(
+                      this.props.account.info["member_" + platform]
+                    ),
+                    () => {
+                      this.handleNavigate("/profile/" + platform);
+                    },
+                    this.props.account.info["member_" + platform]
+                      ? this.props.account.info["member_" + platform].substring(
+                          0,
+                          1
+                        ) + "**"
+                      : ""
+                  );
+                })}
+            </BlockContainer>
+          )}
         </div>
 
         <BlockContainer>
