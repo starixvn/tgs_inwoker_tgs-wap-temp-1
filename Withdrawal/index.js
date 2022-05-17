@@ -171,6 +171,19 @@ const CustomSelectContainer = styled.div`
   margin: 20px auto;
 `;
 
+const LimitLabel = styled.span`
+  color: #747474;
+`;
+
+const LimitAmount = styled.span`
+  color: #c0252d;
+`;
+const ExchangeRateContainer = styled.div`
+  margin: 20px auto;
+  font-size: 28px;
+  padding: 0px 20px 20px 48px;
+`;
+
 class Withdrawal extends Component {
   constructor(props) {
     super(props);
@@ -369,6 +382,25 @@ class Withdrawal extends Component {
       }
     }
   };
+
+  getUsdtExchangeRate = (channelId) => {
+    this.setState({ exchangeRate: 0 });
+
+    for (var i = 0; i < this.props.wallet.withdrawalList.length; i++) {
+      const methodList = this.props.wallet.withdrawalList[i].channel;
+      if (methodList && methodList.banktype === "Usdt") {
+        for (var inner = 0; inner < methodList.length; inner++) {
+          const channelList = methodList[inner];
+          if (channelList.channelid === channelId) {
+            if (channelList.extended.rate !== undefined) {
+              this.setState({ exchangeRate: channelList.extended.rate });
+            }
+          }
+        }
+      }
+    }
+  };
+
   handleConfirmOTP = () => {
     const amount = this.state.amount;
 
@@ -445,6 +477,9 @@ class Withdrawal extends Component {
               this.getTransferLimit(
                 this.props.wallet.bankCardList[e.target.value].paymentchannelid
               );
+              this.getUsdtExchangeRate(
+                this.props.wallet.bankCardList[e.target.value].paymentchannelid
+              );
             }}
           >
             <option disabled value="">
@@ -470,13 +505,36 @@ class Withdrawal extends Component {
           placeholder={
             this.state.selectedBankCardIndex
               ? i18n.t("withdrawal.enterAmount") +
-                ` (${Common.formatNumberWithThousand(this.state.min)} - ${Common.formatNumberWithThousand(this.state.max)})`
+                ` (${Common.formatNumberWithThousand(
+                  this.state.min
+                )} - ${Common.formatNumberWithThousand(this.state.max)})`
               : i18n.t("withdrawal.enterAmount")
           }
           label={i18n.t("common.amount")}
           type={"number"}
         ></Textbox>
-
+        {(() => {
+          if (
+            this.props.wallet.bankCardList[this.state.selectedBankCardIndex] &&
+            this.props.wallet.bankCardList[this.state.selectedBankCardIndex]
+              .banktype === "Usdt"
+          ) {
+            return (
+              <ExchangeRateContainer style={{ marginTop: "4px" }}>
+                <LimitLabel>{i18n.t("deposit.exchangeRate")}</LimitLabel>
+                <LimitAmount>{` ${this.state.exchangeRate}`}</LimitAmount>
+                <LimitLabel> = 1 USDT</LimitLabel>
+                <div class="clear"></div>
+                <LimitLabel>{i18n.t("report.total")}</LimitLabel>{" "}
+                <LimitAmount>{` ${
+                  isNaN(this.state.amount) === false
+                    ? (this.state.amount / this.state.exchangeRate).toFixed(2)
+                    : 0
+                } USDT`}</LimitAmount>
+              </ExchangeRateContainer>
+            );
+          }
+        })()}
         {/* <Textbox
           style={{ margin: '50px auto 20px auto' }}
           onChange={this.handlePasswordChange}
@@ -492,8 +550,10 @@ class Withdrawal extends Component {
           onClick={this.handleSubmitClick}
           disabled={(() => {
             return (
-              parseFloat(this.state.amount.toString().replace(/,/g, "")) < this.state.min ||
-              parseFloat(this.state.amount.toString().replace(/,/g, "")) > this.state.max ||
+              parseFloat(this.state.amount.toString().replace(/,/g, "")) <
+                this.state.min ||
+              parseFloat(this.state.amount.toString().replace(/,/g, "")) >
+                this.state.max ||
               this.state.disabled === true
             );
           })()}

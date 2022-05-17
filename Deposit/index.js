@@ -959,6 +959,47 @@ class Deposit extends Component {
               {(() => {
                 if (
                   this.props.wallet.depositTypeList[
+                    this.props.selectedPaymentIndex
+                  ].method[this.props.selectedMethodIndex].methodcode ===
+                    "Usdt" &&
+                  this.props.wallet.depositTypeList[
+                    this.props.selectedPaymentIndex
+                  ].method[this.props.selectedMethodIndex].channel[
+                    this.props.selectedChannelIndex
+                  ].extended.rate !== undefined
+                ) {
+                  var usdtRate =
+                    this.props.wallet.depositTypeList[
+                      this.props.selectedPaymentIndex
+                    ].method[this.props.selectedMethodIndex].channel[
+                      this.props.selectedChannelIndex
+                    ].extended.rate;
+                  if (
+                    this.props.wallet.depositTypeList[
+                      this.props.selectedPaymentIndex
+                    ].paymentcode.toUpperCase() === "MANUAL"
+                  ) {
+                    return (
+                      <ExchangeRateContainer style={{ marginTop: "4px" }}>
+                        <LimitLabel>
+                          {i18n.t("deposit.exchangeRate")} 1 USDT ={" "}
+                        </LimitLabel>
+                        <LimitAmount>{` ${usdtRate}`}</LimitAmount>
+                        <div class="clear"></div>
+                        <LimitLabel>{i18n.t("report.total")}</LimitLabel>{" "}
+                        <LimitAmount>{` ${
+                          isNaN(this.props.amount) === false
+                            ? (this.props.amount * usdtRate).toFixed(2)
+                            : 0
+                        }`}</LimitAmount>
+                      </ExchangeRateContainer>
+                    );
+                  }
+                }
+              })()}
+              {(() => {
+                if (
+                  this.props.wallet.depositTypeList[
                     this.state.selectedPaymentIndex
                   ].method[this.state.selectedMethodIndex].methodcode ===
                   "Crypto"
