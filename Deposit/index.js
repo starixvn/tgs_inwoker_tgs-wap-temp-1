@@ -298,7 +298,9 @@ class Deposit extends Component {
           account:
             preState.account === ""
               ? this.props.wallet.bankCardList.length > 0
-                ? this.props.wallet.bankCardList[0].detail.bankAccount
+                ? this.props.wallet.bankCardList[0].detail.bankAccount ||
+                  this.props.wallet.bankCardList[0].detail.address ||
+                  this.props.wallet.bankCardList[0].detail.phone
                 : ""
               : preState.account,
           name:
@@ -857,30 +859,87 @@ class Deposit extends Component {
                         config.features.Deposit_RemoveAccount ||
                         isUsdt === "USDT"
                       ) && (
-                        <Textbox
-                          style={{ margin: "20px auto 20px auto" }}
-                          type={"text"}
-                          placeholder={
-                            config.features.Deposit_OriginAccount
-                              ? i18n.t("idr1.pleaseEnterAccountName")
-                              : i18n.t("common.pleaseEnterAccountName")
-                          }
-                          label={
-                            config.features.Deposit_OriginAccount
-                              ? i18n.t("idr1.pleaseEnterAccountName")
-                              : i18n.t("common.pleaseEnterAccountName") +
-                                (config.features.Deposit_AddTips
-                                  ? " *" + i18n.t("mgm.accountDepositTips")
-                                  : "")
-                          }
-                          value={this.state.account}
-                          onChange={(e) => {
-                            this.setState({
-                              ...this.state,
-                              account: e.target.value,
-                            });
-                          }}
-                        ></Textbox>
+                        <>
+                          {this.props.wallet.bankCardList.length > 1 ? (
+                            <CustomText>
+                              <CustomLabel>
+                                {config.features.Deposit_OriginAccount
+                                  ? i18n.t("idr1.pleaseEnterAccountName")
+                                  : i18n.t("common.pleaseEnterAccountName")}
+                              </CustomLabel>
+                              <CustomFormControl variant="outlined">
+                                <CustomSelect
+                                  native
+                                  id="customSelect"
+                                  value={this.state.account}
+                                  style={{
+                                    fontSize: "28px",
+                                    height: "78px",
+                                    border: "none",
+                                    color: "#d09f58",
+                                  }}
+                                  onChange={(e) => {
+                                    this.setState({
+                                      ...this.state,
+                                      account: e.target.value,
+                                    });
+                                  }}
+                                >
+                                  <option value="">
+                                    {config.features.Deposit_OriginAccount
+                                      ? i18n.t("idr1.pleaseEnterAccountName")
+                                      : i18n.t("common.pleaseEnterAccountName")}
+                                  </option>
+                                  {this.props.wallet.bankCardList.map(
+                                    (item, index) => {
+                                      var detail = item.detail;
+                                      return (
+                                        <option
+                                          value={
+                                            detail.bankAccount ||
+                                            detail.address ||
+                                            detail.phone
+                                          }
+                                          key={index}
+                                        >
+                                          {detail.bankAccount ||
+                                            detail.address ||
+                                            detail.phone}{" "}
+                                          ({item.banktype})
+                                        </option>
+                                      );
+                                    }
+                                  )}
+                                </CustomSelect>
+                              </CustomFormControl>
+                            </CustomText>
+                          ) : (
+                            <Textbox
+                              style={{ margin: "20px auto 20px auto" }}
+                              type={"text"}
+                              placeholder={
+                                config.features.Deposit_OriginAccount
+                                  ? i18n.t("idr1.pleaseEnterAccountName")
+                                  : i18n.t("common.pleaseEnterAccountName")
+                              }
+                              label={
+                                config.features.Deposit_OriginAccount
+                                  ? i18n.t("idr1.pleaseEnterAccountName")
+                                  : i18n.t("common.pleaseEnterAccountName") +
+                                    (config.features.Deposit_AddTips
+                                      ? " *" + i18n.t("mgm.accountDepositTips")
+                                      : "")
+                              }
+                              value={this.state.account}
+                              onChange={(e) => {
+                                this.setState({
+                                  ...this.state,
+                                  account: e.target.value,
+                                });
+                              }}
+                            ></Textbox>
+                          )}
+                        </>
                       )}
                       {(!(
                         config.features.Deposit_RemoveName ||
