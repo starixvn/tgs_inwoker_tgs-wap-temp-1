@@ -149,7 +149,7 @@ class DetailsManual extends Component {
                         onClick={() => {
                           document.getElementById("getFile").click();
                         }}
-                        style={{ marginRight: 10, height: 30 }}
+                        style={{ marginRight: 10, fontSize: 24 }}
                       >
                         {i18n.t("common.upload")}
                       </button>
