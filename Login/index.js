@@ -1178,8 +1178,8 @@ const mapDispatchToProps = (dispatch) => {
     getIDCardNo: () => dispatch(accountAction.getIDCardNo()),
     getHomePageGameList: () => dispatch(gameAction.getHomePageGameList()),
     getInviteLink: () => dispatch(accountAction.getInviteLink()),
-    getMessageList: (pages, limit) =>
-      dispatch(inboxAction.getMessages(pages, limit, true, true)),
+    getMessageList: (languages, pages, limit) =>
+      dispatch(inboxAction.getMessages(languages, pages, limit, true, true)),
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
     getPlayerPromotionList: (language) =>
       dispatch(
