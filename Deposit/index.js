@@ -959,24 +959,24 @@ class Deposit extends Component {
               {(() => {
                 if (
                   this.props.wallet.depositTypeList[
-                    this.props.selectedPaymentIndex
-                  ].method[this.props.selectedMethodIndex].methodcode ===
+                    this.state.selectedPaymentIndex
+                  ].method[this.state.selectedMethodIndex].methodcode ===
                     "Usdt" &&
                   this.props.wallet.depositTypeList[
-                    this.props.selectedPaymentIndex
-                  ].method[this.props.selectedMethodIndex].channel[
-                    this.props.selectedChannelIndex
+                    this.state.selectedPaymentIndex
+                  ].method[this.state.selectedMethodIndex].channel[
+                    this.state.selectedChannelIndex
                   ].extended.rate !== undefined
                 ) {
                   var usdtRate =
                     this.props.wallet.depositTypeList[
-                      this.props.selectedPaymentIndex
-                    ].method[this.props.selectedMethodIndex].channel[
-                      this.props.selectedChannelIndex
+                      this.state.selectedPaymentIndex
+                    ].method[this.state.selectedMethodIndex].channel[
+                      this.state.selectedChannelIndex
                     ].extended.rate;
                   if (
                     this.props.wallet.depositTypeList[
-                      this.props.selectedPaymentIndex
+                      this.state.selectedPaymentIndex
                     ].paymentcode.toUpperCase() === "MANUAL"
                   ) {
                     return (
@@ -988,8 +988,8 @@ class Deposit extends Component {
                         <div class="clear"></div>
                         <LimitLabel>{i18n.t("report.total")}</LimitLabel>{" "}
                         <LimitAmount>{` ${
-                          isNaN(this.props.amount) === false
-                            ? (this.props.amount * usdtRate).toFixed(2)
+                          isNaN(this.state.amount) === false
+                            ? (this.state.amount * usdtRate).toFixed(2)
                             : 0
                         }`}</LimitAmount>
                       </ExchangeRateContainer>
