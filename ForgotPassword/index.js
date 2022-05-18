@@ -67,6 +67,8 @@ const CustomLabel = styled.div`
   color: ${({ theme }) => theme.secondary};
 `;
 
+const Wrapper = styled.div``;
+
 class ForgotPassword extends Component {
   state = {
     email: "",
@@ -78,7 +80,7 @@ class ForgotPassword extends Component {
     password2: "",
     securityKey: "",
     phone: "",
-    areaCode: "+852",
+    areaCode: config.features.PhonePrefix,
   };
   handleCodeChange = (e) => {
     this.setState({ ...this.state, code: e.target.value });
@@ -91,12 +93,12 @@ class ForgotPassword extends Component {
   };
   handleGetCodeClick = (e) => {
     if (this.state.countdownToken > 0) return;
-    var expr = /^[0-9]{8,10}$/;
-    if (!expr.test(this.state.phone)) {
-      return this.props.alert("", i18n.t("common.noReachMin"));
-    }
 
     if (config.features.SMSVerification) {
+      if (this.state.phone.length < 8 || this.state.phone.length > 10) {
+        this.props.alert("", i18n.t("common.noReachMin"));
+        return;
+      }
       AccountService.VerifyForgotPassword(
         "",
         this.state.areaCode,
@@ -105,9 +107,15 @@ class ForgotPassword extends Component {
         this.getCodeResponse(response);
       });
     } else {
-      AccountService.VerifyForgotPassword(this.state.email).then((response) => {
-        this.getCodeResponse(response);
-      });
+      if (this.state.email.length > 0) {
+        AccountService.VerifyForgotPassword(this.state.email).then(
+          (response) => {
+            this.getCodeResponse(response);
+          }
+        );
+      } else {
+        this.props.alert("", i18n.t("common.msgEnterEmail"));
+      }
     }
   };
 
@@ -137,6 +145,12 @@ class ForgotPassword extends Component {
   };
   handleNextClick = () => {
     if (this.state.step === 1) {
+      if (config.features.SMSVerification) {
+        if (this.state.phone.length < 8 || this.state.phone.length > 10) {
+          this.props.alert("", i18n.t("common.noReachMin"));
+          return;
+        }
+      }
       if (this.state.code.length === 6) {
         this.setState({ ...this.state, step: 2 });
       }
@@ -151,7 +165,7 @@ class ForgotPassword extends Component {
         ).then((response) => {
           if (response.IsSuccess) {
             this.props.alert("", i18n.t("forgotPassword.updateSuccess"));
-            this.props.appHistory.replace("/" + i18n.language + "/");
+            this.props.appHistory.replace("/" + i18n.language + "/login");
           } else {
             this.props.alert("", response.info);
           }
@@ -189,116 +203,120 @@ class ForgotPassword extends Component {
           onBackClick={this.handleBackClick}
           title={i18n.t("forgotPassword.title")}
         ></Header>
-        {(() => {
-          if (this.state.step === 1) {
-            return config.features.SMSVerification ? (
-              <React.Fragment>
-                <CustomText>
-                  <CustomLabel>{i18n.t("common.phoneNumber")}</CustomLabel>
-                  <Container
-                    style={{
-                      margin: "18px 5px 0 0",
-                      width: "180px",
-                      float: "left",
-                      padding: "10px",
-                    }}
-                  >
-                    <SelectContainer
-                      value={this.state.areaCode}
-                      onChange={(e) => {
-                        this.setState({
-                          ...this.state,
-                          areaCode: e.target.value,
-                        });
+        <Wrapper>
+          {(() => {
+            if (this.state.step === 1) {
+              return config.features.SMSVerification ? (
+                <React.Fragment>
+                  <CustomText>
+                    <CustomLabel>{i18n.t("common.phoneNumber")}</CustomLabel>
+                    <Container
+                      style={{
+                        margin: "18px 5px 0 0",
+                        width: "180px",
+                        float: "left",
+                        padding: "10px",
                       }}
                     >
-                      <option value={"+852"}>+852</option>
-                    </SelectContainer>
-                  </Container>
-                  <CustomInput
-                    value={this.state.phone}
-                    onChange={this.handlePhoneChange}
-                    placeholder={i18n.t("common.msgEnterPhone")}
+                      <SelectContainer
+                        value={this.state.areaCode}
+                        onChange={(e) => {
+                          this.setState({
+                            ...this.state,
+                            areaCode: e.target.value,
+                          });
+                        }}
+                      >
+                        <option value={config.features.PhonePrefix}>
+                          {config.features.PhonePrefix}
+                        </option>
+                      </SelectContainer>
+                    </Container>
+                    <CustomInput
+                      value={this.state.phone}
+                      onChange={this.handlePhoneChange}
+                      placeholder={i18n.t("common.msgEnterPhone")}
+                      type={"text"}
+                      label={i18n.t("common.msgEnterPhone")}
+                    ></CustomInput>
+                  </CustomText>
+
+                  <TextboxWithButton
+                    buttonlabel={i18n.t("common.msgSendToken")}
+                    style={{ margin: "20px auto 20px auto" }}
+                    value={this.state.code}
+                    onChange={this.handleCodeChange}
+                    placeholder={i18n.t("common.msgEnterCode")}
+                    label={i18n.t("common.token")}
+                    onClick={this.handleGetCodeClick}
                     type={"text"}
-                    label={i18n.t("common.msgEnterPhone")}
-                  ></CustomInput>
-                </CustomText>
+                  ></TextboxWithButton>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Textbox
+                    style={{ margin: "20px auto 20px auto" }}
+                    value={this.state.email}
+                    onChange={this.handleEmailChange}
+                    placeholder={i18n.t("common.msgEnterEmail")}
+                    type={"text"}
+                    label={i18n.t("common.emailAddress")}
+                  ></Textbox>
+                  <TextboxWithButton
+                    buttonlabel={i18n.t("common.msgSendToken")}
+                    style={{ margin: "20px auto 20px auto" }}
+                    value={this.state.code}
+                    onChange={this.handleCodeChange}
+                    placeholder={i18n.t("common.msgEnterCodeEmail")}
+                    label={i18n.t("common.token")}
+                    onClick={this.handleGetCodeClick}
+                    type={"text"}
+                  ></TextboxWithButton>
+                </React.Fragment>
+              );
+            } else if (this.state.step === 2) {
+              return (
+                <React.Fragment>
+                  <Textbox
+                    style={{ margin: "20px auto 20px auto" }}
+                    value={this.state.password}
+                    onChange={this.handlePasswordChange}
+                    placeholder={i18n.t("wap.register.password")}
+                    type={"password"}
+                    label={i18n.t("common.NewPass")}
+                  ></Textbox>
 
-                <TextboxWithButton
-                  buttonlabel={i18n.t("common.msgSendToken")}
-                  style={{ margin: "20px auto 20px auto" }}
-                  value={this.state.code}
-                  onChange={this.handleCodeChange}
-                  placeholder={i18n.t("common.msgEnterCode")}
-                  label={i18n.t("common.token")}
-                  onClick={this.handleGetCodeClick}
-                  type={"text"}
-                ></TextboxWithButton>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <Textbox
-                  style={{ margin: "20px auto 20px auto" }}
-                  value={this.state.email}
-                  onChange={this.handleEmailChange}
-                  placeholder={i18n.t("common.msgEnterEmail")}
-                  type={"text"}
-                  label={i18n.t("common.emailAddress")}
-                ></Textbox>
-                <TextboxWithButton
-                  buttonlabel={i18n.t("common.msgSendToken")}
-                  style={{ margin: "20px auto 20px auto" }}
-                  value={this.state.code}
-                  onChange={this.handleCodeChange}
-                  placeholder={i18n.t("common.msgEnterCode")}
-                  label={i18n.t("common.token")}
-                  onClick={this.handleGetCodeClick}
-                  type={"text"}
-                ></TextboxWithButton>
-              </React.Fragment>
-            );
-          } else if (this.state.step === 2) {
-            return (
-              <React.Fragment>
-                <Textbox
-                  style={{ margin: "20px auto 20px auto" }}
-                  value={this.state.password}
-                  onChange={this.handlePasswordChange}
-                  placeholder={i18n.t("wap.register.password")}
-                  type={"password"}
-                  label={i18n.t("common.NewPass")}
-                ></Textbox>
+                  <Textbox
+                    style={{ margin: "20px auto 20px auto" }}
+                    value={this.state.password2}
+                    onChange={this.handlePassword2Change}
+                    placeholder={i18n.t("common.msgEnterConfirmPass")}
+                    type={"password"}
+                    label={i18n.t("common.ConfirmPass")}
+                  ></Textbox>
+                </React.Fragment>
+              );
+            }
+          })()}
 
-                <Textbox
-                  style={{ margin: "20px auto 20px auto" }}
-                  value={this.state.password2}
-                  onChange={this.handlePassword2Change}
-                  placeholder={i18n.t("common.msgEnterConfirmPass")}
-                  type={"password"}
-                  label={i18n.t("common.ConfirmPass")}
-                ></Textbox>
-              </React.Fragment>
-            );
-          }
-        })()}
-
-        <Button
-          style={{ margin: "40px auto 0 auto" }}
-          disabled={
-            this.state.step === 1
-              ? (config.features.SMSVerification
-                  ? this.state.phone.length < 1
-                  : this.state.email.length < 1) || this.state.code.length < 6
-              : this.state.password.length < 6 ||
-                this.state.password2.length < 6
-          }
-          label={
-            this.state.step === 1
-              ? i18n.t("common.nextStep")
-              : i18n.t("common.confirm")
-          }
-          onClick={this.handleNextClick}
-        ></Button>
+          <Button
+            style={{ margin: "40px auto 0 auto" }}
+            disabled={
+              this.state.step === 1
+                ? (config.features.SMSVerification
+                    ? this.state.phone.length < 1
+                    : this.state.email.length < 1) || this.state.code.length < 6
+                : this.state.password.length < 6 ||
+                  this.state.password2.length < 6
+            }
+            label={
+              this.state.step === 1
+                ? i18n.t("common.nextStep")
+                : i18n.t("common.confirm")
+            }
+            onClick={this.handleNextClick}
+          ></Button>
+        </Wrapper>
       </React.Fragment>
     );
   }
