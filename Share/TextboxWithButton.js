@@ -4,16 +4,15 @@ const CustomText = styled.div`
   width: 700px;
   height: 170px;
   display: flex;
-  border: solid 1px #f3f3f3;
-  background-color: #ffffff;
   flex-direction: column;
-  box-shadow: 0 2px 6px 0 rgb(58 58 58 / 20%);
   border-radius: 20px;
-  padding: 40px 20px 0px 20px;
+  padding: 40px 20px 0 20px;
   margin: 20px auto;
+  background: #fff;
+  box-shadow: 0 2px 6px 0 rgb(58 58 58 / 20%);
 `;
 const CustomLabel = styled.div`
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
   margin-left: 3px;
   color: ${({ theme }) => theme.secondary};
@@ -25,7 +24,7 @@ const CustomInput = styled.input`
   border: 0;
   border-radius: 16px;
   color: #313131;
-
+  padding: 16px 30px 16px 0px;
   position: relative;
   display: flex;
   flex: 1;

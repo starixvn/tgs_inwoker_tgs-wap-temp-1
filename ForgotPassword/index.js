@@ -145,9 +145,11 @@ class ForgotPassword extends Component {
   };
   handleNextClick = () => {
     if (this.state.step === 1) {
-      if (this.state.phone.length < 8 || this.state.phone.length > 10) {
-        this.props.alert("", i18n.t("common.noReachMin"));
-        return;
+      if (config.features.SMSVerification) {
+        if (this.state.phone.length < 8 || this.state.phone.length > 10) {
+          this.props.alert("", i18n.t("common.noReachMin"));
+          return;
+        }
       }
       if (this.state.code.length === 6) {
         this.setState({ ...this.state, step: 2 });
