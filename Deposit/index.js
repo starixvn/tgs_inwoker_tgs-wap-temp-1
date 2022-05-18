@@ -930,6 +930,10 @@ class Deposit extends Component {
                                       ? " *" + i18n.t("mgm.accountDepositTips")
                                       : "")
                               }
+                              disabled={
+                                config.features.Deposit_AutofillFirstCard &&
+                                this.state.account !== ""
+                              }
                               value={this.state.account}
                               onChange={(e) => {
                                 this.setState({
