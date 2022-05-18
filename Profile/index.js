@@ -80,7 +80,8 @@ const ContentItem = (
   isConfigured,
   onClickEvent,
   configuredValue = i18n.t("profile.setted"),
-  category
+  category,
+  disabled
 ) => {
   var configureElement = isConfigured ? (
     <SettedLabel>{configuredValue}</SettedLabel>
@@ -94,7 +95,7 @@ const ContentItem = (
     }
   }
   return (
-    <ItemContainer onClick={!disable && onClickEvent}>
+    <ItemContainer onClick={!disable && !disabled && onClickEvent}>
       <ItemIconContainer>
         <ItemIcon icon={icon}></ItemIcon>
       </ItemIconContainer>
@@ -102,7 +103,7 @@ const ContentItem = (
         <ItemTitle>{title}</ItemTitle>
         {configureElement}
       </ItemContentContainer>
-      {!disable && <BtnBack></BtnBack>}
+      {!disable && !disabled && <BtnBack></BtnBack>}
     </ItemContainer>
   );
 };
@@ -209,7 +210,8 @@ class Profile extends Component {
                 this.props.account.info.member_phone
                   ? this.props.account.info.member_phone.substring(0, 1) + "**"
                   : "",
-                "member_phone"
+                "member_phone",
+                config.features.Profile_DisableEditPhone
               )}
             {config.features.EmailVerification &&
               ContentItem(
