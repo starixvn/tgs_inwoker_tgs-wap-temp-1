@@ -982,11 +982,11 @@ class Deposit extends Component {
                     return (
                       <ExchangeRateContainer style={{ marginTop: "4px" }}>
                         <LimitLabel>
-                          {i18n.t("deposit.exchangeRate")} 1 USDT ={" "}
+                          {i18n.t("deposit.exchangeRate")} 1 USDT : {" "}
                         </LimitLabel>
                         <LimitAmount>{` ${usdtRate}`}</LimitAmount>
                         <div class="clear"></div>
-                        <LimitLabel>{i18n.t("report.total")}</LimitLabel>{" "}
+                        <LimitLabel>{i18n.t("deposit.totalAmount")}</LimitLabel>{" : "}
                         <LimitAmount>{` ${
                           isNaN(this.state.amount) === false
                             ? (this.state.amount * usdtRate).toFixed(2)
