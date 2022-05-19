@@ -174,7 +174,9 @@ class Deposit extends Component {
           account:
             preState.account === ""
               ? this.props.wallet.bankCardList.length > 0
-                ? this.props.wallet.bankCardList[0].detail.bankAccount
+                ? this.props.wallet.bankCardList[0].detail.bankAccount ||
+                  this.props.wallet.bankCardList[0].detail.address ||
+                  this.props.wallet.bankCardList[0].detail.phone
                 : ""
               : preState.account,
           name:
