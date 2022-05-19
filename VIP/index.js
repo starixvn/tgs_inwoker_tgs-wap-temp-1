@@ -55,7 +55,7 @@ const ContentDisplayer = styled.div`
 
 const CustomTable = styled.div`
   display: grid;
-  grid-template-columns: auto 125px;
+  grid-template-columns: auto 300px;
   padding: 20px 0px;
 `;
 
