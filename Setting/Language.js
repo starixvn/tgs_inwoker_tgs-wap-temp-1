@@ -20,6 +20,7 @@ const imageMap = {
   "en-US": process.env.PUBLIC_URL + `/assets/images/wapp/en.png`,
   "th-TH": process.env.PUBLIC_URL + `/assets/images/wapp/th.png`,
   "vi-VN": process.env.PUBLIC_URL + `/assets/images/wapp/vn.png`,
+  "id-ID": process.env.PUBLIC_URL + `/assets/images/wapp/id.png`,
 };
 const Container = styled.div`
   width: 100%;
