@@ -112,7 +112,7 @@ const ButtonConfirm = styled.div`
 
 const Remark = styled.div`
   font-size: 20px;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.primary};
   opacity: 0.75;
 `;
 class Details extends Component {
