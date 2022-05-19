@@ -364,7 +364,7 @@ class My extends Component {
             }
             onClick={() => this.props.navigate("/report/3")}
           >
-            {i18n.t("report.withdrawalDetails")}
+            {i18n.t("wap.main.account.withdrawal")}
           </ListItem>
           <ListItem
             icon={
@@ -374,7 +374,7 @@ class My extends Component {
             style={{ backgroundSize: 60 }}
             onClick={() => this.props.navigate("/report/4")}
           >
-            {i18n.t("report.depositDetails")}
+            {i18n.t("wap.main.account.deposit")}
           </ListItem>
 
           {checkTransferWallet && (
@@ -385,7 +385,7 @@ class My extends Component {
               }
               onClick={() => this.props.navigate("/report/6")}
             >
-              {i18n.t("report.transfer.title")}
+              {i18n.t("wap.main.account.transfer")}
             </ListItem>
           )}
 
