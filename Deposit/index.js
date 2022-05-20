@@ -47,7 +47,7 @@ const BalanceLabel = styled.div`
   font-weight: 600;
 
   text-align: right;
-  color: #fde73f;
+  color: ${({ theme }) => theme.balance};
 `;
 
 const StyledAppBar = withStyles({
@@ -163,10 +163,14 @@ class Deposit extends Component {
           }
         );
       }
+      this.countDownInterval = setInterval(() => {
+        this.props.getDepositMethod(i18n.language); // call api every 30 mins
+      }, 30 * 60 * 1000);
     } else {
       this.props.appHistory.replace("/" + i18n.language + "/login");
     }
   }
+
   componentDidUpdate(preProps, preState) {
     if (config.features.Deposit_AutofillFirstCard) {
       if (preProps.wallet !== this.props.wallet) {
@@ -186,12 +190,6 @@ class Deposit extends Component {
                 : ""
               : preState.name,
         });
-        // if (this.props.wallet.bankCardList.length > 0) {
-        //   this.setState({
-        //     account: this.props.wallet.bankCardList[0].detail.bankAccount,
-        //     name: this.props.account.info.member_name,
-        //   });
-        // }
       }
     }
 
@@ -201,9 +199,8 @@ class Deposit extends Component {
     ) {
       if (this.props.wallet.depositResult.IsSuccess) {
         const response = this.props.wallet.depositResult;
-        var payment = this.props.wallet.depositTypeList[
-          this.state.selectedPaymentIndex
-        ];
+        var payment =
+          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
         if (config.features.Deposit_DualPage) {
           this.setState({
             ...this.state,
@@ -309,6 +306,9 @@ class Deposit extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    clearInterval(this.countDownInterval);
+  }
   handleRestartClick = (e) => {
     this.setState({ ...this.initialState });
     this.props.resetDeposit();
@@ -337,9 +337,8 @@ class Deposit extends Component {
 
   handleDepositClick = () => {
     this.setState({ ...this.state, disabled: true });
-    var payment = this.props.wallet.depositTypeList[
-      this.state.selectedPaymentIndex
-    ];
+    var payment =
+      this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
     var method = payment.method[this.state.selectedMethodIndex];
 
     var channel = method.channel[this.state.selectedChannelIndex];
@@ -704,7 +703,6 @@ class Deposit extends Component {
             </BalanceLabel>
           }
         ></Header>{" "}
-        {/* <div style={{ height: 90 }} /> */}
         {(() => {
           if (this.props.wallet.depositTypeList.length <= 0) {
             return <React.Fragment></React.Fragment>;

@@ -6,13 +6,11 @@ import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Dialog";
 import Header from "../Share/Header";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-import {walletAction} from "../../../api-services/actions/walletAction";
-import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
+import { walletAction } from "../../../api-services/actions/walletAction";
+import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 import Button from "../../Wap/Share/Button";
 import Loading from "../../Wap/Share/Loading";
 import i18n from "../../../utils/i18n";
@@ -180,7 +178,7 @@ class Manual extends Component {
       <Container>
         <ContentBg>
           <BalanceLabel>{i18n.t("deposit.depositAmount")}：</BalanceLabel>
-          <DepositAmount>¥ {this.props.order.amount}</DepositAmount>
+          <DepositAmount>{this.props.order.amount}</DepositAmount>
           <SplitLine></SplitLine>
           <LeftLabel>{i18n.t("deposit.depositMethod")}</LeftLabel>
           <RightLabel>{this.props.order.selectedType.title}</RightLabel>

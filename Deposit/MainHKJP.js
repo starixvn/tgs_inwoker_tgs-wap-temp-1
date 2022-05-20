@@ -54,9 +54,11 @@ const CustomCustomSelect = styled(CustomSelect)`
 
 const CustomText = styled.div`
   width: 700px;
-  min-height: 170px;
-  display: flex;
-  flex-direction: column;
+  height: 170px;
+
+  box-shadow: 0 2px 6px 0 rgba(58, 58, 58, 0.2);
+  border: solid 1px #f3f3f3;
+  background-color: #ffffff;
   border-radius: 20px;
   padding: 40px 20px 0 20px;
   margin: 20px auto;
@@ -102,6 +104,10 @@ const Remark = styled.div`
   color: ${({ theme }) => theme.secondary};
   opacity: 0.75;
 `;
+
+const HintText = styled.div`
+  color: ${({ theme }) => theme.primary};
+`;
 class MainHKJP extends Component {
   constructor(props) {
     super(props);
@@ -113,6 +119,12 @@ class MainHKJP extends Component {
   render() {
     return (
       <React.Fragment>
+        {this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+          .paymentcode === "ZeroNineNinePay" && (
+          <CustomLabel style={{ padding: "32px" }}>
+            <HintText>{i18n.t("hint._099")}</HintText>
+          </CustomLabel>
+        )}
         <CustomText>
           <CustomLabel>{i18n.t("deposit.msgPlsSelectPayment")}</CustomLabel>
           <CustomFormControl variant="outlined">

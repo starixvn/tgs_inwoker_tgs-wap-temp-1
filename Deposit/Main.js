@@ -16,6 +16,8 @@ import i18n from "../../../utils/i18n";
 import copy from "copy-to-clipboard";
 import config from "../../../config/config";
 
+const GMOstyle = config.brand === "GMO";
+
 const CustomSelect = withStyles((theme) => ({
   root: {
     "&:focus": {
@@ -47,20 +49,23 @@ const CustomCustomSelect = styled(CustomSelect)`
   font-size: 28px;
   height: 78px;
   border: none;
+
   .MuiSelect-root {
-    color: black;
+    color: ${({ value }) => {
+      return value === "" || value === undefined ? "rgba(0,0,0,0.45)" : "#000";
+    }};
   }
 `;
 
 const CustomText = styled.div`
   width: 700px;
-  // height: 170px;
+  height: 170px;
 
   box-shadow: 0 2px 6px 0 rgba(58, 58, 58, 0.2);
   border: solid 1px #f3f3f3;
   background-color: #ffffff;
   border-radius: 20px;
-  padding: 40px 20px 10px 20px;
+  padding: 40px 20px 0 20px;
   margin: 20px auto;
 `;
 const CustomImage = styled.img`
@@ -70,17 +75,22 @@ const CustomImage = styled.img`
   height: 200px;
 `;
 const CustomLabel = styled.div`
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
-  margin-left: 3px;
-  color: #212e31;
+  color: ${({ black, theme }) => {
+    return black ? "#000" : theme.secondary;
+  }};
+  float: left;
 `;
 const CustomFormControl = withStyles((theme) => ({
   root: {
     margin: "10px 0 0 0",
-    width: "640px",
-    height: "78px",
+    background: "white",
+    padding: "0 0 16px 0",
+    borderRadius: "16px",
+    height: "101px",
     border: "none",
+    width: "100%",
     fontSize: "28px",
     "& fieldset": {
       border: "none",
@@ -101,13 +111,13 @@ const TransferContainer = styled.div`
   align-items: center;
 `;
 const TransferLabel = styled.div`
-  color: #747474;
+  color ${GMOstyle ? "#e9a60b" : "#747474"};
   font-size: 28px;
   float: left;
   font-weight: bold;
 `;
 const TransferValue = styled.div`
-  color: #747474;
+color ${GMOstyle ? "#e9a60b" : "#747474"};
   font-size: 28px;
   float: left;
   margin-left: 10px;
@@ -125,7 +135,7 @@ const ExchangeRateContainer = styled.div`
 const Remark = styled.div`
   font-size: 20px;
   padding: 0px 50px;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.primary};
   opacity: 0.75;
 `;
 const QRCodeImg = styled.img`
@@ -183,6 +193,21 @@ const CopyIcon = styled.div`
   cursor: pointer;
 `;
 
+const HintText = styled.div`
+  color: ${({ theme }) => theme.primary};
+`;
+
+const InputWrapper = styled.div`
+  background: #fff;
+  display: flex;
+  align-items: center;
+  width: 700px;
+  margin-top: 10px;
+  padding-right: 100px;
+  border-radius: 16px;
+  width: 100%;
+`;
+
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -220,6 +245,12 @@ class Main extends Component {
 
     return (
       <React.Fragment>
+        {this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+          .paymentcode === "ZeroNineNinePay" && (
+          <CustomLabel style={{ padding: "32px" }}>
+            <HintText>{i18n.t("hint._099")}</HintText>
+          </CustomLabel>
+        )}
         <CustomText>
           <CustomLabel>{i18n.t("deposit.msgPlsSelectPayment")}</CustomLabel>
           <CustomFormControl variant="outlined">
@@ -269,11 +300,11 @@ class Main extends Component {
               this.props.selectedPaymentIndex
             ].paymentcode.toUpperCase() === "MANUAL"
           ) {
-            var channelExtend = this.props.wallet.depositTypeList[
-              this.props.selectedPaymentIndex
-            ].method[this.props.selectedMethodIndex].channel[
-              this.props.selectedChannelIndex
-            ].extended;
+            var channelExtend =
+              this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+                .method[this.props.selectedMethodIndex].channel[
+                this.props.selectedChannelIndex
+              ].extended;
             if (
               this.props.wallet.depositTypeList[
                 this.props.selectedPaymentIndex
@@ -374,17 +405,13 @@ class Main extends Component {
                               : i18n.t("common.pleaseEnterAccountName")}
                           </CustomLabel>
                           <CustomFormControl variant="outlined">
-                            <CustomSelect
+                            <CustomCustomSelect
                               native
                               id="customSelect"
                               value={this.props.account}
-                              style={{
-                                fontSize: "28px",
-                                height: "78px",
-                                border: "none",
-                                color: "#d09f58",
-                              }}
-                              onChange={(e) => this.props.handleAccountChange(e)}
+                              onChange={(e) =>
+                                this.props.handleAccountChange(e)
+                              }
                             >
                               <option value="">
                                 {config.features.Deposit_OriginAccount
@@ -411,7 +438,7 @@ class Main extends Component {
                                   );
                                 }
                               )}
-                            </CustomSelect>
+                            </CustomCustomSelect>
                           </CustomFormControl>
                         </CustomText>
                       ) : (
@@ -431,11 +458,11 @@ class Main extends Component {
                                   ? " *" + i18n.t("mgm.accountDepositTips")
                                   : "")
                           }
+                          value={this.props.account}
                           disabled={
                             config.features.Deposit_AutofillFirstCard &&
                             this.props.account !== ""
                           }
-                          value={this.props.account}
                           onChange={(e) => this.props.handleAccountChange(e)}
                         ></Textbox>
                       )}
@@ -506,43 +533,6 @@ class Main extends Component {
         {(() => {
           if (
             this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
-              .method[this.props.selectedMethodIndex].methodcode === "Usdt" &&
-            this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
-              .method[this.props.selectedMethodIndex].channel[
-              this.props.selectedChannelIndex
-            ].extended.rate !== undefined
-          ) {
-            var usdtRate = this.props.wallet.depositTypeList[
-              this.props.selectedPaymentIndex
-            ].method[this.props.selectedMethodIndex].channel[
-              this.props.selectedChannelIndex
-            ].extended.rate;
-            if (
-              this.props.wallet.depositTypeList[
-                this.props.selectedPaymentIndex
-              ].paymentcode.toUpperCase() === "MANUAL"
-            ) {
-              return (
-                <ExchangeRateContainer style={{ marginTop: "4px" }}>
-                  <LimitLabel>
-                    {i18n.t("deposit.exchangeRate")} 1 USDT : {" "}
-                  </LimitLabel>
-                  <LimitAmount>{` ${usdtRate}`}</LimitAmount>
-                  <div class="clear"></div>
-                  <LimitLabel>{i18n.t("deposit.totalAmount")}</LimitLabel>{" :  "}
-                  <LimitAmount>{` ${
-                    isNaN(this.props.amount) === false
-                      ? (this.props.amount * usdtRate).toFixed(2)
-                      : 0
-                  }`}</LimitAmount>
-                </ExchangeRateContainer>
-              );
-            }
-          }
-        })()}
-        {(() => {
-          if (
-            this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
               .method[this.props.selectedMethodIndex].methodcode === "Crypto"
           ) {
             if (
@@ -603,7 +593,7 @@ class Main extends Component {
               value={this.props.depositPromotion}
               onChange={(e) => this.props.handlePromotionChange(e)}
             >
-              <option value={""}>
+              <option value="">
                 {i18n.t("deposit.msgPlsSelectPromotion")}
               </option>
               {this.props.general.promotionList.items
@@ -632,21 +622,44 @@ class Main extends Component {
             ].paymentcode.toUpperCase() === "MANUAL"
           ) {
             return (
-              <CustomText>
-                <CustomLabel>{i18n.t("deposit.uploadReceipt")}</CustomLabel>
-                <CustomFormControl variant="outlined">
-                  <UploadInput
-                    key={this.props.fileInput}
-                    type="file"
-                    onChange={this.props.handleFileChange}
-                    accept="image/jpg, image/jpeg, image/png, image/tiff"
-                  ></UploadInput>
-                </CustomFormControl>
-              </CustomText>
+              <>
+                <CustomText>
+                  <CustomLabel>{i18n.t("deposit.uploadReceipt")}</CustomLabel>
+                  <InputWrapper style={{ padding: 10 }}>
+                    <button
+                      onClick={() => {
+                        document.getElementById("getFile").click();
+                      }}
+                      style={{
+                        marginRight: 10,
+                        height: 75,
+                        minWidth: 200,
+                        fontSize: 24,
+                      }}
+                    >
+                      {i18n.t("common.upload")}
+                    </button>
+                    <input
+                      type="file"
+                      id="getFile"
+                      onChange={this.props.handleFileChange}
+                      accept="image/jpg, image/jpeg, image/png, image/tiff"
+                      style={{ display: "none" }}
+                    />
+                    {this.props.files ? (
+                      <div style={{ fontSize: 24 }}>
+                        {this.props.files[0].name}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </InputWrapper>
+                </CustomText>
+                <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
+              </>
             );
           }
         })()}
-
         <StyledModalPopup
           onClose={this.props.handleClosePopup}
           open={this.props.openPopup}
@@ -670,14 +683,15 @@ class Main extends Component {
           label={i18n.t("common.submit")}
           onClick={this.props.handleDepositClick}
           disabled={(() => {
-            const paymentcode = this.props.wallet.depositTypeList[
-              this.props.selectedPaymentIndex
-            ].paymentcode.toUpperCase();
-            const transferlimit = this.props.wallet.depositTypeList[
-              this.props.selectedPaymentIndex
-            ].method[this.props.selectedMethodIndex].channel[
-              this.props.selectedChannelIndex
-            ].transferlimit;
+            const paymentcode =
+              this.props.wallet.depositTypeList[
+                this.props.selectedPaymentIndex
+              ].paymentcode.toUpperCase();
+            const transferlimit =
+              this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+                .method[this.props.selectedMethodIndex].channel[
+                this.props.selectedChannelIndex
+              ].transferlimit;
 
             if (
               this.props.disabled === true ||
