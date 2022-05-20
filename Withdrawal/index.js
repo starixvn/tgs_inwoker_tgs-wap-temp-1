@@ -171,6 +171,19 @@ const CustomSelectContainer = styled.div`
   margin: 20px auto;
 `;
 
+const LimitLabel = styled.span`
+  color: #747474;
+`;
+
+const LimitAmount = styled.span`
+  color: #c0252d;
+`;
+const ExchangeRateContainer = styled.div`
+  margin: 20px auto;
+  font-size: 28px;
+  padding: 0px 20px 20px 48px;
+`;
+
 class Withdrawal extends Component {
   constructor(props) {
     super(props);
@@ -193,6 +206,8 @@ class Withdrawal extends Component {
 
       min: 0,
       max: 0,
+
+      exchangeRate: config.features.Withdrawal_USDT_ExchangeRate,
     };
     this.state = this.initialState;
   }
@@ -367,6 +382,7 @@ class Withdrawal extends Component {
       }
     }
   };
+
   handleConfirmOTP = () => {
     const amount = this.state.amount;
 
@@ -465,19 +481,57 @@ class Withdrawal extends Component {
           style={{ margin: "50px auto 20px auto" }}
           value={this.state.amount}
           onChange={this.handleChangeAmount}
-          placeholder={i18n.t("withdrawal.enterAmount")}
+          placeholder={
+            this.state.selectedBankCardIndex
+              ? i18n.t("withdrawal.enterAmount") +
+                ` (${Common.formatNumberWithThousand(
+                  this.state.min
+                )} - ${Common.formatNumberWithThousand(this.state.max)})`
+              : i18n.t("withdrawal.enterAmount")
+          }
           label={i18n.t("common.amount")}
           type={"number"}
         ></Textbox>
-
-        {/* <Textbox
-          style={{ margin: '50px auto 20px auto' }}
-          onChange={this.handlePasswordChange}
-          value={this.state.password}
-          placeholder={i18n.t('withdrawal.msgEnterWithdrawalPass')}
-          label={i18n.t('common.withdrawalPassword')}
-          type={'password'}
-        ></Textbox> */}
+        {(() => {
+          if (
+            this.props.wallet.bankCardList[this.state.selectedBankCardIndex] &&
+            this.props.wallet.bankCardList[this.state.selectedBankCardIndex]
+              .banktype === "Usdt"
+          ) {
+            return (
+              <React.Fragment>
+                <ExchangeRateContainer style={{ marginTop: "4px" }}>
+                  <LimitLabel>{i18n.t("deposit.exchangeRate")}</LimitLabel>
+                  <LimitLabel> 1 USDT : </LimitLabel>
+                  <LimitAmount>{` ${this.state.exchangeRate}`}</LimitAmount>
+                </ExchangeRateContainer>
+                <Textbox
+                  style={{ margin: "50px auto 20px auto" }}
+                  value={
+                    isNaN(this.state.amount) === false
+                      ? (this.state.amount * this.state.exchangeRate).toFixed(2)
+                      : 0
+                  }
+                  label={i18n.t("withdrawal.usdtAmount")}
+                  type={"number"}
+                  disabled={true}
+                ></Textbox>
+              </React.Fragment>
+            );
+          }
+        })()}
+        {/* {config.brand !== 'HKJP' && config.brand !== 'GPI' ? (
+          <Textbox
+            style={{ margin: '50px auto 20px auto' }}
+            onChange={this.handlePasswordChange}
+            value={this.state.password}
+            placeholder={i18n.t(
+              'withdrawal.msgEnterWithdrawalPass'
+            )}
+            label={i18n.t('common.withdrawalPassword')}
+            type={'password'}
+          ></Textbox>
+        ) : null} */}
         <BottomDesc>{i18n.t("withdrawal.notice")}</BottomDesc>
         <Button
           style={{ margin: "40px auto 0 auto" }}
@@ -485,7 +539,10 @@ class Withdrawal extends Component {
           onClick={this.handleSubmitClick}
           disabled={(() => {
             return (
-              parseFloat(this.state.amount.toString().replace(/,/g, "")) < 1 ||
+              parseFloat(this.state.amount.toString().replace(/,/g, "")) <
+                this.state.min ||
+              parseFloat(this.state.amount.toString().replace(/,/g, "")) >
+                this.state.max ||
               this.state.disabled === true
             );
           })()}

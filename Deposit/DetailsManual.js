@@ -5,8 +5,6 @@ import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Dialog";
 import Header from "../Share/Header";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -55,11 +53,7 @@ const SplitBoth = styled.div`
   clear: both;
   margin: 30px 0;
 `;
-const Remark = styled.div`
-  font-size: 20px;
-  color: ${({ theme }) => theme.primary};
-  opacity: 0.75;
-`;
+
 class DetailsManual extends Component {
   state = {
     expired_time: 0,
@@ -102,7 +96,7 @@ class DetailsManual extends Component {
       <Container>
         <ContentBg>
           <BalanceLabel>{i18n.t("deposit.depositAmount")}：</BalanceLabel>
-          <DepositAmount>¥ {this.props.amount}</DepositAmount>
+          <DepositAmount>{this.props.amount}</DepositAmount>
           <SplitLine></SplitLine>
           <LeftLabel>{i18n.t("deposit.orderNumber")}</LeftLabel>
           <RightLabel>
@@ -117,7 +111,6 @@ class DetailsManual extends Component {
           <LeftLabel>{i18n.t("deposit.depositTunnel")}</LeftLabel>
           <RightLabel>{this.props.channelname}</RightLabel>
           <SplitBoth></SplitBoth>
-
           {(() => {
             if (
               this.props.isManual === true &&
@@ -144,27 +137,13 @@ class DetailsManual extends Component {
                 <React.Fragment>
                   <LeftLabel>{i18n.t("deposit.uploadReceipt")}</LeftLabel>
                   <RightLabel>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <button
-                        onClick={() => {
-                          document.getElementById("getFile").click();
-                        }}
-                        style={{ marginRight: 10, fontSize: 24 }}
-                      >
-                        {i18n.t("common.upload")}
-                      </button>
-                      <input
-                        type="file"
-                        id="getFile"
-                        onChange={this.handleFileChange}
-                        accept="image/jpg, image/jpeg, image/png, image/tiff"
-                        style={{ display: "none" }}
-                      />
-                      {this.state.files[0] ? this.state.files[0].name : ""}
-                    </div>
+                    <input
+                      type="file"
+                      onChange={this.handleFileChange}
+                      accept="image/jpg, image/jpeg, image/png, image/tiff"
+                    ></input>
                   </RightLabel>
                   <SplitBoth></SplitBoth>
-                  <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
                 </React.Fragment>
               );
             }
