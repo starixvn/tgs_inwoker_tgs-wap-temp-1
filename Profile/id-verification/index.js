@@ -227,10 +227,6 @@ class NameVerify extends BaseProfile {
     switch (scene) {
       case "waiting-verification":
         return (
-          <BottomNote text1={i18n.t("verified.waiting")} text2=""></BottomNote>
-        );
-      case "approved":
-        return (
           <BottomNote
             text1={i18n.t("profile.nameVerify.toEdit")}
             toEdit={this.handleGoEdit}
