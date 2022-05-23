@@ -64,7 +64,7 @@ class Default extends BaseProfile {
       <React.Fragment>
         <Textbox
           style={{ margin: "50px auto 20px auto" }}
-          value={this.props.name}
+          value=""
           onChange={this.props.handleChangeName}
           placeholder={
             config.features.Profile_CustomIdentityPageTranslation
