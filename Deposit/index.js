@@ -716,21 +716,17 @@ class Deposit extends Component {
                   variant="scrollable"
                   scrollButtons="auto"
                 >
-                  {this.props.wallet.depositTypeList
-                    .sort(function (a, b) {
-                      return a.displayorder - b.displayorder;
-                    })
-                    .map((item, index) => {
-                      return (
-                        <Tab
-                          key={index}
-                          value={index}
-                          label={i18n.t(item.paymentcode)}
-                        >
-                          {i18n.t(item.paymentcode)}
-                        </Tab>
-                      );
-                    })}
+                  {this.props.wallet.depositTypeList.map((item, index) => {
+                    return (
+                      <Tab
+                        key={index}
+                        value={index}
+                        label={i18n.t(item.paymentcode)}
+                      >
+                        {i18n.t(item.paymentcode)}
+                      </Tab>
+                    );
+                  })}
                 </CustomTabs>
               </StyledAppBar>
               {(() => {
