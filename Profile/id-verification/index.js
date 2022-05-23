@@ -237,6 +237,9 @@ class NameVerify extends BaseProfile {
         return <BottomNote empty></BottomNote>;
       // case "reject":
       //   return <Default {...this.commonprops} />;
+
+      case "approved":
+        return <BottomNote text1={""} empty text2={""}></BottomNote>;
       default:
         return (
           <BottomNote
