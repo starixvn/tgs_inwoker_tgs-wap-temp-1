@@ -93,6 +93,12 @@ const ButtonCardManage = styled.div`
   color: ${({ theme }) => theme.secondary};
 `;
 
+const CustomPlaceholderWrapper = styled.div`
+  & input::placeholder {
+    font-size: 22px;
+  }
+`;
+
 const StyledModalBank = withStyles((theme) => ({
   paper: {
     color: "#666666",
@@ -477,21 +483,23 @@ class Withdrawal extends Component {
             })}
           </CustomSelect>
         </CustomSelectContainer>
-        <Textbox
-          style={{ margin: "50px auto 20px auto" }}
-          value={this.state.amount}
-          onChange={this.handleChangeAmount}
-          placeholder={
-            this.state.selectedBankCardIndex
-              ? i18n.t("withdrawal.enterAmount") +
-                ` (${Common.formatNumberWithThousand(
-                  this.state.min
-                )} - ${Common.formatNumberWithThousand(this.state.max)})`
-              : i18n.t("withdrawal.enterAmount")
-          }
-          label={i18n.t("common.amount")}
-          type={"number"}
-        ></Textbox>
+        <CustomPlaceholderWrapper>
+          <Textbox
+            style={{ margin: "50px auto 20px auto" }}
+            value={this.state.amount}
+            onChange={this.handleChangeAmount}
+            placeholder={
+              this.state.selectedBankCardIndex
+                ? i18n.t("withdrawal.enterAmount") +
+                  ` (${Common.formatNumberWithThousand(
+                    this.state.min
+                  )} - ${Common.formatNumberWithThousand(this.state.max)})`
+                : i18n.t("withdrawal.enterAmount")
+            }
+            label={i18n.t("common.amount")}
+            type={"number"}
+          ></Textbox>
+        </CustomPlaceholderWrapper>
         {(() => {
           if (
             this.props.wallet.bankCardList[this.state.selectedBankCardIndex] &&
