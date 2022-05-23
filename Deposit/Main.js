@@ -533,6 +533,44 @@ class Main extends Component {
         {(() => {
           if (
             this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+              .method[this.props.selectedMethodIndex].methodcode === "Usdt" &&
+            this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+              .method[this.props.selectedMethodIndex].channel[
+              this.props.selectedChannelIndex
+            ].extended.rate !== undefined
+          ) {
+            var usdtRate =
+              this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+                .method[this.props.selectedMethodIndex].channel[
+                this.props.selectedChannelIndex
+              ].extended.rate;
+            if (
+              this.props.wallet.depositTypeList[
+                this.props.selectedPaymentIndex
+              ].paymentcode.toUpperCase() === "MANUAL"
+            ) {
+              return (
+                <ExchangeRateContainer style={{ marginTop: "4px" }}>
+                  <LimitLabel>
+                    {i18n.t("deposit.exchangeRate")} 1 USDT :{" "}
+                  </LimitLabel>
+                  <LimitAmount>{` ${usdtRate}`}</LimitAmount>
+                  <div class="clear"></div>
+                  <LimitLabel>{i18n.t("deposit.totalAmount")}</LimitLabel>
+                  {" :  "}
+                  <LimitAmount>{` ${
+                    isNaN(this.props.amount) === false
+                      ? (this.props.amount * usdtRate).toFixed(2)
+                      : 0
+                  }`}</LimitAmount>
+                </ExchangeRateContainer>
+              );
+            }
+          }
+        })()}
+        {(() => {
+          if (
+            this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
               .method[this.props.selectedMethodIndex].methodcode === "Crypto"
           ) {
             if (
@@ -655,7 +693,13 @@ class Main extends Component {
                     )}
                   </InputWrapper>
                 </CustomText>
-                <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
+                <Remark>
+                  {i18n.t(
+                    config.features.Deposit_UploadRequired
+                      ? "deposit.msgPlsUploadProof"
+                      : "deposit.msgNotMustUploadProof"
+                  )}
+                </Remark>
               </>
             );
           }
@@ -695,11 +739,11 @@ class Main extends Component {
 
             if (
               this.props.disabled === true ||
-              ((paymentcode.toUpperCase() === "MANUAL" ||
-                paymentcode.toUpperCase() === "APPLEPAY") &&
-                this.props.files === null) ||
               this.props.amount < transferlimit.from ||
-              this.props.amount > transferlimit.to
+              this.props.amount > transferlimit.to ||
+              this.props.amount === "" ||
+              (this.props.files === null &&
+                config.features.Deposit_UploadRequired)
             ) {
               return true;
             } else {
