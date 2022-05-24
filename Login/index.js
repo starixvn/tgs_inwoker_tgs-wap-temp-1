@@ -617,7 +617,10 @@ class Login extends Component {
         return;
       }
 
-      var expr = /^[0-9]{8,10}$/;
+      var expr = new RegExp(
+        "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+      );
+
       if (!expr.test(phone)) {
         this.props.alert("", i18n.t("common.noReachMin"));
         return;
@@ -682,7 +685,10 @@ class Login extends Component {
 
       return;
     }
-    var expr = /^[0-9]{8,10}$/;
+    var expr = new RegExp(
+      "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+    );
+
     if (
       config.features.Register_ShowPhone ||
       config.features.Register_ShowSMSVerification
@@ -987,6 +993,7 @@ class Login extends Component {
                         selectValue={this.state.areaCode}
                         onSelectChange={this.handleAreaCodeChange}
                         value={this.state.phone}
+                        maxLength={config.features.MAX_PHONE_LENGTH || 10}
                         onChange={this.handlePhoneChange}
                       ></Select>
                     </CustomWrapper>

@@ -112,7 +112,10 @@ class Phone extends BaseProfile {
     if (this.state.countdownToken > 0) return;
     if (!this.state.phone)
       return this.showErrorMessage(i18n.t("common.msgEnterPhone"));
-    if (this.state.phone.length < 8 || this.state.phone.length > 10) {
+    if (
+      this.state.phone.length < 8 ||
+      this.state.phone.length > (config.features.MAX_PHONE_LENGTH || 10)
+    ) {
       this.props.alert("", i18n.t("common.noReachMin"));
       return;
     }
@@ -220,7 +223,7 @@ class Phone extends BaseProfile {
             placeholder={i18n.t("common.msgEnterPhone")}
             disabled={this.state.isConfigured ? this.state.isConfigured : false}
             onChange={this.handleChangePhone}
-            maxLength={10}
+            maxLength={config.features.MAX_PHONE_LENGTH || 10}
           ></CustomInput>
         </CustomText>
 
@@ -256,10 +259,14 @@ class Phone extends BaseProfile {
             <BottomNote
               text1={i18n.t("profile.phone.toEdit")}
               link={
-                (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly) ? "../chat" : "./changephone"
+                config.features.ChangesNotAllowed ||
+                config.features.Profile_ExistingDetails_ViewOnly
+                  ? "../chat"
+                  : "./changephone"
               }
               text2={i18n.t(
-                (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)
+                config.features.ChangesNotAllowed ||
+                  config.features.Profile_ExistingDetails_ViewOnly
                   ? "common.customerService"
                   : "profile.phone.here"
               )}
