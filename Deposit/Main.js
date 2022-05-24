@@ -461,7 +461,7 @@ class Main extends Component {
                           value={this.props.account}
                           disabled={
                             config.features.Deposit_AutofillFirstCard &&
-                            this.props.account !== ""
+                            this.props.wallet.bankCardList.length !== 0
                           }
                           onChange={(e) => this.props.handleAccountChange(e)}
                         ></Textbox>
@@ -550,17 +550,16 @@ class Main extends Component {
               ].paymentcode.toUpperCase() === "MANUAL"
             ) {
               return (
-                <ExchangeRateContainer style={{ marginTop: "4px", whiteSpace: "break-spaces" }}>
-                  <LimitLabel>
-                    {i18n.t("deposit.exchangeRate")} : {" "}
-                  </LimitLabel>
+                <ExchangeRateContainer
+                  style={{ marginTop: "4px", whiteSpace: "break-spaces" }}
+                >
+                  <LimitLabel>{i18n.t("deposit.exchangeRate")} : </LimitLabel>
                   <LimitAmount>1</LimitAmount>
-                  <LimitLabel>
-                  {"\t"} USDT : {" "}
-                  </LimitLabel>
+                  <LimitLabel>{"\t"} USDT : </LimitLabel>
                   <LimitAmount>{`${usdtRate}`}</LimitAmount>
                   <div class="clear"></div>
-                  <LimitLabel>{i18n.t("deposit.totalAmount")}</LimitLabel>{" :  "}
+                  <LimitLabel>{i18n.t("deposit.totalAmount")}</LimitLabel>
+                  {" :  "}
                   <LimitAmount>{` ${
                     isNaN(this.props.amount) === false
                       ? (this.props.amount * usdtRate).toFixed(2)
