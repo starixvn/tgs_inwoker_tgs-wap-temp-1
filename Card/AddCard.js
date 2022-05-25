@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
@@ -8,17 +7,14 @@ import { walletAction } from "../../../api-services/actions/walletAction";
 import { accountAction } from "../../../api-services/actions/accountAction";
 import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 import Header from "../../Wap/Share/Header";
-
 import Textbox from "../../Wap/Share/Textbox";
 import Button from "../../Wap/Share/Button";
 import MessageDialog from "../../Wap/Share/MessageDialog";
 import Loading from "../../Wap/Share/Loading";
-
 import Modal from "@material-ui/core/Dialog";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 import Common from "../../../utils/Common";
@@ -212,19 +208,6 @@ class AddCard extends Component {
     var detail = {};
 
     if (selected.banktype === "Bank") {
-      if (
-        this.state.bankName === "" &&
-        selectedChannel.channelcode === "CustomBank"
-      ) {
-        this.props.alert(
-          "",
-          config.features.AddCard_DisplayFPS
-            ? i18n.t("hk28.card.addCard.msgEnterBankName")
-            : i18n.t("card.addCard.msgEnterBankName")
-        );
-        return;
-      }
-
       if (this.state.bankAccountName === "") {
         this.props.alert(
           "",
@@ -577,9 +560,6 @@ class AddCard extends Component {
                   this.props.wallet.withdrawalList[
                     this.state.selectedBankTypeIndex
                   ].banktype;
-                var selectedChannel =
-                  this.state.channelList[this.state.selectedChannelIndex];
-                var bankName = this.state.bankName;
 
                 var bankAccountName = this.state.bankAccountName;
 
@@ -587,12 +567,6 @@ class AddCard extends Component {
 
                 if (bankType === "Bank") {
                   if (bankAccountName === "" || number === "") {
-                    return true;
-                  }
-                  if (
-                    bankName === "" &&
-                    selectedChannel.channelcode === "CustomBank"
-                  ) {
                     return true;
                   }
                 } else if (bankType === "Crypto") {
