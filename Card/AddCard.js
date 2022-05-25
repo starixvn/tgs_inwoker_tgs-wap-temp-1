@@ -255,7 +255,10 @@ class AddCard extends Component {
       selected.banktype === "ThirdParty" ||
       selected.banktype === "FPS"
     ) {
-      if (this.state.phone.length < 8 || this.state.phone.length > 10) {
+      if (
+        this.state.phone.length < 8 ||
+        this.state.phone.length > (config.features.MAX_PHONE_LENGTH || 10)
+      ) {
         this.props.alert("", i18n.t("common.noReachMin"));
         return;
       }
@@ -509,6 +512,7 @@ class AddCard extends Component {
                   phone: value,
                 });
               }}
+              maxLength={config.features.MAX_PHONE_LENGTH || 10}
               type={"text"}
               placeholder={
                 config.features.AddCard_InputAddFPS
