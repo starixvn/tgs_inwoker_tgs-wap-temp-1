@@ -148,26 +148,28 @@ class MainHKJP extends Component {
             </CustomCustomSelect>
           </CustomFormControl>
         </CustomText>
-        <CustomText>
-          <CustomLabel>{i18n.t("deposit.msgPlsSelectMethod")}</CustomLabel>
-          <CustomFormControl variant="outlined">
-            <CustomCustomSelect
-              native
-              id="customSelect"
-              value={this.props.selectedChannelIndex}
-              onChange={(e) => this.props.handleChannelChange(e)}
-            >
-              {this.props.wallet.depositTypeList.length > 0 &&
-                this.props.wallet.depositTypeList[
-                  this.props.selectedPaymentIndex
-                ].method[this.props.selectedMethodIndex].channel.map(
-                  (item, index) => {
-                    return <option value={index}>{item.channelname}</option>;
-                  }
-                )}
-            </CustomCustomSelect>
-          </CustomFormControl>
-        </CustomText>
+        {!config.features.Deposit_HideDepositChannel && (
+          <CustomText>
+            <CustomLabel>{i18n.t("deposit.msgPlsSelectMethod")}</CustomLabel>
+            <CustomFormControl variant="outlined">
+              <CustomCustomSelect
+                native
+                id="customSelect"
+                value={this.props.selectedChannelIndex}
+                onChange={(e) => this.props.handleChannelChange(e)}
+              >
+                {this.props.wallet.depositTypeList.length > 0 &&
+                  this.props.wallet.depositTypeList[
+                    this.props.selectedPaymentIndex
+                  ].method[this.props.selectedMethodIndex].channel.map(
+                    (item, index) => {
+                      return <option value={index}>{item.channelname}</option>;
+                    }
+                  )}
+              </CustomCustomSelect>
+            </CustomFormControl>
+          </CustomText>
+        )}
 
         {(() => {
           if (

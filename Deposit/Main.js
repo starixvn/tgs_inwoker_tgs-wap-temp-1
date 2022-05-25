@@ -274,26 +274,29 @@ class Main extends Component {
             </CustomCustomSelect>
           </CustomFormControl>
         </CustomText>
-        <CustomText>
-          <CustomLabel>{i18n.t("deposit.msgPlsSelectMethod")}</CustomLabel>
-          <CustomFormControl variant="outlined">
-            <CustomCustomSelect
-              native
-              id="customSelect"
-              value={this.props.selectedChannelIndex}
-              onChange={(e) => this.props.handleChannelChange(e)}
-            >
-              {this.props.wallet.depositTypeList.length > 0 &&
-                this.props.wallet.depositTypeList[
-                  this.props.selectedPaymentIndex
-                ].method[this.props.selectedMethodIndex].channel.map(
-                  (item, index) => {
-                    return <option value={index}>{item.channelname}</option>;
-                  }
-                )}
-            </CustomCustomSelect>
-          </CustomFormControl>
-        </CustomText>
+        {!config.features.Deposit_HideDepositChannel && (
+          <CustomText>
+            <CustomLabel>{i18n.t("deposit.msgPlsSelectMethod")}</CustomLabel>
+            <CustomFormControl variant="outlined">
+              <CustomCustomSelect
+                native
+                id="customSelect"
+                value={this.props.selectedChannelIndex}
+                onChange={(e) => this.props.handleChannelChange(e)}
+              >
+                {this.props.wallet.depositTypeList.length > 0 &&
+                  this.props.wallet.depositTypeList[
+                    this.props.selectedPaymentIndex
+                  ].method[this.props.selectedMethodIndex].channel.map(
+                    (item, index) => {
+                      return <option value={index}>{item.channelname}</option>;
+                    }
+                  )}
+              </CustomCustomSelect>
+            </CustomFormControl>
+          </CustomText>
+        )}
+
         {(() => {
           if (
             this.props.wallet.depositTypeList[
@@ -461,7 +464,7 @@ class Main extends Component {
                           value={this.props.account}
                           disabled={
                             config.features.Deposit_AutofillFirstCard &&
-                            this.props.wallet.bankCardList.length !== 0
+                            this.props.account !== ""
                           }
                           onChange={(e) => this.props.handleAccountChange(e)}
                         ></Textbox>
@@ -550,13 +553,11 @@ class Main extends Component {
               ].paymentcode.toUpperCase() === "MANUAL"
             ) {
               return (
-                <ExchangeRateContainer
-                  style={{ marginTop: "4px", whiteSpace: "break-spaces" }}
-                >
-                  <LimitLabel>{i18n.t("deposit.exchangeRate")} : </LimitLabel>
-                  <LimitAmount>1</LimitAmount>
-                  <LimitLabel>{"\t"} USDT : </LimitLabel>
-                  <LimitAmount>{`${usdtRate}`}</LimitAmount>
+                <ExchangeRateContainer style={{ marginTop: "4px" }}>
+                  <LimitLabel>
+                    {i18n.t("deposit.exchangeRate")} 1 USDT :{" "}
+                  </LimitLabel>
+                  <LimitAmount>{` ${usdtRate}`}</LimitAmount>
                   <div class="clear"></div>
                   <LimitLabel>{i18n.t("deposit.totalAmount")}</LimitLabel>
                   {" :  "}
@@ -695,7 +696,13 @@ class Main extends Component {
                     )}
                   </InputWrapper>
                 </CustomText>
-                <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
+                <Remark>
+                  {i18n.t(
+                    config.features.Deposit_UploadRequired
+                      ? "deposit.msgPlsUploadProof"
+                      : "deposit.msgNotMustUploadProof"
+                  )}
+                </Remark>
               </>
             );
           }
@@ -735,11 +742,11 @@ class Main extends Component {
 
             if (
               this.props.disabled === true ||
-              ((paymentcode.toUpperCase() === "MANUAL" ||
-                paymentcode.toUpperCase() === "APPLEPAY") &&
-                this.props.files === null) ||
               this.props.amount < transferlimit.from ||
-              this.props.amount > transferlimit.to
+              this.props.amount > transferlimit.to ||
+              this.props.amount === "" ||
+              (this.props.files === null &&
+                config.features.Deposit_UploadRequired)
             ) {
               return true;
             } else {

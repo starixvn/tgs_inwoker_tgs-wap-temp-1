@@ -10,6 +10,7 @@ import { AccountService } from "../../../api-services/services/AccountService";
 
 import i18n from "../../../utils/i18n";
 import styled from "styled-components";
+import config from "../../../config/config";
 const Container = styled.div`
   margin: 0 auto;
 
@@ -99,7 +100,10 @@ class ChangePhone extends BaseProfile {
   };
   handleGetCodeClick = (e) => {
     if (this.state.countdownToken > 0) return;
-    var expr = /^[0-9]{8,10}$/;
+    var expr = new RegExp(
+      "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+    );
+
     if (!expr.test(this.state.phone)) {
       return this.showErrorMessage(i18n.t("common.noReachMin"));
     }
@@ -241,7 +245,7 @@ class ChangePhone extends BaseProfile {
             placeholder={i18n.t("common.msgEnterPhone")}
             disabled={this.state.currentStep === 1}
             onChange={this.handleChangePhone}
-            maxLength={10}
+            maxLength={config.features.MAX_PHONE_LENGTH || 10}
           ></CustomInput>
         </CustomText>
 
