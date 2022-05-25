@@ -126,6 +126,7 @@ const DisableSwipe = styled.div`
     return disable ? "none" : "auto";
   }};
 `;
+
 class Card extends Component {
   state = {
     loading: false,
@@ -256,10 +257,11 @@ class Card extends Component {
           );
         })}
 
-        {!(
+        {(!(
           config.features.AddCard_NotAllowedEditDelete ||
-          !(config.features.AddCard_AllowedAdd)
-        ) && (
+          !config.features.AddCard_AllowedAdd
+        ) ||
+          this.props.wallet.bankCardList.length == 0) && (
           <>
             <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
             <div className="clear"></div>
