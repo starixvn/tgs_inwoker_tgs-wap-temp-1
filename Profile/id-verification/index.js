@@ -85,9 +85,8 @@ class NameVerify extends BaseProfile {
     ) {
       if (this.props.account.updateCardResult.IsSuccess) {
         if (config.features.ICVerificationUpload) {
-          AccountService.UploadIC(this.state.icUpload[0]).then((response)=>{
-            if(!response.IsSuccess)
-            {
+          AccountService.UploadIC(this.state.icUpload[0]).then((response) => {
+            if (!response.IsSuccess) {
               this.props.alert("", response.info);
             }
           });
@@ -192,6 +191,13 @@ class NameVerify extends BaseProfile {
     }
   };
 
+  handleGoEdit = () => {
+    this.setState({
+      ...this.state,
+      scene: "waiting-submit",
+    });
+  };
+
   commonprops = {
     name: this.state.name,
     ic: this.state.ic,
@@ -221,26 +227,25 @@ class NameVerify extends BaseProfile {
     switch (scene) {
       case "waiting-verification":
         return (
-          <BottomNote text1={i18n.t("verified.waiting")} text2=""></BottomNote>
-        );
-      case "approved":
-        return (
           <BottomNote
             text1={i18n.t("profile.nameVerify.toEdit")}
-            link={"../chat"}
-            text2={i18n.t("common.customerService")}
+            toEdit={this.handleGoEdit}
+            text2={i18n.t("profile.nameVerify.editHere")}
           ></BottomNote>
         );
-      // case "waiting-submit":
-      //   return <Default {...this.commonprops} />;
+      case "waiting-submit":
+        return <BottomNote empty></BottomNote>;
       // case "reject":
       //   return <Default {...this.commonprops} />;
+
+      case "approved":
+        return <BottomNote text1={""} empty text2={""}></BottomNote>;
       default:
         return (
           <BottomNote
             text1={i18n.t("profile.nameVerify.toEdit")}
             link={"../chat"}
-            text2={i18n.t("common.customerService")}
+            text2={i18n.t("profile.nameVerify.editHere")}
           ></BottomNote>
         );
     }
@@ -250,7 +255,9 @@ class NameVerify extends BaseProfile {
     return this.setupContent(
       i18n.t("profile.nameVerify.title"),
       this.sceneSwitcher(this.state.scene),
-      this.state.isConfigured && config.features.ICVerification
+      this.state.isConfigured &&
+        config.features.ICVerification &&
+        this.state.scene !== "waiting-submit"
         ? i18n.t("common.configured")
         : i18n.t("common.complete"),
       this.bottomNoteSwitcher(this.state.scene)

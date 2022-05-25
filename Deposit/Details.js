@@ -6,12 +6,10 @@ import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Dialog";
 import Header from "../Share/Header";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { Textfit } from "react-textfit";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
 import Button from "../../Wap/Share/Button";
 import Loading from "../../Wap/Share/Loading";
 import i18n from "../../../utils/i18n";
@@ -109,20 +107,14 @@ const ButtonConfirm = styled.div`
   );
   color: #ffffff;
 `;
-
-const Remark = styled.div`
-  font-size: 20px;
-  color: ${({ theme }) => theme.primary};
-  opacity: 0.75;
-`;
 class Details extends Component {
   state = {
     expired_time: 0,
     loading: false,
     openPopup: true,
     files: [],
-    url: "",
     exchangeRate: { buyprice: 0, sellprice: 0 },
+    url: "",
   };
   componentDidMount() {
     if (this.props.isCrypto === true) {
@@ -157,7 +149,7 @@ class Details extends Component {
       }
       this.setState({
         ...this.state,
-        openPopup: true,
+        openPopup: this.props.isManual ? false : true,
       });
     } else {
       if (this.props.depositType.toUpperCase() === "HELP2PAY") {
@@ -295,7 +287,6 @@ class Details extends Component {
               </DepositAmount>
             </div>
           </TheGapper>
-
           <SplitLine></SplitLine>
           <LeftLabel>{i18n.t("deposit.orderNumber")}</LeftLabel>
           <RightLabel>
@@ -310,7 +301,6 @@ class Details extends Component {
           <LeftLabel>{i18n.t("deposit.depositTunnel")}</LeftLabel>
           <RightLabel>{this.props.channel.channelname}</RightLabel>
           <SplitBoth></SplitBoth>
-
           {(() => {
             if (this.props.isCrypto === true) {
               if (this.props.depositType === "LeePay") {
@@ -388,27 +378,12 @@ class Details extends Component {
                 <React.Fragment>
                   <LeftLabel>{i18n.t("deposit.uploadReceipt")}</LeftLabel>
                   <RightLabel>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <button
-                        onClick={() => {
-                          document.getElementById("getFile").click();
-                        }}
-                        style={{ marginRight: 10, fontSize: 24 }}
-                      >
-                        {i18n.t("common.upload")}
-                      </button>
-                      <input
-                        type="file"
-                        id="getFile"
-                        onChange={this.handleFileChange}
-                        accept="image/jpg, image/jpeg, image/png, image/tiff"
-                        style={{ display: "none" }}
-                      />
-                      {this.state.files[0] ? this.state.files[0].name : ""}
-                    </div>
+                    <input
+                      type="file"
+                      onChange={this.handleFileChange}
+                      accept="image/jpg, image/jpeg, image/png, image/tiff"
+                    ></input>
                   </RightLabel>
-                  <SplitBoth></SplitBoth>
-                  <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
                 </React.Fragment>
               );
             }
@@ -437,7 +412,7 @@ class Details extends Component {
           }
           onClick={this.props.handleRestartClick}
         ></Button>
-        ;
+
         <StyledModalPopup
           onClose={this.handleClosePopup}
           open={this.state.openPopup}

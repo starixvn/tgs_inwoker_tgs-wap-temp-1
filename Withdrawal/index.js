@@ -93,6 +93,12 @@ const ButtonCardManage = styled.div`
   color: ${({ theme }) => theme.secondary};
 `;
 
+const CustomPlaceholderWrapper = styled.div`
+  & input::placeholder {
+    font-size: 22px;
+  }
+`;
+
 const StyledModalBank = withStyles((theme) => ({
   paper: {
     color: "#666666",
@@ -171,6 +177,19 @@ const CustomSelectContainer = styled.div`
   margin: 20px auto;
 `;
 
+const LimitLabel = styled.span`
+  color: #747474;
+`;
+
+const LimitAmount = styled.span`
+  color: #c0252d;
+`;
+const ExchangeRateContainer = styled.div`
+  margin: 20px auto;
+  font-size: 28px;
+  padding: 0px 20px 20px 48px;
+`;
+
 class Withdrawal extends Component {
   constructor(props) {
     super(props);
@@ -193,6 +212,8 @@ class Withdrawal extends Component {
 
       min: 0,
       max: 0,
+
+      exchangeRate: config.features.Withdrawal_USDT_ExchangeRate,
     };
     this.state = this.initialState;
   }
@@ -208,26 +229,28 @@ class Withdrawal extends Component {
     });
 
     if (this.props.wallet.withdrawalList.length === 0)
-      if (
-        this.props.account.info.check_pass_email === false &&
-        config.features.EmailVerification
-      ) {
-        this.props.appHistory.replace(`/${i18n.language}/profile/email`);
-        // } else if (this.props.account.info.member_safe_password !== 'set') {
-        //   this.props.appHistory.replace(
-        //     `/${i18n.language}/profile/withdrawalpassword/`
-        //   )
-      } else {
-        if (this.props.token != null) {
-          if (this.props.wallet.bankCardList.length === 0)
-            this.props.getBankCardList();
+      this.props.getWithdrawalChannel();
 
-          // this.GetWithdrawalDetails();
-          this.countDownInterval = setInterval(() => {
-            this.props.getWithdrawalChannel(); // call api every 30 mins
-          }, 30 * 60 * 1000);
-        }
-      }
+    // if (
+    //   this.props.account.info.check_pass_email === false &&
+    //   config.features.EmailVerification
+    // ) {
+    //   this.props.appHistory.replace(`/${i18n.language}/profile/email`);
+    //   // } else if (this.props.account.info.member_safe_password !== 'set') {
+    //   //   this.props.appHistory.replace(
+    //   //     `/${i18n.language}/profile/withdrawalpassword/`
+    //   //   )
+    // } else {
+    // }
+    if (this.props.token != null) {
+      if (this.props.wallet.bankCardList.length === 0)
+        this.props.getBankCardList();
+
+      // this.GetWithdrawalDetails();
+      this.countDownInterval = setInterval(() => {
+        this.props.getWithdrawalChannel(); // call api every 30 mins
+      }, 30 * 60 * 1000);
+    }
   }
   componentDidUpdate(preProps) {
     if (
@@ -365,6 +388,7 @@ class Withdrawal extends Component {
       }
     }
   };
+
   handleConfirmOTP = () => {
     const amount = this.state.amount;
 
@@ -459,28 +483,64 @@ class Withdrawal extends Component {
             })}
           </CustomSelect>
         </CustomSelectContainer>
-        <Textbox
-          style={{ margin: "50px auto 20px auto" }}
-          value={this.state.amount}
-          onChange={this.handleChangeAmount}
-          placeholder={
-            this.state.selectedBankCardIndex
-              ? i18n.t("withdrawal.enterAmount") +
-                ` (${this.state.min} - ${this.state.max})`
-              : i18n.t("withdrawal.enterAmount")
+        <CustomPlaceholderWrapper>
+          <Textbox
+            style={{ margin: "50px auto 20px auto" }}
+            value={this.state.amount}
+            onChange={this.handleChangeAmount}
+            placeholder={
+              this.state.selectedBankCardIndex
+                ? i18n.t("withdrawal.enterAmount") +
+                  ` (${Common.formatNumberWithThousand(
+                    this.state.min
+                  )} - ${Common.formatNumberWithThousand(this.state.max)})`
+                : i18n.t("withdrawal.enterAmount")
+            }
+            label={i18n.t("common.amount")}
+            type={"number"}
+          ></Textbox>
+        </CustomPlaceholderWrapper>
+        {(() => {
+          if (
+            this.props.wallet.bankCardList[this.state.selectedBankCardIndex] &&
+            this.props.wallet.bankCardList[this.state.selectedBankCardIndex]
+              .banktype === "Usdt"
+          ) {
+            return (
+              <React.Fragment>
+                <ExchangeRateContainer style={{ marginTop: "4px", whiteSpace: "break-spaces" }}>
+                  <LimitLabel>{i18n.t("deposit.exchangeRate")} : {" "}</LimitLabel>
+                  <LimitAmount>1</LimitAmount>
+                  <LimitLabel> {"\t"} USDT : {" "}</LimitLabel>
+                  <LimitAmount>{`${this.state.exchangeRate}`}</LimitAmount>
+                </ExchangeRateContainer>
+                <Textbox
+                  style={{ margin: "50px auto 20px auto" }}
+                  value={
+                    isNaN(this.state.amount) === false
+                      ? (this.state.amount * this.state.exchangeRate).toFixed(2)
+                      : 0
+                  }
+                  label={i18n.t("withdrawal.usdtAmount")}
+                  type={"number"}
+                  disabled={true}
+                ></Textbox>
+              </React.Fragment>
+            );
           }
-          label={i18n.t("common.amount")}
-          type={"number"}
-        ></Textbox>
-
-        {/* <Textbox
-          style={{ margin: '50px auto 20px auto' }}
-          onChange={this.handlePasswordChange}
-          value={this.state.password}
-          placeholder={i18n.t('withdrawal.msgEnterWithdrawalPass')}
-          label={i18n.t('common.withdrawalPassword')}
-          type={'password'}
-        ></Textbox> */}
+        })()}
+        {/* {config.brand !== 'HKJP' && config.brand !== 'GPI' ? (
+          <Textbox
+            style={{ margin: '50px auto 20px auto' }}
+            onChange={this.handlePasswordChange}
+            value={this.state.password}
+            placeholder={i18n.t(
+              'withdrawal.msgEnterWithdrawalPass'
+            )}
+            label={i18n.t('common.withdrawalPassword')}
+            type={'password'}
+          ></Textbox>
+        ) : null} */}
         <BottomDesc>{i18n.t("withdrawal.notice")}</BottomDesc>
         <Button
           style={{ margin: "40px auto 0 auto" }}
@@ -488,7 +548,10 @@ class Withdrawal extends Component {
           onClick={this.handleSubmitClick}
           disabled={(() => {
             return (
-              parseFloat(this.state.amount.toString().replace(/,/g, "")) < 1 ||
+              parseFloat(this.state.amount.toString().replace(/,/g, "")) <
+                this.state.min ||
+              parseFloat(this.state.amount.toString().replace(/,/g, "")) >
+                this.state.max ||
               this.state.disabled === true
             );
           })()}
