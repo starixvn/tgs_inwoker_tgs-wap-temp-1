@@ -65,7 +65,7 @@ const CustomInput = styled.input`
 class Phone extends BaseProfile {
   state = {
     countdownToken: 0,
-    areacode: "+852",
+    areacode: config.features.PhonePrefix,
     phone: "",
     code: "",
     isNew: false,
@@ -210,7 +210,9 @@ class Phone extends BaseProfile {
                 this.state.isConfigured ? this.state.isConfigured : false
               }
             >
-              <option value={"+852"}>+852</option>
+              <option value={config.features.PhonePrefix}>
+                {config.features.PhonePrefix}
+              </option>
             </SelectContainer>
           </Container>
           <CustomInput
@@ -256,10 +258,14 @@ class Phone extends BaseProfile {
             <BottomNote
               text1={i18n.t("profile.phone.toEdit")}
               link={
-                (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly) ? "../chat" : "./changephone"
+                config.features.ChangesNotAllowed ||
+                config.features.Profile_ExistingDetails_ViewOnly
+                  ? "../chat"
+                  : "./changephone"
               }
               text2={i18n.t(
-                (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)
+                config.features.ChangesNotAllowed ||
+                  config.features.Profile_ExistingDetails_ViewOnly
                   ? "common.customerService"
                   : "profile.phone.here"
               )}

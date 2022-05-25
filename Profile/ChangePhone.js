@@ -10,6 +10,7 @@ import { AccountService } from "../../../api-services/services/AccountService";
 
 import i18n from "../../../utils/i18n";
 import styled from "styled-components";
+import config from "../../../config/config";
 const Container = styled.div`
   margin: 0 auto;
 
@@ -65,7 +66,7 @@ class ChangePhone extends BaseProfile {
     this.setState({
       ...this.state,
       phone: this.props.account.info.member_phone,
-      areacode: "+852",
+      areacode: config.features.PhonePrefix,
       code: "",
       currentStep: 1,
       countdownToken: 0,
@@ -231,7 +232,9 @@ class ChangePhone extends BaseProfile {
               }}
               disabled={this.state.currentStep === 1}
             >
-              <option value={"+852"}>+852</option>
+              <option value={config.features.PhonePrefix}>
+                {config.features.PhonePrefix}
+              </option>
             </SelectContainer>
           </Container>
           <CustomInput

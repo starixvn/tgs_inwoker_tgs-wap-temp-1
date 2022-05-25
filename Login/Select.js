@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import styled from 'styled-components'
+import React, { Component } from "react";
+import styled from "styled-components";
+import config from "../../../config/config";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -10,7 +11,7 @@ const Container = styled.div`
   border: solid 1px #676666;
   background-color: #ffffff;
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.4);
-`
+`;
 
 const TextSpan = styled.span`
   margin: 22px 15px 0 15px;
@@ -19,19 +20,19 @@ const TextSpan = styled.span`
   float: left;
 
   background-color: ${({ notNull }) => {
-    return !notNull ? '#ABABAB' : 'black'
+    return !notNull ? "#ABABAB" : "black";
   }};
 
   mask: url(${(props) => {
-      return props.icon
+      return props.icon;
     }})
     no-repeat center / contain;
   -webkit-mask: url(${(props) => {
-      return props.icon
+      return props.icon;
     }})
     no-repeat center / contain;
   background-size: 100%;
-`
+`;
 
 const InputTextBox = styled.input`
   width: 300px;
@@ -50,19 +51,19 @@ const InputTextBox = styled.input`
   &:-webkit-autofill {
     -webkit-text-fill-color: #b7b7b7;
   }
-`
+`;
 const SelectContainer = styled.select`
   width: 100%;
   height: 100%;
   border: none;
   color: #000;
   font-size: 30px;
-`
+`;
 const TextContainer = styled.div`
   float: right;
   width: 100%;
   height: 100%;
-`
+`;
 
 const RightIcon = styled.div`
   width: 40px;
@@ -72,38 +73,40 @@ const RightIcon = styled.div`
         ? props.hidden
           ? process.env.PUBLIC_URL + `/assets/images/wapp/hide-password.png`
           : process.env.PUBLIC_URL + `/assets/images/wapp/show-password.png`
-        : ''})
+        : ""})
     no-repeat;
   background-size: contain;
   margin: 25px 25px 0 0;
   display: inline-block;
   float: left;
-`
+`;
 class Select extends Component {
   render() {
     return (
       <React.Fragment>
         <Container
           style={{
-            margin: '20px 0px 0px 57px',
-            width: '180px',
-            float: 'left',
-            padding: '10px'
+            margin: "20px 0px 0px 57px",
+            width: "180px",
+            float: "left",
+            padding: "10px",
           }}
         >
           <SelectContainer
             value={this.props.selectValue}
             onChange={this.props.onSelectChange}
           >
-            <option value={'+852'}>+852</option>
+            <option value={config.features.PhonePrefix}>
+              {config.features.PhonePrefix}
+            </option>
           </SelectContainer>
         </Container>
 
         <Container
           style={{
-            margin: ' 20px 57px 0px 0',
-            width: '445px',
-            float: 'right'
+            margin: " 20px 57px 0px 0",
+            width: "445px",
+            float: "right",
           }}
         >
           <TextContainer>
@@ -118,10 +121,10 @@ class Select extends Component {
           </TextContainer>
         </Container>
       </React.Fragment>
-    )
+    );
   }
 }
-export default Select
+export default Select;
 // export default function TextBox(props) {
 //   const Container = styled.div`
 //     width: 520px
