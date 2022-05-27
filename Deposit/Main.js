@@ -227,6 +227,11 @@ class Main extends Component {
         this.props.selectedMethodIndex
       ].methodcode.toUpperCase() === "USDT";
 
+    var isManual =
+      this.props.wallet.depositTypeList[
+        this.props.selectedPaymentIndex
+      ].paymentcode.toUpperCase() === "MANUAL";
+
     const performCopy = (content) => {
       this.props.alert("", i18n.t("affiliate.copied"));
 
@@ -746,7 +751,8 @@ class Main extends Component {
               this.props.amount > transferlimit.to ||
               this.props.amount === "" ||
               (this.props.files === null &&
-                config.features.Deposit_UploadRequired)
+                config.features.Deposit_UploadRequired &&
+                isManual)
             ) {
               return true;
             } else {
