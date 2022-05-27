@@ -209,11 +209,21 @@ class Deposit extends Component {
           });
         } else {
           if (payment.paymentcode.toUpperCase() === "MANUAL") {
-            this.props.doUploadDepositProof(response.data, this.state.files[0]);
-            this.setState({
-              ...this.state,
-              loading: false,
-            });
+            if (config.features.Deposit_UploadRequired) {
+              this.props.doUploadDepositProof(
+                response.data,
+                this.state.files[0]
+              );
+              this.setState({
+                ...this.state,
+                loading: false,
+              });
+            } else {
+              this.setState({
+                ...this.state,
+                step: 3,
+              });
+            }
           } else {
             if (payment.paymentcode.toUpperCase() === "HELP2PAY") {
               this.setState({

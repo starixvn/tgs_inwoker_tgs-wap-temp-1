@@ -464,7 +464,7 @@ class Main extends Component {
                           value={this.props.account}
                           disabled={
                             config.features.Deposit_AutofillFirstCard &&
-                            this.props.account !== ""
+                            this.props.wallet.bankCardList.length > 1
                           }
                           onChange={(e) => this.props.handleAccountChange(e)}
                         ></Textbox>
