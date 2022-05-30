@@ -210,8 +210,7 @@ class Profile extends Component {
                 this.props.account.info.member_phone
                   ? this.props.account.info.member_phone.substring(0, 1) + "**"
                   : "",
-                "member_phone",
-                config.features.Profile_DisableEditPhone
+                "member_phone"
               )}
             {config.features.EmailVerification &&
               ContentItem(

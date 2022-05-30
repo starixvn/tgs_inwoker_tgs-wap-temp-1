@@ -65,7 +65,7 @@ const CustomInput = styled.input`
 class Phone extends BaseProfile {
   state = {
     countdownToken: 0,
-    areacode: "+852",
+    areacode: config.features.PhonePrefix,
     phone: "",
     code: "",
     isNew: false,
@@ -218,7 +218,9 @@ class Phone extends BaseProfile {
                 this.state.isConfigured ? this.state.isConfigured : false
               }
             >
-              <option value={"+852"}>+852</option>
+              <option value={config.features.PhonePrefix}>
+                {config.features.PhonePrefix}
+              </option>
             </SelectContainer>
           </Container>
           <CustomInput
@@ -260,7 +262,9 @@ class Phone extends BaseProfile {
         : i18n.t("common.complete"),
       (() => {
         if (this.state.isConfigured) {
-          return (
+          return config.features.Profile_DisableEditPhone ? (
+            <BottomNote text1="" empty text2=""></BottomNote>
+          ) : (
             <BottomNote
               text1={i18n.t("profile.phone.toEdit")}
               link={
