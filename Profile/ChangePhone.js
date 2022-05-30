@@ -105,7 +105,11 @@ class ChangePhone extends BaseProfile {
     );
 
     if (!expr.test(this.state.phone)) {
-      return this.showErrorMessage(i18n.t("common.noReachMin"));
+      return this.showErrorMessage(
+        i18n
+          .t("common.noReachMin")
+          .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
+      );
     }
     this.showLoading(true);
     AccountService.VerifyPhone(this.state.phone, this.state.areacode)

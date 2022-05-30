@@ -259,7 +259,12 @@ class AddCard extends Component {
         this.state.phone.length < 8 ||
         this.state.phone.length > (config.features.MAX_PHONE_LENGTH || 10)
       ) {
-        this.props.alert("", i18n.t("common.noReachMin"));
+        this.props.alert(
+          "",
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
+        );
         return;
       }
       if (this.state.name === "") {
