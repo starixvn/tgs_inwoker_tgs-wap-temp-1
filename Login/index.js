@@ -618,7 +618,7 @@ class Login extends Component {
       }
 
       var expr = new RegExp(
-        "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+        `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
       );
 
       if (!expr.test(phone)) {
@@ -691,7 +691,7 @@ class Login extends Component {
       return;
     }
     var expr = new RegExp(
-      "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+      `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
     );
 
     if (

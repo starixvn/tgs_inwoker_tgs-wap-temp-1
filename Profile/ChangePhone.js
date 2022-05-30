@@ -101,7 +101,7 @@ class ChangePhone extends BaseProfile {
   handleGetCodeClick = (e) => {
     if (this.state.countdownToken > 0) return;
     var expr = new RegExp(
-      "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+      `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
     );
 
     if (!expr.test(this.state.phone)) {
