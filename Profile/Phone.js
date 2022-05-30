@@ -262,7 +262,9 @@ class Phone extends BaseProfile {
         : i18n.t("common.complete"),
       (() => {
         if (this.state.isConfigured) {
-          return (
+          return config.features.Profile_DisableEditPhone ? (
+            <BottomNote text1="" empty text2=""></BottomNote>
+          ) : (
             <BottomNote
               text1={i18n.t("profile.phone.toEdit")}
               link={
