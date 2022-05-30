@@ -622,7 +622,12 @@ class Login extends Component {
       );
 
       if (!expr.test(phone)) {
-        this.props.alert("", i18n.t("common.noReachMin"));
+        this.props.alert(
+          "",
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
+        );
         return;
       }
 
@@ -694,7 +699,12 @@ class Login extends Component {
       config.features.Register_ShowSMSVerification
     ) {
       if (!expr.test(phone)) {
-        this.props.alert("", i18n.t("common.noReachMin"));
+        this.props.alert(
+          "",
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
+        );
         return;
       }
     }
