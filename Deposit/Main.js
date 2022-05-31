@@ -59,13 +59,13 @@ const CustomCustomSelect = styled(CustomSelect)`
 
 const CustomText = styled.div`
   width: 700px;
-  height: 170px;
-
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 2px 6px 0 rgba(58, 58, 58, 0.2);
   border: solid 1px #f3f3f3;
   background-color: #ffffff;
   border-radius: 20px;
-  padding: 40px 20px 0 20px;
+  padding: 40px 20px 10px 20px;
   margin: 20px auto;
 `;
 const CustomImage = styled.img`
