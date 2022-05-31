@@ -642,7 +642,7 @@ class Home extends Component {
                 </BalanceContainer>
                 <WalletActionContainer>
                   <WalletActionUL>
-                    {config.features.Wap_ShowVip && (
+                    {config.features.HomePage_DisplayVIP && (
                       <WalletActionLI
                         onClick={() => {
                           this.props.appHistory.push(
