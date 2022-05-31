@@ -333,7 +333,7 @@ var sortingGMO = [
   GameTypeEnum.LOTTERYLOBBY,
   GameTypeEnum.ESPORTS,
   GameTypeEnum.SLOT,
-]
+];
 class Home extends Component {
   state = {
     value: 0,
@@ -402,19 +402,19 @@ class Home extends Component {
         }
         currentType = row.type;
       });
-      return gameTypeListSorting.sort((a, b) => {
-        if (config.features.MenuItem_Sorting_WLGHK)
-          return sortingWLGHK.indexOf(a) - sortingWLGHK.indexOf(b);
-        else if (config.features.MenuItem_Sorting_HK28)
-          return sortingHK28.indexOf(a) - sortingHK28.indexOf(b);
-        else if (config.features.MenuItem_Sorting_SKY)
-          return sortingSKY.indexOf(a) - sortingSKY.indexOf(b);
-        else if (config.features.MenuItem_Sorting_PB)
-          return sortingPB.indexOf(a) - sortingPB.indexOf(b);
-        else if (config.features.MenuItem_Sorting_GMO)
-          return sortingGMO.indexOf(a) - sortingGMO.indexOf(b);
-        else return a - b;
-      });
+    return gameTypeListSorting.sort((a, b) => {
+      if (config.features.MenuItem_Sorting_WLGHK)
+        return sortingWLGHK.indexOf(a) - sortingWLGHK.indexOf(b);
+      else if (config.features.MenuItem_Sorting_HK28)
+        return sortingHK28.indexOf(a) - sortingHK28.indexOf(b);
+      else if (config.features.MenuItem_Sorting_SKY)
+        return sortingSKY.indexOf(a) - sortingSKY.indexOf(b);
+      else if (config.features.MenuItem_Sorting_PB)
+        return sortingPB.indexOf(a) - sortingPB.indexOf(b);
+      else if (config.features.MenuItem_Sorting_GMO)
+        return sortingGMO.indexOf(a) - sortingGMO.indexOf(b);
+      else return a - b;
+    });
   }
   handleScroll = (e) => {
     const doc = document.documentElement;
@@ -642,6 +642,23 @@ class Home extends Component {
                 </BalanceContainer>
                 <WalletActionContainer>
                   <WalletActionUL>
+                    {config.features.Wap_ShowVip && (
+                      <WalletActionLI
+                        onClick={() => {
+                          this.props.appHistory.push(
+                            "/" + i18n.language + "/vip"
+                          );
+                        }}
+                      >
+                        <WalletActionIcon
+                          img={
+                            process.env.PUBLIC_URL +
+                            `/assets/images/wapp/home-vip.png`
+                          }
+                        ></WalletActionIcon>
+                        VIP
+                      </WalletActionLI>
+                    )}
                     <WalletActionLI
                       onClick={() => this.props.navigate("/deposit")}
                     >
@@ -745,18 +762,28 @@ class Home extends Component {
                   } else return b - a;
                 })
                 .sort(function (a, b) {
-                  if(config.features.MenuItem_Sorting_HK28)
-                    return sortingHK28.indexOf(a.type) - sortingHK28.indexOf(b.type);
-                  else if(config.features.MenuItem_Sorting_WLGHK)
-                    return sortingWLGHK.indexOf(a.type) - sortingWLGHK.indexOf(b.type);
-                  else if(config.features.MenuItem_Sorting_SKY)
-                    return sortingSKY.indexOf(a.type) - sortingSKY.indexOf(b.type);
-                  else if(config.features.MenuItem_Sorting_PB)
-                    return sortingPB.indexOf(a.type) - sortingPB.indexOf(b.type);
-                  else if(config.features.MenuItem_Sorting_GMO)
-                    return sortingGMO.indexOf(a.type) - sortingGMO.indexOf(b.type);
-                  else
-                    return a.type - b.type;
+                  if (config.features.MenuItem_Sorting_HK28)
+                    return (
+                      sortingHK28.indexOf(a.type) - sortingHK28.indexOf(b.type)
+                    );
+                  else if (config.features.MenuItem_Sorting_WLGHK)
+                    return (
+                      sortingWLGHK.indexOf(a.type) -
+                      sortingWLGHK.indexOf(b.type)
+                    );
+                  else if (config.features.MenuItem_Sorting_SKY)
+                    return (
+                      sortingSKY.indexOf(a.type) - sortingSKY.indexOf(b.type)
+                    );
+                  else if (config.features.MenuItem_Sorting_PB)
+                    return (
+                      sortingPB.indexOf(a.type) - sortingPB.indexOf(b.type)
+                    );
+                  else if (config.features.MenuItem_Sorting_GMO)
+                    return (
+                      sortingGMO.indexOf(a.type) - sortingGMO.indexOf(b.type)
+                    );
+                  else return a.type - b.type;
                 })
                 .sort((a, b) => {
                   var sortEsportFirst = [4];
