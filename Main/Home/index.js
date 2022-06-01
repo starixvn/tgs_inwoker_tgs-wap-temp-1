@@ -135,7 +135,7 @@ const WalletActionUL = styled.ul`
 const WalletActionLI = styled.li`
   display: inline-table;
   padding: 0 10px;
-
+  font-size: 24px;
   text-align: center;
 `;
 const WalletActionIcon = styled.div`
