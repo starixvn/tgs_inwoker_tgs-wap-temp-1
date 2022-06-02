@@ -33,6 +33,10 @@ const CustomText = styled.div`
   height: 170px;
   padding: 20px 20px 0 20px;
   margin: 20px auto;
+  background: #fff;
+  background: #fff;
+  box-shadow: 0 2px 6px 0 rgb(58 58 58 / 20%);
+  border-radius: 20px;
 `;
 const CustomLabel = styled.div`
   font-size: 24px;
@@ -228,7 +232,10 @@ class Phone extends BaseProfile {
             type={"text"}
             value={this.state.phone}
             placeholder={i18n.t("common.msgEnterPhone")}
-            disabled={this.state.isConfigured ? this.state.isConfigured : false}
+            disabled={
+              (this.state.isConfigured ? this.state.isConfigured : false) ||
+              config.features.Profile_DisableVerifyPhone
+            }
             onChange={this.handleChangePhone}
             maxLength={config.features.MAX_PHONE_LENGTH || 10}
           ></CustomInput>
@@ -237,22 +244,24 @@ class Phone extends BaseProfile {
         {(() => {
           if (!this.state.isConfigured) {
             return (
-              <TextboxWithButton
-                buttonlabel={
-                  this.state.countdownToken <= 0
-                    ? i18n.t("common.msgSendToken")
-                    : i18n.t("common.btnTokenResendLabel") +
-                      "(" +
-                      this.state.countdownToken +
-                      "s)"
-                }
-                style={{ margin: "20px auto 20px auto" }}
-                value={this.state.code}
-                onChange={this.handleChangeCode}
-                placeholder={i18n.t("common.msgEnterPhoneCode")}
-                label={i18n.t("common.token")}
-                onClick={this.handleGetCodeClick}
-              ></TextboxWithButton>
+              !config.features.Profile_DisableVerifyPhone && (
+                <TextboxWithButton
+                  buttonlabel={
+                    this.state.countdownToken <= 0
+                      ? i18n.t("common.msgSendToken")
+                      : i18n.t("common.btnTokenResendLabel") +
+                        "(" +
+                        this.state.countdownToken +
+                        "s)"
+                  }
+                  style={{ margin: "20px auto 20px auto" }}
+                  value={this.state.code}
+                  onChange={this.handleChangeCode}
+                  placeholder={i18n.t("common.msgEnterPhoneCode")}
+                  label={i18n.t("common.token")}
+                  onClick={this.handleGetCodeClick}
+                ></TextboxWithButton>
+              )
             );
           }
         })()}
