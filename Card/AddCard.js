@@ -332,6 +332,13 @@ class AddCard extends Component {
       "อาคารสงเคราะห์ (Government Housing Bank - GH)",
     ];
 
+    const isEwallet =
+      this.state.channelList.length &&
+      this.state.channelList[this.state.selectedChannelIndex].channelcode ===
+        "E-wallet";
+
+    const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
+
     return (
       <Container>
         <StyledAppBar>
@@ -369,7 +376,7 @@ class AddCard extends Component {
             disabled={true}
           ></Textbox>
         )}
-        {!config.features.AddCard_HideChannel && (
+        {!(config.features.AddCard_HideChannel || eWalletCustom) && (
           <Textbox
             style={{ margin: "20px auto 20px auto" }}
             value={
@@ -394,7 +401,9 @@ class AddCard extends Component {
           ) {
             return (
               <React.Fragment>
-                {!config.features.AddCard_HideCertainField && (
+                {!(
+                  config.features.AddCard_HideCertainField || eWalletCustom
+                ) && (
                   <>
                     <Textbox
                       style={{ margin: "20px auto 20px auto" }}
@@ -446,12 +455,16 @@ class AddCard extends Component {
                   onChange={this.handleBankAccountNameChange}
                   type={"text"}
                   placeholder={
-                    config.features.AddCard_DisplayFPS
-                      ? i18n.t("hk28.card.addCard.msgEnterBankAccountName")
-                      : i18n.t("card.addCard.msgEnterBankAccountName")
+                    eWalletCustom
+                      ? i18n.t("card.addCard.eWalletAccount")
+                      : config.features.AddCard_DisplayFPS
+                      ? i18n.t("hk28.card.addCard.BankAccountName")
+                      : i18n.t("card.addCard.BankAccountName")
                   }
                   label={
-                    config.features.AddCard_DisplayFPS
+                    eWalletCustom
+                      ? i18n.t("card.addCard.eWalletAccount")
+                      : config.features.AddCard_DisplayFPS
                       ? i18n.t("hk28.card.addCard.BankAccountName")
                       : i18n.t("card.addCard.BankAccountName")
                   }
@@ -540,14 +553,18 @@ class AddCard extends Component {
               }}
               type={"text"}
               placeholder={
-                config.features.AddCard_DisplayGCash
+                eWalletCustom
+                  ? i18n.t("card.addCard.msgEnterPhone")
+                  : config.features.AddCard_DisplayGCash
                   ? i18n.t("piso.msgEnterWithdrawalNumber")
                   : config.features.AddCard_DisplayFPS
                   ? i18n.t("hk28.msgEnterWithdrawalNumber")
                   : i18n.t("common.msgEnterWithdrawalNumber")
               }
               label={
-                config.features.AddCard_DisplayGCash
+                eWalletCustom
+                  ? i18n.t("card.addCard.phone")
+                  : config.features.AddCard_DisplayGCash
                   ? i18n.t("piso.withdrawalNumber")
                   : config.features.AddCard_DisplayFPS
                   ? i18n.t("hk28.withdrawalNumber")

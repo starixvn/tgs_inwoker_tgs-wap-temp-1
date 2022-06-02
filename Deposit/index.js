@@ -409,6 +409,20 @@ class Deposit extends Component {
           this.state.depositPromotion
         );
       }
+      if (method.methodcode === "Pulsa") {
+        this.props.doPulsaDeposit(
+          this.state.amount.replace(/,/g, ""),
+          channel.id,
+          this.state.depositPromotion
+        );
+      }
+      if (method.methodcode === "EWallet") {
+        this.props.doEWalletDeposit(
+          this.state.amount.replace(/,/g, ""),
+          channel.id,
+          this.state.depositPromotion
+        );
+      }
     } else {
       this.props.performDeposit(
         this.state.amount.replace(/,/g, ""),
@@ -849,6 +863,16 @@ const mapDispatchToProps = (dispatch) => {
     doUsdtDeposit: (amount, paymentid, promotionid, banktype) => {
       dispatch(
         walletAction.doUsdtDeposit(amount, paymentid, promotionid, banktype)
+      );
+    },
+    doPulsaDeposit: (amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doPulsaDeposit(amount, paymentid, promotionid, banktype)
+      );
+    },
+    doEWalletDeposit: (amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doEWalletDeposit(amount, paymentid, promotionid, banktype)
       );
     },
     doBankDeposit2: (amount, payment_id, promotionid, paymentcode) =>
