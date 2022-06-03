@@ -214,6 +214,7 @@ class Withdrawal extends Component {
       max: 0,
 
       exchangeRate: config.features.Withdrawal_USDT_ExchangeRate,
+      playerNote: "",
     };
     this.state = this.initialState;
   }
@@ -333,7 +334,8 @@ class Withdrawal extends Component {
       this.props.doWithdraw(
         formatedamount,
         this.state.password,
-        this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id
+        this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id,
+        this.state.playerNote
       );
     }
 
@@ -347,6 +349,10 @@ class Withdrawal extends Component {
     if (regex.test(e.target.value) || e.target.value === "") {
       this.setState({ ...this.state, amount: e.target.value });
     }
+  };
+
+  handlePlayerNoteChange = (e) => {
+    this.setState({ ...this.state, playerNote: e.target.value });
   };
 
   handleClose = () => {
@@ -508,10 +514,12 @@ class Withdrawal extends Component {
           ) {
             return (
               <React.Fragment>
-                <ExchangeRateContainer style={{ marginTop: "4px", whiteSpace: "break-spaces" }}>
-                  <LimitLabel>{i18n.t("deposit.exchangeRate")} : {" "}</LimitLabel>
+                <ExchangeRateContainer
+                  style={{ marginTop: "4px", whiteSpace: "break-spaces" }}
+                >
+                  <LimitLabel>{i18n.t("deposit.exchangeRate")} : </LimitLabel>
                   <LimitAmount>1</LimitAmount>
-                  <LimitLabel> {"\t"} USDT : {" "}</LimitLabel>
+                  <LimitLabel> {"\t"} USDT : </LimitLabel>
                   <LimitAmount>{`${this.state.exchangeRate}`}</LimitAmount>
                 </ExchangeRateContainer>
                 <Textbox
@@ -541,6 +549,15 @@ class Withdrawal extends Component {
             type={'password'}
           ></Textbox>
         ) : null} */}
+        {config.features.Deposit_Withdrawal_PlayerNote && (
+          <Textbox
+            style={{ margin: "50px auto 20px auto" }}
+            value={this.state.playerNote}
+            onChange={this.handlePlayerNoteChange}
+            placeholder={i18n.t("withdrawal.plsEnterPlayerNote")}
+            label={i18n.t("withdrawal.playerNote")}
+          ></Textbox>
+        )}
         <BottomDesc>{i18n.t("withdrawal.notice")}</BottomDesc>
         <Button
           style={{ margin: "40px auto 0 auto" }}
@@ -660,8 +677,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: RESET_WALLETRESULT,
       }),
-    doWithdraw: (amount, password, user_account_id) =>
-      dispatch(walletAction.doWithdraw(amount, user_account_id, password)),
+    doWithdraw: (amount, password, user_account_id, playerNote) =>
+      dispatch(walletAction.doWithdraw(amount, user_account_id, password, playerNote)),
   };
 };
 

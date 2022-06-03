@@ -323,6 +323,15 @@ class MainHKJP extends Component {
             </CustomCustomSelect>
           </CustomFormControl>
         </CustomText>
+        {config.features.Deposit_Withdrawal_PlayerNote && (
+          <Textbox
+            style={{ margin: "20px auto 20px auto" }}
+            value={this.props.playerNote}
+            onChange={this.props.handlePlayerNoteChange}
+            placeholder={i18n.t("deposit.plsEnterPlayerNote")}
+            label={i18n.t("deposit.playerNote")}
+          ></Textbox>
+        )}
         <Button
           style={{ margin: "40px auto 0 auto" }}
           label={

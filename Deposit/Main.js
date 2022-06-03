@@ -712,6 +712,15 @@ class Main extends Component {
             );
           }
         })()}
+        {config.features.Deposit_Withdrawal_PlayerNote && (
+          <Textbox
+            style={{ margin: "20px auto 20px auto" }}
+            value={this.props.playerNote}
+            onChange={this.props.handlePlayerNoteChange}
+            placeholder={i18n.t("deposit.plsEnterPlayerNote")}
+            label={i18n.t("deposit.playerNote")}
+          ></Textbox>
+        )}
         <StyledModalPopup
           onClose={this.props.handleClosePopup}
           open={this.props.openPopup}
