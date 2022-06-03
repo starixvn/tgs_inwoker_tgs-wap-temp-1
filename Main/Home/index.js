@@ -280,6 +280,59 @@ const NewWrapper = styled.div`
       : ``;
   }}
 `;
+
+const DownloadContainer = styled.div`
+  position: fixed;
+  right: 10px;
+  bottom: 100px;
+  display: flex;
+  width: 150px;
+  height: 150px;
+`;
+
+const DownloadButton = styled.div`
+ margin-top: 20px;
+  border: solid 3px ${({ theme }) => theme.primary};
+  background: #fff;
+  border-radius: 10px
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(45deg);
+`;
+
+const DownloadContent = styled.div`
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const DownloadText = styled.div`
+  color: ${({ theme }) => theme.primary};
+  font-weight: bold;
+  font-size: 24px;
+`;
+
+const DownloadIcon = styled.div`
+  width: 50px;
+  height: 50px;
+  margin-right: 5px;
+  background: ${({ theme }) => theme.primary};
+  mask: ${({ src }) => {
+    return `url(${src}) no-repeat center /
+contain`;
+  }};
+`;
+
+const CloseButton = styled.div`
+  position: relative;
+  left: 110px;
+  font-size: 20px;
+`;
+
 var sortingHK28 = [
   GameTypeEnum.LIVELOBBY,
   GameTypeEnum.SPORTS,
@@ -340,6 +393,7 @@ class Home extends Component {
     marqueeText: [],
     banner_list: [],
     gameTypeListSorting: [],
+    downloadButton: true,
     selectedGameType: 0,
     tab1: {
       limit: 10,
@@ -830,6 +884,37 @@ class Home extends Component {
             })()}
           </GameListWrap>
         </GameListContainer>
+        {config.features.HaveDownloadFeature && this.state.downloadButton && (
+          <DownloadContainer>
+            <CloseButton
+              onClick={() => {
+                this.setState({
+                  ...this.state,
+                  downloadButton: false,
+                });
+              }}
+            >
+              ⓧ
+            </CloseButton>
+            <DownloadButton
+              onClick={() => {
+                this.props.appHistory.push(
+                  "/" + i18n.language + "/main/download"
+                );
+              }}
+            >
+              <DownloadContent>
+                <DownloadIcon
+                  src={
+                    process.env.PUBLIC_URL +
+                    `/assets/images/wapp/icon-download.svg`
+                  }
+                />
+                <DownloadText>APP</DownloadText>
+              </DownloadContent>
+            </DownloadButton>
+          </DownloadContainer>
+        )}
         {config.features.LiveChatVendor.brand &&
           config.features.LiveChatVendor.license && (
             <LiveChat
