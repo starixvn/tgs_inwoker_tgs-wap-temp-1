@@ -511,7 +511,7 @@ class Home extends Component {
   };
   handleJoinLotteryGame = (name) => {
     if (this.props.account.token != null) {
-      Common.PopupCenter("/" + i18n.language + "/joinlottery/" + name);
+      window.open("/" + i18n.language + "/joinlottery/" + name, "gamewindow");
     } else {
       this.props.appHistory.push("/" + i18n.language + "/login");
     }
@@ -530,8 +530,9 @@ class Home extends Component {
     ) {
       this.props.navigate(`/slots/${params}/${type}`);
     } else {
-      Common.PopupCenter(
-        "/" + i18n.language + "/joinlobbygame/" + type + "/" + params
+      window.open(
+        "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
+        "gamewindow"
       );
     }
   };
