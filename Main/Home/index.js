@@ -511,7 +511,13 @@ class Home extends Component {
   };
   handleJoinLotteryGame = (name) => {
     if (this.props.account.token != null) {
-      window.open("/" + i18n.language + "/joinlottery/" + name, "gamewindow");
+      //  window.open("/" + i18n.language + "/joinlottery/" + name, "gamewindow");
+
+      Common.closePreviousPopup();
+      Common.PopupCenter(
+        "/" + i18n.language + "/joinlottery/" + name,
+        "gamewindow"
+      );
     } else {
       this.props.appHistory.push("/" + i18n.language + "/login");
     }
@@ -530,10 +536,15 @@ class Home extends Component {
     ) {
       this.props.navigate(`/slots/${params}/${type}`);
     } else {
-      window.open(
+      Common.closePreviousPopup();
+      Common.PopupCenter(
         "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
         "gamewindow"
       );
+      //  window.open(
+      //    "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
+      //    "gamewindow"
+      //  );
     }
   };
 
