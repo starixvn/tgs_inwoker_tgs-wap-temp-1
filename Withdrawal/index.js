@@ -335,7 +335,9 @@ class Withdrawal extends Component {
         formatedamount,
         this.state.password,
         this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id,
-        this.state.playerNote
+        config.features.Deposit_Withdrawal_PlayerNote
+          ? this.state.playerNote
+          : null
       );
     }
 
@@ -549,15 +551,22 @@ class Withdrawal extends Component {
             type={'password'}
           ></Textbox>
         ) : null} */}
-        {config.features.Deposit_Withdrawal_PlayerNote && (
-          <Textbox
-            style={{ margin: "50px auto 20px auto" }}
-            value={this.state.playerNote}
-            onChange={this.handlePlayerNoteChange}
-            placeholder={i18n.t("withdrawal.plsEnterPlayerNote")}
-            label={i18n.t("withdrawal.playerNote")}
-          ></Textbox>
-        )}
+        {config.features.Deposit_Withdrawal_PlayerNote &&
+          this.props.wallet.bankCardList[this.state.selectedBankCardIndex] &&
+          (this.props.wallet.bankCardList[
+            this.state.selectedBankCardIndex
+          ].banktype.toUpperCase() === "EWALLET" ||
+            this.props.wallet.bankCardList[
+              this.state.selectedBankCardIndex
+            ].banktype.toUpperCase() === "PULSA") && (
+            <Textbox
+              style={{ margin: "50px auto 20px auto" }}
+              value={this.state.playerNote}
+              onChange={this.handlePlayerNoteChange}
+              placeholder={i18n.t("withdrawal.plsEnterPlayerNote")}
+              label={i18n.t("withdrawal.playerNote")}
+            ></Textbox>
+          )}
         <BottomDesc>{i18n.t("withdrawal.notice")}</BottomDesc>
         <Button
           style={{ margin: "40px auto 0 auto" }}

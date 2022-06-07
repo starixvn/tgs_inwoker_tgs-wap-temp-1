@@ -227,6 +227,16 @@ class Main extends Component {
         this.props.selectedMethodIndex
       ].methodcode.toUpperCase() === "USDT";
 
+    var isEwallet =
+      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
+        this.props.selectedMethodIndex
+      ].methodcode.toUpperCase() === "EWALLET";
+
+    var isPulsa =
+      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
+        this.props.selectedMethodIndex
+      ].methodcode.toUpperCase() === "PULSA";
+
     var isManual =
       this.props.wallet.depositTypeList[
         this.props.selectedPaymentIndex
@@ -712,7 +722,7 @@ class Main extends Component {
             );
           }
         })()}
-        {config.features.Deposit_Withdrawal_PlayerNote && (
+        {config.features.Deposit_Withdrawal_PlayerNote && (isEwallet || isPulsa) && (
           <Textbox
             style={{ margin: "20px auto 20px auto" }}
             value={this.props.playerNote}
