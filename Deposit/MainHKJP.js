@@ -117,6 +117,15 @@ class MainHKJP extends Component {
   componentDidUpdate(preProps, preState) {}
 
   render() {
+    var isEwallet =
+      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
+        this.props.selectedMethodIndex
+      ].methodcode.toUpperCase() === "EWALLET";
+
+    var isPulsa =
+      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
+        this.props.selectedMethodIndex
+      ].methodcode.toUpperCase() === "PULSA";
     return (
       <React.Fragment>
         {this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
@@ -323,7 +332,7 @@ class MainHKJP extends Component {
             </CustomCustomSelect>
           </CustomFormControl>
         </CustomText>
-        {config.features.Deposit_Withdrawal_PlayerNote && (
+        {config.features.Deposit_Withdrawal_PlayerNote && (isEwallet || isPulsa) && (
           <Textbox
             style={{ margin: "20px auto 20px auto" }}
             value={this.props.playerNote}
