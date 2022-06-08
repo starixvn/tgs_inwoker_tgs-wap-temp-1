@@ -395,6 +395,15 @@ class Main extends Component {
                       <CopyFeature copyContent={channelExtend.fpsId} />
                     </TransferContainer>
                   )}
+                  {channelExtend.eMoneyName && (
+                    <TransferContainer>
+                      <TransferLabel>
+                        {i18n.t("deposit.eWalletAccount")}:
+                      </TransferLabel>
+                      <TransferValue>{channelExtend.eMoneyName}</TransferValue>
+                      <CopyFeature copyContent={channelExtend.eMoneyName} />
+                    </TransferContainer>
+                  )}
                 </CustomText>
               );
             }
