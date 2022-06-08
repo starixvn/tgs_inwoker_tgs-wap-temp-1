@@ -259,6 +259,56 @@ class AddCard extends Component {
         username: this.state.name,
         phone: this.state.phone,
       };
+    } else if (selected.banktype === "EWallet") {
+      if (this.state.bankAccountName === "") {
+        this.props.alert("", i18n.t("card.addCard.msgEnterEwalletAccount"));
+        return;
+      }
+      if (
+        this.state.number.length < 8 ||
+        this.state.number.length > (config.features.MAX_PHONE_LENGTH || 10)
+      ) {
+        this.props.alert(
+          "",
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
+        );
+        return;
+      }
+      if (config.features.AddCard_CustomParam_IDR) {
+        detail = {
+          eMoneyName: this.state.bankAccountName,
+          phone: this.state.number,
+        };
+      } else {
+        detail = {
+          name: this.state.bankAccountName,
+          address: this.state.number,
+        };
+      }
+    } else if (selected.banktype === "Pulsa") {
+      if (
+        this.state.number.length < 8 ||
+        this.state.number.length > (config.features.MAX_PHONE_LENGTH || 10)
+      ) {
+        this.props.alert(
+          "",
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
+        );
+        return;
+      }
+      if (config.features.AddCard_CustomParam_IDR) {
+        detail = {
+          phone: this.state.number,
+        };
+      } else {
+        detail = {
+          address: this.state.number,
+        };
+      }
     } else {
       detail = {
         address: this.state.number,
@@ -334,8 +384,14 @@ class AddCard extends Component {
 
     const isEwallet =
       this.state.channelList.length &&
+      (this.state.channelList[this.state.selectedChannelIndex].channelcode ===
+        "EWallet" ||
+        this.state.channelList[this.state.selectedChannelIndex].channelcode ===
+          "E-wallet");
+    const isPulsa =
+      this.state.channelList.length &&
       this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "E-wallet";
+        "Pulsa" ;
 
     const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 
@@ -376,7 +432,7 @@ class AddCard extends Component {
             disabled={true}
           ></Textbox>
         )}
-        {!(config.features.AddCard_HideChannel || eWalletCustom) && (
+        {!(config.features.AddCard_HideChannel || eWalletCustom || isPulsa) && (
           <Textbox
             style={{ margin: "20px auto 20px auto" }}
             value={
@@ -402,7 +458,9 @@ class AddCard extends Component {
             return (
               <React.Fragment>
                 {!(
-                  config.features.AddCard_HideCertainField || eWalletCustom
+                  config.features.AddCard_HideCertainField ||
+                  eWalletCustom ||
+                  isPulsa
                 ) && (
                   <>
                     <Textbox
@@ -474,6 +532,31 @@ class AddCard extends Component {
             );
           }
         })()}
+        {this.props.wallet.withdrawalList.length > 0 &&
+          this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
+            .banktype === "EWallet" && (
+            <Textbox
+              style={{ margin: "20px auto 20px auto" }}
+              value={this.state.bankAccountName}
+              onChange={this.handleBankAccountNameChange}
+              type={"text"}
+              placeholder={
+                eWalletCustom
+                  ? i18n.t("card.addCard.eWalletAccount")
+                  : config.features.AddCard_DisplayFPS
+                  ? i18n.t("hk28.card.addCard.BankAccountName")
+                  : i18n.t("card.addCard.BankAccountName")
+              }
+              label={
+                eWalletCustom
+                  ? i18n.t("card.addCard.eWalletAccount")
+                  : config.features.AddCard_DisplayFPS
+                  ? i18n.t("hk28.card.addCard.BankAccountName")
+                  : i18n.t("card.addCard.BankAccountName")
+              }
+              maxLength={255}
+            ></Textbox>
+          )}
         {this.props.wallet.withdrawalList.length > 0 &&
         (this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
           .banktype === "ThirdParty" ||
@@ -553,7 +636,7 @@ class AddCard extends Component {
               }}
               type={"text"}
               placeholder={
-                eWalletCustom
+                (eWalletCustom||isPulsa)
                   ? i18n.t("card.addCard.msgEnterPhone")
                   : config.features.AddCard_DisplayGCash
                   ? i18n.t("piso.msgEnterWithdrawalNumber")
@@ -562,7 +645,7 @@ class AddCard extends Component {
                   : i18n.t("common.msgEnterWithdrawalNumber")
               }
               label={
-                eWalletCustom
+                (eWalletCustom||isPulsa)
                   ? i18n.t("card.addCard.phone")
                   : config.features.AddCard_DisplayGCash
                   ? i18n.t("piso.withdrawalNumber")
