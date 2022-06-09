@@ -7,7 +7,7 @@ import QRCode from "react-qr-code";
 
 const Container = styled.div`
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   position: relative;
   background: url(${({ language }) => {
       return (
@@ -39,7 +39,9 @@ const TheSecondSection = styled.div`
 
 const FirstSectionContent = styled.div`
   display: flex;
+  width: 100%;
   align-items: center;
+  justify-content: center;
 `;
 
 const SectionContentItem = styled.div`
@@ -143,7 +145,7 @@ const DownloadSection = styled.div`
 const QRCodeContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px 40px 20px 40px;
+  padding: 20px;
   align-items: center;
 `;
 
@@ -185,9 +187,17 @@ const TheGuide = styled.div`
   padding-bottom: 75px;
 `;
 
+const PointlessShit = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 10px;
+`;
+
 const Download = () => {
   const [open, setOpen] = useState(false);
   const [download, setDownload] = useState([]);
+
+  const [pointlessDialog, setPointlessDialog] = useState(false);
 
   function getJsonData() {
     return fetch(
@@ -250,10 +260,7 @@ const Download = () => {
             return (
               <QRCodeContainer>
                 <QRCodeHolder>
-                  <QRCode
-                    value="https://miro.medium.com/max/1400/1*sHmqYIYMV_C3TUhucHrT4w.png"
-                    size="180"
-                  />
+                  <QRCode value={data.link} size="180" />
                 </QRCodeHolder>
                 <DeviceText>{data.platform}</DeviceText>
                 <DownloadButton
@@ -266,6 +273,65 @@ const Download = () => {
               </QRCodeContainer>
             );
           })}
+
+          {config.features.Download_PointlessDialog && (
+            <>
+              <QRCodeContainer>
+                <QRCodeHolder>
+                  <img
+                    style={{ width: 180, height: 180 }}
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/download/brand/PB_logo.png"
+                    }
+                    alt="pointless download section"
+                  />
+                </QRCodeHolder>
+                <DeviceText>{i18n.t("pointless.download")}</DeviceText>
+                <DownloadButton
+                  onClick={() => {
+                    setPointlessDialog(true);
+                  }}
+                >
+                  {i18n.t("download.title")}
+                </DownloadButton>
+              </QRCodeContainer>
+              <CustomModal
+                maxWidth="sm"
+                open={pointlessDialog}
+                onClose={() => {
+                  setPointlessDialog(false);
+                }}
+              >
+                <DialogTitle2>
+                  <div>{i18n.t("pointless.download")}</div>
+                  <CloseButton
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    ✖
+                  </CloseButton>
+                </DialogTitle2>
+                <DialogContent>
+                  {download.map((data, index) => {
+                    return (
+                      <PointlessShit>
+                        <div>{data.platform}</div>
+                        <DownloadButton
+                          onClick={() => {
+                            window.open(data.link, "_blank");
+                          }}
+                        >
+                          {i18n.t("download.title")}
+                        </DownloadButton>
+                      </PointlessShit>
+                    );
+                  })}
+                </DialogContent>
+              </CustomModal>
+            </>
+          )}
         </DownloadSection>
       </ContentPlacedHere>
       <CustomModal
@@ -273,6 +339,7 @@ const Download = () => {
         onClose={() => {
           setOpen(false);
         }}
+        maxWidth="md"
       >
         <DialogTitle2>
           <div>{i18n.t("download.openGuide")}</div>
