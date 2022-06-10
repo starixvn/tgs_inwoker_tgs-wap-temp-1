@@ -4,18 +4,17 @@ import i18n from "../../../utils/i18n";
 import { Dialog } from "@material-ui/core";
 import config from "../../../config/config";
 import QRCode from "react-qr-code";
+import copy from "copy-to-clipboard";
 
 const Container = styled.div`
   width: 100%;
   height: 100vh;
   position: relative;
   background: url(${({ language }) => {
-      return (
-        process.env.PUBLIC_URL + `/assets/images/download/bg-${language}.jpg`
-      );
+      return process.env.PUBLIC_URL + `/assets/images/download/bg.jpg`;
     }})
     no-repeat;
-  background-size: 100%;
+  background-size: cover;
   position: relative;
   display: flex;
   justify-content: center;
@@ -26,7 +25,7 @@ const ContentPlacedHere = styled.div`
 `;
 
 const TheFirstSection = styled.div`
-  margin-top: 475px;
+  margin-top: 10px;
   display: flex;
   min-height: 150px;
   justify-content: flex-end;
@@ -111,7 +110,7 @@ const DialogTitle = styled.div`
   min-height: 50px;
   display: flex;
   align-items: center;
-  padding: 0px 30px;
+  padding: 20px 30px;
   font-size: 40px;
   font-weight: bold;
   justify-content: space-between;
@@ -158,8 +157,6 @@ const QRCodeHolder = styled.div`
   height: 200px;
   width: 200px;
 
-  padding: 10px;
-
   border-radius: 10px;
   border: solid 1px rgba(0, 0, 0, 0.5);
 `;
@@ -173,7 +170,7 @@ const DownloadButton = styled.div`
   color: #fff;
   background: #000;
   border-radius: 75px;
-  padding: 5px 10px;
+  padding: 10px 20px;
   cursor: pointer;
   font-size: 30px;
   user-select: none;
@@ -188,12 +185,28 @@ const TheGuide = styled.div`
 `;
 
 const PointlessShit = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   margin-bottom: 10px;
 `;
 
-const Download = () => {
+const HiddenDialogContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const DeviceName = styled.div`
+  font-weight: bold;
+`;
+
+const Links = styled.div`
+  opacity: 0.75;
+  font-size: 24px;
+  cursor: pointer;
+`;
+
+const Download = ({ alert }) => {
   const [open, setOpen] = useState(false);
   const [download, setDownload] = useState([]);
 
@@ -212,6 +225,10 @@ const Download = () => {
       .catch((error) => {
         console.error(error);
       });
+  }
+  function copyStupidLink(link) {
+    alert("", i18n.t("pointless.copy"));
+    copy(link);
   }
 
   useEffect(() => {
@@ -247,14 +264,12 @@ const Download = () => {
             </InstallationGuideButton>
           </SectionContentItem>
         </TheGuide>
-
         <TheSecondSection>
           <DownloadTitleSection>
             <DownloadIcon icon="download" />
             <TitleText>{i18n.t("download.downloadMethod")}</TitleText>
           </DownloadTitleSection>
         </TheSecondSection>
-
         <DownloadSection>
           {download.map((data, index) => {
             return (
@@ -273,13 +288,13 @@ const Download = () => {
               </QRCodeContainer>
             );
           })}
-
+        </DownloadSection>{" "}
+        <HiddenDialogContainer>
           {config.features.Download_PointlessDialog && (
             <>
               <QRCodeContainer>
                 <QRCodeHolder>
                   <img
-                    style={{ width: 180, height: 180 }}
                     src={
                       process.env.PUBLIC_URL +
                       "/assets/images/download/brand/PB_logo.png"
@@ -297,7 +312,7 @@ const Download = () => {
                 </DownloadButton>
               </QRCodeContainer>
               <CustomModal
-                maxWidth="sm"
+                maxWidth="md"
                 open={pointlessDialog}
                 onClose={() => {
                   setPointlessDialog(false);
@@ -307,7 +322,7 @@ const Download = () => {
                   <div>{i18n.t("pointless.download")}</div>
                   <CloseButton
                     onClick={() => {
-                      setOpen(false);
+                      setPointlessDialog(false);
                     }}
                   >
                     ✖
@@ -317,7 +332,14 @@ const Download = () => {
                   {download.map((data, index) => {
                     return (
                       <PointlessShit>
-                        <div>{data.platform}</div>
+                        <DeviceName>{data.platform}</DeviceName>
+                        <Links
+                          onClick={() => {
+                            copyStupidLink(data.link);
+                          }}
+                        >
+                          {data.link}
+                        </Links>
                         <DownloadButton
                           onClick={() => {
                             window.open(data.link, "_blank");
@@ -332,8 +354,16 @@ const Download = () => {
               </CustomModal>
             </>
           )}
-        </DownloadSection>
+        </HiddenDialogContainer>
+        <div>
+          <img
+            style={{ height: 500 }}
+            src={process.env.PUBLIC_URL + `/assets/images/download/girl.png`}
+            alt="girl"
+          />
+        </div>
       </ContentPlacedHere>
+
       <CustomModal
         open={open}
         onClose={() => {

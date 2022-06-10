@@ -239,7 +239,7 @@ class Main extends Component {
           />
         );
       case "download":
-        return <Download />;
+        return <Download alert={this.props.alert} />;
       default:
         return (
           <Home
