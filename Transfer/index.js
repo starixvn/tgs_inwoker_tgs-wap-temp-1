@@ -621,7 +621,7 @@ class Transfer extends Component {
               this.props.performWithdrawFromEveryBrand();
             }}
           >
-            {i18n.t("transfer.oneKeyTransfer")}
+            {i18n.t("transfer.oneKeyTransferOut")}
           </CustomButton>
         </ButtonWrapper>
 
