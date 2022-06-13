@@ -22,6 +22,7 @@ const Container = styled.div`
 
 const ContentPlacedHere = styled.div`
   position: relative;
+  overflow: auto;
 `;
 
 const TheFirstSection = styled.div`
@@ -156,7 +157,7 @@ const DeviceText = styled.div`
 const QRCodeHolder = styled.div`
   height: 200px;
   width: 200px;
-
+  padding: 10px;
   border-radius: 10px;
   border: solid 1px rgba(0, 0, 0, 0.5);
 `;
@@ -293,7 +294,7 @@ const Download = ({ alert }) => {
           {config.features.Download_PointlessDialog && (
             <>
               <QRCodeContainer>
-                <QRCodeHolder>
+                <QRCodeHolder style={{ padding: 0 }}>
                   <img
                     src={
                       process.env.PUBLIC_URL +
@@ -357,7 +358,7 @@ const Download = ({ alert }) => {
         </HiddenDialogContainer>
         <div>
           <img
-            style={{ height: 500 }}
+            style={{ height: 500, marginBottom: 100 }}
             src={process.env.PUBLIC_URL + `/assets/images/download/girl.png`}
             alt="girl"
           />
