@@ -318,7 +318,7 @@ class Login extends Component {
     }
     if (this.state.selected === 1 || this.state.selected === 2) {
       if (config.features.NavigateToAddCard) {
-        this.props.appHistory.replace("/" + i18n.language + "/card");
+        this.props.appHistory.replace("/" + i18n.language + "/card/add");
       } else {
         this.props.appHistory.replace("/" + i18n.language + "/main/home");
       }
