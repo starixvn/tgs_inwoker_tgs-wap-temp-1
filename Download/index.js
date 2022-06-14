@@ -294,7 +294,7 @@ const Download = ({ alert }) => {
           {config.features.Download_PointlessDialog && (
             <>
               <QRCodeContainer>
-                <QRCodeHolder style={{ padding: 0 }}>
+                <QRCodeHolder style={{ padding: 0, marginBottom: 20 }}>
                   <img
                     src={
                       process.env.PUBLIC_URL +
@@ -303,13 +303,12 @@ const Download = ({ alert }) => {
                     alt="pointless download section"
                   />
                 </QRCodeHolder>
-                <DeviceText>{i18n.t("pointless.download")}</DeviceText>
                 <DownloadButton
                   onClick={() => {
                     setPointlessDialog(true);
                   }}
                 >
-                  {i18n.t("download.title")}
+                  {i18n.t("pointless.link")}
                 </DownloadButton>
               </QRCodeContainer>
               <CustomModal
@@ -341,13 +340,6 @@ const Download = ({ alert }) => {
                         >
                           {data.link}
                         </Links>
-                        <DownloadButton
-                          onClick={() => {
-                            window.open(data.link, "_blank");
-                          }}
-                        >
-                          {i18n.t("download.title")}
-                        </DownloadButton>
                       </PointlessShit>
                     );
                   })}
