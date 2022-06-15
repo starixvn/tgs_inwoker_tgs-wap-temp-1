@@ -206,6 +206,7 @@ class Login extends Component {
         ? true
         : false,
     fromCustomDomain: false,
+    email: "",
   };
 
   componentDidMount() {
@@ -381,35 +382,38 @@ class Login extends Component {
       }
     });
   };
-  doLoginWithHp = (username, password, phone, areacode) => {
+  doLoginWithHp = async (username, password, phone, areacode) => {
     this.setState({ ...this.state, loading: true });
-    AccountService.Activation(username, password, areacode, phone).then(
-      async (response) => {
-        if (response.IsSuccess) {
-          // setSecurityKey(response.data);
-          // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
-          //   variant: "info",
-          // });
-          AccountService.VerifyActivation(response.data, "123456").then(
-            async (response) => {
-              // if (response.IsSuccess) {
-              // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
-              //   variant: "success",
+        const result = await this.props.accountLogin(username, password);
+        if (result.IsSuccess) {
+          AccountService.Activation(areacode, phone).then(async (response) => {
+            if (response.IsSuccess) {
+              // setSecurityKey(response.data);
+              // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
+              //   variant: "info",
               // });
-              this.doLogin(username, password);
-              // } else {
-              // props.enqueueSnackbar(response.info, {
-              //   variant: "warning",
-              // });
-              // }
-              this.doLogin(username, password);
+              AccountService.VerifyActivation(response.data, "123456").then(
+                async (response) => {
+                  // if (response.IsSuccess) {
+                  // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
+                  //   variant: "success",
+                  // });
+                  //this.doLogin(username, password);
+                  // } else {
+                  // props.enqueueSnackbar(response.info, {
+                  //   variant: "warning",
+                  // });
+                  // }
+                  //this.doLogin(username, password);
+                  this.handleLoginSuccess(result.data);
+                }
+              );
+            } else {
+              this.handleLoginSuccess(result.data);
+              //this.doLogin(username, password);
             }
-          );
-        } else {
-          this.doLogin(username, password);
+          });
         }
-      }
-    );
 
     // console.log("entererherer???")
     // if (username === "") {
@@ -473,6 +477,36 @@ class Login extends Component {
     //   }
     // });
   };
+  doLoginWithHpEmail = async (username, password, phone, areacode, email) => {
+    this.setState({ ...this.state, loading: true });
+
+    const result = await this.props.accountLogin(username, password);
+    if (result.IsSuccess) {
+      AccountService.Activation(areacode, phone).then(
+        async (response) => {
+          if (response.IsSuccess) {
+            AccountService.VerifyActivation(response.data, "123456").then(
+              async (response) => {
+                AccountService.ActivationEmail(email).then(
+                  async (response) => {
+                    if (response.IsSuccess) {
+                      AccountService.VerifyActivationEmail(response.data, "123456").then(
+                        async (response) => {
+                          this.handleLoginSuccess(result.data);
+                        }
+                      );
+                    } 
+                  }
+                );
+              }
+            );
+          } else {
+            this.handleLoginSuccess(result.data);
+          }
+        }
+      );
+    }
+  }
   handleForgotpasswordClick = () => {
     this.props.appHistory.push("/" + i18n.language + "/forgot-password");
   };
@@ -542,6 +576,13 @@ class Login extends Component {
     });
   };
 
+  handleEmailChange = (e) => {
+    this.setState({
+      ...this.state,
+      email: e.target.value,
+    });
+  };
+
   handleToggleShow = () => {
     this.setState({ ...this.state, hidePassword: !this.state.hidePassword });
   };
@@ -597,13 +638,15 @@ class Login extends Component {
     });
   };
 
-  handleGetCodeClick = () => {
+  handleGetCodeClick = async () => {
     const username = this.state.username;
     const password = this.state.password;
     const code = this.state.code;
     const countdown = this.state.countdown;
     const areacode = this.state.areaCode;
     const phone = this.state.phone;
+    const isLoggedIn = (this.props.general.token!==""&&this.props.general.token!==null);
+    var result = null;
 
     if (countdown <= 0) {
       var expr = /^[a-zA-Z0-9]{6,16}$/;
@@ -620,7 +663,6 @@ class Login extends Component {
       var expr = new RegExp(
         `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
       );
-
       if (!expr.test(phone)) {
         this.props.alert(
           "",
@@ -630,22 +672,28 @@ class Login extends Component {
         );
         return;
       }
-
-      AccountService.Activation(username, password, areacode, phone).then(
-        async (response) => {
-          if (response.IsSuccess) {
-            this.props.alert("", i18n.t("common.msgTokenSent"));
-            this.setState({
-              ...this.state,
-              countdown: 60,
-              securityKey: response.data,
-            });
-            this.checkCountdown();
-          } else {
-            this.props.alert("", response.info);
+      if(!isLoggedIn)
+      {
+        result = await AccountService.Login(username, password);
+      }
+      if((result !== null && result.IsSuccess)|| isLoggedIn)
+      {
+        AccountService.Activation(areacode, phone).then(
+          async (response) => {
+            if (response.IsSuccess) {
+              this.props.alert("", i18n.t("common.msgTokenSent"));
+              this.setState({
+                ...this.state,
+                countdown: 60,
+                securityKey: response.data,
+              });
+              this.checkCountdown();
+            } else {
+              this.props.alert("", response.info);
+            }
           }
-        }
-      );
+        );
+      }
     }
   };
   timer = null;
@@ -670,6 +718,7 @@ class Login extends Component {
     const code = this.state.code;
     const areaCode = this.state.areaCode;
     const confirmPassword = this.state.confirmPassword;
+    const email = this.state.email;
     const promotion_id = this.state.promoId;
     const upper = this.state.upper;
     const tnc = this.state.tnc;
@@ -693,10 +742,8 @@ class Login extends Component {
     var expr = new RegExp(
       `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
     );
-
     if (
-      config.features.Register_ShowPhone ||
-      config.features.Register_ShowSMSVerification
+      config.features.Register_ShowPhone
     ) {
       if (!expr.test(phone)) {
         this.props.alert(
@@ -708,11 +755,12 @@ class Login extends Component {
         return;
       }
     }
+    var expr =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (config.features.Register_ShowEmail) {
+      if (!expr.test(email)) {
+        this.props.alert("", i18n.t("common.msgInvalidEmail"));
 
-    var expr = /^[a-zA-Z0-9]{6}$/;
-    if (config.features.Register_ShowSMSVerification) {
-      if (!expr.test(code)) {
-        this.props.alert("", i18n.t("common.msgEnterCode"));
         return;
       }
     }
@@ -742,15 +790,22 @@ class Login extends Component {
             this.setState({ ...this.state, loading: false });
           } else if (response.IsSuccess) {
             if (config.features.SMSVerification) {
-              if (!config.features.Register_ShowSMSVerification) {
                 this.setState({
                   ...this.state,
                   selected: 2,
                   loading: false,
                 });
-              } else {
-                this.doLogin(username, password);
-              }
+            } else if (config.features.Register_ShowPhone && config.features.Register_ShowEmail) {
+              this.doLoginWithHpEmail(username, password, phone, areaCode, email);
+              // AccountService.VerifyPhone(areaCode,phone).then(
+              //   async (response) => {
+              //     // security key = response.data, default validatecode = 123456
+              //     AccountService.UpdatePhone(response.data, "123456").then(
+              //       async (response) => {
+              //           this.doLogin(username, password);
+              //       }
+              //     );
+              // });
             } else if (config.features.Register_ShowPhone) {
               this.doLoginWithHp(username, password, phone, areaCode);
               // AccountService.VerifyPhone(areaCode,phone).then(
@@ -992,8 +1047,7 @@ class Login extends Component {
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
 
-                  {(config.features.Register_ShowPhone ||
-                    config.features.Register_ShowSMSVerification) && (
+                  {(config.features.Register_ShowPhone) && (
                     <CustomWrapper>
                       <Select
                         type={"text"}
@@ -1008,15 +1062,21 @@ class Login extends Component {
                       ></Select>
                     </CustomWrapper>
                   )}
-                  {config.features.Register_ShowSMSVerification && (
-                    <CustomWrapper style={{ marginBottom: "-20px" }}>
-                      <VerificationCode
-                        value={this.state.code}
-                        onChange={this.handleCodeChange}
-                        countdown={this.state.countdown}
-                        placeholder={i18n.t("common.msgEnterCode")}
-                        handleGetCodeClick={this.handleGetCodeClick}
-                      ></VerificationCode>
+
+                  {config.features.Register_ShowEmail && (
+                    <CustomWrapper>
+                      <Textbox
+                        icon={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/wapp/icon-email.png`
+                        }
+                        type={"text"}
+                        placeholder={i18n.t("wap.register.email")}
+                        style={{ marginTop: "20px" }}
+                        maxLength="50"
+                        value={this.state.email}
+                        onChange={this.handleEmailChange}
+                      ></Textbox>
                     </CustomWrapper>
                   )}
 

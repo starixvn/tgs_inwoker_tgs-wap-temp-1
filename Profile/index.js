@@ -198,8 +198,7 @@ class Profile extends Component {
           )} */}
 
             {(config.features.SMSVerification ||
-              config.features.Register_ShowPhone ||
-              config.features.Register_ShowSMSVerification) &&
+              config.features.Register_ShowPhone) &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-phone.png`,
                 i18n.t("profile.phone.title"),

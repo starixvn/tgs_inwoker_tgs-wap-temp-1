@@ -728,16 +728,17 @@ class Wap extends Component {
           this.props.getGameBalance(a.abbreviation);
         });
     }
-    if (
-      preProps.account.token !== this.props.account.token &&
-      this.props.account.token !== null
-    ) {
-      this.props.game.providerList
-        .filter((item) => item.status === 0 && item.transferwallet === true)
-        .map((a) => {
-          this.props.getGameBalance(a.abbreviation);
-        });
-    }
+    // will cause blacklist issue on when registering ref:TGS-823
+    // if ( 
+    //   preProps.account.token !== this.props.account.token &&
+    //   this.props.account.token !== null
+    // ) {
+    //   this.props.game.providerList
+    //     .filter((item) => item.status === 0 && item.transferwallet === true)
+    //     .map((a) => {
+    //       this.props.getGameBalance(a.abbreviation);
+    //     });
+    // }
     if (
       preProps.general.isMaintenance !== this.props.general.isMaintenance &&
       this.props.general.isMaintenance === true
