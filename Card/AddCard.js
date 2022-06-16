@@ -198,7 +198,12 @@ class AddCard extends Component {
     });
   }
   handleBackClick = () => {
-    this.props.appHistory.goBack();
+    if (
+      !(config.features.ForceRedirectAddCard) ||
+      this.props.wallet.bankCardList.length > 0
+    ) {
+      this.props.appHistory.goBack();
+    }
   };
   handleNextClick = () => {
     var selected =

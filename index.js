@@ -717,6 +717,22 @@ class Wap extends Component {
         this.props.getPromotionList(i18n.language);
       }
     }
+    if (config.features.ForceRedirectAddCard) {
+      if (
+        this.props.account.token !== null &&
+        this.props.wallet.bankCardList <= 0 &&
+        (preProps.location.pathname !== this.props.location.pathname ||
+            preProps.account.token === null)
+      ) {
+        if(this.props.location.pathname !== `/${i18n.language}/card/add`)
+        {
+          // delaying 500ms because component not ready yet
+          setTimeout(()=>{
+            AppHistory.push("/" + i18n.language + "/card/add");
+          },500)
+        }
+      }
+    }
     if (
       preProps.game.providerList.length !==
         this.props.game.providerList.length &&
@@ -1041,6 +1057,7 @@ const mapStateToProps = (state) => {
     ui: state.ui,
     screenWidth: state.ui.screenWidth,
     screenHeight: state.ui.screenHeight,
+    wallet: state.wallet,
   };
 };
 
