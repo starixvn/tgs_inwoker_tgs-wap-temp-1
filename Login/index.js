@@ -286,7 +286,7 @@ class Login extends Component {
       });
     }
   };
-  handleLoginSuccess = (token) => {
+  handleLoginSuccess = async (token) => {
     let urlParams = new URLSearchParams(this.props.location.search);
     if (urlParams.has("return_url")) {
       // const returnValue = urlParams.get('return_url')
@@ -295,19 +295,27 @@ class Login extends Component {
       //     returnValue + '?token=' + BlowFishEncryption.Encrypt(token)
       // }
     }
-    // this.props.getAccountInfo(token);
-    // this.props.getAccountProfile(token, true);
-    // this.props.getVIPInfo(token);
-    // this.props.checkGame();
-    this.props.getBalanceList();
-    // this.props.getIDCardNo();
-    // this.props.getDepositChannel();
-    // this.props.getInviteLink();
-    this.props.getMessageList(i18n.language, 1, 99);
-    this.props.getBankCardList();
-    this.props.getPlayerPromotionList(i18n.language);
-    this.props.getWithdrawalChannel();
-    this.props.getAccountInfo();
+    var bankInfoAuthentication = null;
+    await this.props.getAccountInfo().then((response)=>{
+      if(response.IsSuccess)
+      {
+        bankInfoAuthentication = response.data.bankinfoauthentication;
+      }
+    });
+    if (!config.features.Register_CustomFlow_IDR) {
+      // this.props.getAccountInfo(token);
+      // this.props.getAccountProfile(token, true);
+      // this.props.getVIPInfo(token);
+      // this.props.checkGame();
+      this.props.getBalanceList();
+      // this.props.getIDCardNo();
+      // this.props.getDepositChannel();
+      // this.props.getInviteLink();
+      this.props.getMessageList(i18n.language, 1, 99);
+      this.props.getBankCardList();
+      this.props.getPlayerPromotionList(i18n.language);
+      this.props.getWithdrawalChannel();
+    }
     if (this.state.rememberMe === true) {
       localStorage.setItem("remember", true);
 
@@ -317,7 +325,7 @@ class Login extends Component {
 
       localStorage.removeItem("username");
     }
-    if (this.state.selected === 1 || this.state.selected === 2) {
+    if (this.state.selected === 1 || this.state.selected === 2 || (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)) {
       if (config.features.NavigateToAddCard) {
         this.props.appHistory.replace("/" + i18n.language + "/card/add");
       } else {
@@ -1047,7 +1055,7 @@ class Login extends Component {
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
 
-                  {(config.features.Register_ShowPhone) && (
+                  {config.features.Register_ShowPhone && (
                     <CustomWrapper>
                       <Select
                         type={"text"}
@@ -1143,9 +1151,13 @@ class Login extends Component {
                   </RememberPassContainer>
                   <ButtonWap
                     style={{ margin: "100px auto 0 auto" }}
-                    name={i18n.t("common.register")}
-                    disableButton={!this.state.tnc}
+                    name={
+                      config.features.Register_CustomFlow_IDR
+                        ? i18n.t("common.nextStep")
+                        : i18n.t("common.register")
+                    }
                     onClick={this.handleRegisterClick}
+                    disableButton={!this.state.tnc}
                   ></ButtonWap>
                 </React.Fragment>
               );
