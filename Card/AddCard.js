@@ -319,11 +319,22 @@ class AddCard extends Component {
         address: this.state.number,
       };
     }
-    this.props.addBankCard(
-      selectedChannel.channelid,
-      selected.banktype,
-      detail
-    );
+    if(config.features.Register_CustomFlow_IDR)
+    {
+      this.props.initBankCard(
+        selectedChannel.channelid,
+        selected.banktype,
+        detail
+      );
+    }
+    else
+    {
+      this.props.addBankCard(
+        selectedChannel.channelid,
+        selected.banktype,
+        detail
+      );
+    }
   };
 
   handleNumberChange = (e) => {
@@ -621,7 +632,11 @@ class AddCard extends Component {
             <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>
             <Button
               style={{ margin: "40px auto 0 auto" }}
-              label={i18n.t("common.confirm")}
+              label={
+                config.features.Register_CustomFlow_IDR
+                  ? i18n.t("common.register")
+                  : i18n.t("common.confirm")
+              }
               onClick={this.handleNextClick}
               disabled={this.state.name === "" || this.state.phone === ""}
             ></Button>
@@ -662,7 +677,11 @@ class AddCard extends Component {
             <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>
             <Button
               style={{ margin: "40px auto 0 auto" }}
-              label={i18n.t("common.confirm")}
+              label={
+                config.features.Register_CustomFlow_IDR
+                  ? i18n.t("common.register")
+                  : i18n.t("common.confirm")
+              }
               onClick={this.handleNextClick}
               disabled={(() => {
                 if (this.props.wallet.withdrawalList.length <= 0) return true;
@@ -771,6 +790,8 @@ const mapDispatchToProps = (dispatch) => {
     accountLogout: (token) => dispatch(accountAction.accountLogout(token)),
     addBankCard: (channelid, bankType, address) =>
       dispatch(walletAction.addBankCard(channelid, bankType, address)),
+    initBankCard: (channelid, bankType, address) =>
+      dispatch(walletAction.initBankCard(channelid, bankType, address)),
     getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
     resetResult: () =>

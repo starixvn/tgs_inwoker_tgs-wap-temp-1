@@ -621,7 +621,15 @@ class Wap extends Component {
         //   .getElementById("ioBB")
         //   .parentNode.removeChild(document.getElementById("ioBB"));
         // this.props.checkGame();
-        this.props.getAccountProfile(true);
+        var bankInfoAuthentication = null;
+        await this.props.getAccountProfile(true).then((response)=>{
+          bankInfoAuthentication = response.data.bankinfoauthentication; 
+        });
+        if (config.features.ForceRedirectAddCard && !bankInfoAuthentication) {
+          this.setState({ ...this.state, loading: false });
+          AppHistory.push("/" + i18n.language + "/card/add");
+          return;
+        }
         // const responseVIP = await this.props.getVIPInfo(
         //   responseToken.data.token
         // );
@@ -722,21 +730,6 @@ class Wap extends Component {
         this.props.getBrandCommunicationList();
         this.props.getLiveChatURL();
         this.props.getPromotionList(i18n.language);
-      }
-    }
-    if (config.features.ForceRedirectAddCard) {
-      if (
-        this.props.account.token !== null &&
-        this.props.wallet.bankCardList <= 0 &&
-        (preProps.location.pathname !== this.props.location.pathname ||
-          preProps.account.token === null)
-      ) {
-        if (this.props.location.pathname !== `/${i18n.language}/card/add`) {
-          // delaying 500ms because component not ready yet
-          setTimeout(() => {
-            AppHistory.push("/" + i18n.language + "/card/add");
-          }, 500);
-        }
       }
     }
     if (
