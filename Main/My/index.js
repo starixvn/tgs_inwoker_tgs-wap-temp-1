@@ -292,7 +292,7 @@ class My extends Component {
               ></IconImg>
               <IconLabel>{i18n.t("common.deposit")}</IconLabel>
             </IconColumn>
-            {checkTransferWallet && (
+            {checkTransferWallet && !config.features.NewTransferUI && (
               <IconColumn onClick={() => this.props.navigate("/transfer")}>
                 <IconImg
                   src={

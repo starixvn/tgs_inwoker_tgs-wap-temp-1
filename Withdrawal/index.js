@@ -5,24 +5,18 @@ import { withRouter } from "react-router-dom";
 import Header from "../../Wap/Share/Header";
 import { withStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Dialog";
-
 import Button from "../../Wap/Share/Button";
-
 import Textbox from "../../Wap/Share/Textbox";
 import Common from "../../../utils/Common";
 import { walletAction } from "../../../api-services/actions/walletAction";
 import { WalletService } from "../../../api-services/services/WalletService";
 import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
-
 import Loading from "../../Wap/Share/Loading";
-
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import i18n from "../../../utils/i18n";
 import Slide from "@material-ui/core/Slide";
 import config from "../../../config/config";
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -82,14 +76,10 @@ const BottomDesc = styled.div`
   color: ${({ theme }) => theme.secondary};
 `;
 const ButtonCardManage = styled.div`
-  background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp//icon-card-manage.png`})
-    no-repeat left center;
-  padding-left: 50px;
   float: right;
   margin: 0px 50px 20px 0;
   font-size: 26px;
-
+  display: flex;
   color: ${({ theme }) => theme.secondary};
 `;
 
@@ -149,6 +139,17 @@ const StyledModalPopup = withStyles((theme) => ({
   },
 }))(Modal);
 
+const Icon = styled.div`
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  background-color: ${({ theme }) => theme.secondary};
+  mask: ${({ icon }) => {
+    return `url(${icon}) no-repeat center /
+    contain;`;
+  }};
+`;
+
 const CustomSelect = styled.select`
   font-size: 28px;
   margin-top: 25px;
@@ -190,6 +191,36 @@ const ExchangeRateContainer = styled.div`
   padding: 0px 20px 20px 48px;
 `;
 
+const ButtonWrapper = styled.div`
+  margin: 15px 0 0 0;
+  display: flex;
+`;
+
+const GameWalletButton = styled.div`
+  font-size: 24px;
+  background: ${({ theme }) => {
+    return theme.primary;
+  }};
+
+  text-align: center;
+  padding: 10px 20px;
+
+  margin: 8px 5px 0 0;
+  color: #fff;
+
+  border-radius: 5px;
+  border: solid 1px #ffffff;
+
+  &:hover {
+    cursor: pointer;
+    background-blend-mode: screen, normal;
+    ${(props) =>
+      props.disabled
+        ? "   background-image: linear-gradient(to top, #797979, #c3c3c3);"
+        : " box-shadow: inset 1px 1px 9px 0  rgba(255, 255, 255, 0.75);"}
+  }
+`;
+
 class Withdrawal extends Component {
   constructor(props) {
     super(props);
@@ -229,15 +260,16 @@ class Withdrawal extends Component {
       }
     });
 
-    if (this.props.wallet.withdrawalList.length === 0)
-      this.props.getWithdrawalChannel();
-
     // if (
     //   this.props.account.info.check_pass_email === false &&
     //   config.features.EmailVerification
     // ) {
     //   this.props.appHistory.replace(`/${i18n.language}/profile/email`);
-    //   // } else if (this.props.account.info.member_safe_password !== 'set') {
+    //   // } else if (
+    //   //   this.props.account.info.member_safe_password !== 'set' &&
+    //   //   config.brand !== 'HKJP' &&
+    //   //   config.brand !== 'GPI'
+    //   // ) {
     //   //   this.props.appHistory.replace(
     //   //     `/${i18n.language}/profile/withdrawalpassword/`
     //   //   )
@@ -365,7 +397,7 @@ class Withdrawal extends Component {
     this.setState({
       ...this.state,
       selectedBankCardIndex: e.target.value,
-      //  bankOpen: false
+      // bankOpen: false
     });
   };
 
@@ -378,13 +410,13 @@ class Withdrawal extends Component {
       max: 0,
     });
     //update new data.
+
     for (var i = 0; i < this.props.wallet.withdrawalList.length; i++) {
       const methodList = this.props.wallet.withdrawalList[i].channel;
       if (methodList) {
         for (var inner = 0; inner < methodList.length; inner++) {
           const channelList = methodList[inner];
           if (channelList.channelid === channelId) {
-            console.log(channelList.transferlimit);
             minValue.push(channelList.transferlimit.from);
             maxValue.push(channelList.transferlimit.to);
             this.setState({
@@ -416,6 +448,18 @@ class Withdrawal extends Component {
   handlePasswordChange = (e) => {
     this.setState({ ...this.state, password: e.target.value });
   };
+
+  getAllGameBalance = () => {
+    this.props.game.providerList
+      .filter((item) => item.status === 0 && item.transferwallet === true)
+      .map((a) => {
+        this.props.getGameBalance(a.abbreviation).then((e) => {
+          if (e.IsSuccess) {
+          }
+        });
+      });
+  };
+
   render() {
     return (
       <Container>
@@ -460,9 +504,31 @@ class Withdrawal extends Component {
             this.props.appHistory.push("/" + i18n.language + "/card")
           }
         >
+          <Icon
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp//icon-card-manage.png`
+            }
+          />{" "}
           {i18n.t("withdrawal.manageBank")}
         </ButtonCardManage>
-
+        {config.features.NewTransferUI && (
+          <CustomSelectContainer>
+            <CustomLabel>{i18n.t("transfer.msgTransferOutFromGP")}</CustomLabel>
+            <ButtonWrapper>
+              <GameWalletButton
+                style={{ marginTop: 0, marginLeft: 10 }}
+                onClick={() => {
+                  this.props.performWithdrawFromEveryBrand().then((e) => {
+                    this.getAllGameBalance();
+                  });
+                }}
+              >
+                {i18n.t("transfer.oneKeyTransferOut")}
+              </GameWalletButton>
+            </ButtonWrapper>
+          </CustomSelectContainer>
+        )}
         <CustomSelectContainer>
           <CustomLabel>{i18n.t("withdrawal.bankCard")}</CustomLabel>
           <CustomSelect
@@ -475,7 +541,7 @@ class Withdrawal extends Component {
               );
             }}
           >
-            <option disabled value="">
+            <option selected disabled value="">
               {i18n.t("withdrawal.msgEnterBank")}
             </option>
             {this.props.wallet.bankCardList.map((item, index) => {
@@ -582,7 +648,6 @@ class Withdrawal extends Component {
             );
           })()}
         ></Button>
-
         <StyledModalBank
           onClose={() => this.setState({ ...this.state, bankOpen: false })}
           open={this.state.bankOpen}
@@ -654,7 +719,6 @@ class Withdrawal extends Component {
               width: "250px",
               float: "right",
             }}
-            disabled={this.state.password.length < 6}
             label={i18n.t("common.confirm")}
             onClick={this.handleConfirmOTP}
           ></Button>
@@ -671,13 +735,12 @@ const mapStateToProps = (state) => {
   return {
     token: state.account.token,
     account: state.account,
-    game: state.game,
     wallet: state.wallet,
+    game: state.game,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     getBalanceList: (token) => dispatch(walletAction.getBalanceList()),
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
     addBilling: (card_id, amount) =>
@@ -686,8 +749,14 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: RESET_WALLETRESULT,
       }),
+    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     doWithdraw: (amount, password, user_account_id, playerNote) =>
-      dispatch(walletAction.doWithdraw(amount, user_account_id, password, playerNote)),
+      dispatch(
+        walletAction.doWithdraw(amount, user_account_id, password, playerNote)
+      ),
+    performWithdrawFromEveryBrand: () =>
+      dispatch(walletAction.performWithdrawFromEveryBrand()),
+    getGameBalance: (gpcode) => dispatch(walletAction.getGameBalance(gpcode)),
   };
 };
 

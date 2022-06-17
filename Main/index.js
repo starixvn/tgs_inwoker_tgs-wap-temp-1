@@ -274,7 +274,7 @@ class Main extends Component {
                 <MenuLabel>{i18n.t("wap.main.menuDrawer.deposit")}</MenuLabel>
               </Menuitem>
 
-              {checkTransferWallet && (
+              {checkTransferWallet && !config.features.NewTransferUI && (
                 <Menuitem
                   onClick={() => this.handleChangeSelection("/transfer")}
                 >

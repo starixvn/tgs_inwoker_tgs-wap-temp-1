@@ -316,7 +316,7 @@ const RouteMapping = [
     navigate: true,
     screenHeight: true,
   },
-  {
+  !config.features.NewTransferUI && {
     path: "/transfer",
     component: Transfer,
     alert: true,
