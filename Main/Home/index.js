@@ -549,9 +549,13 @@ class Home extends Component {
   };
 
   handleGameClick = (type, params, game_platform_id) => {
-    type === GameTypeEnum.LOTTERYLOBBY || type === GameTypeEnum.LOTTERY
-      ? this.handleJoinLotteryGame(params)
-      : this.handleJoinOtherGame(type, params, game_platform_id);
+    if (type === GameTypeEnum.RNGSPORTS) {
+      this.props.appHistory.push("/" + i18n.language + "/sports/" + params);
+    } else {
+      type === GameTypeEnum.LOTTERYLOBBY || type === GameTypeEnum.LOTTERY
+        ? this.handleJoinLotteryGame(params)
+        : this.handleJoinOtherGame(type, params, game_platform_id);
+    }
   };
   handleSignupClick = () => {
     this.props.appHistory.push("/" + i18n.language + "/login");
@@ -598,6 +602,7 @@ class Home extends Component {
       case GameTypeEnum.SLOT:
         return "slot";
       case GameTypeEnum.SPORTS:
+      case GameTypeEnum.RNGSPORTS:
         return "sports";
       case GameTypeEnum.ESPORTS:
         return "esports";

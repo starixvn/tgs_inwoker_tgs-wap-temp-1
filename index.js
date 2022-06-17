@@ -78,6 +78,7 @@ import Banned from "./Banned";
 import Loading from "./Share/Loading";
 import Affiliate from "./Affiliate";
 import Birthdate from "./Profile/Birthdate";
+import CustomSportPage from "./CustomSportPage";
 
 const baseRouteUrl = Common.baseRouteUrl;
 
@@ -463,6 +464,12 @@ const RouteMapping = [
     component: VIP,
     navigate: true,
   },
+  {
+    path: "/sports/:platform",
+    component: CustomSportPage,
+    alert: true,
+    navigate: true,
+  },
 ];
 class Wap extends Component {
   constructor(props) {
@@ -722,14 +729,13 @@ class Wap extends Component {
         this.props.account.token !== null &&
         this.props.wallet.bankCardList <= 0 &&
         (preProps.location.pathname !== this.props.location.pathname ||
-            preProps.account.token === null)
+          preProps.account.token === null)
       ) {
-        if(this.props.location.pathname !== `/${i18n.language}/card/add`)
-        {
+        if (this.props.location.pathname !== `/${i18n.language}/card/add`) {
           // delaying 500ms because component not ready yet
-          setTimeout(()=>{
+          setTimeout(() => {
             AppHistory.push("/" + i18n.language + "/card/add");
-          },500)
+          }, 500);
         }
       }
     }
@@ -745,7 +751,7 @@ class Wap extends Component {
         });
     }
     // will cause blacklist issue on when registering ref:TGS-823
-    // if ( 
+    // if (
     //   preProps.account.token !== this.props.account.token &&
     //   this.props.account.token !== null
     // ) {
