@@ -394,7 +394,7 @@ class Login extends Component {
     this.setState({ ...this.state, loading: true });
         const result = await this.props.accountLogin(username, password);
         if (result.IsSuccess) {
-          AccountService.Activation(areacode, phone).then(async (response) => {
+          AccountService.Activation(username, password,areacode, phone).then(async (response) => {
             if (response.IsSuccess) {
               // setSecurityKey(response.data);
               // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
@@ -490,7 +490,7 @@ class Login extends Component {
 
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      AccountService.Activation(areacode, phone).then(
+      AccountService.Activation(username, password,areacode, phone).then(
         async (response) => {
           if (response.IsSuccess) {
             AccountService.VerifyActivation(response.data, "123456").then(
@@ -686,7 +686,7 @@ class Login extends Component {
       }
       if((result !== null && result.IsSuccess)|| isLoggedIn)
       {
-        AccountService.Activation(areacode, phone).then(
+        AccountService.Activation(username, password, areacode, phone).then(
           async (response) => {
             if (response.IsSuccess) {
               this.props.alert("", i18n.t("common.msgTokenSent"));
