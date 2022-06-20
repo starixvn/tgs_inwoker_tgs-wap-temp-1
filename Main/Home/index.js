@@ -351,16 +351,13 @@ const GameTypeName = styled.div`
 const BrandAndBalance = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 5px 0;
+  padding: 8px 0;
   font-size: 24px;
   min-width: 400px;
   color: ${({ theme }) => theme.popoverSubWalletText};
 `;
-
 const Brand = styled.div`
   padding-left: 5px;
-
-  font-weight: bold;
 `;
 
 const Balancex = styled.div`
@@ -369,9 +366,9 @@ const Balancex = styled.div`
 `;
 
 const BrandAndBalanceButBigger = styled(BrandAndBalance)`
-  border-bottom: solid 1px ${({ theme }) => theme.primaryText};
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+  border-bottom: solid 1px ${({ theme }) => theme.popoverSubWalletText};
+  margin-bottom: 20px;
+  padding-bottom: 20px;
   font-weight: bold;
   color: ${({ theme }) => theme.primary};
   font-size: 30px;
@@ -764,6 +761,7 @@ class Home extends Component {
                             open={Boolean(this.state.anchorEl)}
                             anchorEl={this.state.anchorEl}
                             handleClose={this.handleClose}
+                            height="1000px"
                           >
                             <div>
                               <BrandAndBalanceButBigger>
