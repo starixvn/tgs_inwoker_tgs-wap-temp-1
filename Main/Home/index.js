@@ -338,7 +338,7 @@ const CloseButton = styled.div`
 const GameType = styled.div`
   display: flex;
   flex-direction: column;
-  padding-bottom: 10px;
+  padding: 10px 20px;
 `;
 
 const GameTypeName = styled.div`
@@ -351,7 +351,7 @@ const GameTypeName = styled.div`
 const BrandAndBalance = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 5px 20px;
   font-size: 24px;
   min-width: 400px;
   color: ${({ theme }) => theme.popoverSubWalletText};
