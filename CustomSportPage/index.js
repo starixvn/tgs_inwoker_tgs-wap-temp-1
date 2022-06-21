@@ -362,6 +362,14 @@ class CustomSportPage extends Component {
                 const match = this.state.favGame.indexOf(row.id) > -1;
                 const index = this.state.favGame.indexOf(row.id);
 
+                var theName;
+                this.props.game.providerList.filter((a) => {
+                  if (a.abbreviation === row.gpcode) {
+                    return (theName = a.name);
+                  }
+                  return theName;
+                });
+
                 return (
                   <ListItem key={row.id}>
                     <LazyLoadImage
@@ -382,7 +390,7 @@ class CustomSportPage extends Component {
                     />
                     <ListitemLabelBackground></ListitemLabelBackground>
                     <LeftContainer>
-                      <GameProvider>{row.gpcode}</GameProvider>
+                      <GameProvider>{theName}</GameProvider>
                       <GameName
                         onClick={() => {
                           this.handleGameClick(row.gpcode, row.id);
