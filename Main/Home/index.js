@@ -5,11 +5,10 @@ import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 
 import Slider from "./Slider";
-import DoubleMarquee from "react-marquee-double";
+
 import { withRouter } from "react-router-dom";
-import { accountAction } from "../../../../api-services/actions/accountAction";
+
 import { GameTypeEnum } from "../../../../api-services/utils/Enum";
-import { GameService } from "../../../../api-services/services/GameService";
 
 import Common from "../../../../utils/Common";
 
@@ -20,6 +19,7 @@ import OnlineUserDisplayer from "../../../Share/online-user-displayer";
 import LiveChat from "../../../Share/live-chat";
 import CustomPopover from "../../../Share/custompopover";
 import { SortedMenuList } from "../../../../utils/HeaderSorting";
+import { Textfit } from "react-textfit";
 const StyledAppBar = withStyles({
   root: {
     height: "550px",
@@ -372,6 +372,8 @@ const BrandAndBalanceButBigger = styled(BrandAndBalance)`
   font-weight: bold;
   color: ${({ theme }) => theme.primary};
   font-size: 30px;
+  display: flex;
+  align-self: flex-end;
 `;
 
 var sortingHK28 = [
@@ -765,8 +767,10 @@ class Home extends Component {
                           >
                             <div>
                               <BrandAndBalanceButBigger>
-                                <div>{i18n.t("web.header.mainAccount")}</div>
-                                <div>
+                                <div style={{ paddingRight: 30 }}>
+                                  {i18n.t("web.header.mainAccount")}
+                                </div>
+                                <Textfit mode="single">
                                   {this.props.wallet.mainSymbol +
                                     Common.formatNumberWithThousand(
                                       this.props.wallet.mainBalance +
@@ -781,7 +785,7 @@ class Home extends Component {
                                             0
                                           )
                                     )}
-                                </div>
+                                </Textfit>
                               </BrandAndBalanceButBigger>
                             </div>
                             {SortedMenuList.map((item, key) => {
