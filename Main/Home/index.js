@@ -767,25 +767,34 @@ class Home extends Component {
                           >
                             <div>
                               <BrandAndBalanceButBigger>
-                                <div style={{ paddingRight: 30 }}>
+                                <span style={{ paddingRight: 30 }}>
                                   {i18n.t("web.header.mainAccount")}
+                                </span>
+                                <div
+                                  style={{
+                                    width: 300,
+                                    display: "flex",
+                                    alignSelf: "flex-end",
+                                    justifyContent: "flex-end",
+                                  }}
+                                >
+                                  <Textfit mode="single">
+                                    {this.props.wallet.mainSymbol +
+                                      Common.formatNumberWithThousand(
+                                        this.props.wallet.mainBalance +
+                                          this.props.game.providerList
+                                            .filter(
+                                              (item) =>
+                                                item.status === 0 &&
+                                                item.transferwallet === true
+                                            )
+                                            .reduce(
+                                              (a, v) => (a = a + v.balance),
+                                              0
+                                            )
+                                      )}
+                                  </Textfit>
                                 </div>
-                                <Textfit mode="single">
-                                  {this.props.wallet.mainSymbol +
-                                    Common.formatNumberWithThousand(
-                                      this.props.wallet.mainBalance +
-                                        this.props.game.providerList
-                                          .filter(
-                                            (item) =>
-                                              item.status === 0 &&
-                                              item.transferwallet === true
-                                          )
-                                          .reduce(
-                                            (a, v) => (a = a + v.balance),
-                                            0
-                                          )
-                                    )}
-                                </Textfit>
                               </BrandAndBalanceButBigger>
                             </div>
                             {SortedMenuList.map((item, key) => {
