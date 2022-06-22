@@ -201,7 +201,7 @@ const GameWalletButton = styled.div`
     return theme.primary;
   }};
 
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 24px;
   padding: 10px 0;
   color: #ffffff;
