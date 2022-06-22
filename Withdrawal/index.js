@@ -197,30 +197,17 @@ const ButtonWrapper = styled.div`
 `;
 
 const GameWalletButton = styled.div`
-  font-size: 24px;
   background: ${({ theme }) => {
     return theme.primary;
   }};
 
+  border-radius: 20px;
+  font-size: 24px;
+  padding: 10px 0;
+  color: #ffffff;
   text-align: center;
-  padding: 10px 20px;
-
-  margin: 8px 5px 0 0;
-  color: #fff;
-
-  border-radius: 5px;
-  border: solid 1px #ffffff;
-
-  &:hover {
-    cursor: pointer;
-    background-blend-mode: screen, normal;
-    ${(props) =>
-      props.disabled
-        ? "   background-image: linear-gradient(to top, #797979, #c3c3c3);"
-        : " box-shadow: inset 1px 1px 9px 0  rgba(255, 255, 255, 0.75);"}
-  }
+  width: 100%;
 `;
-
 class Withdrawal extends Component {
   constructor(props) {
     super(props);
@@ -524,7 +511,7 @@ class Withdrawal extends Component {
                   });
                 }}
               >
-                {i18n.t("transfer.oneKeyTransferOut")}
+                {i18n.t("transfer.oneKeyTransferAll")}
               </GameWalletButton>
             </ButtonWrapper>
           </CustomSelectContainer>
