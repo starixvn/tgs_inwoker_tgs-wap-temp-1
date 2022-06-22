@@ -660,10 +660,11 @@ class Home extends Component {
   }
 
   handleClick = (e) => {
-    this.setState({
-      ...this.state,
-      anchorEl: e.currentTarget,
-    });
+      this.setState({
+        ...this.state,
+        anchorEl: (config.features.HomePageDisplayBalance ||
+        config.features.NewTransferUI) ? e.currentTarget : null,
+      });
   };
 
   handleClose = () => {
@@ -742,8 +743,7 @@ class Home extends Component {
                     if (this.props.account.token != null) {
                       return (
                         <React.Fragment>
-                          {(config.features.HomePageDisplayBalance ||
-                            config.features.NewTransferUI) && (
+                          
                             <React.Fragment>
                               <BalanceAmount
                                 onClick={(e) => {
@@ -851,7 +851,6 @@ class Home extends Component {
                                 {i18n.t("wap.main.home.profile.mainAccount")}
                               </WalletTypeLabel>
                             </React.Fragment>
-                          )}{" "}
                         </React.Fragment>
                       );
                     } else {
