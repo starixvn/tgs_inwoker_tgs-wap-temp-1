@@ -238,6 +238,19 @@ class Withdrawal extends Component {
   }
 
   componentDidMount() {
+    if (
+      config.features.Deposit_AddCard &&
+      this.handleFilterCardList(this.props.wallet.bankCardList).length > 0
+    ) {
+      this.setState({
+        ...this.state,
+        selectedBankCardIndex: 0,
+      });
+      this.getTransferLimit(
+        this.handleFilterCardList(this.props.wallet.bankCardList)[0]
+          .paymentchannelid
+      );
+    }
     WalletService.GetMinWithdrawLimit().then((e) => {
       if (e.IsSuccess) {
         this.setState({
@@ -353,7 +366,9 @@ class Withdrawal extends Component {
       this.props.doWithdraw(
         formatedamount,
         this.state.password,
-        this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id,
+        this.handleFilterCardList(this.props.wallet.bankCardList)[
+          this.state.selectedBankCardIndex
+        ].id,
         config.features.Deposit_Withdrawal_PlayerNote
           ? this.state.playerNote
           : null
@@ -429,7 +444,9 @@ class Withdrawal extends Component {
     this.props.doWithdrawal(
       formatedamount,
       this.state.password,
-      this.props.wallet.bankCardList[this.state.selectedBankCardIndex].id
+      this.handleFilterCardList(this.props.wallet.bankCardList)[
+        this.state.selectedBankCardIndex
+      ].id
     );
   };
   handlePasswordChange = (e) => {
@@ -445,6 +462,16 @@ class Withdrawal extends Component {
           }
         });
       });
+  };
+
+  handleFilterCardList = (cardList) => {
+    if (config.features.Deposit_AddCard) {
+      return cardList.filter((item) => item.default).length <= 0
+        ? cardList.filter((item, index) => index === 0)
+        : cardList.filter((item) => item.default);
+    } else {
+      return cardList;
+    }
   };
 
   render() {
@@ -524,24 +551,28 @@ class Withdrawal extends Component {
             onChange={(e) => {
               this.handleBankClick(e);
               this.getTransferLimit(
-                this.props.wallet.bankCardList[e.target.value].paymentchannelid
+                this.handleFilterCardList(this.props.wallet.bankCardList)[
+                  e.target.value
+                ].paymentchannelid
               );
             }}
           >
             <option selected disabled value="">
               {i18n.t("withdrawal.msgEnterBank")}
             </option>
-            {this.props.wallet.bankCardList.map((item, index) => {
-              return (
-                <option value={index} id={`optionValue-${index}`}>
-                  {item.banktype} (
-                  {item.detail.address ||
-                    item.detail.bankAccount ||
-                    item.detail.phone}
-                  )
-                </option>
-              );
-            })}
+            {this.handleFilterCardList(this.props.wallet.bankCardList).map(
+              (item, index) => {
+                return (
+                  <option value={index} id={`optionValue-${index}`}>
+                    {item.banktype} (
+                    {item.detail.address ||
+                      item.detail.bankAccount ||
+                      item.detail.phone}
+                    )
+                  </option>
+                );
+              }
+            )}
           </CustomSelect>
         </CustomSelectContainer>
         <CustomPlaceholderWrapper>
@@ -563,9 +594,12 @@ class Withdrawal extends Component {
         </CustomPlaceholderWrapper>
         {(() => {
           if (
-            this.props.wallet.bankCardList[this.state.selectedBankCardIndex] &&
-            this.props.wallet.bankCardList[this.state.selectedBankCardIndex]
-              .banktype === "Usdt"
+            this.handleFilterCardList(this.props.wallet.bankCardList)[
+              this.state.selectedBankCardIndex
+            ] &&
+            this.handleFilterCardList(this.props.wallet.bankCardList)[
+              this.state.selectedBankCardIndex
+            ].banktype === "Usdt"
           ) {
             return (
               <React.Fragment>
@@ -605,11 +639,13 @@ class Withdrawal extends Component {
           ></Textbox>
         ) : null} */}
         {config.features.Deposit_Withdrawal_PlayerNote &&
-          this.props.wallet.bankCardList[this.state.selectedBankCardIndex] &&
-          (this.props.wallet.bankCardList[
+          this.handleFilterCardList(this.props.wallet.bankCardList)[
+            this.state.selectedBankCardIndex
+          ] &&
+          (this.handleFilterCardList(this.props.wallet.bankCardList)[
             this.state.selectedBankCardIndex
           ].banktype.toUpperCase() === "EWALLET" ||
-            this.props.wallet.bankCardList[
+            this.handleFilterCardList(this.props.wallet.bankCardList)[
               this.state.selectedBankCardIndex
             ].banktype.toUpperCase() === "PULSA") && (
             <Textbox
@@ -627,6 +663,9 @@ class Withdrawal extends Component {
           onClick={this.handleSubmitClick}
           disabled={(() => {
             return (
+              isNaN(
+                parseFloat(this.state.amount.toString().replace(/,/g, ""))
+              ) ||
               parseFloat(this.state.amount.toString().replace(/,/g, "")) <
                 this.state.min ||
               parseFloat(this.state.amount.toString().replace(/,/g, "")) >
@@ -643,24 +682,26 @@ class Withdrawal extends Component {
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
         >
-          {this.props.wallet.bankCardList.map((item, index) => {
-            return (
-              <StyledListItem
-                button
-                key={index}
-                onClick={() => this.handleBankClick(index)}
-              >
-                <LeftText primary={item.banktype}></LeftText>
-                <RightText
-                  primary={
-                    item.detail.address ||
-                    item.detail.bankAccount ||
-                    item.detail.phone
-                  }
-                ></RightText>
-              </StyledListItem>
-            );
-          })}
+          {this.handleFilterCardList(this.props.wallet.bankCardList).map(
+            (item, index) => {
+              return (
+                <StyledListItem
+                  button
+                  key={index}
+                  onClick={() => this.handleBankClick(index)}
+                >
+                  <LeftText primary={item.banktype}></LeftText>
+                  <RightText
+                    primary={
+                      item.detail.address ||
+                      item.detail.bankAccount ||
+                      item.detail.phone
+                    }
+                  ></RightText>
+                </StyledListItem>
+              );
+            }
+          )}
         </StyledModalBank>
         <StyledModalPopup
           onClose={() => this.setState({ ...this.state, otp: false })}

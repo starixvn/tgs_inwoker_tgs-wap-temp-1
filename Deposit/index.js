@@ -109,6 +109,30 @@ const CustomTabs = styled(Tabs)`
   background: ${({ theme }) => theme.tabbar};
 `;
 
+const TabButtonContainer = styled.div`
+  height: 90px;
+  padding-top: 30px;
+  margin-left: 50px;
+  margin-top: -90px;
+`;
+
+const ButtonAddCard = styled.div`
+  width: 100px;
+  height: 60px;
+  border: 1px solid #d9d9d9;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  &:before {
+    content: "+";
+    width: 50px;
+    height: 50px;
+    font-size: 50px;
+    line-height: 50px;
+  }
+`;
+
 class Deposit extends Component {
   constructor(props) {
     super(props);
@@ -139,6 +163,8 @@ class Deposit extends Component {
       url: "",
       openAnnouncement: config.features.DepositNotification,
       playerNote: "",
+      selectedBankCard: "",
+      showTabContainer: true,
     };
     this.state = { ...this.initialState, name: "", account: "" };
   }
@@ -159,6 +185,7 @@ class Deposit extends Component {
                 channelname: e.data.bankname,
                 methodcode: e.data.methodname,
                 bankaccount: e.data.bankaccount,
+                showTabContainer: false,
               });
             }
           }
@@ -200,13 +227,15 @@ class Deposit extends Component {
     ) {
       if (this.props.wallet.depositResult.IsSuccess) {
         const response = this.props.wallet.depositResult;
-        var payment =
-          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
+        var payment = this.props.wallet.depositTypeList[
+          this.state.selectedPaymentIndex
+        ];
         if (config.features.Deposit_DualPage) {
           this.setState({
             ...this.state,
             step: payment.paymentcode.toUpperCase() === "MANUAL" ? 2 : 3,
             loading: false,
+            showTabContainer: false,
           });
         } else {
           if (payment.paymentcode.toUpperCase() === "MANUAL") {
@@ -220,13 +249,20 @@ class Deposit extends Component {
                 loading: false,
               });
             } else {
-              if(this.state.files.length>0)
+              if(this.state.files!==null)
               {
-                this.props.doUploadDepositProof(response.data, this.state.files[0]);
+                if(this.state.files.length>0 )
+                {
+                  this.props.doUploadDepositProof(
+                    response.data,
+                    this.state.files[0]
+                  );
+                }
               }
               this.setState({
                 ...this.state,
                 step: 3,
+                showTabContainer: false,
               });
             }
           } else {
@@ -238,9 +274,14 @@ class Deposit extends Component {
                 url:
                   config.baseUrl.replace("/api/", "") +
                   response.data.paymenturl,
+                showTabContainer: false,
               });
             } else {
-              this.setState({ ...this.state, step: 3 });
+              this.setState({
+                ...this.state,
+                step: 3,
+                showTabContainer: false,
+              });
             }
           }
         }
@@ -352,11 +393,17 @@ class Deposit extends Component {
 
   handleDepositClick = () => {
     this.setState({ ...this.state, disabled: true });
-    var payment =
-      this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
+    var payment = this.props.wallet.depositTypeList[
+      this.state.selectedPaymentIndex
+    ];
     var method = payment.method[this.state.selectedMethodIndex];
 
     var channel = method.channel[this.state.selectedChannelIndex];
+    if (config.features.Deposit_AddCard) {
+      var bankCardIndex = this.props.wallet.bankCardList.findIndex(
+        (item) => item.id === this.state.selectedBankCard
+      );
+    }
 
     const depositMethodSwitcher = (method) => {
       switch (method) {
@@ -374,13 +421,26 @@ class Deposit extends Component {
     if (payment.paymentcode.toUpperCase() === "MANUAL") {
       // handle manual deposit
       if (method.methodcode === "BankTransfer") {
-        this.props.doBankDeposit(
-          this.state.name,
-          this.state.account,
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion
-        );
+        if (config.features.Deposit_AddCard) {
+          this.props.doBankDepositWithDetail(
+            this.state.name,
+            this.state.account,
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            config.features.Deposit_AddCard
+              ? this.props.wallet.bankCardList[bankCardIndex].detail
+              : null
+          );
+        } else {
+          this.props.doBankDeposit(
+            this.state.name,
+            this.state.account,
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion
+          );
+        }
       }
       if (method.methodcode === "FPS") {
         if (config.features.Deposit_FPSWithName) {
@@ -415,26 +475,56 @@ class Deposit extends Component {
         );
       }
       if (method.methodcode === "Pulsa") {
-        this.props.doPulsaDeposit(
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion,
-          null,
-          config.features.Deposit_Withdrawal_PlayerNote
-            ? this.state.playerNote
-            : null
-        );
+        if (config.features.Deposit_AddCard) {
+          this.props.doPulsaDepositWithDetail(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null,
+            config.features.Deposit_AddCard
+              ? this.props.wallet.bankCardList[bankCardIndex].detail
+              : null
+          );
+        } else {
+          this.props.doPulsaDeposit(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null
+          );
+        }
       }
       if (method.methodcode === "EWallet") {
-        this.props.doEWalletDeposit(
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion,
-          null,
-          config.features.Deposit_Withdrawal_PlayerNote
-            ? this.state.playerNote
-            : null
-        );
+        if (config.features.Deposit_AddCard) {
+          this.props.doEWalletDepositWithDetail(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null,
+            config.features.Deposit_AddCard
+              ? this.props.wallet.bankCardList[bankCardIndex].detail
+              : null
+          );
+        } else {
+          this.props.doEWalletDeposit(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null
+          );
+        }
       }
     } else {
       this.props.performDeposit(
@@ -498,10 +588,10 @@ class Deposit extends Component {
     });
   };
   handleAccountChange = (e) => {
-    this.setState({
-      ...this.state,
-      account: e.target.value,
-    });
+      this.setState({
+        ...this.state,
+        account: e.target.value,
+      });
   };
   handleNameChange = (e) => {
     this.setState({
@@ -544,6 +634,52 @@ class Deposit extends Component {
       playerNote: e.target.value,
     });
   };
+  handleBankCardChange = (e) => {
+    var paymentIndex = 0;
+    var methodIndex = 0;
+    var channelIndex = 0;
+
+    if (config.features.Deposit_AddCard && e.target.value!=="") {
+      var bankCardIndex = this.props.wallet.bankCardList.findIndex(
+        (item) => item.id === e.target.value
+      );
+      loop1: for (
+        var i = 0;
+        i < this.props.wallet.depositTypeList.length;
+        i++
+      ) {
+        for (
+          var j = 0;
+          j < this.props.wallet.depositTypeList[i].method.length;
+          j++
+        ) {
+          for (
+            var k = 0;
+            k < this.props.wallet.depositTypeList[i].method[j].channel.length;
+            k++
+          ) {
+            if (
+              this.props.wallet.depositTypeList[i].method[j].channel[k]
+                .channelid ===
+              this.props.wallet.bankCardList[bankCardIndex].paymentchannelid
+            ) {
+              paymentIndex = i;
+              methodIndex = j;
+              channelIndex =k;
+              break loop1;
+            }
+          }
+        }
+      }
+    }
+    this.setState({
+      ...this.state,
+      selectedBankCard: e.target.value,
+      selectedPaymentIndex: paymentIndex,
+      selectedMethodIndex: methodIndex,
+      selectedChannelIndex: channelIndex
+    });
+  };
   handleClosePopup = () => {
     this.setState({ ...this.state, openPopup: false });
   };
@@ -567,6 +703,10 @@ class Deposit extends Component {
       default:
         return "";
     }
+  };
+
+  handleAddCard = () => {
+    this.props.navigate("/card/add?do=deposit");
   };
 
   render() {
@@ -626,6 +766,15 @@ class Deposit extends Component {
                 alert={this.props.alert}
                 playerNote={this.state.playerNote}
                 handlePlayerNoteChange={this.handlePlayerNoteChange}
+                selectedBankCard={this.state.selectedBankCard}
+                handleBankCardChange={this.handleBankCardChange}
+                bankCardList={
+                  config.features.Deposit_AddCard
+                    ? this.props.wallet.bankCardList.filter(
+                        (item) => !item.default
+                      )
+                    : this.props.wallet.bankCardList
+                }
               ></Main>
             );
           }
@@ -756,30 +905,42 @@ class Deposit extends Component {
           }
           return (
             <React.Fragment>
-              <StyledAppBar>
-                <CustomTabs
-                  value={this.state.selectedPaymentIndex}
-                  onChange={this.handlePaymentChange}
-                  variant="scrollable"
-                  scrollButtons="auto"
-                >
-                  {this.props.wallet.depositTypeList
-                    .sort(function (a, b) {
-                      return a.displayorder - b.displayorder;
-                    })
-                    .map((item, index) => {
-                      return (
-                        <Tab
-                          key={index}
-                          value={index}
-                          label={i18n.t(item.paymentcode)}
-                        >
-                          {i18n.t(item.paymentcode)}
-                        </Tab>
-                      );
-                    })}
-                </CustomTabs>
-              </StyledAppBar>
+              {config.features.Deposit_AddCard ? (
+                <React.Fragment>
+                  {this.state.showTabContainer && (
+                    <TabButtonContainer>
+                      <ButtonAddCard
+                        onClick={this.handleAddCard}
+                      ></ButtonAddCard>
+                    </TabButtonContainer>
+                  )}
+                </React.Fragment>
+              ) : (
+                <StyledAppBar>
+                  <CustomTabs
+                    value={this.state.selectedPaymentIndex}
+                    onChange={this.handlePaymentChange}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                  >
+                    {this.props.wallet.depositTypeList
+                      .sort(function (a, b) {
+                        return a.displayorder - b.displayorder;
+                      })
+                      .map((item, index) => {
+                        return (
+                          <Tab
+                            key={index}
+                            value={index}
+                            label={i18n.t(item.paymentcode)}
+                          >
+                            {i18n.t(item.paymentcode)}
+                          </Tab>
+                        );
+                      })}
+                  </CustomTabs>
+                </StyledAppBar>
+              )}
               {(() => {
                 return switchView(this.state.step);
               })()}
@@ -888,14 +1049,14 @@ const mapDispatchToProps = (dispatch) => {
         walletAction.doUsdtDeposit(amount, paymentid, promotionid, banktype)
       );
     },
-    doPulsaDeposit: (amount, paymentid, promotionid, banktype, note) => {
+    doPulsaDeposit: (amount, paymentid, promotionid, banktype, playerNote) => {
       dispatch(
-        walletAction.doPulsaDeposit(amount, paymentid, promotionid, banktype, note)
+        walletAction.doPulsaDeposit(amount, paymentid, promotionid, banktype, playerNote)
       );
     },
-    doEWalletDeposit: (amount, paymentid, promotionid, banktype, note) => {
+    doEWalletDeposit: (amount, paymentid, promotionid, banktype, playerNote) => {
       dispatch(
-        walletAction.doEWalletDeposit(amount, paymentid, promotionid, banktype, note)
+        walletAction.doEWalletDeposit(amount, paymentid, promotionid, banktype, playerNote)
       );
     },
     doBankDeposit2: (amount, payment_id, promotionid, paymentcode) =>
@@ -937,6 +1098,37 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: RESET_WALLETRESULT,
       });
+    },
+    doBankDepositWithDetail: (
+      name,
+      account,
+      amount,
+      paymentid,
+      promotionid,
+      banktype,
+      detail
+    ) => {
+      dispatch(
+        walletAction.doBankDepositWithDetail(
+          name,
+          account,
+          amount,
+          paymentid,
+          promotionid,
+          banktype,
+          detail
+        )
+      );
+    },
+    doPulsaDepositWithDetail: (amount, paymentid, promotionid, banktype, playerNote, detail) => {
+      dispatch(
+        walletAction.doPulsaDepositWithDetail(amount, paymentid, promotionid, banktype, playerNote, detail)
+      );
+    },
+    doEWalletDepositWithDetail: (amount, paymentid, promotionid, banktype, playerNote, detail) => {
+      dispatch(
+        walletAction.doEWalletDepositWithDetail(amount, paymentid, promotionid, banktype, playerNote, detail)
+      );
     },
   };
 };

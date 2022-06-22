@@ -260,36 +260,70 @@ class Main extends Component {
 
     return (
       <React.Fragment>
-        {this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
-          .paymentcode === "ZeroNineNinePay" && (
-          <CustomLabel style={{ padding: "32px" }}>
-            <HintText>{i18n.t("hint._099")}</HintText>
-          </CustomLabel>
-        )}
-        <CustomText>
-          <CustomLabel>{i18n.t("deposit.msgPlsSelectPayment")}</CustomLabel>
-          <CustomFormControl variant="outlined">
-            <CustomCustomSelect
-              native
-              id="customSelect"
-              value={this.props.selectedMethodIndex}
-              onChange={(e) => this.props.handleMethodChange(e)}
-            >
-              <option value={""} disabled>
-                {i18n.t("deposit.msgPlsSelectPayment")}
-              </option>
-              {this.props.wallet.depositTypeList.length > 0 &&
-                this.props.wallet.depositTypeList[
-                  this.props.selectedPaymentIndex
-                ].method.map((item, index) => {
+        {!config.features.Deposit_AddCard ? (
+          <>
+            {this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+              .paymentcode === "ZeroNineNinePay" && (
+              <CustomText>
+                <CustomLabel>
+                  <HintText>{i18n.t("hint._099")}</HintText>
+                </CustomLabel>
+              </CustomText>
+            )}
+            <CustomText>
+              <CustomLabel>{i18n.t("deposit.msgPlsSelectPayment")}</CustomLabel>
+              <CustomFormControl variant="outlined">
+                <CustomCustomSelect
+                  native
+                  id="customSelect"
+                  value={this.props.selectedMethodIndex}
+                  onChange={(e) => this.props.handleMethodChange(e)}
+                >
+                  <option value={""} disabled>
+                    {i18n.t("deposit.msgPlsSelectPayment")}
+                  </option>
+                  {this.props.wallet.depositTypeList.length > 0 &&
+                    this.props.wallet.depositTypeList[
+                      this.props.selectedPaymentIndex
+                    ].method.map((item, index) => {
+                      return (
+                        <option value={index}>{i18n.t(item.methodcode)}</option>
+                      );
+                    })}
+                </CustomCustomSelect>
+              </CustomFormControl>
+            </CustomText>
+          </>
+        ) : (
+          <CustomText>
+            <CustomLabel>{i18n.t("idr1.pleaseEnterAccountName")}</CustomLabel>
+            <CustomFormControl variant="outlined">
+              <CustomCustomSelect
+                native
+                id="customSelect"
+                value={this.props.selectedBankCard}
+                onChange={(e) => this.props.handleBankCardChange(e)}
+              >
+                <option value="">
+                  {i18n.t("idr1.pleaseEnterAccountName")}
+                </option>
+                {this.props.bankCardList.map((item, index) => {
+                  var detail = item.detail;
                   return (
-                    <option value={index}>{i18n.t(item.methodcode)}</option>
+                    <option value={item.id} key={index}>
+                      {detail.bankAccount || detail.address || detail.phone} (
+                      {item.banktype})
+                    </option>
                   );
                 })}
-            </CustomCustomSelect>
-          </CustomFormControl>
-        </CustomText>
-        {!config.features.Deposit_HideDepositChannel && (
+              </CustomCustomSelect>
+            </CustomFormControl>
+          </CustomText>
+        )}
+        {!(
+          config.features.Deposit_HideDepositChannel ||
+          config.features.Deposit_AddCard
+        ) && (
           <CustomText>
             <CustomLabel>{i18n.t("deposit.msgPlsSelectMethod")}</CustomLabel>
             <CustomFormControl variant="outlined">
@@ -311,12 +345,12 @@ class Main extends Component {
             </CustomFormControl>
           </CustomText>
         )}
-
         {(() => {
           if (
             this.props.wallet.depositTypeList[
               this.props.selectedPaymentIndex
-            ].paymentcode.toUpperCase() === "MANUAL"
+            ].paymentcode.toUpperCase() === "MANUAL" &&
+            !config.features.Deposit_AddCard
           ) {
             var channelExtend =
               this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
@@ -422,7 +456,11 @@ class Main extends Component {
             ) {
               return (
                 <>
-                  {!(config.features.Deposit_RemoveAccount || isUSDT) && (
+                  {!(
+                    config.features.Deposit_RemoveAccount ||
+                    isUSDT ||
+                    config.features.Deposit_AddCard
+                  ) && (
                     <>
                       {this.props.wallet.bankCardList.length > 1 ? (
                         <CustomText>
@@ -451,9 +489,11 @@ class Main extends Component {
                                   return (
                                     <option
                                       value={
-                                        detail.bankAccount ||
-                                        detail.address ||
-                                        detail.phone
+                                        config.features.Deposit_AddCard
+                                          ? item.id
+                                          : detail.bankAccount ||
+                                            detail.address ||
+                                            detail.phone
                                       }
                                       key={index}
                                     >
@@ -731,15 +771,16 @@ class Main extends Component {
             );
           }
         })()}
-        {config.features.Deposit_Withdrawal_PlayerNote && (isEwallet || isPulsa) && (
-          <Textbox
-            style={{ margin: "20px auto 20px auto" }}
-            value={this.props.playerNote}
-            onChange={this.props.handlePlayerNoteChange}
-            placeholder={i18n.t("deposit.plsEnterPlayerNote")}
-            label={i18n.t("deposit.playerNote")}
-          ></Textbox>
-        )}
+        {config.features.Deposit_Withdrawal_PlayerNote &&
+          (isEwallet || isPulsa) && (
+            <Textbox
+              style={{ margin: "20px auto 20px auto" }}
+              value={this.props.playerNote}
+              onChange={this.props.handlePlayerNoteChange}
+              placeholder={i18n.t("deposit.plsEnterPlayerNote")}
+              label={i18n.t("deposit.playerNote")}
+            ></Textbox>
+          )}
         <StyledModalPopup
           onClose={this.props.handleClosePopup}
           open={this.props.openPopup}

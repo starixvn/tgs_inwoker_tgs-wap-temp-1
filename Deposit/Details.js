@@ -373,7 +373,7 @@ class Details extends Component {
           })()}
 
           {(() => {
-            if (this.props.isManual === true) {
+            if (this.props.isManual === true && config.features.Deposit_UploadRequired) {
               return (
                 <React.Fragment>
                   <LeftLabel>{i18n.t("deposit.uploadReceipt")}</LeftLabel>
@@ -390,7 +390,7 @@ class Details extends Component {
           })()}
         </ContentBg>
         {(() => {
-          if (this.props.isManual === true) {
+          if (this.props.isManual === true && config.features.Deposit_UploadRequired) {
             return (
               <Button
                 style={{ margin: "20px auto" }}
@@ -406,9 +406,9 @@ class Details extends Component {
           style={{ margin: "20px auto" }}
           labelStyle={{ color: "#fff" }}
           label={
-            this.props.isManual === true
-              ? i18n.t("common.back")
-              : i18n.t("common.complete")
+            this.props.isManual === true && config.features.Deposit_UploadRequired
+              ? i18n.t('common.back')
+              : i18n.t('common.complete')
           }
           onClick={this.props.handleRestartClick}
         ></Button>

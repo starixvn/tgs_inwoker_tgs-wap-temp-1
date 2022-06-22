@@ -302,7 +302,7 @@ class Login extends Component {
         bankInfoAuthentication = response.data.bankinfoauthentication;
       }
     });
-    if (!config.features.Register_CustomFlow_IDR) {
+    if (!config.features.Register_CustomFlow_IDR || (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)) {
       // this.props.getAccountInfo(token);
       // this.props.getAccountProfile(token, true);
       // this.props.getVIPInfo(token);
@@ -490,29 +490,34 @@ class Login extends Component {
 
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      AccountService.Activation(username, password,areacode, phone).then(
+      AccountService.Activation(username, password, areacode, phone).then(
         async (response) => {
           if (response.IsSuccess) {
-            AccountService.VerifyActivation(response.data, "123456").then(
-              async (response) => {
-                AccountService.ActivationEmail(email).then(
-                  async (response) => {
-                    if (response.IsSuccess) {
-                      AccountService.VerifyActivationEmail(response.data, "123456").then(
-                        async (response) => {
-                          this.handleLoginSuccess(result.data);
-                        }
-                      );
-                    } 
-                  }
-                );
-              }
-            );
-          } else {
-            this.handleLoginSuccess(result.data);
+            AccountService.VerifyActivation(response.data, "123456")
+            // .then(
+            //   async (response) => {
+                
+            //   }
+            // );
           }
+          // else {
+          //   this.handleLoginSuccess(result.data);
+          // }
         }
       );
+      AccountService.ActivationEmail(email).then(
+        async (response) => {
+          if (response.IsSuccess) {
+            AccountService.VerifyActivationEmail(response.data, "123456")
+            // .then(
+            //   async (response) => {
+            //     this.handleLoginSuccess(result.data);
+            //   }
+            // );
+          } 
+        }
+      );
+      this.handleLoginSuccess(result.data);
     }
   }
   handleForgotpasswordClick = () => {

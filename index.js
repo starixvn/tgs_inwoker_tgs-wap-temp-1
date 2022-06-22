@@ -737,6 +737,10 @@ class Wap extends Component {
         this.props.game.providerList.length &&
       this.props.account.token !== null
     ) {
+      if(config.features.ForceRedirectAddCard && !this.props.account.info.bankInfoAuthentication)
+      {
+        return;
+      }
       this.props.game.providerList
         .filter((item) => item.status === 0 && item.transferwallet === true)
         .map((a) => {
