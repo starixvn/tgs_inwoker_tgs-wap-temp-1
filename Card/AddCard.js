@@ -915,6 +915,8 @@ class AddCard extends Component {
 }
 const mapStateToProps = (state) => {
   return {
+    token: state.account.token,
+    account: state.account,
     balance: state.account.info.balance,
     wallet: state.wallet,
     game: state.game,
