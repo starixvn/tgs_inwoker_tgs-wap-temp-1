@@ -12,8 +12,7 @@ import Modal from "@material-ui/core/Dialog";
 import Tab from "@material-ui/core/Tab";
 
 import Header from "../Share/Header";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
 import { withStyles } from "@material-ui/core/styles";
 
 import SearchIcon from "@material-ui/icons/Search";
@@ -24,6 +23,7 @@ import BottomScrollListener from "react-bottom-scroll-listener";
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
 import config from "../../../config/config";
+import { walletAction } from "../../../api-services/actions/walletAction";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -246,7 +246,9 @@ class Slot extends Component {
         title = i18n.t("common.electron");
         break;
       case GameTypeEnum.FISH:
-        title = i18n.t("common.fish");
+        title = config.features.MenuItem_ShootFish
+          ? i18n.t("common.shootFish")
+          : i18n.t("common.fish");
         break;
       case GameTypeEnum.TIGERSLOT:
         title = i18n.t("common.slot");
@@ -384,6 +386,7 @@ class Slot extends Component {
   handleGameClick = (gpcode, gpid) => {
     if (this.props.token) {
       Common.closePreviousPopup();
+      this.performBalanceRefresh();
       Common.PopupCenter(
         `/${i18n.language}/joingame/${this.props.match.params.type}/${gpcode}/${gpid}`,
         "gamewindow"
@@ -462,6 +465,13 @@ class Slot extends Component {
         });
       });
     }
+  };
+
+  performBalanceRefresh = () => {
+    this.props.updateBalanceList();
+    this.props.game.providerList
+      .filter((item) => item.status === 0 && item.transferwallet === true)
+      .map((a) => this.props.getGameBalance(a.abbreviation));
   };
 
   render() {
@@ -586,7 +596,6 @@ class Slot extends Component {
                   <ListItem key={row.id}>
                     <LazyLoadImage
                       width={344}
-                      height={344}
                       alt={""}
                       effect="blur"
                       src={`${
@@ -659,6 +668,8 @@ const mapDispatchToProps = (dispatch) => {
     setFavoriteGame: (gameId) => dispatch(gameAction.setFavoriteGame(gameId)),
     removeFavoriteGame: (gameId) =>
       dispatch(gameAction.removeFavoriteGame(gameId)),
+    getGameBalance: (gpcode) => dispatch(walletAction.getGameBalance(gpcode)),
+    updateBalanceList: (loading) => dispatch(walletAction.updateBalanceList()),
   };
 };
 

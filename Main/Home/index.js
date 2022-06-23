@@ -20,6 +20,7 @@ import LiveChat from "../../../Share/live-chat";
 import CustomPopover from "../../../Share/custompopover";
 import { SortedMenuList } from "../../../../utils/HeaderSorting";
 import { Textfit } from "react-textfit";
+import { walletAction } from "../../../../api-services/actions/walletAction";
 const StyledAppBar = withStyles({
   root: {
     height: "550px",
@@ -558,6 +559,7 @@ class Home extends Component {
       //  window.open("/" + i18n.language + "/joinlottery/" + name, "gamewindow");
 
       Common.closePreviousPopup();
+      this.performBalanceRefresh();
       Common.PopupCenter(
         "/" + i18n.language + "/joinlottery/" + name,
         "gamewindow"
@@ -581,6 +583,7 @@ class Home extends Component {
       this.props.navigate(`/slots/${params}/${type}`);
     } else {
       Common.closePreviousPopup();
+      this.performBalanceRefresh();
       Common.PopupCenter(
         "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
         "gamewindow"
@@ -660,11 +663,13 @@ class Home extends Component {
   }
 
   handleClick = (e) => {
-      this.setState({
-        ...this.state,
-        anchorEl: (config.features.HomePageDisplayBalance ||
-        config.features.NewTransferUI) ? e.currentTarget : null,
-      });
+    this.setState({
+      ...this.state,
+      anchorEl:
+        config.features.HomePageDisplayBalance || config.features.NewTransferUI
+          ? e.currentTarget
+          : null,
+    });
   };
 
   handleClose = () => {
@@ -672,6 +677,13 @@ class Home extends Component {
       ...this.state,
       anchorEl: null,
     });
+  };
+
+  performBalanceRefresh = () => {
+    this.props.updateBalanceList();
+    this.props.game.providerList
+      .filter((item) => item.status === 0 && item.transferwallet === true)
+      .map((a) => this.props.getGameBalance(a.abbreviation));
   };
 
   render() {
@@ -743,114 +755,112 @@ class Home extends Component {
                     if (this.props.account.token != null) {
                       return (
                         <React.Fragment>
-                          
-                            <React.Fragment>
-                              <BalanceAmount
-                                onClick={(e) => {
-                                  this.handleClick(e);
-                                }}
-                              >
-                                {this.props.wallet.mainSymbol}
-                                {Common.formatNumberWithThousand(
-                                  this.props.wallet.mainBalance +
-                                    this.props.game.providerList
-                                      .filter(
-                                        (item) =>
-                                          item.status === 0 &&
-                                          item.transferwallet === true
-                                      )
-                                      .reduce((a, v) => (a = a + v.balance), 0)
-                                )}
-                              </BalanceAmount>
-                              <CustomPopover
-                                open={Boolean(this.state.anchorEl)}
-                                anchorEl={this.state.anchorEl}
-                                handleClose={this.handleClose}
-                                height="1000px"
-                              >
-                                <div>
-                                  <BrandAndBalanceButBigger>
-                                    <span style={{ paddingRight: 30 }}>
-                                      {i18n.t("web.header.mainAccount")}
-                                    </span>
-                                    <div
-                                      style={{
-                                        width: 300,
-                                        display: "flex",
-                                        alignSelf: "flex-end",
-                                        justifyContent: "flex-end",
-                                      }}
-                                    >
-                                      <Textfit mode="single">
-                                        {this.props.wallet.mainSymbol +
-                                          Common.formatNumberWithThousand(
-                                            this.props.wallet.mainBalance +
-                                              this.props.game.providerList
-                                                .filter(
-                                                  (item) =>
-                                                    item.status === 0 &&
-                                                    item.transferwallet === true
-                                                )
-                                                .reduce(
-                                                  (a, v) => (a = a + v.balance),
-                                                  0
-                                                )
-                                          )}
-                                      </Textfit>
-                                    </div>
-                                  </BrandAndBalanceButBigger>
-                                </div>
-                                {SortedMenuList.map((item, key) => {
-                                  return (
-                                    <GameType>
-                                      <GameTypeName>
-                                        {i18n.t(item.title)}
-                                      </GameTypeName>
-                                      {this.props.game.homePageGameList
-                                        .filter((game) => {
-                                          return (
-                                            item.gameType.indexOf(game.type) >=
-                                            0
-                                          );
-                                        })
-                                        .map((brand, index) => {
-                                          return this.props.game.providerList
-                                            .filter((item) => {
-                                              return (
-                                                item.abbreviation ===
-                                                brand.abbreviation
-                                              );
-                                            })
-                                            .map((data, index) => {
-                                              return (
-                                                <BrandAndBalance>
-                                                  <Brand>
-                                                    {i18n.t(
-                                                      `${data.abbreviation}.${item.path}`
-                                                    )}
-                                                  </Brand>
-                                                  <Balancex>
-                                                    {data.maintenance === 1
-                                                      ? i18n.t(
-                                                          "transfer.maintenance"
-                                                        )
-                                                      : Common.formatNumberWithCommas(
-                                                          data.balance
-                                                        )}
-                                                  </Balancex>
-                                                </BrandAndBalance>
-                                              );
-                                            });
-                                        })}
-                                    </GameType>
-                                  );
-                                })}
-                              </CustomPopover>
+                          <React.Fragment>
+                            <BalanceAmount
+                              onClick={(e) => {
+                                this.handleClick(e);
+                              }}
+                            >
+                              {this.props.wallet.mainSymbol}
+                              {Common.formatNumberWithThousand(
+                                this.props.wallet.mainBalance +
+                                  this.props.game.providerList
+                                    .filter(
+                                      (item) =>
+                                        item.status === 0 &&
+                                        item.transferwallet === true
+                                    )
+                                    .reduce((a, v) => (a = a + v.balance), 0)
+                              )}
+                            </BalanceAmount>
+                            <CustomPopover
+                              open={Boolean(this.state.anchorEl)}
+                              anchorEl={this.state.anchorEl}
+                              handleClose={this.handleClose}
+                              height="1000px"
+                            >
+                              <div>
+                                <BrandAndBalanceButBigger>
+                                  <span style={{ paddingRight: 30 }}>
+                                    {i18n.t("web.header.mainAccount")}
+                                  </span>
+                                  <div
+                                    style={{
+                                      width: 300,
+                                      display: "flex",
+                                      alignSelf: "flex-end",
+                                      justifyContent: "flex-end",
+                                    }}
+                                  >
+                                    <Textfit mode="single">
+                                      {this.props.wallet.mainSymbol +
+                                        Common.formatNumberWithThousand(
+                                          this.props.wallet.mainBalance +
+                                            this.props.game.providerList
+                                              .filter(
+                                                (item) =>
+                                                  item.status === 0 &&
+                                                  item.transferwallet === true
+                                              )
+                                              .reduce(
+                                                (a, v) => (a = a + v.balance),
+                                                0
+                                              )
+                                        )}
+                                    </Textfit>
+                                  </div>
+                                </BrandAndBalanceButBigger>
+                              </div>
+                              {SortedMenuList.map((item, key) => {
+                                return (
+                                  <GameType>
+                                    <GameTypeName>
+                                      {i18n.t(item.title)}
+                                    </GameTypeName>
+                                    {this.props.game.homePageGameList
+                                      .filter((game) => {
+                                        return (
+                                          item.gameType.indexOf(game.type) >= 0
+                                        );
+                                      })
+                                      .map((brand, index) => {
+                                        return this.props.game.providerList
+                                          .filter((item) => {
+                                            return (
+                                              item.abbreviation ===
+                                              brand.abbreviation
+                                            );
+                                          })
+                                          .map((data, index) => {
+                                            return (
+                                              <BrandAndBalance>
+                                                <Brand>
+                                                  {i18n.t(
+                                                    `${data.abbreviation}.${item.path}`
+                                                  )}
+                                                </Brand>
+                                                <Balancex>
+                                                  {data.maintenance === 1
+                                                    ? i18n.t(
+                                                        "transfer.maintenance"
+                                                      )
+                                                    : Common.formatNumberWithCommas(
+                                                        data.balance
+                                                      )}
+                                                </Balancex>
+                                              </BrandAndBalance>
+                                            );
+                                          });
+                                      })}
+                                  </GameType>
+                                );
+                              })}
+                            </CustomPopover>
 
-                              <WalletTypeLabel>
-                                {i18n.t("wap.main.home.profile.mainAccount")}
-                              </WalletTypeLabel>
-                            </React.Fragment>
+                            <WalletTypeLabel>
+                              {i18n.t("wap.main.home.profile.mainAccount")}
+                            </WalletTypeLabel>
+                          </React.Fragment>
                         </React.Fragment>
                       );
                     } else {
@@ -1103,11 +1113,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     closeModal: () => {
-//       dispatch({ type: "close" });
-//     }
-//   };
-// };
-export default connect(mapStateToProps, null)(withRouter(Home));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getGameBalance: (gpcode) => dispatch(walletAction.getGameBalance(gpcode)),
+    updateBalanceList: (loading) => dispatch(walletAction.updateBalanceList()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));

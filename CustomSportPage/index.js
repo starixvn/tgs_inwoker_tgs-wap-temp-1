@@ -15,6 +15,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
 import config from "../../../config/config";
+import { walletAction } from "../../../api-services/actions/walletAction";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -280,6 +281,7 @@ class CustomSportPage extends Component {
         document.getElementById("audio").volume = 0;
 
       Common.closePreviousPopup();
+      this.performBalanceRefresh();
       Common.PopupCenter(
         `/${i18n.language}/joingame/${this.state.type}/${gpcode}/${gpid}`,
         "gamewindow"
@@ -310,6 +312,13 @@ class CustomSportPage extends Component {
         });
       });
     }
+  };
+
+  performBalanceRefresh = () => {
+    this.props.updateBalanceList();
+    this.props.game.providerList
+      .filter((item) => item.status === 0 && item.transferwallet === true)
+      .map((a) => this.props.getGameBalance(a.abbreviation));
   };
 
   render() {
@@ -447,6 +456,8 @@ const mapDispatchToProps = (dispatch) => {
     setFavoriteGame: (gameId) => dispatch(gameAction.setFavoriteGame(gameId)),
     removeFavoriteGame: (gameId) =>
       dispatch(gameAction.removeFavoriteGame(gameId)),
+    getGameBalance: (gpcode) => dispatch(walletAction.getGameBalance(gpcode)),
+    updateBalanceList: (loading) => dispatch(walletAction.updateBalanceList()),
   };
 };
 
