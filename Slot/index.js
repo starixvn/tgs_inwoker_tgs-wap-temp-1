@@ -235,6 +235,7 @@ const FavButton = styled.div`
     cursor: pointer;
   }
 `;
+const bc = new BroadcastChannel('refreshBalance');
 
 class Slot extends Component {
   constructor(props) {
@@ -277,6 +278,10 @@ class Slot extends Component {
   }
   language = null;
   componentDidMount() {
+    bc.onmessage = (eventMessage) => {
+      this.performBalanceRefresh();
+    }
+
     this.getGameList();
     this.getFav();
   }
@@ -386,7 +391,7 @@ class Slot extends Component {
   handleGameClick = (gpcode, gpid) => {
     if (this.props.token) {
       Common.closePreviousPopup();
-      this.performBalanceRefresh();
+      // this.performBalanceRefresh();
       Common.PopupCenter(
         `/${i18n.language}/joingame/${this.props.match.params.type}/${gpcode}/${gpid}`,
         "gamewindow"

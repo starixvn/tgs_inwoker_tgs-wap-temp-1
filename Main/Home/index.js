@@ -376,6 +376,7 @@ const BrandAndBalanceButBigger = styled(BrandAndBalance)`
   display: flex;
   align-self: flex-end;
 `;
+const bc = new BroadcastChannel('refreshBalance');
 
 var sortingHK28 = [
   GameTypeEnum.LIVELOBBY,
@@ -461,6 +462,9 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    bc.onmessage = (eventMessage) => {
+      this.performBalanceRefresh();
+    }
     window.addEventListener("scroll", this.handleScroll);
     if (this.props.game.homePageGameList.length > 0) {
       var gameTypeListSorting = this.formatSortedGameList();
@@ -559,7 +563,7 @@ class Home extends Component {
       //  window.open("/" + i18n.language + "/joinlottery/" + name, "gamewindow");
 
       Common.closePreviousPopup();
-      this.performBalanceRefresh();
+      // this.performBalanceRefresh();
       Common.PopupCenter(
         "/" + i18n.language + "/joinlottery/" + name,
         "gamewindow"
@@ -583,7 +587,7 @@ class Home extends Component {
       this.props.navigate(`/slots/${params}/${type}`);
     } else {
       Common.closePreviousPopup();
-      this.performBalanceRefresh();
+      // this.performBalanceRefresh();
       Common.PopupCenter(
         "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
         "gamewindow"
