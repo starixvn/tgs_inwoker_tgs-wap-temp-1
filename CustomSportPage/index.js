@@ -281,7 +281,7 @@ class CustomSportPage extends Component {
         document.getElementById("audio").volume = 0;
 
       Common.closePreviousPopup();
-      this.performBalanceRefresh();
+      // this.performBalanceRefresh();
       Common.PopupCenter(
         `/${i18n.language}/joingame/${this.state.type}/${gpcode}/${gpid}`,
         "gamewindow"
