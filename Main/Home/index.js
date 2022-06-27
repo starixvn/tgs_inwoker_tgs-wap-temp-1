@@ -832,7 +832,8 @@ class Home extends Component {
                                           .filter((item) => {
                                             return (
                                               item.abbreviation ===
-                                              brand.abbreviation
+                                                brand.abbreviation &&
+                                              item.transferwallet === true
                                             );
                                           })
                                           .map((data, index) => {
