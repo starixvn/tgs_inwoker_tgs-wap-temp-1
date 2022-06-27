@@ -685,13 +685,13 @@ class Login extends Component {
         );
         return;
       }
-      if(!isLoggedIn)
-      {
+      // if(!isLoggedIn)
+      // {
         result = await AccountService.Login(username, password);
-      }
-      if((result !== null && result.IsSuccess)|| isLoggedIn)
+      // }
+      if((result !== null && result.IsSuccess)/*|| isLoggedIn*/)
       {
-        AccountService.Activation(username, password, areacode, phone).then(
+        AccountService.Activation("", "", areacode, phone).then(
           async (response) => {
             if (response.IsSuccess) {
               this.props.alert("", i18n.t("common.msgTokenSent"));
