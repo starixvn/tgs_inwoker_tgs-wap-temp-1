@@ -20,6 +20,7 @@ import LiveChat from "../../../Share/live-chat";
 import CustomPopover from "../../../Share/custompopover";
 import { SortedMenuList } from "../../../../utils/HeaderSorting";
 import { Textfit } from "react-textfit";
+import PromotionRoulette from "./PromotionRoulette";
 const StyledAppBar = withStyles({
   root: {
     height: "550px",
@@ -674,6 +675,16 @@ class Home extends Component {
     });
   };
 
+  isRouletteAvailable = () => {
+    return (
+      this.props.general.promotionList.items &&
+      this.props.general.promotionList.items.length > 0 &&
+      this.props.general.promotionList.items.findIndex(
+        (item) => item.promotionType.toUpperCase() === "ROULETTE"
+      ) >= 0
+    );
+  };
+
   render() {
     var checkTransferWallet =
       Object.values(this.props.game.providerList).filter(
@@ -1090,6 +1101,16 @@ class Home extends Component {
               vendor={config.features.LiveChatVendor.brand}
             />
           )}
+        {config.features.HomePage_PromoRoulette &&
+          this.isRouletteAvailable() && (
+            <PromotionRoulette
+              promotionDetail={
+                this.props.general.promotionList.items.filter(
+                  (item) => item.promotionType.toUpperCase() === "ROULETTE"
+                )[0]
+              }
+            ></PromotionRoulette>
+          )}
       </React.Fragment>
     );
   }
@@ -1100,6 +1121,7 @@ const mapStateToProps = (state) => {
     ui: state.ui,
     wallet: state.wallet,
     game: state.game,
+    general: state.general,
   };
 };
 
