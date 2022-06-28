@@ -313,7 +313,7 @@ class Login extends Component {
       // this.props.getInviteLink();
       this.props.getMessageList(i18n.language, 1, 99);
       this.props.getBankCardList();
-      this.props.getPlayerPromotionList(i18n.language);
+      this.props.getPromotion();
       this.props.getWithdrawalChannel();
     }
     if (this.state.rememberMe === true) {
@@ -1279,7 +1279,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
       ),
-    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
+    getWithdrawalChannel: () => {
+      dispatch(walletAction.getWithdrawalChannel());
+    },
+    getPromotion: () => dispatch(generalAction.getPromotion()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
