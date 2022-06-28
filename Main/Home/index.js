@@ -769,7 +769,6 @@ class Home extends Component {
                     if (this.props.account.token != null) {
                       return (
                         <React.Fragment>
-                          <React.Fragment>
                             <BalanceAmount
                               onClick={(e) => {
                                 this.handleClick(e);
@@ -872,10 +871,10 @@ class Home extends Component {
                               })}
                             </CustomPopover>
 
+
                             <WalletTypeLabel>
                               {i18n.t("wap.main.home.profile.mainAccount")}
                             </WalletTypeLabel>
-                          </React.Fragment>
                         </React.Fragment>
                       );
                     } else {
@@ -998,7 +997,7 @@ class Home extends Component {
               var displayGameType = Common.GetDisplayGameType();
               var currentType = -1;
               return this.props.game.homePageGameList
-                .filter((a) => displayGameType.indexOf(a.type) >= 0)
+                .filter((a) => (displayGameType.indexOf(a.type) >= 0 && a.type !== GameTypeEnum.RNGSPORTS) || (a.type === GameTypeEnum.RNGSPORTS && a.abbreviation === "PPTF"))
                 .sort((a, b) => {
                   if (config.features.LiveGame_Sorting_SKY) {
                     var sortDGFirst = ["DG"];
