@@ -980,7 +980,7 @@ class Wap extends Component {
             }
           })()}
           {config.features.PopupPromotion &&
-            this.props.general.promotionList.totalcount > 0 && (
+            this.props.general.promotionList.items.length > 0 && (
               <PopupAnnouncement
                 open={this.state.showPromotion}
                 type="promo"
