@@ -198,6 +198,7 @@ class Profile extends Component {
           )} */}
 
             {(config.features.SMSVerification ||
+              config.features.PromoRoulette_SMSVerification ||
               config.features.Register_ShowPhone) &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-phone.png`,
