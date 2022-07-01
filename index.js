@@ -732,6 +732,10 @@ class Wap extends Component {
         this.props.getPromotion();
       }
     }
+    if(preProps.account.token !== this.props.account.token && (this.props.account.token === null || this.props.account.token === ""))
+    {
+      this.props.getPromotion();
+    }
     if (
       preProps.game.providerList.length !==
         this.props.game.providerList.length &&
