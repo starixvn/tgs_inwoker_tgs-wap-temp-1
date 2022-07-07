@@ -173,7 +173,7 @@ class Deposit extends Component {
   componentDidMount() {
     if (this.props.token != null) {
       this.props.getDepositMethod(i18n.language);
-      this.props.getPlayerPromotionList(i18n.language);
+      this.props.getPromotion();
       if (this.state.paymentId) {
         WalletService.PerformGetManualDepositDetail(this.state.paymentId).then(
           (e) => {
@@ -1130,6 +1130,7 @@ const mapDispatchToProps = (dispatch) => {
         walletAction.doEWalletDepositWithDetail(amount, paymentid, promotionid, banktype, playerNote, detail)
       );
     },
+    getPromotion: () => dispatch(generalAction.getPromotion()),
   };
 };
 export default connect(

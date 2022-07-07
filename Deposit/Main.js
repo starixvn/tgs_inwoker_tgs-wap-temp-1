@@ -227,6 +227,11 @@ class Main extends Component {
         this.props.selectedMethodIndex
       ].methodcode.toUpperCase() === "USDT";
 
+    var isBankTransfer =
+      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
+        this.props.selectedMethodIndex
+      ].methodcode.toUpperCase() === "BANKTRANSFER";
+      
     var isEwallet =
       this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
         this.props.selectedMethodIndex
@@ -256,6 +261,28 @@ class Main extends Component {
           }}
         />
       );
+    };
+
+    const formatBankCardDetail = (data) => {
+      var detail = "";
+      switch (data.banktype.toUpperCase()) {
+        case "BANK":
+          detail = `${data.detail.bankName || ""} - ${data.detail.name || ""} - ${
+            data.detail.bankAccount || ""
+          }`;
+          break;
+        case "EWALLET":
+        case "E-WALLET":
+          detail = `${data.detail.phone || ""} - ${data.detail.eMoneyName || ""}`;
+          break;
+        case "PULSA":
+          detail = `${data.detail.phone || ""}`;
+          break;
+        default:
+          detail = `${data.detail.bankAccount||data.detail.address||data.detail.phone}`;
+          break;
+      }
+      return detail;
     };
 
     return (
@@ -304,15 +331,13 @@ class Main extends Component {
                 value={this.props.selectedBankCard}
                 onChange={(e) => this.props.handleBankCardChange(e)}
               >
-                <option value="">
+                <option value="" disabled>
                   {i18n.t("idr1.pleaseEnterAccountName")}
                 </option>
                 {this.props.bankCardList.map((item, index) => {
-                  var detail = item.detail;
                   return (
                     <option value={item.id} key={index}>
-                      {detail.bankAccount || detail.address || detail.phone} (
-                      {item.banktype})
+                      {formatBankCardDetail(item)}
                     </option>
                   );
                 })}
@@ -345,6 +370,88 @@ class Main extends Component {
             </CustomFormControl>
           </CustomText>
         )}
+        {(() => {
+          if (
+            config.features.Deposit_AddCard &&
+            this.props.selectedBankCard !== ""
+          ) {
+            var channel =
+              this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+                .method[this.props.selectedMethodIndex].channel[
+                this.props.selectedChannelIndex
+              ];
+            var channelExtend =
+              this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+                .method[this.props.selectedMethodIndex].channel[
+                this.props.selectedChannelIndex
+              ].extended;
+            if (!isBankTransfer && !isEwallet && !isPulsa) return <></>;
+            return (
+              <CustomText>
+                <CustomLabel>{i18n.t("deposit.transferAccount")}</CustomLabel>
+                {isBankTransfer && (
+                  <TransferContainer>
+                    <TransferLabel>
+                      {i18n.t("deposit.details.bank")}:
+                    </TransferLabel>
+                    {channel.channelname && (
+                      <React.Fragment>
+                        <TransferValue>{channel.channelname}</TransferValue>
+                        <CopyFeature copyContent={channel.channelname} />
+                      </React.Fragment>
+                    )}
+                  </TransferContainer>
+                )}
+                {isBankTransfer && (
+                  <TransferContainer>
+                    <TransferLabel>{i18n.t("deposit.accName")}:</TransferLabel>
+                    {channelExtend.name && (
+                      <React.Fragment>
+                        <TransferValue>{channelExtend.name}</TransferValue>
+                        <CopyFeature copyContent={channelExtend.name} />
+                      </React.Fragment>
+                    )}
+                  </TransferContainer>
+                )}
+                {isBankTransfer && (
+                  <TransferContainer>
+                    <TransferLabel>{i18n.t("deposit.cardNum")}:</TransferLabel>
+                    {channelExtend.bankAccount && (
+                      <React.Fragment>
+                        <TransferValue>{channelExtend.bankAccount}</TransferValue>
+                        <CopyFeature copyContent={channelExtend.bankAccount} />
+                      </React.Fragment>
+                    )}
+                  </TransferContainer>
+                )}
+                {(isEwallet || isPulsa) && (
+                  <TransferContainer>
+                    <TransferLabel>{i18n.t("deposit.phone")}:</TransferLabel>
+                    {channelExtend.phone && (
+                      <React.Fragment>
+                        <TransferValue>{channelExtend.phone}</TransferValue>
+                        <CopyFeature copyContent={channelExtend.phone} />
+                      </React.Fragment>
+                    )}
+                  </TransferContainer>
+                )}
+                {isEwallet && (
+                  <TransferContainer>
+                    <TransferLabel>
+                      {i18n.t("deposit.eWalletAccount")}:
+                    </TransferLabel>
+                    {channelExtend.eMoneyName && (
+                      <React.Fragment>
+                        <TransferValue>{channelExtend.eMoneyName}</TransferValue>
+                        <CopyFeature copyContent={channelExtend.eMoneyName} />
+                      </React.Fragment>
+                    )}
+                  </TransferContainer>
+                )}
+              </CustomText>
+            );
+          }
+        })()}
         {(() => {
           if (
             this.props.wallet.depositTypeList[
