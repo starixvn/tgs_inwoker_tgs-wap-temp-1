@@ -119,6 +119,7 @@ const CloseButton = styled.div`
   background: url(${BtnClose}) no-repeat;
   width: 31px;
   height: 31px;
+  z-index: 2;
 `;
 
 const RouletteContainer = styled.div`
