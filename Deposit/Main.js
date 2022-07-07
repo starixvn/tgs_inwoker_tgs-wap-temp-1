@@ -879,7 +879,7 @@ class Main extends Component {
           }
         })()}
         {config.features.Deposit_Withdrawal_PlayerNote &&
-          (isEwallet || isPulsa) && (
+          (isEwallet || isPulsa || isBankTransfer) && (
             <Textbox
               style={{ margin: "20px auto 20px auto" }}
               value={this.props.playerNote}
