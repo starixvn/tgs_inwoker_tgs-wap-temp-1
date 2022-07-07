@@ -566,7 +566,7 @@ class Wap extends Component {
       this.props.getBrand();
       this.props.getBrandCommunicationList();
       this.props.getLiveChatURL();
-      this.props.getPlayerPromotionList(i18n.language);
+      this.props.getPromotion();
       this.props.getDepositMethod();
       this.props.getWithdrawalChannel();
     }
@@ -729,8 +729,12 @@ class Wap extends Component {
         this.props.getBrand();
         this.props.getBrandCommunicationList();
         this.props.getLiveChatURL();
-        this.props.getPromotionList(i18n.language);
+        this.props.getPromotion();
       }
+    }
+    if(preProps.account.token !== this.props.account.token && (this.props.account.token === null || this.props.account.token === ""))
+    {
+      this.props.getPromotion();
     }
     if (
       preProps.game.providerList.length !==
@@ -980,7 +984,7 @@ class Wap extends Component {
             }
           })()}
           {config.features.PopupPromotion &&
-            this.props.general.promotionList.totalcount > 0 && (
+            this.props.general.promotionList.items.length > 0 && (
               <PopupAnnouncement
                 open={this.state.showPromotion}
                 type="promo"
@@ -1112,6 +1116,7 @@ const mapDispatchToProps = (dispatch) => {
       ),
     getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
     getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
+    getPromotion: () => dispatch(generalAction.getPromotion()),
   };
 };
 

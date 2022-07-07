@@ -20,6 +20,7 @@ import LiveChat from "../../../Share/live-chat";
 import CustomPopover from "../../../Share/custompopover";
 import { SortedMenuList } from "../../../../utils/HeaderSorting";
 import { Textfit } from "react-textfit";
+import PromotionRoulette from "./PromotionRoulette";
 const StyledAppBar = withStyles({
   root: {
     height: "550px",
@@ -674,6 +675,16 @@ class Home extends Component {
     });
   };
 
+  isRouletteAvailable = () => {
+    return (
+      this.props.general.promotionList.items &&
+      this.props.general.promotionList.items.length > 0 &&
+      this.props.general.promotionList.items.findIndex(
+        (item) => item.promotionType.toUpperCase() === "ROULETTE"
+      ) >= 0
+    );
+  };
+
   render() {
     var checkTransferWallet =
       Object.values(this.props.game.providerList).filter(
@@ -809,8 +820,8 @@ class Home extends Component {
                                       {this.props.game.homePageGameList
                                         .filter((game) => {
                                           return (
-                                            item.gameType.indexOf(game.type) >=
-                                            0
+                                            (item.gameType.indexOf(game.type) >=
+                                            0 && game.type !== GameTypeEnum.RNGSPORTS) || (game.type === GameTypeEnum.RNGSPORTS && game.abbreviation === "PPTF")
                                           );
                                         })
                                         .map((brand, index) => {
@@ -973,7 +984,7 @@ class Home extends Component {
               var displayGameType = Common.GetDisplayGameType();
               var currentType = -1;
               return this.props.game.homePageGameList
-                .filter((a) => displayGameType.indexOf(a.type) >= 0)
+                .filter((a) => (displayGameType.indexOf(a.type) >= 0 && a.type !== GameTypeEnum.RNGSPORTS) || (a.type === GameTypeEnum.RNGSPORTS && a.abbreviation === "PPTF"))
                 .sort((a, b) => {
                   if (config.features.LiveGame_Sorting_SKY) {
                     var sortDGFirst = ["DG"];
@@ -1090,6 +1101,16 @@ class Home extends Component {
               vendor={config.features.LiveChatVendor.brand}
             />
           )}
+        {config.features.HomePage_PromoRoulette &&
+          this.isRouletteAvailable() && (
+            <PromotionRoulette
+              promotionDetail={
+                this.props.general.promotionList.items.filter(
+                  (item) => item.promotionType.toUpperCase() === "ROULETTE"
+                )[0]
+              }
+            ></PromotionRoulette>
+          )}
       </React.Fragment>
     );
   }
@@ -1100,6 +1121,7 @@ const mapStateToProps = (state) => {
     ui: state.ui,
     wallet: state.wallet,
     game: state.game,
+    general: state.general,
   };
 };
 

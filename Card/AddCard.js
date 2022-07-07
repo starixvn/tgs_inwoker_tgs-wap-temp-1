@@ -145,6 +145,16 @@ class AddCard extends Component {
   }
   componentDidUpdate(preProps, preState) {
     if (
+      !preProps.account.info.bankInfoAuthentication &&
+      this.props.account.info.bankInfoAuthentication &&
+      this.props.token &&
+      this.props.wallet.addBankCardResult === null
+    ) {
+      this.props.resetResult();
+      this.props.getBankCardList();
+      this.props.appHistory.goBack();
+    }
+    if (
       preProps.wallet.addBankCardResult !==
         this.props.wallet.addBankCardResult &&
       this.props.wallet.addBankCardResult !== null
@@ -905,6 +915,8 @@ class AddCard extends Component {
 }
 const mapStateToProps = (state) => {
   return {
+    token: state.account.token,
+    account: state.account,
     balance: state.account.info.balance,
     wallet: state.wallet,
     game: state.game,
