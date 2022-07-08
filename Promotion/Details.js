@@ -154,6 +154,7 @@ class Details extends Component {
 
   render() {
     if (this.state.details === null) return <React.Fragment></React.Fragment>;
+    var isDummy = this.state.details.promotionType.toUpperCase() === "DUMMY";
     return (
       <React.Fragment>
         <Header
@@ -244,16 +245,18 @@ class Details extends Component {
             }}
           ></PromoDesc>
         </Content>
-        <Button
-          style={{ margin: "40px auto 0 auto" }}
-          label={i18n.t("promotion.joinPromo")}
-          onClick={() =>
-            this.handleJoinClick(
-              this.state.details.id,
-              this.state.details.promotionType
-            )
-          }
-        ></Button>
+        {!isDummy && (
+          <Button
+            style={{ margin: "40px auto 0 auto" }}
+            label={i18n.t("promotion.joinPromo")}
+            onClick={() =>
+              this.handleJoinClick(
+                this.state.details.id,
+                this.state.details.promotionType
+              )
+            }
+          ></Button>
+        )}
       </React.Fragment>
     );
   }
