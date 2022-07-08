@@ -622,8 +622,8 @@ class Wap extends Component {
         //   .parentNode.removeChild(document.getElementById("ioBB"));
         // this.props.checkGame();
         var bankInfoAuthentication = null;
-        await this.props.getAccountProfile(true).then((response)=>{
-          bankInfoAuthentication = response.data.bankinfoauthentication; 
+        await this.props.getAccountProfile(true).then((response) => {
+          bankInfoAuthentication = response.data.bankinfoauthentication;
         });
         if (config.features.ForceRedirectAddCard && !bankInfoAuthentication) {
           this.setState({ ...this.state, loading: false });
@@ -732,8 +732,10 @@ class Wap extends Component {
         this.props.getPromotion();
       }
     }
-    if(preProps.account.token !== this.props.account.token && (this.props.account.token === null || this.props.account.token === ""))
-    {
+    if (
+      preProps.account.token !== this.props.account.token &&
+      (this.props.account.token === null || this.props.account.token === "")
+    ) {
       this.props.getPromotion();
     }
     if (
@@ -741,8 +743,10 @@ class Wap extends Component {
         this.props.game.providerList.length &&
       this.props.account.token !== null
     ) {
-      if(config.features.ForceRedirectAddCard && !this.props.account.info.bankInfoAuthentication)
-      {
+      if (
+        config.features.ForceRedirectAddCard &&
+        !this.props.account.info.bankInfoAuthentication
+      ) {
         return;
       }
       this.props.game.providerList
@@ -983,6 +987,7 @@ class Wap extends Component {
               );
             }
           })()}
+
           {config.features.PopupPromotion &&
             this.props.general.promotionList.items.length > 0 && (
               <PopupAnnouncement

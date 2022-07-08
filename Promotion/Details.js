@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Header from "../../Wap/Share/Header";
 import Button from "../../Wap/Share/Button";
-import {generalAction} from "../../../api-services/actions/generalAction";
+import { generalAction } from "../../../api-services/actions/generalAction";
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
 const moment = require("moment");
@@ -165,12 +165,12 @@ class Details extends Component {
         ></Header>
         {(() => {
           if (this.state.details.localization !== null) {
+            var checkLocale = this.state.details.localization[i18n.language];
             return (
               <PromoDetailImage
                 img={
-                  this.state.details.localization.mobileBanner &&
-                  this.state.details.localization.mobileBanner !== null
-                    ? this.state.details.localization.mobileBanner
+                  checkLocale
+                    ? checkLocale.mobileBanner
                     : this.state.details.mobileBanner
                 }
                 onClick={() => this.handlePromoClick(this.state.details.id)}
