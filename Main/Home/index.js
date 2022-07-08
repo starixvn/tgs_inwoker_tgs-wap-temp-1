@@ -21,7 +21,6 @@ import CustomPopover from "../../../Share/custompopover";
 import { SortedMenuList } from "../../../../utils/HeaderSorting";
 import { Textfit } from "react-textfit";
 import PromotionRoulette from "./PromotionRoulette";
-import { walletAction } from "../../../../api-services/actions/walletAction";
 const StyledAppBar = withStyles({
   root: {
     height: "550px",
@@ -377,7 +376,6 @@ const BrandAndBalanceButBigger = styled(BrandAndBalance)`
   display: flex;
   align-self: flex-end;
 `;
-const bc = new BroadcastChannel('refreshBalance');
 
 var sortingHK28 = [
   GameTypeEnum.LIVELOBBY,
@@ -463,9 +461,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    bc.onmessage = (eventMessage) => {
-      this.performBalanceRefresh();
-    }
     window.addEventListener("scroll", this.handleScroll);
     if (this.props.game.homePageGameList.length > 0) {
       var gameTypeListSorting = this.formatSortedGameList();
@@ -564,7 +559,6 @@ class Home extends Component {
       //  window.open("/" + i18n.language + "/joinlottery/" + name, "gamewindow");
 
       Common.closePreviousPopup();
-      // this.performBalanceRefresh();
       Common.PopupCenter(
         "/" + i18n.language + "/joinlottery/" + name,
         "gamewindow"
@@ -588,7 +582,6 @@ class Home extends Component {
       this.props.navigate(`/slots/${params}/${type}`);
     } else {
       Common.closePreviousPopup();
-      // this.performBalanceRefresh();
       Common.PopupCenter(
         "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
         "gamewindow"
@@ -602,7 +595,12 @@ class Home extends Component {
 
   handleGameClick = (type, params, game_platform_id) => {
     if (type === GameTypeEnum.RNGSPORTS) {
-      this.props.appHistory.push("/" + i18n.language + "/sports/" + params);
+      if (!this.props.account.token) {
+        this.props.appHistory.push("/" + i18n.language + "/login");
+        return;
+      } else {
+        this.props.appHistory.push("/" + i18n.language + "/sports/" + params);
+      }
     } else {
       type === GameTypeEnum.LOTTERYLOBBY || type === GameTypeEnum.LOTTERY
         ? this.handleJoinLotteryGame(params)
@@ -684,12 +682,6 @@ class Home extends Component {
     });
   };
 
-  performBalanceRefresh = () => {
-    this.props.updateBalanceList();
-    this.props.game.providerList
-      .filter((item) => item.status === 0 && item.transferwallet === true)
-      .map((a) => this.props.getGameBalance(a.abbreviation));
-  };
   isRouletteAvailable = () => {
     return (
       this.props.general.promotionList.items &&
@@ -769,6 +761,7 @@ class Home extends Component {
                     if (this.props.account.token != null) {
                       return (
                         <React.Fragment>
+                          <React.Fragment>
                             <BalanceAmount
                               onClick={(e) => {
                                 this.handleClick(e);
@@ -833,7 +826,13 @@ class Home extends Component {
                                     {this.props.game.homePageGameList
                                       .filter((game) => {
                                         return (
-                                          item.gameType.indexOf(game.type) >= 0
+                                          (item.gameType.indexOf(game.type) >=
+                                            0 &&
+                                            game.type !==
+                                              GameTypeEnum.RNGSPORTS) ||
+                                          (game.type ===
+                                            GameTypeEnum.RNGSPORTS &&
+                                            game.abbreviation === "PPTF")
                                         );
                                       })
                                       .map((brand, index) => {
@@ -841,8 +840,7 @@ class Home extends Component {
                                           .filter((item) => {
                                             return (
                                               item.abbreviation ===
-                                                brand.abbreviation &&
-                                              item.transferwallet === true
+                                              brand.abbreviation
                                             );
                                           })
                                           .map((data, index) => {
@@ -871,10 +869,10 @@ class Home extends Component {
                               })}
                             </CustomPopover>
 
-
                             <WalletTypeLabel>
                               {i18n.t("wap.main.home.profile.mainAccount")}
                             </WalletTypeLabel>
+                          </React.Fragment>
                         </React.Fragment>
                       );
                     } else {
@@ -997,7 +995,13 @@ class Home extends Component {
               var displayGameType = Common.GetDisplayGameType();
               var currentType = -1;
               return this.props.game.homePageGameList
-                .filter((a) => (displayGameType.indexOf(a.type) >= 0 && a.type !== GameTypeEnum.RNGSPORTS) || (a.type === GameTypeEnum.RNGSPORTS && a.abbreviation === "PPTF"))
+                .filter(
+                  (a) =>
+                    (displayGameType.indexOf(a.type) >= 0 &&
+                      a.type !== GameTypeEnum.RNGSPORTS) ||
+                    (a.type === GameTypeEnum.RNGSPORTS &&
+                      a.abbreviation === "PPTF")
+                )
                 .sort((a, b) => {
                   if (config.features.LiveGame_Sorting_SKY) {
                     var sortDGFirst = ["DG"];
@@ -1138,11 +1142,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getGameBalance: (gpcode) => dispatch(walletAction.getGameBalance(gpcode)),
-    updateBalanceList: (loading) => dispatch(walletAction.updateBalanceList()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     closeModal: () => {
+//       dispatch({ type: "close" });
+//     }
+//   };
+// };
+export default connect(mapStateToProps, null)(withRouter(Home));
