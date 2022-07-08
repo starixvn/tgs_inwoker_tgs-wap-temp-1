@@ -74,11 +74,11 @@ class Promotion extends Component {
     selectedPromoSpecifications: [],
   };
   componentDidMount() {
-    if (this.props.token === null || this.props.token === "") {
-      this.props.getPromotionList(i18n.language);
-    } else {
-      this.props.getPlayerPromotionList(i18n.language);
-    }
+    //  if (this.props.token === null || this.props.token === "") {
+    //    this.props.getPromotionList(i18n.language);
+    //  } else {
+    //    this.props.getPlayerPromotionList(i18n.language);
+    //  }
   }
 
   handleTabChange = (tab) => {
@@ -133,14 +133,12 @@ class Promotion extends Component {
           ) : (
             this.props.general.promotionList.items.map((row, index) => {
               if (row.localization !== null) {
+                var checkLocale = row.localization[i18n.language];
                 return (
                   <ListItem
                     key={index}
                     src={
-                      row.localization.mobileBanner &&
-                      row.localization.mobileBanner !== null
-                        ? row.localization.mobileBanner
-                        : row.mobileBanner
+                      checkLocale ? checkLocale.mobileBanner : row.mobileBanner
                     }
                     onClick={() => this.handlePromoClick(row.id)}
                   ></ListItem>
@@ -170,19 +168,7 @@ const mapStateToProps = (state) => {
     token: state.account.token,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //TODO: Revert the 4th param to true after testing.
-    getPromotionList: (language) =>
-      dispatch(
-        generalAction.getPromotionList(language, 1, 99, false, "", true)
-      ),
-    getPlayerPromotionList: (language) =>
-      dispatch(
-        generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
-      ),
-  };
-};
+const mapDispatchToProps = (dispatch) => {};
 
 export default connect(
   mapStateToProps,
