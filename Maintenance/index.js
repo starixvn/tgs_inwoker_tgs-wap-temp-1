@@ -2,8 +2,8 @@ import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import i18n from "../../../utils/i18n";
+import config from "../../../config/config";
 import IMHandler from "../Main/Support/IMHandler";
-
 const MaintenanceBg = styled.div`
   z-index: 10;
   overflow-y: scroll;
@@ -144,12 +144,30 @@ const Maintenance = (props) => {
       props.appHistory.push("/" + i18n.language);
     }
   });
+
+  const formatTime = (isoString) => {
+    var newDate = new Date(isoString);
+    var hours = newDate.getHours();
+    var minutes = newDate.getMinutes();
+    var ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    hours = hours < 10 ? "0" + hours : hours;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    var strTime = hours + ":" + minutes + " " + ampm;
+    return strTime;
+  };
+
   return (
     <MaintenanceBg>
       <CustomContainer container justify="center" alignItems="center">
         <Text>我们现正维护中，请稍后再试。 </Text>
         <Text>
           如您有任何问题，请<Hyperlink onClick={csClick}>联系客服</Hyperlink>。
+        </Text>
+        <Text>
+          維修時間 : {formatTime(config.features.Maintenance_Detail.startTime)}{" "}
+          ~ {formatTime(config.features.Maintenance_Detail.endTime)} (GMT+8){" "}
         </Text>
         {(() => {
           if (i18n.language === "vi-VN") {
@@ -161,6 +179,12 @@ const Maintenance = (props) => {
                 <Text>
                   Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi{" "}
                   <Hyperlink onClick={csClick}>dịch vụ khách hàng</Hyperlink>。
+                </Text>
+                <Text>
+                  thời gian bảo trì :{" "}
+                  {formatTime(config.features.Maintenance_Detail.startTime)} ~{" "}
+                  {formatTime(config.features.Maintenance_Detail.endTime)}{" "}
+                  (GMT+8){" "}
                 </Text>
               </React.Fragment>
             );
@@ -174,6 +198,11 @@ const Maintenance = (props) => {
           If you have any questions, <br />
           please contact our{" "}
           <Hyperlink onClick={csClick}>customer service</Hyperlink>.
+        </Text>
+        <Text>
+          Maintenance Time :{" "}
+          {formatTime(config.features.Maintenance_Detail.startTime)} ~{" "}
+          {formatTime(config.features.Maintenance_Detail.endTime)} (GMT+8){" "}
         </Text>
       </CustomContainer>{" "}
       <ButtonContainer>
