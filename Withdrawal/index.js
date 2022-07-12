@@ -644,7 +644,10 @@ class Withdrawal extends Component {
           ] &&
           (this.handleFilterCardList(this.props.wallet.bankCardList)[
             this.state.selectedBankCardIndex
-          ].banktype.toUpperCase() === "EWALLET" ||
+          ].banktype.toUpperCase() === "BANK" ||
+            this.handleFilterCardList(this.props.wallet.bankCardList)[
+              this.state.selectedBankCardIndex
+            ].banktype.toUpperCase() === "EWALLET" ||
             this.handleFilterCardList(this.props.wallet.bankCardList)[
               this.state.selectedBankCardIndex
             ].banktype.toUpperCase() === "PULSA") && (
