@@ -1111,13 +1111,6 @@ class Home extends Component {
             </DownloadButton>
           </DownloadContainer>
         )}
-        {config.features.LiveChatVendor.brand &&
-          config.features.LiveChatVendor.license && (
-            <LiveChat
-              license={config.features.LiveChatVendor.license}
-              vendor={config.features.LiveChatVendor.brand}
-            />
-          )}
         {config.features.HomePage_PromoRoulette &&
           this.isRouletteAvailable() && (
             <PromotionRoulette

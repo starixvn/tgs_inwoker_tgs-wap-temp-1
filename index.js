@@ -79,7 +79,7 @@ import Loading from "./Share/Loading";
 import Affiliate from "./Affiliate";
 import Birthdate from "./Profile/Birthdate";
 import CustomSportPage from "./CustomSportPage";
-
+import LiveChat from "../Share/live-chat";
 const baseRouteUrl = Common.baseRouteUrl;
 
 const StyledModal = withStyles((theme) => ({
@@ -491,6 +491,13 @@ class Wap extends Component {
   }
 
   GetSupportUrl = (userid, name, question, email) => {
+    if (config.features.LiveChatVendor.brand === "zendesk") {
+      window.zE("webWidget", "open");
+      return;
+    } else if (config.features.LiveChatVendor.brand === "livechat") {
+      window.LiveChatWidget.call("maximize");
+      return;
+    }
     var newURL = this.props.general.livechat
       ? this.props.general.livechat.setting.url
           .replace("{name}", name)
@@ -1002,6 +1009,19 @@ class Wap extends Component {
                 header={i18n.t("promotion.title")}
               ></PopupAnnouncement>
             )}
+          {(() => {
+            if (
+              config.features.LiveChatVendor.brand &&
+              config.features.LiveChatVendor.license
+            ) {
+              return (
+                <LiveChat
+                  license={config.features.LiveChatVendor.license}
+                  vendor={config.features.LiveChatVendor.brand}
+                />
+              );
+            }
+          })()}
 
           <StyledModal onClose={this.handleClose} open={this.state.open}>
             <DialoTitle>{this.state.title}</DialoTitle>
