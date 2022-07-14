@@ -296,13 +296,15 @@ class Login extends Component {
       // }
     }
     var bankInfoAuthentication = null;
-    await this.props.getAccountInfo().then((response)=>{
-      if(response.IsSuccess)
-      {
+    await this.props.getAccountInfo().then((response) => {
+      if (response.IsSuccess) {
         bankInfoAuthentication = response.data.bankinfoauthentication;
       }
     });
-    if (!config.features.Register_CustomFlow_IDR || (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)) {
+    if (
+      !config.features.Register_CustomFlow_IDR ||
+      (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)
+    ) {
       // this.props.getAccountInfo(token);
       // this.props.getAccountProfile(token, true);
       // this.props.getVIPInfo(token);
@@ -325,7 +327,11 @@ class Login extends Component {
 
       localStorage.removeItem("username");
     }
-    if (this.state.selected === 1 || this.state.selected === 2 || (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)) {
+    if (
+      this.state.selected === 1 ||
+      this.state.selected === 2 ||
+      (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)
+    ) {
       if (config.features.NavigateToAddCard) {
         this.props.appHistory.replace("/" + i18n.language + "/card/add");
       } else {
@@ -392,36 +398,38 @@ class Login extends Component {
   };
   doLoginWithHp = async (username, password, phone, areacode) => {
     this.setState({ ...this.state, loading: true });
-        const result = await this.props.accountLogin(username, password);
-        if (result.IsSuccess) {
-          AccountService.Activation(username, password,areacode, phone).then(async (response) => {
-            if (response.IsSuccess) {
-              // setSecurityKey(response.data);
-              // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
-              //   variant: "info",
-              // });
-              AccountService.VerifyActivation(response.data, "123456").then(
-                async (response) => {
-                  // if (response.IsSuccess) {
-                  // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
-                  //   variant: "success",
-                  // });
-                  //this.doLogin(username, password);
-                  // } else {
-                  // props.enqueueSnackbar(response.info, {
-                  //   variant: "warning",
-                  // });
-                  // }
-                  //this.doLogin(username, password);
-                  this.handleLoginSuccess(result.data);
-                }
-              );
-            } else {
-              this.handleLoginSuccess(result.data);
-              //this.doLogin(username, password);
-            }
-          });
+    const result = await this.props.accountLogin(username, password);
+    if (result.IsSuccess) {
+      AccountService.Activation(username, password, areacode, phone).then(
+        async (response) => {
+          if (response.IsSuccess) {
+            // setSecurityKey(response.data);
+            // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
+            //   variant: "info",
+            // });
+            AccountService.VerifyActivation(response.data, "123456").then(
+              async (response) => {
+                // if (response.IsSuccess) {
+                // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
+                //   variant: "success",
+                // });
+                //this.doLogin(username, password);
+                // } else {
+                // props.enqueueSnackbar(response.info, {
+                //   variant: "warning",
+                // });
+                // }
+                //this.doLogin(username, password);
+                this.handleLoginSuccess(result.data);
+              }
+            );
+          } else {
+            this.handleLoginSuccess(result.data);
+            //this.doLogin(username, password);
+          }
         }
+      );
+    }
 
     // console.log("entererherer???")
     // if (username === "") {
@@ -493,10 +501,10 @@ class Login extends Component {
       AccountService.Activation(username, password, areacode, phone).then(
         async (response) => {
           if (response.IsSuccess) {
-            AccountService.VerifyActivation(response.data, "123456")
+            AccountService.VerifyActivation(response.data, "123456");
             // .then(
             //   async (response) => {
-                
+
             //   }
             // );
           }
@@ -505,21 +513,19 @@ class Login extends Component {
           // }
         }
       );
-      AccountService.ActivationEmail(email).then(
-        async (response) => {
-          if (response.IsSuccess) {
-            AccountService.VerifyActivationEmail(response.data, "123456")
-            // .then(
-            //   async (response) => {
-            //     this.handleLoginSuccess(result.data);
-            //   }
-            // );
-          } 
+      AccountService.ActivationEmail(email).then(async (response) => {
+        if (response.IsSuccess) {
+          AccountService.VerifyActivationEmail(response.data, "123456");
+          // .then(
+          //   async (response) => {
+          //     this.handleLoginSuccess(result.data);
+          //   }
+          // );
         }
-      );
+      });
       this.handleLoginSuccess(result.data);
     }
-  }
+  };
   handleForgotpasswordClick = () => {
     this.props.appHistory.push("/" + i18n.language + "/forgot-password");
   };
@@ -658,7 +664,8 @@ class Login extends Component {
     const countdown = this.state.countdown;
     const areacode = this.state.areaCode;
     const phone = this.state.phone;
-    const isLoggedIn = (this.props.general.token!==""&&this.props.general.token!==null);
+    const isLoggedIn =
+      this.props.general.token !== "" && this.props.general.token !== null;
     var result = null;
 
     if (countdown <= 0) {
@@ -687,10 +694,9 @@ class Login extends Component {
       }
       // if(!isLoggedIn)
       // {
-        result = await AccountService.Login(username, password);
+      result = await AccountService.Login(username, password);
       // }
-      if((result !== null && result.IsSuccess)/*|| isLoggedIn*/)
-      {
+      if (result !== null && result.IsSuccess /*|| isLoggedIn*/) {
         AccountService.Activation("", "", areacode, phone).then(
           async (response) => {
             if (response.IsSuccess) {
@@ -755,9 +761,7 @@ class Login extends Component {
     var expr = new RegExp(
       `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
     );
-    if (
-      config.features.Register_ShowPhone
-    ) {
+    if (config.features.Register_ShowPhone) {
       if (!expr.test(phone)) {
         this.props.alert(
           "",
@@ -803,13 +807,22 @@ class Login extends Component {
             this.setState({ ...this.state, loading: false });
           } else if (response.IsSuccess) {
             if (config.features.SMSVerification) {
-                this.setState({
-                  ...this.state,
-                  selected: 2,
-                  loading: false,
-                });
-            } else if (config.features.Register_ShowPhone && config.features.Register_ShowEmail) {
-              this.doLoginWithHpEmail(username, password, phone, areaCode, email);
+              this.setState({
+                ...this.state,
+                selected: 2,
+                loading: false,
+              });
+            } else if (
+              config.features.Register_ShowPhone &&
+              config.features.Register_ShowEmail
+            ) {
+              this.doLoginWithHpEmail(
+                username,
+                password,
+                phone,
+                areaCode,
+                email
+              );
               // AccountService.VerifyPhone(areaCode,phone).then(
               //   async (response) => {
               //     // security key = response.data, default validatecode = 123456
@@ -1169,35 +1182,35 @@ class Login extends Component {
             } else if (this.state.selected === 2) {
               return (
                 <React.Fragment>
-                  <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-user.png`
-                    }
-                    type={"text"}
-                    placeholder={i18n.t("wap.register.username")}
-                    style={{ marginTop: "60px" }}
-                    maxLength="16"
-                    value={this.state.username}
-                    onChange={this.handleUsernameChange}
-                  ></Textbox>
-
-                  <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
-                    type={this.state.hidePassword ? "password" : "text"}
-                    hidePassword={this.state.hidePassword}
-                    placeholder={i18n.t("wap.register.password")}
-                    style={{ marginTop: "20px" }}
-                    password={true}
-                    maxLength="20"
-                    toggleShow={this.handleToggleShow}
-                    value={this.state.password}
-                    onChange={this.handlePasswordChange}
-                  ></Textbox>
-
+                  {
+                    //        <Textbox
+                    //        icon={
+                    //          process.env.PUBLIC_URL +
+                    //          `/assets/images/wapp/icon-user.png`
+                    //        }
+                    //        type={"text"}
+                    //        placeholder={i18n.t("wap.register.username")}
+                    //        style={{ marginTop: "60px" }}
+                    //        maxLength="16"
+                    //        value={this.state.username}
+                    //        onChange={this.handleUsernameChange}
+                    //      ></Textbox>
+                    //      <Textbox
+                    //        icon={
+                    //          process.env.PUBLIC_URL +
+                    //          `/assets/images/wapp/icon-unlock.png`
+                    //        }
+                    //        type={this.state.hidePassword ? "password" : "text"}
+                    //        hidePassword={this.state.hidePassword}
+                    //        placeholder={i18n.t("wap.register.password")}
+                    //        style={{ marginTop: "20px" }}
+                    //        password={true}
+                    //        maxLength="20"
+                    //        toggleShow={this.handleToggleShow}
+                    //        value={this.state.password}
+                    //        onChange={this.handlePasswordChange}
+                    //      ></Textbox>
+                  }
                   <Select
                     type={"text"}
                     placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
@@ -1239,6 +1252,7 @@ const mapStateToProps = (state) => {
     token: state.account.token,
     mobilePrefix: state.general.mobilePrefix,
     general: state.general,
+    account: state.account,
   };
 };
 

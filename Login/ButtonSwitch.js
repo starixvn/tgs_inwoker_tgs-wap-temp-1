@@ -78,30 +78,30 @@ class ButtonSwitch extends Component {
     return (
       <Container>
         <SwitchTextLeftContainer
-          style={{ width: this.state.activation ? "200px" : "300px" }}
+          style={{ width: "300px" }}
           active={this.props.selected === 0}
           onClick={() => this.props.handleChangeSelection(0)}
         >
           {i18n.t("common.login")}
         </SwitchTextLeftContainer>
         <SwitchTextrightContainer
-          style={
-            this.state.activation ? { width: "200px", right: "218px" } : {}
-          }
+          style={{ width: "300px" }}
           active={this.props.selected === 1}
           onClick={() => this.props.handleChangeSelection(1)}
         >
           {i18n.t("common.register")}
         </SwitchTextrightContainer>
-        {this.state.activation ? (
-          <SwitchTextrightContainer
-            style={{ width: "200px" }}
-            active={this.props.selected === 2}
-            onClick={() => this.props.handleChangeSelection(2)}
-          >
-            {i18n.t("web.register.activation")}
-          </SwitchTextrightContainer>
-        ) : null}
+        {
+          // this.state.activation ? (
+          //   <SwitchTextrightContainer
+          //     style={{ width: "200px" }}
+          //     active={this.props.selected === 2}
+          //     onClick={() => this.props.handleChangeSelection(2)}
+          //   >
+          //     {i18n.t("web.register.activation")}
+          //   </SwitchTextrightContainer>
+          // ) : null
+        }
       </Container>
     );
   }
