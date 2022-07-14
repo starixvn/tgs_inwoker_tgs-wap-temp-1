@@ -63,7 +63,7 @@ const OverlayContent = styled.div`
 
 const OverlayHeader = styled.div`
   background: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.primaryText};
+  color: white;
   padding: 20px;
   font-size: 28px;
   display: flex;
