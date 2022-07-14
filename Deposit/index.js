@@ -202,7 +202,7 @@ class Deposit extends Component {
         this.handleBankCardChange({ target: { value: defaultCard.id } });
       }
       this.countDownInterval = setInterval(() => {
-        this.props.getDepositMethod(i18n.language); // call api every 30 mins
+        this.props.getDepositMethod(); // call api every 30 mins
       }, 30 * 60 * 1000);
     } else {
       this.props.appHistory.replace("/" + i18n.language + "/login");
@@ -383,9 +383,19 @@ class Deposit extends Component {
   componentWillUnmount() {
     clearInterval(this.countDownInterval);
   }
-  handleRestartClick = (e) => {
+  handleRestartClick = async (e) => {
     this.setState({ ...this.initialState });
-    this.props.resetDeposit();
+    await this.props.resetDeposit();
+    if (
+      config.features.Deposit_AddCard &&
+      this.props.wallet.bankCardList.length > 0 &&
+      this.props.wallet.bankCardList !== null
+    ) {
+      var defaultCard = this.props.wallet.bankCardList.filter(
+        (item) => item.default
+      )[0];
+      this.handleBankCardChange({ target: { value: defaultCard.id } });
+    }
   };
 
   handleAmountChange = (e) => {
@@ -659,7 +669,7 @@ class Deposit extends Component {
       playerNote: e.target.value,
     });
   };
-  handleBankCardChange = (e) => {
+  handleBankCardChange = async (e) => {
     var paymentIndex = 0;
     var methodIndex = 0;
     var channelIndex = 0;
