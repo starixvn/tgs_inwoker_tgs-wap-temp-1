@@ -79,7 +79,9 @@ import Loading from "./Share/Loading";
 import Affiliate from "./Affiliate";
 import Birthdate from "./Profile/Birthdate";
 import CustomSportPage from "./CustomSportPage";
+import ForcedVerification from "./ForcedVerification";
 import LiveChat from "../Share/live-chat";
+
 const baseRouteUrl = Common.baseRouteUrl;
 
 const StyledModal = withStyles((theme) => ({
@@ -848,6 +850,15 @@ class Wap extends Component {
   render() {
     const scale = this.props.screenWidth / 750;
 
+    var conditionOne =
+      config.features.SMSVerification &&
+      this.props.account.info.identityformstatus === 0 &&
+      (this.props.account.info.identityformid === "" ||
+        this.props.account.info.identityformid === null);
+    var conditionTwo =
+      this.props.account.registercompleted === false &&
+      config.features.Register_ShowPhone;
+
     document
       .getElementById("viewport")
       .setAttribute(
@@ -1009,6 +1020,7 @@ class Wap extends Component {
                 header={i18n.t("promotion.title")}
               ></PopupAnnouncement>
             )}
+
           {(() => {
             if (
               config.features.LiveChatVendor.brand &&
@@ -1022,6 +1034,11 @@ class Wap extends Component {
               );
             }
           })()}
+
+          <ForcedVerification
+            forcedverify={conditionOne || conditionTwo}
+            alert={this.handleAlert}
+          />
 
           <StyledModal onClose={this.handleClose} open={this.state.open}>
             <DialoTitle>{this.state.title}</DialoTitle>
