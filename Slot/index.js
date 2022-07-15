@@ -235,7 +235,7 @@ const FavButton = styled.div`
     cursor: pointer;
   }
 `;
-const bc = new BroadcastChannel('refreshBalance');
+// const bc = new BroadcastChannel('refreshBalance');
 
 class Slot extends Component {
   constructor(props) {
@@ -278,9 +278,9 @@ class Slot extends Component {
   }
   language = null;
   componentDidMount() {
-    bc.onmessage = (eventMessage) => {
-      this.performBalanceRefresh();
-    }
+    // bc.onmessage = (eventMessage) => {
+    //   this.performBalanceRefresh();
+    // }
 
     this.getGameList();
     this.getFav();
