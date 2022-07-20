@@ -400,98 +400,60 @@ class Login extends Component {
     this.setState({ ...this.state, loading: true });
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      AccountService.Activation(username, password, areacode, phone).then(
-        async (response) => {
+      // AccountService.Activation(username, password,areacode, phone).then(async (response) => {
+      //   if (response.IsSuccess) {
+      //     // setSecurityKey(response.data);
+      //     // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
+      //     //   variant: "info",
+      //     // });
+      //     AccountService.VerifyActivation(response.data, "123456").then(
+      //       async (response) => {
+      //         // if (response.IsSuccess) {
+      //         // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
+      //         //   variant: "success",
+      //         // });
+      //         //this.doLogin(username, password);
+      //         // } else {
+      //         // props.enqueueSnackbar(response.info, {
+      //         //   variant: "warning",
+      //         // });
+      //         // }
+      //         //this.doLogin(username, password);
+      //         this.handleLoginSuccess(result.data);
+      //       }
+      //     );
+      //   } else {
+      //     this.handleLoginSuccess(result.data);
+      //     //this.doLogin(username, password);
+      //   }
+      // });
+
+      this.props
+        .newRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: areacode,
+            phone: phone,
+          },
+        })
+        .then(async (response) => {
           if (response.IsSuccess) {
-            // setSecurityKey(response.data);
-            // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
-            //   variant: "info",
-            // });
-            AccountService.VerifyActivation(response.data, "123456").then(
-              async (response) => {
-                // if (response.IsSuccess) {
-                // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
-                //   variant: "success",
-                // });
-                //this.doLogin(username, password);
-                // } else {
-                // props.enqueueSnackbar(response.info, {
-                //   variant: "warning",
-                // });
-                // }
-                //this.doLogin(username, password);
+            this.props
+              .newRegister("InitPhone", {
+                input: "Valid",
+                data: {
+                  securitykey: response.data.stepResponse,
+                  validatecode: "123456",
+                },
+              })
+              .then(async (response) => {
                 this.handleLoginSuccess(result.data);
-              }
-            );
+              });
           } else {
             this.handleLoginSuccess(result.data);
-            //this.doLogin(username, password);
           }
-        }
-      );
+        });
     }
-
-    // console.log("entererherer???")
-    // if (username === "") {
-    //   this.props.alert("", i18n.t("web.login.errorMsg.emptyUsername"));
-    //   // this.props.enqueueSnackbar("???????", {
-    //   //   variant: "warning"
-    //   // });
-    //   return;
-    // }
-    // if (username === "") {
-    //   this.props.alert("", i18n.t("web.login.errorMsg.emptyPassword"));
-    //   // this.props.enqueueSnackbar("??????", {
-    //   //   variant: "warning"
-    //   // });
-    //   return;
-    // }
-
-    // this.props.accountLogin(username, password).then((result) => {
-    //   if (result.IsSuccess) {
-    //     AccountService.VerifyPhone(
-    //       phone,
-    //       areacode
-    //     ).then(async (response) => {
-    //         // security key = response.data, default validatecode = 123456
-    //         AccountService.UpdatePhone(response.data, "123456").then(
-    //           async (response) => {
-    //             this.handleLoginSuccess(result.data);
-    //               // props.doLogin(username, password);
-    //               this.props.appHistory.push(
-    //                 "/" + i18n.language + "/registersuccess/" + username
-    //               );
-    //           }
-    //         );
-    //     });
-
-    //   } else {
-    //     if (result.code === 210) {
-    //       this.props.appHistory.push("/" + i18n.language + "/banned");
-    //     } else {
-    //       if (result.data.self_control === 1) {
-    //         this.props.showLogin(false);
-    //         this.setState({
-    //           ...this.state,
-    //           expired_time: result.data.expired_time,
-    //           openSelfControlDialog: true,
-    //           openDialog: false,
-    //           loading: false,
-    //         });
-    //       } else {
-    //         this.props.alert("", i18n.t("common.msgInvalidUsername"));
-    //         // this.props.enqueueSnackbar(result.msg, {
-    //         //   variant: "warning"
-    //         // });
-    //         this.setState({
-    //           ...this.state,
-
-    //           loading: false,
-    //         });
-    //       }
-    //     }
-    //   }
-    // });
   };
   doLoginWithHpEmail = async (username, password, phone, areacode, email) => {
     this.setState({ ...this.state, loading: true });
@@ -524,6 +486,68 @@ class Login extends Component {
         }
       });
       this.handleLoginSuccess(result.data);
+    }
+  };
+  performLoginWithPhoneAndEmail = async (
+    username,
+    password,
+    phone,
+    areacode,
+    email
+  ) => {
+    this.setState({ ...this.state, loading: true });
+    const result = await this.props.accountLogin(username, password);
+    if (result.IsSuccess) {
+      this.props
+        .newRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: areacode,
+            phone: phone,
+          },
+        })
+        .then(async (response) => {
+          if (response.IsSuccess) {
+            this.props
+              .newRegister("InitPhone", {
+                input: "Valid",
+                data: {
+                  securitykey: response.data.stepResponse,
+                  validatecode: "123456",
+                },
+              })
+              .then(async (response) => {
+                if (response.IsSuccess) {
+                  this.props
+                    .newRegister("InitMail", {
+                      input: "Init",
+                      data: {
+                        email: email,
+                      },
+                    })
+                    .then(async (response) => {
+                      if (response.IsSuccess) {
+                        this.props
+                          .newRegister("InitMail", {
+                            input: "Valid",
+                            data: {
+                              securitykey: response.data.stepResponse,
+                              validatecode: "123456",
+                            },
+                          })
+                          .then(async (response) => {
+                            this.handleLoginSuccess(result.data);
+                          });
+                      }
+                    });
+                } else {
+                  this.handleLoginSuccess(result.data);
+                }
+              });
+          }
+        });
+
+      //this.handleLoginSuccess(result.data);
     }
   };
   handleForgotpasswordClick = () => {
@@ -864,6 +888,119 @@ class Login extends Component {
         });
     }
   };
+
+  performNewRegister = async () => {
+    const username = this.state.username;
+    const password = this.state.password;
+    const phone = this.state.phone;
+    const code = this.state.code;
+    const areaCode = this.state.areaCode;
+    const confirmPassword = this.state.confirmPassword;
+    const email = this.state.email;
+    const promotion_id = this.state.promoId;
+    const upper = this.state.upper;
+    const tnc = this.state.tnc;
+    var expr = /^[a-zA-Z0-9]{6,16}$/;
+    if (!expr.test(username)) {
+      this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
+      return;
+    }
+    var expr = /^.{6,20}$/;
+    if (!expr.test(password)) {
+      this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
+
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
+
+      return;
+    }
+    var expr = new RegExp(
+      `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
+    );
+    if (config.features.Register_ShowPhone) {
+      if (!expr.test(phone)) {
+        this.props.alert(
+          "",
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
+        );
+        return;
+      }
+    }
+    var expr =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (config.features.Register_ShowEmail) {
+      if (!expr.test(email)) {
+        this.props.alert("", i18n.t("common.msgInvalidEmail"));
+
+        return;
+      }
+    }
+    // if (withdrawalPassword.length < 6) {
+    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassInvalid"));
+
+    //   return;
+    // }
+    // if (withdrawalPassword !== confirmWithdrawalPassword) {
+    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassMatchInvalid"));
+
+    //   return;
+    // }
+    if (tnc) {
+      this.setState({ ...this.state, loading: true });
+      // user_account,
+      // user_password,
+      // pay_password,
+      // mobile,
+      // recommend_code,
+      // mobile_code_id
+      this.props
+        .newRegister("CreatePlayer", {
+          username: username,
+          pwd: password,
+        })
+        .then(async (response) => {
+          if (
+            response.IsSuccess &&
+            response.data.stepResponse.isnew === false
+          ) {
+            this.props.alert("", i18n.t("common.msgAlreadyExist"));
+            this.setState({ ...this.state, loading: false });
+          } else if (response.IsSuccess) {
+            if (config.features.SMSVerification) {
+              this.setState({
+                ...this.state,
+                selected: 2,
+                loading: false,
+              });
+            } else if (
+              config.features.Register_ShowPhone &&
+              config.features.Register_ShowEmail
+            ) {
+              this.performLoginWithPhoneAndEmail(
+                username,
+                password,
+                phone,
+                areaCode,
+                email
+              );
+            } else if (config.features.Register_ShowPhone) {
+              this.doLoginWithHp(username, password, phone, areaCode);
+            } else {
+              this.doLogin(username, password);
+            }
+          } else {
+            this.props.alert("", response.info);
+            this.setState({ ...this.state, loading: false });
+          }
+        });
+    }
+  };
+
   render() {
     return (
       <Container
@@ -1174,7 +1311,7 @@ class Login extends Component {
                         ? i18n.t("common.nextStep")
                         : i18n.t("common.register")
                     }
-                    onClick={this.handleRegisterClick}
+                    onClick={this.performNewRegister}
                     disableButton={!this.state.tnc}
                   ></ButtonWap>
                 </React.Fragment>
@@ -1297,6 +1434,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(walletAction.getWithdrawalChannel());
     },
     getPromotion: () => dispatch(generalAction.getPromotion()),
+    newRegister: (type, input) =>
+      dispatch(accountAction.newRegister(type, input)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
