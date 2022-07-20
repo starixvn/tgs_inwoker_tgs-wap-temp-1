@@ -296,13 +296,15 @@ class Login extends Component {
       // }
     }
     var bankInfoAuthentication = null;
-    await this.props.getAccountInfo().then((response)=>{
-      if(response.IsSuccess)
-      {
+    await this.props.getAccountInfo().then((response) => {
+      if (response.IsSuccess) {
         bankInfoAuthentication = response.data.bankinfoauthentication;
       }
     });
-    if (!config.features.Register_CustomFlow_IDR || (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)) {
+    if (
+      !config.features.Register_CustomFlow_IDR ||
+      (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)
+    ) {
       // this.props.getAccountInfo(token);
       // this.props.getAccountProfile(token, true);
       // this.props.getVIPInfo(token);
@@ -325,7 +327,11 @@ class Login extends Component {
 
       localStorage.removeItem("username");
     }
-    if (this.state.selected === 1 || this.state.selected === 2 || (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)) {
+    if (
+      this.state.selected === 1 ||
+      this.state.selected === 2 ||
+      (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)
+    ) {
       if (config.features.NavigateToAddCard) {
         this.props.appHistory.replace("/" + i18n.language + "/card/add");
       } else {
@@ -392,98 +398,62 @@ class Login extends Component {
   };
   doLoginWithHp = async (username, password, phone, areacode) => {
     this.setState({ ...this.state, loading: true });
-        const result = await this.props.accountLogin(username, password);
-        if (result.IsSuccess) {
-          AccountService.Activation(username, password,areacode, phone).then(async (response) => {
-            if (response.IsSuccess) {
-              // setSecurityKey(response.data);
-              // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
-              //   variant: "info",
-              // });
-              AccountService.VerifyActivation(response.data, "123456").then(
-                async (response) => {
-                  // if (response.IsSuccess) {
-                  // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
-                  //   variant: "success",
-                  // });
-                  //this.doLogin(username, password);
-                  // } else {
-                  // props.enqueueSnackbar(response.info, {
-                  //   variant: "warning",
-                  // });
-                  // }
-                  //this.doLogin(username, password);
-                  this.handleLoginSuccess(result.data);
-                }
-              );
-            } else {
-              this.handleLoginSuccess(result.data);
-              //this.doLogin(username, password);
-            }
-          });
-        }
+    const result = await this.props.accountLogin(username, password);
+    if (result.IsSuccess) {
+      // AccountService.Activation(username, password,areacode, phone).then(async (response) => {
+      //   if (response.IsSuccess) {
+      //     // setSecurityKey(response.data);
+      //     // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
+      //     //   variant: "info",
+      //     // });
+      //     AccountService.VerifyActivation(response.data, "123456").then(
+      //       async (response) => {
+      //         // if (response.IsSuccess) {
+      //         // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
+      //         //   variant: "success",
+      //         // });
+      //         //this.doLogin(username, password);
+      //         // } else {
+      //         // props.enqueueSnackbar(response.info, {
+      //         //   variant: "warning",
+      //         // });
+      //         // }
+      //         //this.doLogin(username, password);
+      //         this.handleLoginSuccess(result.data);
+      //       }
+      //     );
+      //   } else {
+      //     this.handleLoginSuccess(result.data);
+      //     //this.doLogin(username, password);
+      //   }
+      // });
 
-    // console.log("entererherer???")
-    // if (username === "") {
-    //   this.props.alert("", i18n.t("web.login.errorMsg.emptyUsername"));
-    //   // this.props.enqueueSnackbar("???????", {
-    //   //   variant: "warning"
-    //   // });
-    //   return;
-    // }
-    // if (username === "") {
-    //   this.props.alert("", i18n.t("web.login.errorMsg.emptyPassword"));
-    //   // this.props.enqueueSnackbar("??????", {
-    //   //   variant: "warning"
-    //   // });
-    //   return;
-    // }
-
-    // this.props.accountLogin(username, password).then((result) => {
-    //   if (result.IsSuccess) {
-    //     AccountService.VerifyPhone(
-    //       phone,
-    //       areacode
-    //     ).then(async (response) => {
-    //         // security key = response.data, default validatecode = 123456
-    //         AccountService.UpdatePhone(response.data, "123456").then(
-    //           async (response) => {
-    //             this.handleLoginSuccess(result.data);
-    //               // props.doLogin(username, password);
-    //               this.props.appHistory.push(
-    //                 "/" + i18n.language + "/registersuccess/" + username
-    //               );
-    //           }
-    //         );
-    //     });
-
-    //   } else {
-    //     if (result.code === 210) {
-    //       this.props.appHistory.push("/" + i18n.language + "/banned");
-    //     } else {
-    //       if (result.data.self_control === 1) {
-    //         this.props.showLogin(false);
-    //         this.setState({
-    //           ...this.state,
-    //           expired_time: result.data.expired_time,
-    //           openSelfControlDialog: true,
-    //           openDialog: false,
-    //           loading: false,
-    //         });
-    //       } else {
-    //         this.props.alert("", i18n.t("common.msgInvalidUsername"));
-    //         // this.props.enqueueSnackbar(result.msg, {
-    //         //   variant: "warning"
-    //         // });
-    //         this.setState({
-    //           ...this.state,
-
-    //           loading: false,
-    //         });
-    //       }
-    //     }
-    //   }
-    // });
+      this.props
+        .newRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: areacode,
+            phone: phone,
+          },
+        })
+        .then(async (response) => {
+          if (response.IsSuccess) {
+            this.props
+              .newRegister("InitPhone", {
+                input: "Valid",
+                data: {
+                  securitykey: response.data.stepResponse,
+                  validatecode: "123456",
+                },
+              })
+              .then(async (response) => {
+                this.handleLoginSuccess(result.data);
+              });
+          } else {
+            this.handleLoginSuccess(result.data);
+          }
+        });
+    }
   };
   doLoginWithHpEmail = async (username, password, phone, areacode, email) => {
     this.setState({ ...this.state, loading: true });
@@ -493,10 +463,10 @@ class Login extends Component {
       AccountService.Activation(username, password, areacode, phone).then(
         async (response) => {
           if (response.IsSuccess) {
-            AccountService.VerifyActivation(response.data, "123456")
+            AccountService.VerifyActivation(response.data, "123456");
             // .then(
             //   async (response) => {
-                
+
             //   }
             // );
           }
@@ -505,21 +475,81 @@ class Login extends Component {
           // }
         }
       );
-      AccountService.ActivationEmail(email).then(
-        async (response) => {
-          if (response.IsSuccess) {
-            AccountService.VerifyActivationEmail(response.data, "123456")
-            // .then(
-            //   async (response) => {
-            //     this.handleLoginSuccess(result.data);
-            //   }
-            // );
-          } 
+      AccountService.ActivationEmail(email).then(async (response) => {
+        if (response.IsSuccess) {
+          AccountService.VerifyActivationEmail(response.data, "123456");
+          // .then(
+          //   async (response) => {
+          //     this.handleLoginSuccess(result.data);
+          //   }
+          // );
         }
-      );
+      });
       this.handleLoginSuccess(result.data);
     }
-  }
+  };
+  performLoginWithPhoneAndEmail = async (
+    username,
+    password,
+    phone,
+    areacode,
+    email
+  ) => {
+    this.setState({ ...this.state, loading: true });
+    const result = await this.props.accountLogin(username, password);
+    if (result.IsSuccess) {
+      this.props
+        .newRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: areacode,
+            phone: phone,
+          },
+        })
+        .then(async (response) => {
+          if (response.IsSuccess) {
+            this.props
+              .newRegister("InitPhone", {
+                input: "Valid",
+                data: {
+                  securitykey: response.data.stepResponse,
+                  validatecode: "123456",
+                },
+              })
+              .then(async (response) => {
+                if (response.IsSuccess) {
+                  this.props
+                    .newRegister("InitMail", {
+                      input: "Init",
+                      data: {
+                        email: email,
+                      },
+                    })
+                    .then(async (response) => {
+                      if (response.IsSuccess) {
+                        this.props
+                          .newRegister("InitMail", {
+                            input: "Valid",
+                            data: {
+                              securitykey: response.data.stepResponse,
+                              validatecode: "123456",
+                            },
+                          })
+                          .then(async (response) => {
+                            this.handleLoginSuccess(result.data);
+                          });
+                      }
+                    });
+                } else {
+                  this.handleLoginSuccess(result.data);
+                }
+              });
+          }
+        });
+
+      //this.handleLoginSuccess(result.data);
+    }
+  };
   handleForgotpasswordClick = () => {
     this.props.appHistory.push("/" + i18n.language + "/forgot-password");
   };
@@ -658,7 +688,8 @@ class Login extends Component {
     const countdown = this.state.countdown;
     const areacode = this.state.areaCode;
     const phone = this.state.phone;
-    const isLoggedIn = (this.props.general.token!==""&&this.props.general.token!==null);
+    const isLoggedIn =
+      this.props.general.token !== "" && this.props.general.token !== null;
     var result = null;
 
     if (countdown <= 0) {
@@ -687,10 +718,9 @@ class Login extends Component {
       }
       // if(!isLoggedIn)
       // {
-        result = await AccountService.Login(username, password);
+      result = await AccountService.Login(username, password);
       // }
-      if((result !== null && result.IsSuccess)/*|| isLoggedIn*/)
-      {
+      if (result !== null && result.IsSuccess /*|| isLoggedIn*/) {
         AccountService.Activation("", "", areacode, phone).then(
           async (response) => {
             if (response.IsSuccess) {
@@ -755,9 +785,7 @@ class Login extends Component {
     var expr = new RegExp(
       `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
     );
-    if (
-      config.features.Register_ShowPhone
-    ) {
+    if (config.features.Register_ShowPhone) {
       if (!expr.test(phone)) {
         this.props.alert(
           "",
@@ -803,13 +831,22 @@ class Login extends Component {
             this.setState({ ...this.state, loading: false });
           } else if (response.IsSuccess) {
             if (config.features.SMSVerification) {
-                this.setState({
-                  ...this.state,
-                  selected: 2,
-                  loading: false,
-                });
-            } else if (config.features.Register_ShowPhone && config.features.Register_ShowEmail) {
-              this.doLoginWithHpEmail(username, password, phone, areaCode, email);
+              this.setState({
+                ...this.state,
+                selected: 2,
+                loading: false,
+              });
+            } else if (
+              config.features.Register_ShowPhone &&
+              config.features.Register_ShowEmail
+            ) {
+              this.doLoginWithHpEmail(
+                username,
+                password,
+                phone,
+                areaCode,
+                email
+              );
               // AccountService.VerifyPhone(areaCode,phone).then(
               //   async (response) => {
               //     // security key = response.data, default validatecode = 123456
@@ -851,6 +888,119 @@ class Login extends Component {
         });
     }
   };
+
+  performNewRegister = async () => {
+    const username = this.state.username;
+    const password = this.state.password;
+    const phone = this.state.phone;
+    const code = this.state.code;
+    const areaCode = this.state.areaCode;
+    const confirmPassword = this.state.confirmPassword;
+    const email = this.state.email;
+    const promotion_id = this.state.promoId;
+    const upper = this.state.upper;
+    const tnc = this.state.tnc;
+    var expr = /^[a-zA-Z0-9]{6,16}$/;
+    if (!expr.test(username)) {
+      this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
+      return;
+    }
+    var expr = /^.{6,20}$/;
+    if (!expr.test(password)) {
+      this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
+
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
+
+      return;
+    }
+    var expr = new RegExp(
+      `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
+    );
+    if (config.features.Register_ShowPhone) {
+      if (!expr.test(phone)) {
+        this.props.alert(
+          "",
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
+        );
+        return;
+      }
+    }
+    var expr =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (config.features.Register_ShowEmail) {
+      if (!expr.test(email)) {
+        this.props.alert("", i18n.t("common.msgInvalidEmail"));
+
+        return;
+      }
+    }
+    // if (withdrawalPassword.length < 6) {
+    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassInvalid"));
+
+    //   return;
+    // }
+    // if (withdrawalPassword !== confirmWithdrawalPassword) {
+    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassMatchInvalid"));
+
+    //   return;
+    // }
+    if (tnc) {
+      this.setState({ ...this.state, loading: true });
+      // user_account,
+      // user_password,
+      // pay_password,
+      // mobile,
+      // recommend_code,
+      // mobile_code_id
+      this.props
+        .newRegister("CreatePlayer", {
+          username: username,
+          pwd: password,
+        })
+        .then(async (response) => {
+          if (
+            response.IsSuccess &&
+            response.data.stepResponse.isnew === false
+          ) {
+            this.props.alert("", i18n.t("common.msgAlreadyExist"));
+            this.setState({ ...this.state, loading: false });
+          } else if (response.IsSuccess) {
+            if (config.features.SMSVerification) {
+              this.setState({
+                ...this.state,
+                selected: 2,
+                loading: false,
+              });
+            } else if (
+              config.features.Register_ShowPhone &&
+              config.features.Register_ShowEmail
+            ) {
+              this.performLoginWithPhoneAndEmail(
+                username,
+                password,
+                phone,
+                areaCode,
+                email
+              );
+            } else if (config.features.Register_ShowPhone) {
+              this.doLoginWithHp(username, password, phone, areaCode);
+            } else {
+              this.doLogin(username, password);
+            }
+          } else {
+            this.props.alert("", response.info);
+            this.setState({ ...this.state, loading: false });
+          }
+        });
+    }
+  };
+
   render() {
     return (
       <Container
@@ -1161,7 +1311,7 @@ class Login extends Component {
                         ? i18n.t("common.nextStep")
                         : i18n.t("common.register")
                     }
-                    onClick={this.handleRegisterClick}
+                    onClick={this.performNewRegister}
                     disableButton={!this.state.tnc}
                   ></ButtonWap>
                 </React.Fragment>
@@ -1169,35 +1319,35 @@ class Login extends Component {
             } else if (this.state.selected === 2) {
               return (
                 <React.Fragment>
-                  <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-user.png`
-                    }
-                    type={"text"}
-                    placeholder={i18n.t("wap.register.username")}
-                    style={{ marginTop: "60px" }}
-                    maxLength="16"
-                    value={this.state.username}
-                    onChange={this.handleUsernameChange}
-                  ></Textbox>
-
-                  <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
-                    type={this.state.hidePassword ? "password" : "text"}
-                    hidePassword={this.state.hidePassword}
-                    placeholder={i18n.t("wap.register.password")}
-                    style={{ marginTop: "20px" }}
-                    password={true}
-                    maxLength="20"
-                    toggleShow={this.handleToggleShow}
-                    value={this.state.password}
-                    onChange={this.handlePasswordChange}
-                  ></Textbox>
-
+                  {
+                    //        <Textbox
+                    //        icon={
+                    //          process.env.PUBLIC_URL +
+                    //          `/assets/images/wapp/icon-user.png`
+                    //        }
+                    //        type={"text"}
+                    //        placeholder={i18n.t("wap.register.username")}
+                    //        style={{ marginTop: "60px" }}
+                    //        maxLength="16"
+                    //        value={this.state.username}
+                    //        onChange={this.handleUsernameChange}
+                    //      ></Textbox>
+                    //      <Textbox
+                    //        icon={
+                    //          process.env.PUBLIC_URL +
+                    //          `/assets/images/wapp/icon-unlock.png`
+                    //        }
+                    //        type={this.state.hidePassword ? "password" : "text"}
+                    //        hidePassword={this.state.hidePassword}
+                    //        placeholder={i18n.t("wap.register.password")}
+                    //        style={{ marginTop: "20px" }}
+                    //        password={true}
+                    //        maxLength="20"
+                    //        toggleShow={this.handleToggleShow}
+                    //        value={this.state.password}
+                    //        onChange={this.handlePasswordChange}
+                    //      ></Textbox>
+                  }
                   <Select
                     type={"text"}
                     placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
@@ -1239,6 +1389,7 @@ const mapStateToProps = (state) => {
     token: state.account.token,
     mobilePrefix: state.general.mobilePrefix,
     general: state.general,
+    account: state.account,
   };
 };
 
@@ -1283,6 +1434,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(walletAction.getWithdrawalChannel());
     },
     getPromotion: () => dispatch(generalAction.getPromotion()),
+    newRegister: (type, input) =>
+      dispatch(accountAction.newRegister(type, input)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

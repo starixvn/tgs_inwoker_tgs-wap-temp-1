@@ -124,7 +124,7 @@ class AddCard extends Component {
     phone: "",
     isDeposit: false,
   };
-  componentDidMount  = async () => {
+  componentDidMount = async () => {
     let urlParams = new URLSearchParams(this.props.appHistory.location.search);
     if (urlParams.has("do")) {
       const value = urlParams.get("do");
@@ -132,17 +132,19 @@ class AddCard extends Component {
         await this.setState({
           ...this.state,
           isDeposit: true,
-        })
+        });
       }
     }
     if (this.props.wallet.withdrawalList.length === 0)
       this.props.getWithdrawalChannel();
-    if(config.features.Deposit_AddCard && this.state.isDeposit && this.props.wallet.depositList.length === 0)
-    {
+    if (
+      config.features.Deposit_AddCard &&
+      this.state.isDeposit &&
+      this.props.wallet.depositList.length === 0
+    ) {
       this.props.getDepositMethod();
-    }
-    else this.formatChannelList();
-  }
+    } else this.formatChannelList();
+  };
   componentDidUpdate(preProps, preState) {
     if (
       !preProps.account.info.bankInfoAuthentication &&
@@ -172,14 +174,16 @@ class AddCard extends Component {
       }
     }
     if (
-      !this.state.isDeposit && preProps.wallet.withdrawalList.length !==
-      this.props.wallet.withdrawalList.length
+      !this.state.isDeposit &&
+      preProps.wallet.withdrawalList.length !==
+        this.props.wallet.withdrawalList.length
     ) {
       this.formatChannelList();
     }
     if (
-      this.state.isDeposit && preProps.wallet.depositList.length !==
-      this.props.wallet.depositList.length
+      this.state.isDeposit &&
+      preProps.wallet.depositList.length !==
+        this.props.wallet.depositList.length
     ) {
       this.formatChannelList();
     }
@@ -250,7 +254,7 @@ class AddCard extends Component {
   }
   handleBackClick = () => {
     if (
-      !(config.features.ForceRedirectAddCard) ||
+      !config.features.ForceRedirectAddCard ||
       this.props.wallet.bankCardList.length > 0 ||
       this.state.isDeposit
     ) {
@@ -378,18 +382,24 @@ class AddCard extends Component {
         address: this.state.number,
       };
     }
-    if(config.features.Register_CustomFlow_IDR && !this.state.isDeposit)
-    {
-      this.props.initBankCard(
-        selectedChannel.channelid,
-        selected.banktype,
-        detail
-      ).then((response)=>{
-        this.props.getAccountInfo();
-      });
-    }
-    else
-    {
+    if (config.features.Register_CustomFlow_IDR && !this.state.isDeposit) {
+      // this.props.initBankCard(
+      //   selectedChannel.channelid,
+      //   selected.banktype,
+      //   detail
+      // ).then((response)=>{
+      //   this.props.getAccountInfo();
+      // });
+      this.props
+        .newRegister("SetWithdrawBankInfo", {
+          banktype: selected.banktype,
+          paymentchannelid: selectedChannel.channelid,
+          detail: detail,
+        })
+        .then((response) => {
+          this.props.getAccountInfo();
+        });
+    } else {
       this.props.addBankCard(
         selectedChannel.channelid,
         selected.banktype,
@@ -938,6 +948,8 @@ const mapDispatchToProps = (dispatch) => {
       }),
     getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
     getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
+    newRegister: (type, input) =>
+      dispatch(accountAction.newRegister(type, input)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AddCard);
