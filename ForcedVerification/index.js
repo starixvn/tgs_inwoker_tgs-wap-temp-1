@@ -82,6 +82,22 @@ const CustomButton = styled.div`
   color: #ffffff;
 `;
 
+const CloseButton = styled.div`
+  border: solid 1px #000;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
 const ForcedVerification = ({ forcedverify, alert }) => {
   useEffect(() => {
     setOpen(forcedverify);
@@ -164,6 +180,13 @@ const ForcedVerification = ({ forcedverify, alert }) => {
     <CustomDialog open={open}>
       <Wrapper>
         <Title>{i18n.t("web.register.activation")}</Title>
+        <CloseButton
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          ×
+        </CloseButton>
 
         <div>
           <InputRow>

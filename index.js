@@ -796,6 +796,19 @@ class Wap extends Component {
         );
       }
     }
+
+    if (
+      preProps.account.registercompleted !==
+      this.props.account.registercompleted
+    ) {
+      if (
+        this.props.account.registercompleted === false &&
+        config.features.Register_ShowPhone &&
+        config.features.ForcedVerification
+      ) {
+        this.props.history.push("/" + i18n.language + "/profile/phone");
+      }
+    }
   }
   handleNavigate = (page) => {
     if (
@@ -849,15 +862,6 @@ class Wap extends Component {
 
   render() {
     const scale = this.props.screenWidth / 750;
-
-    var conditionOne =
-      config.features.SMSVerification &&
-      this.props.account.info.identityformstatus === 0 &&
-      (this.props.account.info.identityformid === "" ||
-        this.props.account.info.identityformid === null);
-    var conditionTwo =
-      this.props.account.registercompleted === false &&
-      config.features.Register_ShowPhone;
 
     document
       .getElementById("viewport")
@@ -1035,10 +1039,16 @@ class Wap extends Component {
             }
           })()}
 
-          <ForcedVerification
-            forcedverify={conditionOne || conditionTwo}
-            alert={this.handleAlert}
-          />
+          {config.features.SMSVerification &&
+            this.props.account.registercompleted === false &&
+            config.features.ForcedVerification && (
+              <>
+                <ForcedVerification
+                  forcedverify={true}
+                  alert={this.handleAlert}
+                />
+              </>
+            )}
 
           <StyledModal onClose={this.handleClose} open={this.state.open}>
             <DialoTitle>{this.state.title}</DialoTitle>
