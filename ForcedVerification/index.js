@@ -7,7 +7,6 @@ import { AccountService } from "../../../api-services/services/AccountService";
 import { Textfit } from "react-textfit";
 
 const Wrapper = styled.div`
-  width: 40vw;
   padding: 20px 10px;
   min-height: 10vh;
   zoom: 2;
@@ -28,10 +27,22 @@ const Title = styled.div`
 `;
 
 const InputRow = styled.div`
-  display: flex;
+  display: grid;
   gap: 5px;
-  width: 100%;
-  padding-bottom: 5px;
+  padding: 0 10px;
+  grid-template-columns: 30% 70%;
+`;
+
+const AnotherRow = styled.div`
+  padding: 5px 10px;
+  display: grid;
+
+  gap: 5px;
+  grid-template-columns: 70% 30%;
+`;
+
+const ButtonRow = styled.div`
+  padding: 0 5px 0 10px;
 `;
 
 const CustomSelect = styled.select`
@@ -63,6 +74,7 @@ const CustomButton = styled.div`
   white-space: nowrap;
   padding: 0 10px;
   height: 40px;
+  width: 100%;
   flex: 1;
 
   ${({ theme }) => {
@@ -177,59 +189,53 @@ const ForcedVerification = ({ forcedverify, alert }) => {
   }, [countdown]);
 
   return (
-    <CustomDialog open={open}>
+    <CustomDialog open={open} maxWidth="" fullWidth="xs">
       <Wrapper>
         <Title>{i18n.t("web.register.activation")}</Title>
         {
-          //    <CloseButton
-          //    onClick={() => {
-          //      setOpen(false);
-          //    }}
-          //  >
-          //    ×
-          //  </CloseButton>
+          //     <CloseButton
+          //     onClick={() => {
+          //       setOpen(false);
+          //     }}
+          //   >
+          //     ×
+          //   </CloseButton>
         }
-
-        <div>
-          <InputRow>
-            <CustomSelect>
-              <option>{areaCode}</option>
-            </CustomSelect>
-            <CustomTextField
-              type="text"
-              value={phone}
-              placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
-              onChange={(e) => {
-                setPhone(e.target.value);
-              }}
-            />
-          </InputRow>
-          <InputRow>
-            <CustomTextField
-              type="text"
-              value={code}
-              placeholder={i18n.t("common.msgEnterCode")}
-              onChange={(e) => {
-                setCode(e.target.value);
-              }}
-            />
-            <CustomButton onClick={handleGetCodeClick} disabled={countdown > 0}>
-              <Textfit>
-                {countdown <= 0
-                  ? i18n.t("common.msgSendToken")
-                  : i18n.t("common.btnTokenResendLabel") +
-                    "(" +
-                    countdown +
-                    "s)"}
-              </Textfit>
-            </CustomButton>
-          </InputRow>{" "}
-          <InputRow>
-            <CustomButton onClick={handleActivationClick}>
-              {i18n.t("common.submit")}
-            </CustomButton>
-          </InputRow>
-        </div>
+        <InputRow>
+          <CustomSelect>
+            <option>{areaCode}</option>
+          </CustomSelect>
+          <CustomTextField
+            type="text"
+            value={phone}
+            placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
+            onChange={(e) => {
+              setPhone(e.target.value);
+            }}
+          />
+        </InputRow>
+        <AnotherRow>
+          <CustomTextField
+            type="text"
+            value={code}
+            placeholder={i18n.t("common.msgEnterCode")}
+            onChange={(e) => {
+              setCode(e.target.value);
+            }}
+          />
+          <CustomButton onClick={handleGetCodeClick} disabled={countdown > 0}>
+            <Textfit>
+              {countdown <= 0
+                ? i18n.t("common.msgSendToken")
+                : i18n.t("common.btnTokenResendLabel") + "(" + countdown + "s)"}
+            </Textfit>
+          </CustomButton>
+        </AnotherRow>
+        <ButtonRow>
+          <CustomButton onClick={handleActivationClick}>
+            {i18n.t("common.submit")}
+          </CustomButton>
+        </ButtonRow>
       </Wrapper>
     </CustomDialog>
   );
