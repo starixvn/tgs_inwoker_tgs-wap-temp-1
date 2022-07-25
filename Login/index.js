@@ -299,47 +299,58 @@ class Login extends Component {
     await this.props.getAccountInfo().then((response) => {
       if (response.IsSuccess) {
         bankInfoAuthentication = response.data.bankinfoauthentication;
+        if (
+          response.data.registercompleted === false &&
+          config.features.Register_ShowPhone &&
+          config.features.ForcedVerification
+        ) {
+          this.props.history.push({
+            pathname: "/" + i18n.language + "/profile/phone",
+            state: { forced: true },
+          });
+        } else {
+          if (
+            !config.features.Register_CustomFlow_IDR ||
+            (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)
+          ) {
+            // this.props.getAccountInfo(token);
+            // this.props.getAccountProfile(token, true);
+            // this.props.getVIPInfo(token);
+            // this.props.checkGame();
+            this.props.getBalanceList();
+            // this.props.getIDCardNo();
+            // this.props.getDepositChannel();
+            // this.props.getInviteLink();
+            this.props.getMessageList(i18n.language, 1, 99);
+            this.props.getBankCardList();
+            this.props.getPromotion();
+            this.props.getWithdrawalChannel();
+          }
+          if (this.state.rememberMe === true) {
+            localStorage.setItem("remember", true);
+
+            localStorage.setItem("username", this.state.username);
+          } else {
+            localStorage.removeItem("remember");
+
+            localStorage.removeItem("username");
+          }
+          if (
+            this.state.selected === 1 ||
+            this.state.selected === 2 ||
+            (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)
+          ) {
+            if (config.features.NavigateToAddCard) {
+              this.props.appHistory.replace("/" + i18n.language + "/card/add");
+            } else {
+              this.props.appHistory.replace("/" + i18n.language + "/main/home");
+            }
+          } else {
+            this.props.appHistory.replace("/" + i18n.language + "/main/home");
+          }
+        }
       }
     });
-    if (
-      !config.features.Register_CustomFlow_IDR ||
-      (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)
-    ) {
-      // this.props.getAccountInfo(token);
-      // this.props.getAccountProfile(token, true);
-      // this.props.getVIPInfo(token);
-      // this.props.checkGame();
-      this.props.getBalanceList();
-      // this.props.getIDCardNo();
-      // this.props.getDepositChannel();
-      // this.props.getInviteLink();
-      this.props.getMessageList(i18n.language, 1, 99);
-      this.props.getBankCardList();
-      this.props.getPromotion();
-      this.props.getWithdrawalChannel();
-    }
-    if (this.state.rememberMe === true) {
-      localStorage.setItem("remember", true);
-
-      localStorage.setItem("username", this.state.username);
-    } else {
-      localStorage.removeItem("remember");
-
-      localStorage.removeItem("username");
-    }
-    if (
-      this.state.selected === 1 ||
-      this.state.selected === 2 ||
-      (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)
-    ) {
-      if (config.features.NavigateToAddCard) {
-        this.props.appHistory.replace("/" + i18n.language + "/card/add");
-      } else {
-        this.props.appHistory.replace("/" + i18n.language + "/main/home");
-      }
-    } else {
-      this.props.appHistory.replace("/" + i18n.language + "/main/home");
-    }
   };
   handleBackToHomeClick = () => {
     this.props.appHistory.replace("/" + i18n.language + "/main/home");
