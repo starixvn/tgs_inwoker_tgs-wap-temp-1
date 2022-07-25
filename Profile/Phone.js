@@ -200,6 +200,10 @@ class Phone extends BaseProfile {
   };
 
   render() {
+    const { location } = this.props;
+
+    var cannotAccessOther = location.state && location.state.forced ? true : "";
+
     return this.setupContent(
       i18n.t("common.phoneNumber"),
       <React.Fragment>
@@ -295,7 +299,8 @@ class Phone extends BaseProfile {
             ></BottomNote>
           );
         }
-      })()
+      })(),
+      cannotAccessOther
     );
   }
 }

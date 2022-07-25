@@ -180,13 +180,15 @@ const ForcedVerification = ({ forcedverify, alert }) => {
     <CustomDialog open={open}>
       <Wrapper>
         <Title>{i18n.t("web.register.activation")}</Title>
-        <CloseButton
-          onClick={() => {
-            setOpen(false);
-          }}
-        >
-          ×
-        </CloseButton>
+        {
+          //    <CloseButton
+          //    onClick={() => {
+          //      setOpen(false);
+          //    }}
+          //  >
+          //    ×
+          //  </CloseButton>
+        }
 
         <div>
           <InputRow>

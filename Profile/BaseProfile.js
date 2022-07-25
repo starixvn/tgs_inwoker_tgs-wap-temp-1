@@ -74,7 +74,13 @@ class BaseProfile extends Component {
   showLoading(loading) {
     this.setState({ ...this.state, loading: loading });
   }
-  setupContent(title, body, buttonTitle = i18n.t("common.submit"), bottomNode) {
+  setupContent(
+    title,
+    body,
+    buttonTitle = i18n.t("common.submit"),
+    bottomNode,
+    noBack
+  ) {
     return (
       <Container>
         <Header
@@ -83,6 +89,7 @@ class BaseProfile extends Component {
           balance={0}
           onBackClick={this.handleBackClick}
           title={title}
+          noBack={noBack}
         ></Header>
         {body}
         {this.state.message}
