@@ -806,7 +806,10 @@ class Wap extends Component {
         config.features.Register_ShowPhone &&
         config.features.ForcedVerification
       ) {
-        this.props.history.push("/" + i18n.language + "/profile/phone");
+        this.props.history.push({
+          pathname: "/" + i18n.language + "/profile/phone",
+          state: { forced: true },
+        });
       }
     }
   }

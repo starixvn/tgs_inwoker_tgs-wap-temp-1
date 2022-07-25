@@ -61,9 +61,15 @@ function Header(props) {
 
   const HeaderBack = styled.div`
     float: left;
-    background: url(${process.env.PUBLIC_URL +`/assets/images/wapp/btn-back-white.png`}) no-repeat center;
+    background: url(${process.env.PUBLIC_URL +
+      `/assets/images/wapp/btn-back-white.png`})
+      no-repeat center;
     width: 80px;
     height: 90px;
+
+    ${({ noBack }) => {
+      return noBack && ` opacity: 0;`;
+    }}
   `;
   const RightContentContainer = styled.div`
     float: right;
@@ -74,7 +80,10 @@ function Header(props) {
     <Header>
       <ElevationScroll {...props}>
         <CustomAppBar position={props.position ? props.position : "fixed"}>
-          <HeaderBack onClick={props.onBackClick}></HeaderBack>
+          <HeaderBack
+            noBack={props.noBack}
+            onClick={props.noBack ? "" : props.onBackClick}
+          ></HeaderBack>
           <HeaderTitle>{props.title}</HeaderTitle>
           <RightContentContainer>{props.rightContent}</RightContentContainer>
         </CustomAppBar>
