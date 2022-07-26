@@ -8,8 +8,7 @@ import { Textfit } from "react-textfit";
 
 const Wrapper = styled.div`
   padding: 20px 10px;
-  min-height: 10vh;
-  zoom: 2;
+  min-height: 28vh;
 `;
 
 const CustomDialog = styled(Dialog)`
@@ -19,7 +18,7 @@ const CustomDialog = styled(Dialog)`
 `;
 
 const Title = styled.div`
-  font-size: 2rem
+  font-size: 3.5rem
   width: 100%;
   text-align: center;
   padding: 10px 10px 20px 10px;
@@ -29,12 +28,12 @@ const Title = styled.div`
 const InputRow = styled.div`
   display: grid;
   gap: 5px;
-  padding: 0 10px;
+  padding: 5px 30px;
   grid-template-columns: 30% 70%;
 `;
 
 const AnotherRow = styled.div`
-  padding: 5px 10px;
+  padding: 5px 30px;
   display: grid;
 
   gap: 5px;
@@ -42,44 +41,45 @@ const AnotherRow = styled.div`
 `;
 
 const ButtonRow = styled.div`
-  padding: 0 5px 0 10px;
+  padding: 10px 30px;
+  height:100px;
 `;
 
 const CustomSelect = styled.select`
-  border-radius: 6px;
+  border-radius: 12px;
   border: solid 1px #676666;
-  box-shadow: 0px 2px 2px 0px rgb(0 0 0 / 10%);
-  height: 42px;
-  font-size: 0.9rem;
+  box-shadow: 0px 4px 4px 0px rgb(0 0 0 / 10%);
+  height: 80px;
+  font-size: 1.8rem;
   padding: 0px 8px;
 `;
 
 const CustomTextField = styled.input`
-  border-radius: 6px;
+  border-radius: 12px;
   border: solid 1px #676666;
-  box-shadow: 0px 2px 2px 0px rgb(0 0 0 / 10%);
+  box-shadow: 0px 4px 4px 0px rgb(0 0 0 / 10%);
   padding: 0px 10px;
-  height: 40px;
+  height: 78.5px;
   display: flex;
   flex: 1;
-  font-size: 0.9rem;
+  font-size: 1.8rem;
   ::placeholder {
     color: rgba(0, 0, 0, 0.5);
-    font-size: 0.9rem;
+    font-size: 1.8rem;
   }
 `;
 
 const CustomButton = styled.div`
-  border-radius: 6px;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   white-space: nowrap;
   padding: 0 10px;
-  height: 40px;
+  height: 100%;
   width: 100%;
   flex: 1;
-  font-size: 0.9rem;
+  font-size: 1.8rem;
 
   ${({ theme }) => {
     return (
@@ -102,7 +102,7 @@ const CloseButton = styled.div`
   border: solid 1px #000;
   border-radius: 50%;
   width: 20px;
-  height: 20px;
+  height: 100%;
   font-weight: bold;
 
   display: flex;
