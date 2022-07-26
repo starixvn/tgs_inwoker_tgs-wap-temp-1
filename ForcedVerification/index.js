@@ -19,7 +19,7 @@ const CustomDialog = styled(Dialog)`
 `;
 
 const Title = styled.div`
-  font-size: 25px;
+  font-size: 2rem
   width: 100%;
   text-align: center;
   padding: 10px 10px 20px 10px;
@@ -50,6 +50,7 @@ const CustomSelect = styled.select`
   border: solid 1px #676666;
   box-shadow: 0px 2px 2px 0px rgb(0 0 0 / 10%);
   height: 42px;
+  font-size: 0.9rem;
   padding: 0px 8px;
 `;
 
@@ -61,8 +62,10 @@ const CustomTextField = styled.input`
   height: 40px;
   display: flex;
   flex: 1;
+  font-size: 0.9rem;
   ::placeholder {
     color: rgba(0, 0, 0, 0.5);
+    font-size: 0.9rem;
   }
 `;
 
@@ -76,6 +79,7 @@ const CustomButton = styled.div`
   height: 40px;
   width: 100%;
   flex: 1;
+  font-size: 0.9rem;
 
   ${({ theme }) => {
     return (
