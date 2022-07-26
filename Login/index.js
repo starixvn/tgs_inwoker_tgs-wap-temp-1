@@ -973,6 +973,7 @@ class Login extends Component {
         .newRegister("CreatePlayer", {
           username: username,
           pwd: password,
+          invitationcode: this.state.promoId,
         })
         .then(async (response) => {
           if (
