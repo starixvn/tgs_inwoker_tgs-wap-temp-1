@@ -304,10 +304,17 @@ class Login extends Component {
           config.features.Register_ShowPhone &&
           config.features.ForcedVerification
         ) {
-          this.props.history.push({
-            pathname: "/" + i18n.language + "/profile/phone",
-            state: { forced: true },
-          });
+          if (
+            config.features.Register_CustomFlow_IDR &&
+            config.features.NavigateToAddCard
+          ) {
+            this.props.appHistory.replace("/" + i18n.language + "/card/add");
+          } else {
+            this.props.history.push({
+              pathname: "/" + i18n.language + "/profile/phone",
+              state: { forced: true },
+            });
+          }
         } else {
           if (
             !config.features.Register_CustomFlow_IDR ||
@@ -555,10 +562,10 @@ class Login extends Component {
                   this.handleLoginSuccess(result.data);
                 }
               });
+          } else {
+            this.handleLoginSuccess(result.data);
           }
         });
-
-      //this.handleLoginSuccess(result.data);
     }
   };
   handleForgotpasswordClick = () => {
