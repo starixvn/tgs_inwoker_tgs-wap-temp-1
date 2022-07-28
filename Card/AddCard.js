@@ -119,7 +119,7 @@ class AddCard extends Component {
     showDialog: false,
     dialogMessage: "",
     disabledBankNameInput: false,
-
+    disabledBankAccountNameInput: false,
     name: "",
     phone: "",
     isDeposit: false,
@@ -144,6 +144,42 @@ class AddCard extends Component {
     ) {
       this.props.getDepositMethod();
     } else this.formatChannelList();
+
+    if (this.state.isDeposit && this.props.wallet.bankCardList.length > 0) {
+      var defaultCard = this.props.wallet.bankCardList.filter(
+        (card) => card.default
+      )[0];
+      var name = "";
+      var disableBankAccountNameInput = false;
+      if (
+        this.props.wallet.depositList[
+          this.state.selectedBankTypeIndex
+        ].banktype.toUpperCase() === defaultCard.banktype.toUpperCase()
+      ) {
+        switch (
+          this.props.wallet.depositList[
+            this.state.selectedBankTypeIndex
+          ].banktype.toUpperCase()
+        ) {
+          case "BANK":
+            name = defaultCard.detail.name;
+            disableBankAccountNameInput = true;
+            break;
+          case "EWALLET":
+            name = defaultCard.detail.eMoneyName;
+            disableBankAccountNameInput = true;
+            break;
+          default:
+            name = "";
+            break;
+        }
+        this.setState({
+          ...this.state,
+          bankAccountName: name,
+          disableBankAccountNameInput: disableBankAccountNameInput,
+        });
+      }
+    }
   };
   componentDidUpdate(preProps, preState) {
     if (
@@ -423,11 +459,41 @@ class AddCard extends Component {
   };
 
   handleBankTypeClick = (index) => {
+    var name = "";
+    var disableBankAccountNameInput = false;
+    if (this.state.isDeposit && this.props.wallet.bankCardList.length > 0) {
+      var defaultCard = this.props.wallet.bankCardList.filter(
+        (card) => card.default
+      )[0];
+      if (
+        this.props.wallet.depositList[index].banktype.toUpperCase() ===
+        defaultCard.banktype.toUpperCase()
+      ) {
+        switch (this.props.wallet.depositList[index].banktype.toUpperCase()) {
+          case "BANK":
+            name = defaultCard.detail.name;
+            disableBankAccountNameInput = true;
+            break;
+          case "EWALLET":
+            name = defaultCard.detail.eMoneyName;
+            disableBankAccountNameInput = true;
+            break;
+          default:
+            break;
+        }
+      } else {
+        name = this.state.bankAccountName;
+      }
+    } else {
+      name = this.state.bankAccountName;
+    }
     this.setState({
       ...this.state,
       selectedBankTypeIndex: index,
       selectedChannelIndex: 0,
       bankTypeOpen: false,
+      bankAccountName: name,
+      disableBankAccountNameInput: disableBankAccountNameInput,
     });
   };
   handleChannelClick = (index) => {
@@ -642,6 +708,7 @@ class AddCard extends Component {
                       : i18n.t("card.addCard.BankAccountName")
                   }
                   maxLength={255}
+                  disabled={this.state.disableBankAccountNameInput}
                 ></Textbox>
               </React.Fragment>
             );
@@ -675,6 +742,7 @@ class AddCard extends Component {
                 : i18n.t("card.addCard.BankAccountName")
             }
             maxLength={255}
+            disabled={this.state.disableBankAccountNameInput}
           ></Textbox>
         )}
         {(!this.state.isDeposit &&
