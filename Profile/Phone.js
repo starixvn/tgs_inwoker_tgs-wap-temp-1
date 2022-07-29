@@ -33,6 +33,10 @@ const CustomText = styled.div`
   height: 170px;
   padding: 20px 20px 0 20px;
   margin: 20px auto;
+
+  background: #fff;
+  box-shadow: 0 2px 6px 0 rgb(58 58 58 / 20%);
+  border-radius: 20px;
 `;
 const CustomLabel = styled.div`
   font-size: 24px;
