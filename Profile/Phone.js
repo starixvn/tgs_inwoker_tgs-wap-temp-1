@@ -33,10 +33,6 @@ const CustomText = styled.div`
   height: 170px;
   padding: 20px 20px 0 20px;
   margin: 20px auto;
-  background: #fff;
-  background: #fff;
-  box-shadow: 0 2px 6px 0 rgb(58 58 58 / 20%);
-  border-radius: 20px;
 `;
 const CustomLabel = styled.div`
   font-size: 24px;
@@ -129,8 +125,16 @@ class Phone extends BaseProfile {
       return;
     }
     this.showLoading(true);
-    AccountService.VerifyPhone(this.state.phone, this.state.areacode)
-      .then((response) => {
+
+    this.props
+      .newRegister("InitPhone", {
+        input: "Init",
+        data: {
+          areacode: this.state.areacode,
+          phone: this.state.phone,
+        },
+      })
+      .then(async (response) => {
         if (response.IsSuccess) {
           this.setState({
             ...this.state,
@@ -145,12 +149,30 @@ class Phone extends BaseProfile {
           this.showErrorMessage(response.info);
         }
         this.showLoading(false);
-      })
-      .catch((err) => {
-        this.showErrorMessage(err);
-
-        this.showLoading(false);
       });
+
+    //  AccountService.VerifyPhone(this.state.phone, this.state.areacode)
+    //    .then((response) => {
+    //      if (response.IsSuccess) {
+    //        this.setState({
+    //          ...this.state,
+    //          countdownToken: 60,
+    //          securityKey: response.data,
+    //        });
+    //        this.showInfoMessage(i18n.t("common.msgTokenSent"));
+    //        setTimeout(() => {
+    //          this.checkCountdownToken();
+    //        }, 1000);
+    //      } else {
+    //        this.showErrorMessage(response.info);
+    //      }
+    //      this.showLoading(false);
+    //    })
+    //    .catch((err) => {
+    //      this.showErrorMessage(err);
+
+    //      this.showLoading(false);
+    //    });
   };
 
   isDisableButton = () => {
@@ -172,31 +194,45 @@ class Phone extends BaseProfile {
   };
   handleSubmitClicked = () => {
     this.showLoading(true);
-    AccountService.UpdatePhone(this.state.securityKey, this.state.code)
-      .then((response) => {
-        if (response.IsSuccess) {
-          this.props.getAccountInfo().then((responseUpdate) => {
-            if (responseUpdate.IsSuccess) {
-              this.setState({
-                ...this.state,
-                code: "",
-                securityKey: "",
-                countdownToken: 0,
-                isNew: false,
-                isConfigured: true,
-              });
-            }
-            this.showLoading(false);
-          });
-        } else {
-          this.showErrorMessage(response.info);
-          this.showLoading(false);
-        }
+
+    this.props
+      .newRegister("InitPhone", {
+        input: "Valid",
+        data: {
+          securitykey: this.state.securityKey,
+          validatecode: this.state.code,
+        },
       })
-      .catch((err) => {
-        this.showErrorMessage(err);
+      .then(async (response) => {
+        this.showErrorMessage(response.info);
         this.showLoading(false);
       });
+
+    //  AccountService.UpdatePhone(this.state.securityKey, this.state.code)
+    //    .then((response) => {
+    //      if (response.IsSuccess) {
+    //        this.props.getAccountInfo().then((responseUpdate) => {
+    //          if (responseUpdate.IsSuccess) {
+    //            this.setState({
+    //              ...this.state,
+    //              code: "",
+    //              securityKey: "",
+    //              countdownToken: 0,
+    //              isNew: false,
+    //              isConfigured: true,
+    //            });
+    //          }
+    //          this.showLoading(false);
+    //        });
+    //      } else {
+    //        this.showErrorMessage(response.info);
+    //        this.showLoading(false);
+    //      }
+    //    })
+    //    .catch((err) => {
+    //      this.showErrorMessage(err);
+    //      this.showLoading(false);
+    //    });
   };
 
   render() {
@@ -313,6 +349,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
+    newRegister: (type, input) =>
+      dispatch(accountAction.newRegister(type, input)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Phone));
