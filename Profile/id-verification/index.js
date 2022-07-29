@@ -260,7 +260,9 @@ class NameVerify extends BaseProfile {
         this.state.scene !== "waiting-submit"
         ? i18n.t("common.configured")
         : i18n.t("common.complete"),
-      this.bottomNoteSwitcher(this.state.scene)
+      config.features.Profile_DisplayEditNameButton
+        ? this.bottomNoteSwitcher(this.state.scene)
+        : null
     );
   }
 }
