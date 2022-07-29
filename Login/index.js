@@ -545,29 +545,23 @@ class Login extends Component {
                     })
                     .then(async (response) => {
                       if (response.IsSuccess) {
-                        this.props
-                          .newRegister("InitMail", {
-                            input: "Valid",
-                            data: {
-                              securitykey: response.data.stepResponse,
-                              validatecode: "123456",
-                            },
-                          })
-                          .then(async (response) => {
-                            this.handleLoginSuccess(result.data);
-                          });
+                        this.props.newRegister("InitMail", {
+                          input: "Valid",
+                          data: {
+                            securitykey: response.data.stepResponse,
+                            validatecode: "123456",
+                          },
+                        });
                       }
                     });
-                } else {
-                  this.handleLoginSuccess(result.data);
                 }
               });
-          } else {
-            this.handleLoginSuccess(result.data);
           }
         });
+      this.handleLoginSuccess(result.data);
     }
   };
+
   handleForgotpasswordClick = () => {
     this.props.appHistory.push("/" + i18n.language + "/forgot-password");
   };
