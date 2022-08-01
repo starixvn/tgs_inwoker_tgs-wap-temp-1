@@ -155,6 +155,9 @@ class Details extends Component {
   render() {
     if (this.state.details === null) return <React.Fragment></React.Fragment>;
     var isDummy = this.state.details.promotionType.toUpperCase() === "DUMMY";
+
+    var checkIfLocalizationIsEmpty =
+      JSON.stringify(this.state.details.localization) === "{}";
     return (
       <React.Fragment>
         <Header
@@ -214,11 +217,12 @@ class Details extends Component {
                 "<div>" +
                 (() => {
                   if (
-                    this.state.details.localization !== null &&
-                    this.state.details.localization.content &&
-                    this.state.details.localization.content !== null
+                    !checkIfLocalizationIsEmpty &&
+                    (this.state.details.localization[i18n.language] !== "" ||
+                      this.state.details.localization[i18n.language] !== null)
                   ) {
-                    return this.state.details.localization.content;
+                    return this.state.details.localization[i18n.language]
+                      .content;
                   } else {
                     return this.state.details.content;
                   }
@@ -232,11 +236,11 @@ class Details extends Component {
                 "<div>" +
                 (() => {
                   if (
-                    this.state.details.localization !== null &&
-                    this.state.details.localization.terms &&
-                    this.state.details.localization.terms !== null
+                    !checkIfLocalizationIsEmpty &&
+                    (this.state.details.localization[i18n.language] !== "" ||
+                      this.state.details.localization[i18n.language] !== null)
                   ) {
-                    return this.state.details.localization.terms;
+                    return this.state.details.localization[i18n.language].terms;
                   } else {
                     return this.state.details.terms;
                   }
