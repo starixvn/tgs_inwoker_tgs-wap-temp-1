@@ -185,12 +185,13 @@ class AddCard extends Component {
     if (
       !preProps.account.info.bankInfoAuthentication &&
       this.props.account.info.bankInfoAuthentication &&
+      this.props.account.registercompleted &&
       this.props.token &&
       this.props.wallet.addBankCardResult === null
     ) {
       this.props.resetResult();
       this.props.getBankCardList();
-      this.props.appHistory.goBack();
+      this.props.appHistory.push("/" + i18n.language);
     }
     if (
       preProps.wallet.addBankCardResult !==

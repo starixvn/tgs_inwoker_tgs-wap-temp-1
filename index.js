@@ -631,12 +631,30 @@ class Wap extends Component {
         //   .parentNode.removeChild(document.getElementById("ioBB"));
         // this.props.checkGame();
         var bankInfoAuthentication = null;
+        var isPhoneNull = null;
+        var isEmailNull = null;
+        var isRegisterCompleted = null;
         await this.props.getAccountProfile(true).then((response) => {
           bankInfoAuthentication = response.data.bankinfoauthentication;
+          isPhoneNull = response.data.phone === null;
+          isEmailNull = response.data.email === null;
+          isRegisterCompleted = response.data.registercompleted;
         });
         if (config.features.ForceRedirectAddCard && !bankInfoAuthentication) {
           this.setState({ ...this.state, loading: false });
-          AppHistory.push("/" + i18n.language + "/card/add");
+          if (isPhoneNull) {
+            this.props.history.push({
+              pathname: "/" + i18n.language + "/profile/phone",
+              state: { forced: true },
+            });
+          } else if (isEmailNull) {
+            this.props.history.push({
+              pathname: "/" + i18n.language + "/profile/email",
+              state: { forced: true },
+            });
+          } else if (!isRegisterCompleted) {
+            this.props.history.push("/" + i18n.language + "/card/add");
+          }
           return;
         }
         // const responseVIP = await this.props.getVIPInfo(
