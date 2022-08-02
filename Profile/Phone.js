@@ -90,6 +90,12 @@ class Phone extends BaseProfile {
 
   handleChangePhone = (e) => {
     this.setState({ ...this.state, phone: e.target.value });
+    if (
+      config.features.Register_CustomFlow_IDR &&
+      !this.props.account.registercompleted
+    ) {
+      this.onTextChanged();
+    }
   };
 
   handleChangeCode = (e) => {
@@ -130,15 +136,33 @@ class Phone extends BaseProfile {
     }
     this.showLoading(true);
 
-    this.props
-      .newRegister("InitPhone", {
-        input: "Init",
-        data: {
-          areacode: this.state.areacode,
-          phone: this.state.phone,
-        },
-      })
-      .then(async (response) => {
+    // this.props
+    //   .newRegister("InitPhone", {
+    //     input: "Init",
+    //     data: {
+    //       areacode: this.state.areacode,
+    //       phone: this.state.phone,
+    //     },
+    //   })
+    //   .then(async (response) => {
+    //     if (response.IsSuccess) {
+    //       this.setState({
+    //         ...this.state,
+    //         countdownToken: 60,
+    //         securityKey: response.data,
+    //       });
+    //       this.showInfoMessage(i18n.t("common.msgTokenSent"));
+    //       setTimeout(() => {
+    //         this.checkCountdownToken();
+    //       }, 1000);
+    //     } else {
+    //       this.showErrorMessage(response.info);
+    //     }
+    //     this.showLoading(false);
+    //   });
+
+    AccountService.VerifyPhone(this.state.phone, this.state.areacode)
+      .then((response) => {
         if (response.IsSuccess) {
           this.setState({
             ...this.state,
@@ -153,36 +177,21 @@ class Phone extends BaseProfile {
           this.showErrorMessage(response.info);
         }
         this.showLoading(false);
+      })
+      .catch((err) => {
+        this.showErrorMessage(err);
+
+        this.showLoading(false);
       });
-
-    //  AccountService.VerifyPhone(this.state.phone, this.state.areacode)
-    //    .then((response) => {
-    //      if (response.IsSuccess) {
-    //        this.setState({
-    //          ...this.state,
-    //          countdownToken: 60,
-    //          securityKey: response.data,
-    //        });
-    //        this.showInfoMessage(i18n.t("common.msgTokenSent"));
-    //        setTimeout(() => {
-    //          this.checkCountdownToken();
-    //        }, 1000);
-    //      } else {
-    //        this.showErrorMessage(response.info);
-    //      }
-    //      this.showLoading(false);
-    //    })
-    //    .catch((err) => {
-    //      this.showErrorMessage(err);
-
-    //      this.showLoading(false);
-    //    });
   };
 
   isDisableButton = () => {
     const code = this.state.code;
     const phone = this.state.phone;
-    return !(code && phone);
+    return config.features.Register_CustomFlow_IDR &&
+      !this.props.account.registercompleted
+      ? !phone
+      : !(code && phone);
   };
   showErrorMessage = (msg) => {
     this.props.alert("", msg);
@@ -199,44 +208,117 @@ class Phone extends BaseProfile {
   handleSubmitClicked = () => {
     this.showLoading(true);
 
-    this.props
-      .newRegister("InitPhone", {
-        input: "Valid",
-        data: {
-          securitykey: this.state.securityKey,
-          validatecode: this.state.code,
-        },
-      })
-      .then(async (response) => {
-        this.showErrorMessage(response.info);
-        this.showLoading(false);
-      });
-
-    //  AccountService.UpdatePhone(this.state.securityKey, this.state.code)
-    //    .then((response) => {
-    //      if (response.IsSuccess) {
-    //        this.props.getAccountInfo().then((responseUpdate) => {
-    //          if (responseUpdate.IsSuccess) {
-    //            this.setState({
-    //              ...this.state,
-    //              code: "",
-    //              securityKey: "",
-    //              countdownToken: 0,
-    //              isNew: false,
-    //              isConfigured: true,
-    //            });
-    //          }
-    //          this.showLoading(false);
-    //        });
-    //      } else {
-    //        this.showErrorMessage(response.info);
-    //        this.showLoading(false);
-    //      }
-    //    })
-    //    .catch((err) => {
-    //      this.showErrorMessage(err);
-    //      this.showLoading(false);
-    //    });
+    if (
+      config.features.Register_CustomFlow_IDR &&
+      !this.props.account.registercompleted
+    ) {
+      this.props
+        .newRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: this.state.areacode,
+            phone: this.state.phone,
+          },
+        })
+        .then(async (response) => {
+          if (response.IsSuccess) {
+            this.props
+              .newRegister("InitPhone", {
+                input: "Valid",
+                data: {
+                  securitykey: response.data.stepResponse,
+                  validatecode: "123456",
+                },
+              })
+              .then(async (response) => {
+                if (response.IsSuccess) {
+                  this.props.getAccountInfo().then((responseUpdate) => {
+                    if (responseUpdate.IsSuccess) {
+                      // this.setState({
+                      //   ...this.state,
+                      //   code: "",
+                      //   securityKey: "",
+                      //   countdownToken: 0,
+                      //   isNew: false,
+                      //   isConfigured: true,
+                      // });
+                      if (
+                        responseUpdate.data.email === null &&
+                        !responseUpdate.data.registercompleted
+                      ) {
+                        this.props.history.push({
+                          pathname: "/" + i18n.language + "/profile/email",
+                          state: { forced: true },
+                        });
+                      }
+                    }
+                    this.showLoading(false);
+                  });
+                } else {
+                  this.showErrorMessage(response.info);
+                  this.showLoading(false);
+                }
+              });
+          } else {
+            this.showErrorMessage(response.info);
+          }
+          this.showLoading(false);
+        });
+    } else {
+      AccountService.UpdatePhone(this.state.securityKey, this.state.code)
+        .then((response) => {
+          if (response.IsSuccess) {
+            this.props.getAccountInfo().then((responseUpdate) => {
+              if (responseUpdate.IsSuccess) {
+                this.setState({
+                  ...this.state,
+                  code: "",
+                  securityKey: "",
+                  countdownToken: 0,
+                  isNew: false,
+                  isConfigured: true,
+                });
+              }
+              this.showLoading(false);
+            });
+          } else {
+            this.showErrorMessage(response.info);
+            this.showLoading(false);
+          }
+        })
+        .catch((err) => {
+          this.showErrorMessage(err);
+          this.showLoading(false);
+        });
+    }
+    // this.props
+    //   .newRegister("InitPhone", {
+    //     input: "Valid",
+    //     data: {
+    //       securitykey: this.state.securityKey,
+    //       validatecode: this.state.code,
+    //     },
+    //   })
+    //   .then(async (response) => {
+    //     if (response.IsSuccess) {
+    //       this.props.getAccountInfo().then((responseUpdate) => {
+    //         if (responseUpdate.IsSuccess) {
+    //           this.setState({
+    //             ...this.state,
+    //             code: "",
+    //             securityKey: "",
+    //             countdownToken: 0,
+    //             isNew: false,
+    //             isConfigured: true,
+    //           });
+    //         }
+    //         this.showLoading(false);
+    //       });
+    //     } else {
+    //       this.showErrorMessage(response.info);
+    //       this.showLoading(false);
+    //     }
+    //   });
   };
 
   render() {
@@ -286,7 +368,13 @@ class Phone extends BaseProfile {
         </CustomText>
 
         {(() => {
-          if (!this.state.isConfigured) {
+          if (
+            !(
+              config.features.Register_CustomFlow_IDR &&
+              !this.props.account.registercompleted
+            ) &&
+            !this.state.isConfigured
+          ) {
             return (
               !config.features.Profile_DisableVerifyPhone && (
                 <TextboxWithButton

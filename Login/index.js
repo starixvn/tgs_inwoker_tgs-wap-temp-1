@@ -308,7 +308,19 @@ class Login extends Component {
             config.features.Register_CustomFlow_IDR &&
             config.features.NavigateToAddCard
           ) {
-            this.props.appHistory.replace("/" + i18n.language + "/card/add");
+            if (response.data.phone === null) {
+              this.props.history.push({
+                pathname: "/" + i18n.language + "/profile/phone",
+                state: { forced: true },
+              });
+            } else if (response.data.email === null) {
+              this.props.history.push({
+                pathname: "/" + i18n.language + "/profile/email",
+                state: { forced: true },
+              });
+            } else if (!response.data.registercompleted) {
+              this.props.appHistory.replace("/" + i18n.language + "/card/add");
+            }
           } else {
             this.props.history.push({
               pathname: "/" + i18n.language + "/profile/phone",
@@ -348,7 +360,21 @@ class Login extends Component {
             (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)
           ) {
             if (config.features.NavigateToAddCard) {
-              this.props.appHistory.replace("/" + i18n.language + "/card/add");
+              if (response.data.phone === null) {
+                this.props.history.push({
+                  pathname: "/" + i18n.language + "/profile/phone",
+                  state: { forced: true },
+                });
+              } else if (response.data.email === null) {
+                this.props.history.push({
+                  pathname: "/" + i18n.language + "/profile/email",
+                  state: { forced: true },
+                });
+              } else if (!response.data.registercompleted) {
+                this.props.appHistory.replace(
+                  "/" + i18n.language + "/card/add"
+                );
+              }
             } else {
               this.props.appHistory.replace("/" + i18n.language + "/main/home");
             }
