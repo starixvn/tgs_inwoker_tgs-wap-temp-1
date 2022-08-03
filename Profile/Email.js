@@ -213,6 +213,10 @@ class Email extends BaseProfile {
   };
 
   render() {
+    const { location } = this.props;
+
+    var cannotAccessOther = location.state && location.state.forced ? true : "";
+
     return this.setupContent(
       i18n.t("common.emailAddress"),
       <React.Fragment>
@@ -278,7 +282,8 @@ class Email extends BaseProfile {
             ></BottomNote>
           );
         }
-      })()
+      })(),
+      cannotAccessOther
     );
   }
 }
