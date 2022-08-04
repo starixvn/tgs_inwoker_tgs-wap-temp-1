@@ -224,6 +224,11 @@ class Login extends Component {
     if (this.props.token != null) {
       this.props.appHistory.replace("/" + i18n.language + "/main/home");
     } else {
+      if(this.props.match.params.subid && this.props.match.params.subid !== "")
+      {
+        this.handleChangeSelection(1);
+        return;
+      }
       let urlParams = new URLSearchParams(this.props.location.search);
       if (urlParams.has("do")) {
         const doValue = urlParams.get("do");
@@ -1031,6 +1036,11 @@ class Login extends Component {
               this.doLoginWithHp(username, password, phone, areaCode);
             } else {
               this.doLogin(username, password);
+            }
+            if (this.props.match.params.subid && this.props.match.params.subid !== "") {
+              let PAYOUT = "";
+              let affiliateUrl = `http://ad.propellerads.com/conversion.php?aid=3508428&pid=&tid=100917&visitor_id=${this.props.match.params.subid}&payout=${PAYOUT}`;
+              window.open(affiliateUrl, "_blank");
             }
           } else {
             this.props.alert("", response.info);
