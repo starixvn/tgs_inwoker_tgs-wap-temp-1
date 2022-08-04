@@ -268,10 +268,14 @@ const TheDepositButton = styled.div`
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 `;
 
-const CustomTabs = styled.div`
+const CustomTabs = styled(Tabs)`
   height: 80px;
   font-size: 25px;
   display: flex;
+
+  .MuiTabs-fixed {
+    overflow: overlay !important;
+  }
 `;
 
 const CustomTabText = styled.div`
@@ -1137,14 +1141,17 @@ class Report extends Component {
             //       </Tabs>
           }
         </StyledAppBar>
-        <Tabs value={this.state.selectedType} onChange={this.handleChangeTab}>
+        <CustomTabs
+          value={this.state.selectedType}
+          onChange={this.handleChangeTab}
+        >
           {(this.props.game.containTransferWallet
             ? this.theMenu
             : this.noTransfer
           ).map((data, index) => {
             return this.CTabs(data.index, data.label);
           })}
-        </Tabs>
+        </CustomTabs>
 
         <DateContainer>
           <FlatStraightLine>
