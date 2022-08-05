@@ -533,35 +533,22 @@ class AddCard extends Component {
       "อาคารสงเคราะห์ (Government Housing Bank - GH)",
     ];
 
-    // These checking to prevent error to display #justToBeSafe
-    var depositListNotValid =
-      this.props.wallet.depositList === undefined ||
-      this.props.wallet.depositList === null ||
-      this.props.wallet.depositList === "" ||
-      this.props.wallet.depositList.length === 0;
-
-    var withdrawalListNotValid =
-      this.props.wallet.withdrawalList === undefined ||
-      this.props.wallet.withdrawalList === null ||
-      this.props.wallet.withdrawalList === "" ||
-      this.props.wallet.withdrawalList.length === 0;
-
     var depositListEWallet =
-      !depositListNotValid &&
+      Common.arrayValidator(this.props.wallet.depositList) &&
       this.props.wallet.depositList[this.state.selectedBankTypeIndex]
         .banktype === "EWallet";
 
     var withdrawalListEwallet =
-      !withdrawalListNotValid &&
+      Common.arrayValidator(this.props.wallet.withdrawalList) &&
       this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
         .banktype === "EWallet";
 
     var depositListPulsa =
-      !depositListNotValid &&
+      Common.arrayValidator(this.props.wallet.depositList) &&
       this.props.wallet.depositList[this.state.selectedBankTypeIndex]
         .banktype === "Pulsa";
     var withdrawalListPulsa =
-      !withdrawalListNotValid &&
+      Common.arrayValidator(this.props.wallet.withdrawalList) &&
       this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
         .banktype === "Pulsa";
 
