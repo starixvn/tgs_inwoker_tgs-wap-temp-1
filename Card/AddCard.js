@@ -533,16 +533,45 @@ class AddCard extends Component {
       "อาคารสงเคราะห์ (Government Housing Bank - GH)",
     ];
 
-    const isEwallet =
-      this.state.channelList.length &&
-      (this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "EWallet" ||
-        this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-          "E-wallet");
-    const isPulsa =
-      this.state.channelList.length &&
-      this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "Pulsa";
+    // These checking to prevent error to display #justToBeSafe
+    var depositListNotValid =
+      this.props.wallet.depositList === undefined ||
+      this.props.wallet.depositList === null ||
+      this.props.wallet.depositList === "" ||
+      this.props.wallet.depositList.length === 0;
+
+    var withdrawalListNotValid =
+      this.props.wallet.withdrawalList === undefined ||
+      this.props.wallet.withdrawalList === null ||
+      this.props.wallet.withdrawalList === "" ||
+      this.props.wallet.withdrawalList.length === 0;
+
+    var depositListEWallet =
+      !depositListNotValid &&
+      this.props.wallet.depositList[this.state.selectedBankTypeIndex]
+        .banktype === "EWallet";
+
+    var withdrawalListEwallet =
+      !withdrawalListNotValid &&
+      this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
+        .banktype === "EWallet";
+
+    var depositListPulsa =
+      !depositListNotValid &&
+      this.props.wallet.depositList[this.state.selectedBankTypeIndex]
+        .banktype === "Pulsa";
+    var withdrawalListPulsa =
+      !withdrawalListNotValid &&
+      this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
+        .banktype === "Pulsa";
+
+    const isEwallet = this.state.isDeposit
+      ? depositListEWallet
+      : withdrawalListEwallet;
+
+    const isPulsa = this.state.isDeposit
+      ? depositListPulsa
+      : withdrawalListPulsa;
 
     const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 
