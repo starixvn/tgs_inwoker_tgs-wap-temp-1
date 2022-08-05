@@ -470,9 +470,7 @@ class AddCard extends Component {
       )[0];
       if (
         Common.arrayValidator(this.props.wallet.depositList) &&
-        this.props.wallet.depositList[
-          this.state.selectedBankTypeIndex
-        ].banktype.toUpperCase() ===
+        this.props.wallet.depositList[index].banktype.toUpperCase() ===
           (defaultCard && defaultCard.banktype.toUpperCase())
       ) {
         switch (this.props.wallet.depositList[index].banktype.toUpperCase()) {
