@@ -1060,6 +1060,7 @@ class Wap extends Component {
                 <LiveChat
                   license={config.features.LiveChatVendor.license}
                   vendor={config.features.LiveChatVendor.brand}
+                  group={config.features.LiveChatVendor.group ? config.features.LiveChatVendor.group : 0}
                 />
               );
             }
