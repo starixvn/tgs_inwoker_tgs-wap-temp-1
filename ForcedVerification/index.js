@@ -8,7 +8,7 @@ import { Textfit } from "react-textfit";
 
 const Wrapper = styled.div`
   padding: 20px 10px;
-  min-height: 28vh;
+  min-height: 20vh;
 `;
 
 const CustomDialog = styled(Dialog)`
@@ -42,7 +42,7 @@ const AnotherRow = styled.div`
 
 const ButtonRow = styled.div`
   padding: 10px 30px;
-  height:100px;
+  height: 100px;
 `;
 
 const CustomSelect = styled.select`
@@ -154,6 +154,19 @@ const ForcedVerification = ({ forcedverify, alert }) => {
     }
   };
 
+  function smsVerification(securityKey, code) {
+    AccountService.VerifyActivation(securityKey, code).then(
+      async (response) => {
+        if (response.IsSuccess) {
+          alert("", i18n.t("common.msgTokenVerified"));
+          setOpen(false);
+        } else {
+          alert("", response.info);
+        }
+      }
+    );
+  }
+
   const handleActivationClick = async () => {
     var expr = new RegExp(
       `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
@@ -167,22 +180,27 @@ const ForcedVerification = ({ forcedverify, alert }) => {
       );
       return;
     }
-    expr = /^[a-zA-Z0-9]{6}$/;
-    if (!expr.test(code)) {
-      alert("", i18n.t("common.msgEnterCode"));
-      return;
+    if (!config.features.SkipSMSVerification) {
+      expr = /^[a-zA-Z0-9]{6}$/;
+      if (!expr.test(code)) {
+        alert("", i18n.t("common.msgEnterCode"));
+        return;
+      }
     }
 
-    AccountService.VerifyActivation(securityKey, code).then(
-      async (response) => {
-        if (response.IsSuccess) {
-          alert("", i18n.t("common.msgTokenVerified"));
-          setOpen(false);
-        } else {
-          alert("", response.info);
+    if (config.features.SkipSMSVerification) {
+      AccountService.Activation("", "", areaCode, phone).then(
+        async (response) => {
+          if (response.IsSuccess) {
+            smsVerification(response.data, "123456");
+          } else {
+            alert("", response.info);
+          }
         }
-      }
-    );
+      );
+    } else {
+      smsVerification(securityKey, code);
+    }
   };
 
   useEffect(() => {
@@ -218,23 +236,28 @@ const ForcedVerification = ({ forcedverify, alert }) => {
             }}
           />
         </InputRow>
-        <AnotherRow>
-          <CustomTextField
-            type="text"
-            value={code}
-            placeholder={i18n.t("common.msgEnterCode")}
-            onChange={(e) => {
-              setCode(e.target.value);
-            }}
-          />
-          <CustomButton onClick={handleGetCodeClick} disabled={countdown > 0}>
-            <Textfit>
-              {countdown <= 0
-                ? i18n.t("common.msgSendToken")
-                : i18n.t("common.btnTokenResendLabel") + "(" + countdown + "s)"}
-            </Textfit>
-          </CustomButton>
-        </AnotherRow>
+        {!config.features.SkipSMSVerification && (
+          <AnotherRow>
+            <CustomTextField
+              type="text"
+              value={code}
+              placeholder={i18n.t("common.msgEnterCode")}
+              onChange={(e) => {
+                setCode(e.target.value);
+              }}
+            />
+            <CustomButton onClick={handleGetCodeClick} disabled={countdown > 0}>
+              <Textfit>
+                {countdown <= 0
+                  ? i18n.t("common.msgSendToken")
+                  : i18n.t("common.btnTokenResendLabel") +
+                    "(" +
+                    countdown +
+                    "s)"}
+              </Textfit>
+            </CustomButton>
+          </AnotherRow>
+        )}
         <ButtonRow>
           <CustomButton onClick={handleActivationClick}>
             {i18n.t("common.submit")}

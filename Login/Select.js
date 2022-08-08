@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import config from "../../../config/config";
-
 const Container = styled.div`
   margin: 0 auto;
 
@@ -86,7 +85,9 @@ class Select extends Component {
       <React.Fragment>
         <Container
           style={{
-            margin: "20px 0px 0px 57px",
+            margin: this.props.leaveGap
+              ? "20px 0px 20px 57px"
+              : "20px 0px 0px 57px",
             width: "180px",
             float: "left",
             padding: "10px",
