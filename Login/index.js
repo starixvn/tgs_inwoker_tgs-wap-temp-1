@@ -4,9 +4,10 @@ import styled from "styled-components";
 
 import { withRouter } from "react-router-dom";
 import ButtonSwitch from "./ButtonSwitch";
+
+import Textbox from "./Textbox";
 import Select from "./Select";
 import VerificationCode from "./VerificationCode";
-import Textbox from "./Textbox";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
@@ -22,7 +23,7 @@ import ButtonWap from "../../Share/ButtonWap";
 import Loading from "../../Wap/Share/Loading";
 
 import i18n from "../../../utils/i18n";
-import BlowFishEncryption from "../../../utils/BlowFishEncryption";
+
 import config from "../../../config/config";
 import { uiAction } from "../../../api-services/actions/uiAction";
 import ErrorSwitcher from "../../../utils/ErrorSwitcher";
@@ -676,6 +677,19 @@ class Login extends Component {
       hideConfirmPassword: !this.state.hideConfirmPassword,
     });
   };
+
+  smsVerification = (securityKey, code) => {
+    AccountService.VerifyActivation(securityKey, code).then(
+      async (response) => {
+        if (response.IsSuccess) {
+          this.props.appHistory.replace("/" + i18n.language + "/main/home");
+        } else {
+          this.props.alert("", response.info);
+        }
+      }
+    );
+  };
+
   handleActivationClick = async () => {
     const username = this.state.username;
     const password = this.state.password;
@@ -692,22 +706,32 @@ class Login extends Component {
       this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
       return;
     }
-    expr = /^[a-zA-Z0-9]{6}$/;
-    if (!expr.test(code)) {
-      this.props.alert("", i18n.t("common.msgEnterCode"));
-      return;
-    }
 
-    AccountService.VerifyActivation(securityKey, code).then(
-      async (response) => {
-        if (response.IsSuccess) {
-          this.props.alert("", i18n.t("common.msgTokenVerified"));
-          this.doLogin(username, password);
-        } else {
-          this.props.alert("", response.info);
-        }
+    if (config.features.SkipSMSVerification) {
+      const result = await this.props.accountLogin(username, password);
+      if (result.IsSuccess) {
+        this.props.getAccountInfo();
+        AccountService.Activation(
+          "",
+          "",
+          this.state.areaCode,
+          this.state.phone
+        ).then(async (response) => {
+          if (response.IsSuccess) {
+            this.smsVerification(securityKey, "123456");
+          } else {
+            this.props.alert("", response.info);
+          }
+        });
       }
-    );
+    } else {
+      var exprx = /^[a-zA-Z0-9]{6}$/;
+      if (!exprx.test(code)) {
+        this.props.alert("", i18n.t("common.msgEnterCode"));
+        return;
+      }
+      this.smsVerification(securityKey, code);
+    }
   };
 
   handleSwitchType = (e) => {
@@ -726,8 +750,7 @@ class Login extends Component {
     const countdown = this.state.countdown;
     const areacode = this.state.areaCode;
     const phone = this.state.phone;
-    const isLoggedIn =
-      this.props.general.token !== "" && this.props.general.token !== null;
+    const isLoggedIn = false; //(this.props.account.token !== "" && this.props.account.token !== null );
     var result = null;
 
     if (countdown <= 0) {
@@ -1218,6 +1241,7 @@ class Login extends Component {
                     value={this.state.username}
                     onChange={this.handleUsernameChange}
                   ></Textbox>
+
                   <Textbox
                     icon={
                       process.env.PUBLIC_URL +
@@ -1394,14 +1418,19 @@ class Login extends Component {
                     onSelectChange={this.handleAreaCodeChange}
                     value={this.state.phone}
                     onChange={this.handlePhoneChange}
+                    leaveGap={config.features.SkipSMSVerification}
                   ></Select>
-                  <VerificationCode
-                    value={this.state.code}
-                    onChange={this.handleCodeChange}
-                    countdown={this.state.countdown}
-                    placeholder={i18n.t("common.msgEnterCode")}
-                    handleGetCodeClick={this.handleGetCodeClick}
-                  ></VerificationCode>
+                  {!config.features.SkipSMSVerification && (
+                    <>
+                      <VerificationCode
+                        value={this.state.code}
+                        onChange={this.handleCodeChange}
+                        countdown={this.state.countdown}
+                        placeholder={i18n.t("common.msgEnterCode")}
+                        handleGetCodeClick={this.handleGetCodeClick}
+                      ></VerificationCode>
+                    </>
+                  )}
                   <ButtonWap
                     style={{ margin: "100px auto 0 auto" }}
                     name={i18n.t("common.submit")}
@@ -1462,8 +1491,8 @@ const mapDispatchToProps = (dispatch) => {
     getIDCardNo: () => dispatch(accountAction.getIDCardNo()),
     getHomePageGameList: () => dispatch(gameAction.getHomePageGameList()),
     getInviteLink: () => dispatch(accountAction.getInviteLink()),
-    getMessageList: (languages, pages, limit) =>
-      dispatch(inboxAction.getMessages(languages, pages, limit, true, true)),
+    getMessageList: (language, pages, limit) =>
+      dispatch(inboxAction.getMessages(language, pages, limit, true, true)),
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
     getPlayerPromotionList: (language) =>
       dispatch(
