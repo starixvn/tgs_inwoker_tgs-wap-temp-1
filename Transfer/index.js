@@ -19,6 +19,7 @@ import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 import Loading from "../../Wap/Share/Loading";
 import Common from "../../../utils/Common";
 import i18n from "../../../utils/i18n";
+import config from "../../../config/config";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
