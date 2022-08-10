@@ -4,6 +4,7 @@ import styled from "styled-components";
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 import IMHandler from "../Main/Support/IMHandler";
+import { UiService } from "../../../api-services/services/UiService";
 const MaintenanceBg = styled.div`
   z-index: 10;
   overflow-y: scroll;
@@ -11,8 +12,9 @@ const MaintenanceBg = styled.div`
   height: 100%;
   position: absolute;
   top: 0;
-  background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp/maintenance.jpg`})
+  background: url(${({ image }) => {
+      return process.env.PUBLIC_URL + `/assets/images/wapp/${image}.jpg`;
+    }})
     no-repeat;
   background-size: cover;
   background-position: center;
@@ -72,7 +74,7 @@ const OverlayHeader = styled.div`
 
 const OverlayBody = styled.div`
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 50% 50%;
 `;
 
 const IMWrapper = styled.div`
@@ -119,6 +121,20 @@ const AnotherButton = styled(Button)`
   border: solid 1px #ff8e39;
 `;
 
+const SMType = styled.div`
+  padding: 5px 0px;
+  font-weight: bold;
+`;
+
+const TheText = styled.div`
+  font-size: 20px;
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Maintenance = (props) => {
   function csClick() {
     props.GetSupportUrl("", "", "", "");
@@ -128,16 +144,61 @@ const Maintenance = (props) => {
     navigator.clipboard.writeText(text);
   }
 
+  const maintenanceImageSwitcher = (template) => {
+    switch (template) {
+      case 8:
+      case "8":
+        return "maintenance-new";
+      default:
+        return "maintenance";
+    }
+  };
+
   const [open, setOpen] = useState(false);
   const [imList, setIMList] = useState([]);
+  const [liveChat, setLiveChat] = useState("");
 
+  const [beginTime, setBeginTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [content, setContent] = useState("");
+  const [isFailed, setFailed] = useState(false);
   useEffect(() => {
     props.brandComm().then((e) => {
       if (e.IsSuccess) {
         setIMList(e.data);
       }
     });
+
+    UiService.GetMaintenance().then((result) => {
+      if (result.IsSuccess) {
+        if (result.data) {
+          if (result.data.beginTime) {
+            setBeginTime(result.data.beginTime);
+          }
+          if (result.data.beginTime) {
+            setEndTime(result.data.endTime);
+          }
+          if (result.data.content) {
+            setContent(result.data.content);
+          }
+        }
+      } else {
+        setFailed(true);
+      }
+    });
   }, []);
+  const handleCSClick = (userid, name = "", question, email = "") => {
+    props.GetSupportUrl("", "", "");
+    //  var newURL = liveChat
+    //    .replace('{name}', name)
+    //    .replace('{lang}', i18n.language)
+    //    .replace('{email}', email || '')
+    //
+    //  if (newURL.length) {
+    //    Common.PopupCenter(newURL, '', 785, 750)
+    //  } else {
+    //  }
+  };
 
   useEffect(() => {
     if (!props.isMaintenance) {
@@ -158,9 +219,26 @@ const Maintenance = (props) => {
     return strTime;
   };
 
-  return (
-    <MaintenanceBg>
-      <CustomContainer container justify="center" alignItems="center">
+  const Api = () => {
+    return (
+      <TextContainer>
+        <Text>
+          {i18n.t("common.maintenance")}: <br />
+          {beginTime} ~ {endTime} (GMT+8){" "}
+        </Text>
+        <Text
+          style={{ color: "#fff" }}
+          dangerouslySetInnerHTML={{
+            __html: content,
+          }}
+        />
+      </TextContainer>
+    );
+  };
+
+  const Local = () => {
+    return (
+      <>
         <Text>我们现正维护中，请稍后再试。 </Text>
         <Text>
           如您有任何问题，请<Hyperlink onClick={csClick}>联系客服</Hyperlink>。
@@ -197,29 +275,43 @@ const Maintenance = (props) => {
         <Text>
           If you have any questions, <br />
           please contact our{" "}
-          <Hyperlink onClick={csClick}>customer service</Hyperlink>.
+          <Hyperlink onClick={handleCSClick}>customer service</Hyperlink>.
         </Text>
         <Text>
           Maintenance Time :{" "}
           {formatTime(config.features.Maintenance_Detail.startTime)} ~{" "}
           {formatTime(config.features.Maintenance_Detail.endTime)} (GMT+8){" "}
         </Text>
+      </>
+    );
+  };
+
+  return (
+    <MaintenanceBg image={maintenanceImageSwitcher(config.wapVersion)}>
+      <CustomContainer container justify="center" alignItems="center">
+        {isFailed ? <Local /> : <Api />}
       </CustomContainer>{" "}
       <ButtonContainer>
         <AnotherButton
           onClick={() => {
-            csClick();
+            handleCSClick();
           }}
         >
           {i18n.t("support.online")}
         </AnotherButton>
-        <Button
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          {i18n.t("panel.im")}
-        </Button>
+        {(() => {
+          if (imList.length > 0) {
+            return (
+              <Button
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                {i18n.t("panel.im")}
+              </Button>
+            );
+          }
+        })()}
       </ButtonContainer>
       <Overlay open={open}>
         <OverlayContent>
@@ -239,11 +331,15 @@ const Maintenance = (props) => {
                 <IMWrapper
                   onClick={() => {
                     IMHandler(data.type, data.phone);
-                    //  props.alert('', i18n.t('affiliate.copied'))
+                    // props.alert('', i18n.t('affiliate.copied'))
                   }}
                 >
                   <Icon icon={`${data.type}.png`} />
-                  <div>{data.type}</div>
+                  <SMType>{data.type}</SMType>
+                  <TheText style={{ textAlign: "center" }}>
+                    {i18n.t("common.phoneNumber")}: {data.phone}
+                  </TheText>
+                  <TheText>ID: {data.appid}</TheText>
                 </IMWrapper>
               );
             })}

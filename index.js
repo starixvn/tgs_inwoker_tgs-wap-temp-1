@@ -189,6 +189,11 @@ const RouteMapping = [
     alert: true,
   },
   {
+    path: "/register&visitor_id=:subid",
+    component: Login,
+    alert: true,
+  },
+  {
     path: "/profile",
     component: Profile,
     alert: true,
