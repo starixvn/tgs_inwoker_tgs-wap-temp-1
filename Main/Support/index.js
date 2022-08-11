@@ -248,21 +248,21 @@ const Support = (props) => {
           </PhoneHolder>
         )}
         <ButtonContainer>
-          {!config.features.LiveChatVendor &&
-            props.general.livechat.setting &&
-            props.general.livechat.setting.url !== undefined && (
-              <TheSupportButton
-                onClick={() => {
-                  props.cs();
-                }}
-              >
-                <IconTextContainer>
-                  <Icon icon="wechat" />
-                  <div>{i18n.t("support.online")}</div>
-                </IconTextContainer>
-                <TheRedText>{i18n.t("support.contact")}</TheRedText>
-              </TheSupportButton>
-            )}
+          {(config.features.LiveChatVendor ||
+            (props.general.livechat.setting &&
+              props.general.livechat.setting.url !== undefined)) && (
+            <TheSupportButton
+              onClick={() => {
+                props.cs();
+              }}
+            >
+              <IconTextContainer>
+                <Icon icon="wechat" />
+                <div>{i18n.t("support.online")}</div>
+              </IconTextContainer>
+              <TheRedText>{i18n.t("support.contact")}</TheRedText>
+            </TheSupportButton>
+          )}
 
           {props.general.brandsSupport.map((data, index) => {
             return (
