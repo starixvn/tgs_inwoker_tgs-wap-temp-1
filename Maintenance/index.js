@@ -30,7 +30,8 @@ const Text = styled.div`
   color: white;
   font-size: 30px;
   text-align: center;
-  padding: 20px 0px;
+  padding: 20px 40px;
+  white-space: pre-wrap;
 `;
 
 const Hyperlink = styled.span`
