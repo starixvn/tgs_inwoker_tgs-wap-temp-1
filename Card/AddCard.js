@@ -79,6 +79,7 @@ const StyledModalBank = withStyles((theme) => ({
     height: "calc(100% - 580px)",
   },
 }))(Modal);
+
 const StyledListItemIcon = withStyles((theme) => ({
   root: {
     marginLeft: "150px",
@@ -152,9 +153,11 @@ class AddCard extends Component {
       var name = "";
       var disableBankAccountNameInput = false;
       if (
-        this.props.wallet.depositList[
+        Common.arrayValidator(this.props.depositList) &&
+        this.props.depositList[
           this.state.selectedBankTypeIndex
-        ].banktype.toUpperCase() === defaultCard.banktype.toUpperCase()
+        ].banktype.toUpperCase() ===
+          (defaultCard && defaultCard.banktype.toUpperCase())
       ) {
         switch (
           this.props.wallet.depositList[
@@ -467,8 +470,9 @@ class AddCard extends Component {
         (card) => card.default
       )[0];
       if (
+        Common.arrayValidator(this.props.wallet.depositList) &&
         this.props.wallet.depositList[index].banktype.toUpperCase() ===
-        defaultCard.banktype.toUpperCase()
+          (defaultCard && defaultCard.banktype.toUpperCase())
       ) {
         switch (this.props.wallet.depositList[index].banktype.toUpperCase()) {
           // case "BANK":
@@ -533,16 +537,69 @@ class AddCard extends Component {
       "อาคารสงเคราะห์ (Government Housing Bank - GH)",
     ];
 
-    const isEwallet =
-      this.state.channelList.length &&
-      (this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "EWallet" ||
-        this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-          "E-wallet");
-    const isPulsa =
-      this.state.channelList.length &&
-      this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "Pulsa";
+    var depositListEWallet = false;
+    var withdrawalListEwallet = false;
+    var depositListPulsa = false;
+    var withdrawalListPulsa = false;
+
+    if (this.state.isDeposit) {
+      depositListEWallet =
+        Common.arrayValidator(this.props.wallet.depositList) &&
+        this.props.wallet.depositList[this.state.selectedBankTypeIndex]
+          .banktype === "EWallet";
+      // .filter(
+      //   (card) => card.banktype === "EWallet"
+      // ).length > 0;
+      depositListPulsa =
+        Common.arrayValidator(this.props.wallet.depositList) &&
+        this.props.wallet.depositList[this.state.selectedBankTypeIndex]
+          .banktype === "Pulsa";
+      // .filter(
+      //   (card) => card.banktype === "Pulsa"
+      // ).length > 0;
+    } else {
+      withdrawalListEwallet =
+        Common.arrayValidator(this.props.wallet.withdrawalList) &&
+        this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
+          .banktype === "EWallet";
+      // .filter(
+      //   (card) => card.banktype === "EWallet"
+      // ).length > 0;
+      withdrawalListPulsa =
+        Common.arrayValidator(this.props.wallet.withdrawalList) &&
+        this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
+          .banktype === "Pulsa";
+      // .filter(
+      //   (card) => card.banktype === "Pulsa"
+      // ).length > 0;
+    }
+
+    // var depositListEWallet =
+    //   Common.arrayValidator(this.props.wallet.depositList) &&
+    //   this.props.wallet.depositList.filter(
+    //     (card) => card.banktype === "EWallet"
+    //   ).length > 0;
+    // [this.state.selectedBankTypeIndex]
+    //   .banktype === "";
+
+    // var
+
+    // var depositListPulsa =
+    //   Common.arrayValidator(this.props.wallet.depositList) &&
+    //   this.props.wallet.depositList.filter(
+    //     (card) => card.banktype === "Pulsa"
+    //   ).length > 0;
+    //   // [this.state.selectedBankTypeIndex]
+    //   //   .banktype === "";
+    // var
+
+    const isEwallet = this.state.isDeposit
+      ? depositListEWallet
+      : withdrawalListEwallet;
+
+    const isPulsa = this.state.isDeposit
+      ? depositListPulsa
+      : withdrawalListPulsa;
 
     const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 

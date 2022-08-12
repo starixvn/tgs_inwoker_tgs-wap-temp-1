@@ -5,6 +5,7 @@ import i18n from "../../../../utils/i18n";
 import QRCode from "qrcode.react";
 import { Dialog } from "@material-ui/core";
 import { generalAction } from "../../../../api-services/actions/generalAction";
+import config from "../../../../config/config";
 import IMHandler from "./IMHandler";
 
 //import i18n from '../../../../utils/i18n'
@@ -14,11 +15,21 @@ const SupportBackground = styled.div`
   overflow-y: scroll;
   width: 100%;
   height: 100vh;
-  position: absolute;
+  position: relative;
   top: 0;
-  background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp/supportbg.png`})
-    no-repeat;
+
+  ${({ theme, language }) => {
+    if (config.features.Wap_SupportCustomBackground) {
+      const prefix = config.features.Wap_SupportCustomBackground ? "-hk28" : "";
+      return ` background: url(${
+        process.env.PUBLIC_URL +
+        `/assets/images/wapp/resource/T${config.wapVersion}/support/${language}${prefix}.png`
+      })
+      no-repeat;`;
+    } else {
+      return `background:` + theme.supportBg;
+    }
+  }};
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
@@ -54,11 +65,7 @@ const TheRedText = styled.div`
 `;
 
 const TitleHeader = styled.div`
-  background: linear-gradient(
-    to top,
-    ${({ theme }) => theme.primaryGradient},
-    ${({ theme }) => theme.primary}
-  );
+  background: ${({ theme }) => theme.primary};
   height: 90px;
   display: flex;
   align-items: center;
@@ -109,6 +116,33 @@ const IDText = styled.div`
   font-size: 24px;
 `;
 
+const TheGirlHolder = styled.div`
+  height: 575px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  opacity: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  ${({ language }) => {
+    if (!config.features.Wap_SupportCustomBackground) {
+      return `background: url(${
+        process.env.PUBLIC_URL +
+        `/assets/images/wapp/resource/support/${language}.png`
+      })
+      no-repeat;`;
+    }
+  }};
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+`;
+
 const iconSwitcher = (icon) => {
   switch (icon) {
     case "WeChat":
@@ -153,47 +187,29 @@ const Icon = styled.div`
   }};
 `;
 
-const IconTextContainerTwo = styled.div`
+const PhoneHolder = styled.div`
+  font-size: 20px;
+  color: ${({ theme }) => theme.primary};
+  padding-bottom: 10px;
   display: flex;
-  flex-align: center;
-`;
-
-const IconTwo = styled.div`
-  width: 40px;
-  height: 40px;
-  margin-left: 20px;
-  background-color: ${({ theme }) => theme.primary};
-  mask: ${({ icon }) => {
-    return `url(${
-      process.env.PUBLIC_URL + "/assets/images/wapp/" + iconSwitcher(icon)
-    }) no-repeat center /
-    contain;`;
-  }};
-`;
-
-const TheGirlHolder = styled.div`
-  height: 575px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  opacity: 1;
-  display: flex;
-  align-items: flex-end;
   justify-content: center;
+  align-items: center;
+  position: absolute;
+  font-weight: bold;
+  top: 485px;
+  left: 130px;
+`;
 
-  background: ${({ language }) => {
-    return `url(${
-      process.env.PUBLIC_URL +
-      `/assets/images/wapp/resource/support/${language}.png`
-    })
-      no-repeat;`;
-  }}
-  background-size: cover;
-  background-position: top;
-  background-repeat: no-repeat;
-  background-size: cover;
+const IconPhone = styled.div`
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  background: ${({ theme }) => theme.primary};
+  margin-right: 10px;
+  mask: ${({ src }) => {
+    return `url(${src}) no-repeat center /
+contain;`;
+  }};
 `;
 
 const QRCodeImage = styled.img`
@@ -221,41 +237,33 @@ const Support = (props) => {
     return (
       <SupportBackground language={i18n.language}>
         <TheGirlHolder language={i18n.language} />
+        {config.features.DisplayPhone && (
+          <PhoneHolder>
+            <IconPhone
+              src={process.env.PUBLIC_URL + `/assets/images/wapp/phone.png`}
+            ></IconPhone>
+            {props.general.brandsSupport &&
+              props.general.brandsSupport.length >= 1 &&
+              props.general.brandsSupport[0].phone}
+          </PhoneHolder>
+        )}
         <ButtonContainer>
-          {props.general.livechat.setting &&
-            props.general.livechat.setting.url !== undefined && (
-              <TheSupportButton
-                onClick={() => {
-                  props.cs();
-                }}
-              >
-                <IconTextContainer>
-                  <Icon icon="wechat" />
-                  <div>{i18n.t("support.online")}</div>
-                </IconTextContainer>
-                <TheRedText>{i18n.t("support.contact")}</TheRedText>
-              </TheSupportButton>
-            )}
-          {
-            //     <TheSupportButton
-            //     onClick={() => {
-            //       setScene("qr");
-            //     }}
-            //   >
-            //     <div>
-            //       {
-            //         i18n.t("support.qr")
-            //         //i18n.t('common.transfer')
-            //       }
-            //     </div>
-            //     <TheRedText>
-            //       {
-            //         i18n.t("support.join")
-            //         //i18n.t('common.transfer')
-            //       }
-            //     </TheRedText>
-            //   </TheSupportButton>
-          }
+          {(config.features.LiveChatVendor ||
+            (props.general.livechat.setting &&
+              props.general.livechat.setting.url !== undefined)) && (
+            <TheSupportButton
+              onClick={() => {
+                props.cs();
+              }}
+            >
+              <IconTextContainer>
+                <Icon icon="wechat" />
+                <div>{i18n.t("support.online")}</div>
+              </IconTextContainer>
+              <TheRedText>{i18n.t("support.contact")}</TheRedText>
+            </TheSupportButton>
+          )}
+
           {props.general.brandsSupport.map((data, index) => {
             return (
               <div>
@@ -275,34 +283,7 @@ const Support = (props) => {
                       <div>{data.type}</div>
                     </div>
                   </IconTextContainer>
-                  <div>
-                    {
-                      <TheRedText>{i18n.t("support.join")}</TheRedText>
-                      //   data.qrcodeurl || data.type === 'WhatsApp' ? (
-                      //     <TheRedText>
-                      //       {i18n.t('support.join')}
-                      //     </TheRedText>
-                      //   ) : (
-                      //     <IconTextContainerTwo>
-                      //       {data.appid ? (
-                      //         <div>{data.appid}</div>
-                      //       ) : (
-                      //         <div>{data.phone}</div>
-                      //       )}
-                      //       <IconTwo
-                      //         icon={'copy'}
-                      //         onClick={() => {
-                      //           copyText(data.appid ? data.appid : data.phone)
-                      //           props.alert(
-                      //             '',
-                      //             i18n.t('affiliate.copied')
-                      //           )
-                      //         }}
-                      //       />
-                      //     </IconTextContainerTwo>
-                      //   )
-                    }
-                  </div>
+                  <div>{<TheRedText>{i18n.t("support.join")}</TheRedText>}</div>
                 </TheSupportButton>
                 <Dialog open={open === index} onClose={handleClose}>
                   {data.qrcodeurl ? (

@@ -19,6 +19,7 @@ import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 import Loading from "../../Wap/Share/Loading";
 import Common from "../../../utils/Common";
 import i18n from "../../../utils/i18n";
+import config from "../../../config/config";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -679,6 +680,17 @@ class Transfer extends Component {
                 .filter(
                   (item) => item.status === 0 && item.transferwallet === true
                 )
+                .filter((e) => {
+                  if (config.features.MergeEVORTNT) {
+                    if (
+                      !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF")
+                    ) {
+                      return e;
+                    }
+                  } else {
+                    return e;
+                  }
+                })
                 .map((item, index) => (
                   <option value={item.abbreviation} key={index}>
                     {item.name}
@@ -719,6 +731,17 @@ class Transfer extends Component {
                 .filter(
                   (item) => item.status === 0 && item.transferwallet === true
                 )
+                .filter((e) => {
+                  if (config.features.MergeEVORTNT) {
+                    if (
+                      !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF")
+                    ) {
+                      return e;
+                    }
+                  } else {
+                    return e;
+                  }
+                })
                 .map((item, index) => (
                   <option value={item.abbreviation} key={index}>
                     {item.name}
