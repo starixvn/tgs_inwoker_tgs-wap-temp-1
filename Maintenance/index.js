@@ -237,16 +237,24 @@ const Maintenance = (props) => {
     );
   };
 
-  const Local = () => {
+  const Local = ({ beginTime, endTime }) => {
     return (
       <>
         <Text>我们现正维护中，请稍后再试。 </Text>
         <Text>
-          如您有任何问题，请<Hyperlink onClick={csClick}>联系客服</Hyperlink>。
+          如您有任何问题，请
+          <Hyperlink onClick={csClick}>联系客服</Hyperlink>。
         </Text>
         <Text>
-          維修時間 : {formatTime(config.features.Maintenance_Detail.startTime)}{" "}
-          ~ {formatTime(config.features.Maintenance_Detail.endTime)} (GMT+8){" "}
+          維修時間 :{" "}
+          {beginTime
+            ? beginTime
+            : formatTime(config.features.Maintenance_Detail.startTime)}{" "}
+          ~{" "}
+          {endTime
+            ? endTime
+            : formatTime(config.features.Maintenance_Detail.endTime)}{" "}
+          (GMT+8){" "}
         </Text>
         {(() => {
           if (i18n.language === "vi-VN") {
@@ -261,27 +269,42 @@ const Maintenance = (props) => {
                 </Text>
                 <Text>
                   thời gian bảo trì :{" "}
-                  {formatTime(config.features.Maintenance_Detail.startTime)} ~{" "}
-                  {formatTime(config.features.Maintenance_Detail.endTime)}{" "}
+                  {beginTime
+                    ? beginTime
+                    : formatTime(
+                        config.features.Maintenance_Detail.startTime
+                      )}{" "}
+                  ~{" "}
+                  {endTime
+                    ? endTime
+                    : formatTime(
+                        config.features.Maintenance_Detail.endTime
+                      )}{" "}
                   (GMT+8){" "}
                 </Text>
               </React.Fragment>
             );
           }
         })()}
+
         <Text>
-          We are currently under maintenance, <br />
-          please try again later.
+          We are currently under maintenance, <br /> please try again later.
         </Text>
         <Text>
           If you have any questions, <br />
           please contact our{" "}
-          <Hyperlink onClick={handleCSClick}>customer service</Hyperlink>.
+          <Hyperlink onClick={csClick}>customer service</Hyperlink>.
         </Text>
         <Text>
           Maintenance Time :{" "}
-          {formatTime(config.features.Maintenance_Detail.startTime)} ~{" "}
-          {formatTime(config.features.Maintenance_Detail.endTime)} (GMT+8){" "}
+          {beginTime
+            ? beginTime
+            : formatTime(config.features.Maintenance_Detail.startTime)}{" "}
+          ~{" "}
+          {endTime
+            ? endTime
+            : formatTime(config.features.Maintenance_Detail.endTime)}{" "}
+          (GMT+8){" "}
         </Text>
       </>
     );
@@ -290,7 +313,15 @@ const Maintenance = (props) => {
   return (
     <MaintenanceBg image={maintenanceImageSwitcher(config.wapVersion)}>
       <CustomContainer container justify="center" alignItems="center">
-        {isFailed ? <Local /> : <Api />}
+        {content ? (
+          isFailed ? (
+            <Local />
+          ) : (
+            <Api />
+          )
+        ) : (
+          <Local beginTime={beginTime} endTime={endTime} />
+        )}
       </CustomContainer>{" "}
       <ButtonContainer>
         <AnotherButton
