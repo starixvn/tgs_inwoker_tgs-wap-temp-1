@@ -313,12 +313,10 @@ const Maintenance = (props) => {
   return (
     <MaintenanceBg image={maintenanceImageSwitcher(config.wapVersion)}>
       <CustomContainer container justify="center" alignItems="center">
-        {content ? (
-          isFailed ? (
-            <Local />
-          ) : (
-            <Api />
-          )
+        {isFailed ? (
+          <Local />
+        ) : content ? (
+          <Api />
         ) : (
           <Local beginTime={beginTime} endTime={endTime} />
         )}
