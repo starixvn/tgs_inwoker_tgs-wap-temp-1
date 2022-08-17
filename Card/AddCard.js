@@ -647,7 +647,7 @@ class AddCard extends Component {
           ></Textbox>
         )}
 
-        {!(config.features.AddCard_HideChannel || eWalletCustom || isPulsa) && (
+        {!(config.features.AddCard_HideChannel || isPulsa) && (
           <Textbox
             style={{ margin: "20px auto 20px auto" }}
             value={
