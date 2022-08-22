@@ -713,6 +713,7 @@ class Deposit extends Component {
       selectedPaymentIndex: paymentIndex,
       selectedMethodIndex: methodIndex,
       selectedChannelIndex: channelIndex,
+      name: this.props.wallet.bankCardList[bankCardIndex].detail.name || "",
     });
   };
   handleClosePopup = () => {
