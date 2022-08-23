@@ -23,7 +23,7 @@ import { Textfit } from "react-textfit";
 import PromotionRoulette from "./PromotionRoulette";
 const StyledAppBar = withStyles({
   root: {
-    height: "550px",
+    height: "650px",
     boxShadow: "none",
   },
 })(AppBar);
@@ -185,7 +185,7 @@ padding-top: 5px;
 const GameSelectionContainer = styled.div`
   font-size: 48px;
   position: absolute;
-  top: 550px;
+  top: 650px;
   left: 0;
 `;
 const GameSelectionUL = styled.div`
@@ -235,7 +235,7 @@ const GameSelectionLI = styled.div`
 `;
 
 const GameListContainer = styled.div`
-  padding-top: 570px;
+  padding-top: 670px;
   padding-bottom: 100px;
   padding-left: 175px;
   background-color: #fff;
@@ -366,6 +366,21 @@ const Balancex = styled.div`
   opacity: 0.75;
 `;
 
+const LogoHolder = styled.div`
+  background: url("${({ img }) => img}") no-repeat left center;
+  background-size: contain;
+  width: 200px;
+  height: 100px;
+`;
+
+const LogoHolderAppBar = styled.div`
+  background: ${({ theme }) => theme.primary};
+  position: relative;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+`;
+
 const BrandAndBalanceButBigger = styled(BrandAndBalance)`
   border-bottom: solid 1px ${({ theme }) => theme.popoverSubWalletText};
   margin-bottom: 20px;
@@ -431,6 +446,18 @@ var sortingGMO = [
   GameTypeEnum.ESPORTS,
   GameTypeEnum.SLOT,
 ];
+
+var sortingPB3 = [
+  GameTypeEnum.SLOT,
+  GameTypeEnum.LIVELOBBY,
+  GameTypeEnum.SPORTS,
+  GameTypeEnum.RNGSPORTS,
+  GameTypeEnum.TABLEGAME,
+  GameTypeEnum.FISH,
+  GameTypeEnum.ESPORTS,
+  GameTypeEnum.QIPAILOBBY,
+  GameTypeEnum.LOTTERYLOBBY,
+];
 class Home extends Component {
   state = {
     value: 0,
@@ -484,14 +511,18 @@ class Home extends Component {
       });
     }
   }
-
   formatSortedGameList() {
     var currentType = -1;
     var gameTypeListSorting = [];
     var displayGameType = Common.GetDisplayGameType();
 
     this.props.game.homePageGameList
-      .filter((a) => displayGameType.indexOf(a.type) >= 0)
+      .filter((a) => {
+        return displayGameType.indexOf(a.type) >= 0;
+      })
+      .filter((b) => {
+        return b.type !== GameTypeEnum.RNGSPORTS;
+      })
       .sort((a, b) => {
         return a.type - b.type;
       })
@@ -501,8 +532,11 @@ class Home extends Component {
         }
         currentType = row.type;
       });
+
     return gameTypeListSorting.sort((a, b) => {
-      if (config.features.MenuItem_Sorting_WLGHK)
+      if (config.features.MenuItem_Sorting_PB3)
+        return sortingPB3.indexOf(a) - sortingPB3.indexOf(b);
+      else if (config.features.MenuItem_Sorting_WLGHK)
         return sortingWLGHK.indexOf(a) - sortingWLGHK.indexOf(b);
       else if (config.features.MenuItem_Sorting_HK28)
         return sortingHK28.indexOf(a) - sortingHK28.indexOf(b);
@@ -631,8 +665,10 @@ class Home extends Component {
       case GameTypeEnum.FISH:
         return i18n.t("wap.main.home.gameTab.fish");
       case GameTypeEnum.TIGERSLOT:
-      default:
+      case GameTypeEnum.TABLEGAME:
         return i18n.t("wap.main.home.gameTab.electron");
+      default:
+        return "";
     }
   }
   getImgPrefix(gameType) {
@@ -700,14 +736,15 @@ class Home extends Component {
     return (
       <React.Fragment>
         <StyledAppBar position="fixed" color="default">
-          {/* {(() => {
-            if (this.props.ui.board_list.length === 0) {
-              return <React.Fragment></React.Fragment>;
-            } else {
-              return <Slider list={this.props.ui.board_list}></Slider>;
-            }
-          })()} */}
-          <Slider></Slider>;
+          <LogoHolderAppBar>
+            <LogoHolder
+              img={
+                this.props.general.brand &&
+                this.props.general.brand.mobileLogoUrl
+              }
+            />
+          </LogoHolderAppBar>
+          <Slider></Slider>
           <FixedContainer>
             <AnnouncementContainer>
               <AnnouncementTitle>
@@ -962,29 +999,22 @@ class Home extends Component {
           <GameSelectionContainer>
             <GameSelectionUL>
               {(() => {
-                return this.state.gameTypeListSorting
-                  .sort((a, b) => {
-                    var sortEsportFirst = [4];
-                    return (
-                      sortEsportFirst.indexOf(b) - sortEsportFirst.indexOf(a)
-                    );
-                  })
-                  .map((type, index) => {
-                    return (
-                      <GameSelectionLI
-                        style={
-                          i18n.language === "en-US"
-                            ? { fontSize: "29px", paddingTop: "6px" }
-                            : {}
-                        }
-                        key={index}
-                        selected={this.state.selectedGameType === type}
-                        onClick={() => this.handleGameTypeClick(type)}
-                      >
-                        {this.convertGameTypeToText(type)}
-                      </GameSelectionLI>
-                    );
-                  });
+                return this.state.gameTypeListSorting.map((type, index) => {
+                  return (
+                    <GameSelectionLI
+                      style={
+                        i18n.language === "en-US"
+                          ? { fontSize: "29px", paddingTop: "6px" }
+                          : {}
+                      }
+                      key={index}
+                      selected={this.state.selectedGameType === type}
+                      onClick={() => this.handleGameTypeClick(type)}
+                    >
+                      {this.convertGameTypeToText(type)}
+                    </GameSelectionLI>
+                  );
+                });
               })()}
             </GameSelectionUL>
           </GameSelectionContainer>
@@ -1012,7 +1042,11 @@ class Home extends Component {
                   } else return b - a;
                 })
                 .sort(function (a, b) {
-                  if (config.features.MenuItem_Sorting_HK28)
+                  if (config.features.MenuItem_Sorting_PB3)
+                    return (
+                      sortingPB3.indexOf(a.type) - sortingPB3.indexOf(b.type)
+                    );
+                  else if (config.features.MenuItem_Sorting_HK28)
                     return (
                       sortingHK28.indexOf(a.type) - sortingHK28.indexOf(b.type)
                     );
@@ -1034,13 +1068,6 @@ class Home extends Component {
                       sortingGMO.indexOf(a.type) - sortingGMO.indexOf(b.type)
                     );
                   else return a.type - b.type;
-                })
-                .sort((a, b) => {
-                  var sortEsportFirst = [4];
-                  return (
-                    sortEsportFirst.indexOf(b.type) -
-                    sortEsportFirst.indexOf(a.type)
-                  );
                 })
                 .map((row, index) => {
                   var jsx = (
