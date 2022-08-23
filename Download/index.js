@@ -243,6 +243,8 @@ const Download = ({ alert }) => {
     switch (brand) {
       case "Atinbet":
         return "Atinbet";
+      case "inyobet":
+        return "inyo";
       default:
         return "PB";
     }
