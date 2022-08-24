@@ -494,7 +494,7 @@ class Home extends Component {
       this.setState({
         ...this.state,
         gameTypeListSorting: gameTypeListSorting,
-        selectedGameType: gameTypeListSorting[1],
+        selectedGameType: gameTypeListSorting[0],
       });
     }
   }
@@ -507,7 +507,7 @@ class Home extends Component {
       this.setState({
         ...this.state,
         gameTypeListSorting: gameTypeListSorting,
-        selectedGameType: gameTypeListSorting[1],
+        selectedGameType: gameTypeListSorting[0],
       });
     }
   }
@@ -549,12 +549,14 @@ class Home extends Component {
       else return a - b;
     });
   }
+
+  consistentTop = 650;
   handleScroll = (e) => {
     const doc = document.documentElement;
 
     let top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
-    top = top + 670;
+    top = top + this.consistentTop;
 
     var D = document;
     var docHeight = Math.max(
@@ -580,13 +582,12 @@ class Home extends Component {
         }
       }
     }
-
     this.setState({ ...this.state, selectedGameType: gameType });
   };
   handleGameTypeClick = (gameType) => {
     let pos = document.getElementById("gameType" + gameType).offsetTop;
 
-    window.scrollTo({ top: pos - 575, behavior: "smooth" });
+    window.scrollTo({ top: pos - this.consistentTop + 5, behavior: "smooth" });
   };
   handleJoinLotteryGame = (name) => {
     if (this.props.account.token != null) {
