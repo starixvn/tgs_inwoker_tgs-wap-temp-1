@@ -846,12 +846,6 @@ class Deposit extends Component {
                   this.state.selectedPaymentIndex
                 ].method[this.state.selectedMethodIndex].methodcode === "Crypto"
               }
-              isEWallet={
-                this.props.wallet.depositTypeList[
-                  this.state.selectedPaymentIndex
-                ].method[this.state.selectedMethodIndex].methodcode ===
-                "EWallet"
-              }
               depositType={
                 this.props.wallet.depositTypeList[
                   this.state.selectedPaymentIndex
@@ -864,8 +858,6 @@ class Deposit extends Component {
                   this.state.selectedChannelIndex
                 ].extended
               }
-              selectedBankCard={this.state.selectedBankCard}
-              bankCardList={this.props.wallet.bankCardList}
             ></Details>
           );
         case 5:
