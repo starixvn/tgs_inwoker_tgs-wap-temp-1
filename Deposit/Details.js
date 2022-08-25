@@ -115,6 +115,7 @@ class Details extends Component {
     files: [],
     exchangeRate: { buyprice: 0, sellprice: 0 },
     url: "",
+    name: "",
   };
   componentDidMount() {
     if (this.props.isCrypto === true) {
@@ -166,6 +167,15 @@ class Details extends Component {
           openPopup: this.props.isManual ? false : true,
         });
       }
+    }
+    if (this.props.isEWallet) {
+      var bankCardIndex = this.props.bankCardList.findIndex(
+        (item) => item.id === this.props.selectedBankCard
+      );
+      this.setState({
+        ...this.state,
+        name: this.props.bankCardList[bankCardIndex].detail.eMoneyName,
+      });
     }
   }
   // setCountdownTimer = () => {
@@ -353,6 +363,18 @@ class Details extends Component {
           })()}
 
           {(() => {
+            if (this.props.isEWallet === true) {
+              return (
+                <React.Fragment>
+                  <LeftLabel>{i18n.t("deposit.eWalletAccount")}</LeftLabel>
+                  <RightLabel>{this.state.name}</RightLabel>
+                  <SplitBoth></SplitBoth>
+                </React.Fragment>
+              );
+            }
+          })()}
+
+          {(() => {
             if (
               this.props.isManual === true &&
               this.props.methodcode === "BankTransfer"
@@ -373,7 +395,10 @@ class Details extends Component {
           })()}
 
           {(() => {
-            if (this.props.isManual === true && config.features.Deposit_UploadRequired) {
+            if (
+              this.props.isManual === true &&
+              config.features.Deposit_UploadRequired
+            ) {
               return (
                 <React.Fragment>
                   <LeftLabel>{i18n.t("deposit.uploadReceipt")}</LeftLabel>
@@ -390,7 +415,10 @@ class Details extends Component {
           })()}
         </ContentBg>
         {(() => {
-          if (this.props.isManual === true && config.features.Deposit_UploadRequired) {
+          if (
+            this.props.isManual === true &&
+            config.features.Deposit_UploadRequired
+          ) {
             return (
               <Button
                 style={{ margin: "20px auto" }}
@@ -406,9 +434,10 @@ class Details extends Component {
           style={{ margin: "20px auto" }}
           labelStyle={{ color: "#fff" }}
           label={
-            this.props.isManual === true && config.features.Deposit_UploadRequired
-              ? i18n.t('common.back')
-              : i18n.t('common.complete')
+            this.props.isManual === true &&
+            config.features.Deposit_UploadRequired
+              ? i18n.t("common.back")
+              : i18n.t("common.complete")
           }
           onClick={this.props.handleRestartClick}
         ></Button>
