@@ -581,9 +581,9 @@ class Main extends Component {
                             <CustomCustomSelect
                               native
                               id="customSelect"
-                              value={this.props.account}
+                              value={this.props.selectedBankCard}
                               onChange={(e) =>
-                                this.props.handleAccountChange(e)
+                                this.props.handleSelectAccountChange(e)
                               }
                             >
                               <option value="">
@@ -596,13 +596,7 @@ class Main extends Component {
                                   var detail = item.detail;
                                   return (
                                     <option
-                                      value={
-                                        config.features.Deposit_AddCard
-                                          ? item.id
-                                          : detail.bankAccount ||
-                                            detail.address ||
-                                            detail.phone
-                                      }
+                                      value={item.id}
                                       key={index}
                                     >
                                       {detail.bankAccount ||
