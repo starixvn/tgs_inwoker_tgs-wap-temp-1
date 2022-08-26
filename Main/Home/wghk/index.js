@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
+import GamePage from "./game";
 import Landing from "./landing";
 const WGHK = (props) => {
-  return props.token ? <div>123</div> : <Landing />;
+  return props.token ? <GamePage /> : <Landing />;
 };
 
 const mapStateToProps = (state) => {
