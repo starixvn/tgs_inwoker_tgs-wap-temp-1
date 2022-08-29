@@ -225,8 +225,11 @@ class Login extends Component {
     if (this.props.token != null) {
       this.props.appHistory.replace("/" + i18n.language + "/main/home");
     } else {
-      if(this.props.match.params.subid && this.props.match.params.subid !== "")
-      {
+      if (
+        this.props.match.params.subid &&
+        this.props.match.params.subid !== "" &&
+        config.features.CustomBunnyAffiliate
+      ) {
         this.handleChangeSelection(1);
         return;
       }
@@ -1060,19 +1063,15 @@ class Login extends Component {
             } else {
               this.doLogin(username, password);
             }
-            // if (this.props.match.params.subid && this.props.match.params.subid !== "") {
-            //   let PAYOUT = "";
-            //   let affiliateUrl = `http://ad.propellerads.com/conversion.php?aid=3508428&pid=&tid=100917&visitor_id=${this.props.match.params.subid}&payout=${PAYOUT}`;
-            //   window.open(affiliateUrl, "_blank");
-            // }
-            // if (
-            //   this.props.match.params.subid &&
-            //   this.props.match.params.subid !== ""
-            // ) {
-            //   let PAYOUT = "";
-            //   let affiliateUrl = `http://ad.propellerads.com/conversion.php?aid=3508428&pid=&tid=100917&visitor_id=${this.props.match.params.subid}&payout=${PAYOUT}`;
-            //   window.open(affiliateUrl, "_blank");
-            // }
+            if (
+              this.props.match.params.subid &&
+              this.props.match.params.subid !== "" &&
+              config.features.CustomBunnyAffiliate
+            ) {
+              let PAYOUT = "";
+              let affiliateUrl = `http://ad.propellerads.com/conversion.php?aid=3508428&pid=&tid=100917&visitor_id=${this.props.match.params.subid}&payout=${PAYOUT}`;
+              window.open(affiliateUrl, "_blank");
+            }
           } else {
             this.props.alert("", response.info);
             this.setState({ ...this.state, loading: false });
