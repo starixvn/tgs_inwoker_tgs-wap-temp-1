@@ -374,7 +374,7 @@ const LogoHolder = styled.div`
 `;
 
 const LogoHolderAppBar = styled.div`
-  background: ${({ theme }) => theme.primary};
+  background: ${({ theme }) => theme.appbar};
   position: relative;
   height: 100px;
   display: flex;
