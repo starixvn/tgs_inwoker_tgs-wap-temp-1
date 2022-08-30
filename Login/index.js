@@ -546,53 +546,70 @@ class Login extends Component {
     password,
     phone,
     areacode,
-    email
+    email,
+    setPhoneDontCareDuplicate
   ) => {
     this.setState({ ...this.state, loading: true });
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      await this.props
-        .newRegister("InitPhone", {
-          input: "Init",
-          data: {
-            areacode: areacode,
+      if (setPhoneDontCareDuplicate) {
+        await this.props
+          .newRegister("SetPhoneDontCareDuplicate", {
+            areacode: this.state.areaCode,
             phone: phone,
-          },
-        })
-        .then(async (response) => {
-          if (response.IsSuccess) {
-            await this.props
-              .newRegister("InitPhone", {
-                input: "Valid",
-                data: {
-                  securitykey: response.data.stepResponse,
-                  validatecode: "123456",
-                },
-              })
-              .then(async (response) => {
-                if (response.IsSuccess) {
-                  await this.props
-                    .newRegister("InitMail", {
-                      input: "Init",
-                      data: {
-                        email: email,
-                      },
-                    })
-                    .then(async (response) => {
-                      if (response.IsSuccess) {
-                        await this.props.newRegister("InitMail", {
-                          input: "Valid",
-                          data: {
-                            securitykey: response.data.stepResponse,
-                            validatecode: "123456",
-                          },
-                        });
-                      }
-                    });
-                }
-              });
-          }
-        });
+          })
+          .then(async (response) => {
+            if (response.IsSuccess) {
+              if (response.data.nextStepType === "SetEmailDontCareDuplicate")
+                await this.props.newRegister("SetEmailDontCareDuplicate", {
+                  email: email,
+                });
+            }
+          });
+      } else {
+        await this.props
+          .newRegister("InitPhone", {
+            input: "Init",
+            data: {
+              areacode: areacode,
+              phone: phone,
+            },
+          })
+          .then(async (response) => {
+            if (response.IsSuccess) {
+              await this.props
+                .newRegister("InitPhone", {
+                  input: "Valid",
+                  data: {
+                    securitykey: response.data.stepResponse,
+                    validatecode: "123456",
+                  },
+                })
+                .then(async (response) => {
+                  if (response.IsSuccess) {
+                    await this.props
+                      .newRegister("InitMail", {
+                        input: "Init",
+                        data: {
+                          email: email,
+                        },
+                      })
+                      .then(async (response) => {
+                        if (response.IsSuccess) {
+                          await this.props.newRegister("InitMail", {
+                            input: "Valid",
+                            data: {
+                              securitykey: response.data.stepResponse,
+                              validatecode: "123456",
+                            },
+                          });
+                        }
+                      });
+                  }
+                });
+            }
+          });
+      }
       this.handleLoginSuccess(result.data);
     }
   };
@@ -1041,6 +1058,9 @@ class Login extends Component {
             this.props.alert("", i18n.t("common.msgAlreadyExist"));
             this.setState({ ...this.state, loading: false });
           } else if (response.IsSuccess) {
+            let setPhoneDontCareDuplicate =
+              response.data.nextStepType === "SetPhoneDontCareDuplicate";
+
             if (config.features.SMSVerification) {
               this.setState({
                 ...this.state,
@@ -1056,7 +1076,8 @@ class Login extends Component {
                 password,
                 phone,
                 areaCode,
-                email
+                email,
+                setPhoneDontCareDuplicate
               );
             } else if (config.features.Register_ShowPhone) {
               this.doLoginWithHp(username, password, phone, areaCode);
