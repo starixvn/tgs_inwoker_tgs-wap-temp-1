@@ -177,10 +177,9 @@ const DataWinlossCell = styled.div`
 const NoRecordContainer = styled.div`
   background: url(${process.env.PUBLIC_URL +
     `/assets/images/wapp/no-record.png`})
-    no-repeat;
+    no-repeat center;
   width: 96px;
   height: 136px;
-  margin: 30px auto;
 `;
 const materialTheme = createMuiTheme({
   overrides: {
@@ -349,6 +348,22 @@ const FlatStraightLine = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+`;
+
+const NoRecordWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 30px auto;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px;
+  width: 100px;
+`;
+
+const NoDataText = styled.div`
+  font-size: 24px;
+  user-select: none;
+  opacity: 0.5;
 `;
 
 class Report extends Component {
@@ -1059,6 +1074,15 @@ class Report extends Component {
   };
 
   render() {
+    const NoRecord = () => {
+      return (
+        <NoRecordWrapper>
+          <NoRecordContainer language={i18n.language} />
+          <NoDataText>{i18n.t("common.nodata")}</NoDataText>
+        </NoRecordWrapper>
+      );
+    };
+
     return (
       <Container>
         <StyledAppBar>
@@ -1330,7 +1354,7 @@ class Report extends Component {
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer language={i18n.language} />;
+                    return <NoRecord />;
                   } else {
                     return (
                       <DataContent>
@@ -1419,7 +1443,7 @@ class Report extends Component {
 
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer language={i18n.language} />;
+                    return <NoRecord />;
                   } else {
                     return (
                       <DataContent>
@@ -1483,7 +1507,7 @@ class Report extends Component {
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer language={i18n.language} />;
+                    return <NoRecord />;
                   } else {
                     return (
                       <DataContent>
@@ -1522,7 +1546,7 @@ class Report extends Component {
               <React.Fragment>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer language={i18n.language} />;
+                    return <NoRecord />;
                   } else {
                     return (
                       <DataContent>
@@ -1586,7 +1610,7 @@ class Report extends Component {
                 </DataHeader>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer language={i18n.language} />;
+                    return <NoRecord />;
                   } else {
                     return (
                       <DataContent>
@@ -1615,7 +1639,7 @@ class Report extends Component {
               <React.Fragment>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer language={i18n.language} />;
+                    return <NoRecord />;
                   } else {
                     return (
                       <DataContent>
@@ -1655,7 +1679,7 @@ class Report extends Component {
               <React.Fragment>
                 {(() => {
                   if (this.state.dataList.length <= 0) {
-                    return <NoRecordContainer language={i18n.language} />;
+                    return <NoRecord />;
                   } else {
                     return (
                       <DataContent>
