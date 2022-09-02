@@ -7,6 +7,9 @@ import Header from "../Share/Header";
 import Loading from "../Share/Loading";
 import i18n from "../../../utils/i18n";
 import { UPDATE_INFO } from "../../../api-services/constant/actionType";
+
+import configs from "../../../config/config";
+
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -57,7 +60,7 @@ class BaseProfile extends Component {
     return newValue;
   }
   checkButtonState = () => {
-    if (!this.isTextChanged) return true; //always disable if text not changed
+    if (this.isTextChanged) return false; //always disable if text not changed
     return this.isDisableButton();
   };
 
