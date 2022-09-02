@@ -72,7 +72,7 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
               (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
               response.data.url;
             var getExistingParam = url.split("/")[3];
-            myRef.current.src = currentDomain + "/" + getExistingParam;;
+            myRef.current.src = "https://WGHK."+ currentDomain + "/" + getExistingParam;
           }
         } else {
           document.getElementsByTagName("body")[0].style.overflow = "";
