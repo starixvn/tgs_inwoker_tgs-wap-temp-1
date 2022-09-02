@@ -155,9 +155,12 @@ const LogoHolderAppBar = styled.div`
 `;
 
 const TheSpeaker = styled.div`
-  color: ${({ theme }) => theme.primary};
-
-  transform: rotate(180deg);
+background-color: ${({ theme }) => theme.primary};
+  width: 40px;
+  height: 40px;
+  mask:  url(${
+    process.env.PUBLIC_URL}/assets/images/homeIcon/announceIcon.svg) no-repeat center /
+    contain;
   z-index: 3;
 `;
 const GamePage = (props) => {
@@ -183,9 +186,7 @@ const GamePage = (props) => {
         </LogoHolderAppBar>
         <FixedContainer>
           <AnnouncementContainer>
-          <AnnouncementTitle>
-                {i18n.t("wap.main.home.profile.announcement")}
-              </AnnouncementTitle>
+          <TheSpeaker></TheSpeaker>
             <MarqueeContainer>
               <Marquee />
             </MarqueeContainer>
