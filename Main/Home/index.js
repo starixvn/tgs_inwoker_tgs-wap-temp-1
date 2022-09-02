@@ -3,16 +3,21 @@ import config from "../../../../config/config";
 import Default from "./default";
 import WGHK from "./wghk";
 
-const Home = () => {
-  const homepageSwitcher = (brand) => {
+const Home = (props) => {
+
+  const homepageSwitcher = (brand, props) => {
+
     switch (brand) {
       case "WGHK":
         return <WGHK />;
       default:
-        return <Default />;
+        return <Default 
+        navigate={props.navigate}
+            appHistory={props.appHistory}
+        />;
     }
   };
-  return <>{homepageSwitcher(config.brand)}</>;
+  return <React.Fragment>{homepageSwitcher(config.brand, props)}</React.Fragment>;
 };
 
 export default Home;
