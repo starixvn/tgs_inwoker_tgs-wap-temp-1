@@ -91,8 +91,8 @@ class Phone extends BaseProfile {
   handleChangePhone = (e) => {
     this.setState({ ...this.state, phone: e.target.value });
     if (
-      config.features.Register_CustomFlow_IDR &&
-      !this.props.account.registercompleted
+      (config.features.Register_CustomFlow_IDR &&
+      !this.props.account.registercompleted) || config.features.InitPhone_WithoutVerify
     ) {
       this.onTextChanged();
     }
@@ -209,8 +209,8 @@ class Phone extends BaseProfile {
     this.showLoading(true);
 
     if (
-      config.features.Register_CustomFlow_IDR &&
-      !this.props.account.registercompleted
+      (config.features.Register_CustomFlow_IDR &&
+      !this.props.account.registercompleted) || config.features.InitPhone_WithoutVerify
     ) {
       this.props
         .newRegister("InitPhone", {
@@ -250,6 +250,16 @@ class Phone extends BaseProfile {
                           pathname: "/" + i18n.language + "/profile/email",
                           state: { forced: true },
                         });
+                      }else{
+                        this.setState({
+                          ...this.state,
+                          code: "",
+                          securityKey: "",
+                          countdownToken: 0,
+                          isNew: false,
+                          isConfigured: true,
+                        });
+                        this.showLoading(false);
                       }
                     }
                     this.showLoading(false);
@@ -376,7 +386,7 @@ class Phone extends BaseProfile {
             !this.state.isConfigured
           ) {
             return (
-              !config.features.Profile_DisableVerifyPhone && (
+              (!config.features.Profile_DisableVerifyPhone && !config.features.InitPhone_WithoutVerify) && (
                 <TextboxWithButton
                   buttonlabel={
                     this.state.countdownToken <= 0
@@ -398,7 +408,7 @@ class Phone extends BaseProfile {
           }
         })()}
       </React.Fragment>,
-      this.state.isConfigured
+      this.state.isConfigured || config.features.InitPhone_WithoutVerify
         ? i18n.t("common.configured")
         : i18n.t("common.complete"),
       (() => {
