@@ -59,15 +59,20 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
     } else
       GameService.JoinLobbyGame(type, gameCode).then((response) => {
         if (response.IsSuccess) {
+          var originDomain = document.domain;
+
+          let arr = document.domain.split(".");
+          let host = arr[arr.length - 2] + "." + arr[arr.length - 1];
+          var currentDomain = host;
           setMaintenance(false);
           setLoading(false);
-
+          
           if (myRef.current) {
             var url =
               (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
               response.data.url;
-
-            myRef.current.src = url;
+            var getExistingParam = url.split("/")[3];
+            myRef.current.src = currentDomain + "/" + getExistingParam;;
           }
         } else {
           document.getElementsByTagName("body")[0].style.overflow = "";
