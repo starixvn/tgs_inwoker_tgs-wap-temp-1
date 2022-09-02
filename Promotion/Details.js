@@ -158,6 +158,19 @@ class Details extends Component {
 
     var checkIfLocalizationIsEmpty =
       JSON.stringify(this.state.details.localization) === "{}";
+
+    var contentToDisplay =
+      (!checkIfLocalizationIsEmpty &&
+        this.state.details.localization[i18n.language].content) ||
+      this.state.details.content ||
+      "";
+
+    var termsToDisplay =
+      (!checkIfLocalizationIsEmpty &&
+        this.state.details.localization[i18n.language].terms) ||
+      this.state.details.terms ||
+      "";
+
     return (
       <React.Fragment>
         <Header
@@ -217,42 +230,14 @@ class Details extends Component {
           </EventText>
           <PromoDesc
             dangerouslySetInnerHTML={{
-              __html:
-                "<div>" +
-                (() => {
-                  if (
-                    !checkIfLocalizationIsEmpty &&
-                    (this.state.details.localization[i18n.language] !== "" ||
-                      this.state.details.localization[i18n.language] !== null)
-                  ) {
-                    return this.state.details.localization[i18n.language]
-                      .content ? this.state.details.localization[i18n.language].content : this.state.details.content;
-                  } else {
-                    return this.state.details.content;
-                  }
-                })() +
-                "</div>",
+              __html: "<div>" + contentToDisplay + "</div>",
             }}
-          ></PromoDesc>
+          />
           <PromoDesc
             dangerouslySetInnerHTML={{
-              __html:
-                "<div>" +
-                (() => {
-                  if (
-                    !checkIfLocalizationIsEmpty &&
-                    (this.state.details.localization[i18n.language] !== "" ||
-                      this.state.details.localization[i18n.language] !== null)
-                  ) {
-                    return this.state.details.localization[i18n.language].terms ? this.state.details.localization[i18n.language].terms 
-                    : this.state.details.terms;
-                  } else {
-                    return this.state.details.terms;
-                  }
-                })() +
-                "</div>",
+              __html: "<div>" + termsToDisplay + "</div>",
             }}
-          ></PromoDesc>
+          />
         </Content>
         {!isDummy && (
           <Button
