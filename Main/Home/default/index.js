@@ -488,6 +488,7 @@ class Default extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props)
     window.addEventListener("scroll", this.handleScroll);
     if (this.props.game.homePageGameList.length > 0) {
       var gameTypeListSorting = this.formatSortedGameList();
@@ -604,6 +605,7 @@ class Default extends Component {
   };
 
   handleJoinOtherGame = (type, params, game_platform_id) => {
+    console.log("thisssssss:",this.props.navigate)
     if (!this.props.account.token) {
       this.props.appHistory.push("/" + i18n.language + "/login");
       return;
@@ -788,7 +790,7 @@ class Default extends Component {
                     <OnlineUserDisplayer color="#fff" size="20px" />
                   </DisplayerContainer>
                 ) : (
-                  <ProfileLink onClick={() => this.props.navigate("/profile")}>
+                  <ProfileLink onClick={() => this.props.appHistory.push("/profile")}>
                     {i18n.t("wap.main.home.profile.profile")}
                   </ProfileLink>
                 )}
@@ -942,7 +944,7 @@ class Default extends Component {
                       </WalletActionLI>
                     )}
                     <WalletActionLI
-                      onClick={() => this.props.navigate("/deposit")}
+                      onClick={() => this.props.appHistory.push("/deposit")}
                     >
                       <WalletActionIcon
                         img={
@@ -954,7 +956,7 @@ class Default extends Component {
                     </WalletActionLI>
                     {checkTransferWallet && (
                       <WalletActionLI
-                        onClick={() => this.props.navigate("/transfer")}
+                        onClick={() => this.props.appHistory.push("/transfer")}
                       >
                         <WalletActionIcon
                           img={
@@ -980,7 +982,7 @@ class Default extends Component {
                               i18n.t("disabledAddCard.description")
                           );
                         } else {
-                          this.props.navigate("/withdrawal");
+                          this.props.appHistory.push("/withdrawal");
                         }
                       }}
                     >
