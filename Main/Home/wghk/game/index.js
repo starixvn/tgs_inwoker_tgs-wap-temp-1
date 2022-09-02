@@ -183,9 +183,9 @@ const GamePage = (props) => {
         </LogoHolderAppBar>
         <FixedContainer>
           <AnnouncementContainer>
-            <AnnouncementTitle>
-              <TheSpeaker>🕪</TheSpeaker>
-            </AnnouncementTitle>
+          <AnnouncementTitle>
+                {i18n.t("wap.main.home.profile.announcement")}
+              </AnnouncementTitle>
             <MarqueeContainer>
               <Marquee />
             </MarqueeContainer>
