@@ -5,9 +5,9 @@ import LoadingGIF from "../../../../../../../assets/images/loading.gif";
 
 const GameFrame = styled.iframe`
   width: 100vw;
-  height: calc(100vh - (${({ height }) => height}px + 90px));
+  height: ${({ height }) => height}px; 
 `;
-
+//calc(100vh - (${({ height }) => height}px + 90px));
 const LoadingLogoImg2 = styled.img`
   margin: 0 auto;
   display: block;
@@ -34,7 +34,7 @@ const LoadingInner = styled.div`
 const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
   const { setMaintenance } = sharedprops;
   const [loading, setLoading] = useState(true);
-  const [screenHeight, setScreenHeight] = useState(true);
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight - 350 - 90);
 
   const joinGame = (gameCode) => {
     if (gameCode === "BC") {
@@ -58,7 +58,6 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
         }
       });
     } else
-    
       GameService.JoinLobbyGame(type, gameCode).then((response) => {
         if (response.IsSuccess) {
           var originDomain = document.domain;
@@ -86,15 +85,14 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
 
   const handleResize = () => {
     var calHeight = window.innerHeight - 350 - 90
-    console.log("checkheightttt:",window.innerHeight)
-    setScreenHeight(calHeight)
+    myRef.current.height = calHeight
   }
 
   useEffect(() => {
     token && joinGame(brand);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [screenHeight]);
+  }, []);
 
   const myRef = useRef();
   return (
@@ -111,7 +109,7 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
         ref={myRef}
         scrolling="yes"
         frameBorder="0"
-        height={screenHeight}
+        height={window.innerHeight - 350 - 90}
       ></GameFrame>
     </>
   );
