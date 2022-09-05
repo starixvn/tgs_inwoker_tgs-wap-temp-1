@@ -5,9 +5,9 @@ import LoadingGIF from "../../../../../../../assets/images/loading.gif";
 
 const GameFrame = styled.iframe`
   width: 100vw;
-  height: calc(100vh - (${({ height }) => height}px + 90px));
+  height: ${({ height }) => height}px; 
 `;
-
+//calc(100vh - (${({ height }) => height}px + 90px));
 const LoadingLogoImg2 = styled.img`
   margin: 0 auto;
   display: block;
