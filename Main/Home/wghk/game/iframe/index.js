@@ -72,7 +72,7 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
               (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
               response.data.url;
             var getExistingParam = url.split("/")[3];
-            myRef.current.src = "https://"+ currentDomain + "/" + getExistingParam;
+            myRef.current.src = "https://m."+ currentDomain + "/" + getExistingParam;
           }
         } else {
           document.getElementsByTagName("body")[0].style.overflow = "";
