@@ -34,7 +34,7 @@ const LoadingInner = styled.div`
 const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
   const { setMaintenance } = sharedprops;
   const [loading, setLoading] = useState(true);
-  const [screenHeight, setScreenHeight] = useState(true);
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight - 350 - 90);
 
   const joinGame = (gameCode) => {
     if (gameCode === "BC") {
