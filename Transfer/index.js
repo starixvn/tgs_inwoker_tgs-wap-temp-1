@@ -13,7 +13,7 @@ import DynamicFont from "react-dynamic-font";
 import Select from "@material-ui/core/Select";
 import { accountAction } from "../../../api-services/actions/accountAction";
 import { walletAction } from "../../../api-services/actions/walletAction";
-import { WalletType } from "../../../api-services/utils/Enum";
+import { WalletType, customGPname} from "../../../api-services/utils/Enum";
 import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 
 import Loading from "../../Wap/Share/Loading";
@@ -635,7 +635,7 @@ class Transfer extends Component {
               .map((item, index) => (
                 <ColumnWrap key={index}>
                   <ColumnContainer>
-                    <ColumnGameName>{item.name}</ColumnGameName>
+                    <ColumnGameName>{customGPname.WGFM === "" ? item.name : customGPname.WGFM + i18n.t("customGPname.sport")}</ColumnGameName>
                     <ColumnGameBalance>
                       <DynamicFont
                         content={Common.formatNumberWithThousand(item.balance)}
@@ -693,7 +693,7 @@ class Transfer extends Component {
                 })
                 .map((item, index) => (
                   <option value={item.abbreviation} key={index}>
-                    {item.name}
+                    {customGPname.WGFM === "" ? item.name : customGPname.WGFM + i18n.t("customGPname.sport")}
                   </option>
                 ))}
             </Select>
@@ -744,7 +744,7 @@ class Transfer extends Component {
                 })
                 .map((item, index) => (
                   <option value={item.abbreviation} key={index}>
-                    {item.name}
+                    {customGPname.WGFM === "" ? item.name : customGPname.WGFM + i18n.t("customGPname.sport")}
                   </option>
                 ))}
             </Select>

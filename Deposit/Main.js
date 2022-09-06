@@ -569,7 +569,8 @@ class Main extends Component {
                     config.features.Deposit_AddCard
                   ) && (
                     <>
-                      {this.props.wallet.bankCardList.length > 1 ? (
+                      {this.props.wallet.bankCardList.length > 1 &&
+                      !config.features.Deposit_AccountNameManualInput ? (
                         <CustomText>
                           <CustomLabel>
                             {config.features.Deposit_OriginAccount
@@ -580,9 +581,9 @@ class Main extends Component {
                             <CustomCustomSelect
                               native
                               id="customSelect"
-                              value={this.props.account}
+                              value={this.props.selectedBankCard}
                               onChange={(e) =>
-                                this.props.handleAccountChange(e)
+                                this.props.handleSelectAccountChange(e)
                               }
                             >
                               <option value="">
@@ -595,13 +596,7 @@ class Main extends Component {
                                   var detail = item.detail;
                                   return (
                                     <option
-                                      value={
-                                        config.features.Deposit_AddCard
-                                          ? item.id
-                                          : detail.bankAccount ||
-                                            detail.address ||
-                                            detail.phone
-                                      }
+                                      value={item.id}
                                       key={index}
                                     >
                                       {detail.bankAccount ||
@@ -634,6 +629,7 @@ class Main extends Component {
                           }
                           value={this.props.account}
                           disabled={
+                            !config.features.Deposit_AccountNameManualInput &&
                             config.features.Deposit_AutofillFirstCard &&
                             this.props.wallet.bankCardList.length > 1
                           }

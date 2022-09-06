@@ -89,6 +89,7 @@ class Phone extends BaseProfile {
   }
 
   handleChangePhone = (e) => {
+    
     this.setState({ ...this.state, phone: e.target.value });
     if (
       (config.features.Register_CustomFlow_IDR &&
@@ -210,7 +211,7 @@ class Phone extends BaseProfile {
 
     if (
       (config.features.Register_CustomFlow_IDR &&
-      !this.props.account.registercompleted) || config.features.InitPhone_WithoutVerify
+      !this.props.account.registercompleted ) || config.features.InitPhone_WithoutVerify
     ) {
       this.props
         .newRegister("InitPhone", {
