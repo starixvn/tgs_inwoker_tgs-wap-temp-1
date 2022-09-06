@@ -1436,7 +1436,7 @@ class Report extends Component {
                               <DataRowId>
                                 <CustomDataRow>
                                   <IDCell>
-                                    {row.gameProviderName} - {row.gameName}
+                                    {config.features.WGHK_Setup ? row.subGameProviderName: row.gameProviderName} - {row.gameName}
                                   </IDCell>
                                   <IDCell> {date}</IDCell>
                                 </CustomDataRow>
