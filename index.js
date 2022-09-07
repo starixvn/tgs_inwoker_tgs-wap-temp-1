@@ -581,6 +581,7 @@ class Wap extends Component {
       this.props.getBrandCommunicationList();
       this.props.getLiveChatURL();
       this.props.getPromotion();
+      this.props.getPromotionRouletteCount();
       this.props.getDepositMethod();
       this.props.getWithdrawalChannel();
     }
@@ -762,6 +763,7 @@ class Wap extends Component {
         this.props.getBrandCommunicationList();
         this.props.getLiveChatURL();
         this.props.getPromotion();
+        this.props.getPromotionRouletteCount();
       }
     }
     if (
@@ -1196,6 +1198,7 @@ const mapDispatchToProps = (dispatch) => {
     getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
     getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     getPromotion: () => dispatch(generalAction.getPromotion()),
+    getPromotionRouletteCount: () => dispatch(generalAction.getPromotionRouletteCount()),
   };
 };
 

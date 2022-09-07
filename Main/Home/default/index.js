@@ -392,6 +392,17 @@ const BrandAndBalanceButBigger = styled(BrandAndBalance)`
   align-self: flex-end;
 `;
 
+const RouletteFloatingPanel = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 40%;
+  padding-left: 2%;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+`;
+
 var sortingHK28 = [
   GameTypeEnum.LIVELOBBY,
   GameTypeEnum.SPORTS,
@@ -1139,16 +1150,52 @@ class Default extends Component {
             </DownloadButton>
           </DownloadContainer>
         )}
-        {config.features.HomePage_PromoRoulette &&
-          this.isRouletteAvailable() && (
-            <PromotionRoulette
-              promotionDetail={
-                this.props.general.promotionList.items.filter(
-                  (item) => item.promotionType.toUpperCase() === "ROULETTE"
-                )[0]
-              }
-            ></PromotionRoulette>
-          )}
+        <RouletteFloatingPanel>
+          {config.features.HomePage_PromoRoulette &&
+            !config.features.RouletteNewFlow &&
+            this.isRouletteAvailable() && (
+              <PromotionRoulette
+                rouletteType="ROULETTE"
+                promotionDetail={
+                  this.props.general.promotionList.items.filter(
+                    (item) => item.promotionType.toUpperCase() === "ROULETTE"
+                  )[0]
+                }
+              ></PromotionRoulette>
+            )}
+          {config.features.HomePage_PromoRoulette &&
+            this.props.general.promotionList.items.length > 0 &&
+            // this.props.general.rouletteCount.map((roulette) => {
+            //   return roulette.roulettecount > 0 ? (
+            //     <PromotionRoulette
+            //       rouletteType={roulette.promotiontype.toUpperCase()}
+            //       promotionDetail={
+            //         this.props.general.promotionList.items.filter(
+            //           (item) =>
+            //             item.promotionType.toUpperCase() ===
+            //               roulette.promotiontype.toUpperCase() &&
+            //             item.id === roulette.promotionid
+            //         )[0]
+            //       }
+            //     ></PromotionRoulette>
+            //   ) : (
+            //     <React.Fragment></React.Fragment>
+            //   );
+            // })
+            this.props.general.promotionList.items.map((item) => {
+              return (
+                ((item.promotionType.toUpperCase() === "ROULETTE" &&
+                  config.features.RouletteNewFlow) ||
+                  item.promotionType.toUpperCase() ===
+                    "DEPOSITACCUMULATEROULETTE") && (
+                  <PromotionRoulette
+                    rouletteType={item.promotionType.toUpperCase()}
+                    promotionDetail={item}
+                  ></PromotionRoulette>
+                )
+              );
+            })}
+        </RouletteFloatingPanel>
       </React.Fragment>
     );
   }
