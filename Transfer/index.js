@@ -315,12 +315,17 @@ class Transfer extends Component {
   }
 
   componentDidMount() {
-    this.props.getBalanceList();
-    this.getAllGameBalance();
+    if (this.props.token != null)
+    {
+      this.props.getBalanceList();
+      this.getAllGameBalance();
+    }
+    else {
+      this.props.appHistory.replace("/" + i18n.language + "/login");
+    }
     // .then((_) => {
     //   this.bindData();
     // });
-
     //this.handleRefreshClick();
   }
   componentDidUpdate(preProps) {
@@ -803,6 +808,7 @@ class Transfer extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    token: state.account.token,
     account: state.account,
     game: state.game,
     wallet: state.wallet,

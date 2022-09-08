@@ -488,7 +488,6 @@ class Default extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
     window.addEventListener("scroll", this.handleScroll);
     if (this.props.game.homePageGameList.length > 0) {
       var gameTypeListSorting = this.formatSortedGameList();
@@ -944,7 +943,7 @@ class Default extends Component {
                       </WalletActionLI>
                     )}
                     <WalletActionLI
-                      onClick={() => this.props.appHistory.push("/deposit")}
+                      onClick={() => this.props.appHistory.push("/" + i18n.language + "/deposit")}
                     >
                       <WalletActionIcon
                         img={
@@ -956,7 +955,7 @@ class Default extends Component {
                     </WalletActionLI>
                     {checkTransferWallet && (
                       <WalletActionLI
-                        onClick={() => this.props.appHistory.push("/transfer")}
+                        onClick={() => this.props.appHistory.push("/" + i18n.language + "/transfer")}
                       >
                         <WalletActionIcon
                           img={
@@ -982,7 +981,7 @@ class Default extends Component {
                               i18n.t("disabledAddCard.description")
                           );
                         } else {
-                          this.props.appHistory.push("/withdrawal");
+                          this.props.appHistory.push("/" + i18n.language + "/withdrawal");
                         }
                       }}
                     >
