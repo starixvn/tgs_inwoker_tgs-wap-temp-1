@@ -176,6 +176,11 @@ const GamePage = (props) => {
     setMaintenance,
     setLoading,
   };
+
+  const updateIframeHeight = () => {
+    let elem = document.querySelector('div');
+    let rect = elem.getBoundingClientRect();
+  }
   return (
     <>
       <StyledAppBar position="fixed" color="default">
@@ -334,6 +339,7 @@ const GamePage = (props) => {
           token={props.account.token}
           type={GameTypeEnum.SPORTS}
           height={height}
+          // updateHeight={updateIframeHeight}
         />
       </div>
     </>

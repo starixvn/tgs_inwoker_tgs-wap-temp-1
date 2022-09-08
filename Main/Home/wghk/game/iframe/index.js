@@ -5,9 +5,9 @@ import LoadingGIF from "../../../../../../../assets/images/loading.gif";
 
 const GameFrame = styled.iframe`
   width: 100vw;
-  height: calc(100vh - ${({ height }) => height}px);
+  height: ${({ height }) => height}px; 
 `;
-
+//calc(100vh - (${({ height }) => height}px + 90px));
 const LoadingLogoImg2 = styled.img`
   margin: 0 auto;
   display: block;
@@ -34,6 +34,7 @@ const LoadingInner = styled.div`
 const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
   const { setMaintenance } = sharedprops;
   const [loading, setLoading] = useState(true);
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight - 350 - 90);
 
   const joinGame = (gameCode) => {
     if (gameCode === "BC") {
@@ -72,7 +73,7 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
               (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
               response.data.url;
             var getExistingParam = url.split("/")[3];
-            myRef.current.src = "https://WGHK."+ currentDomain + "/" + getExistingParam;
+            myRef.current.src = "https://m."+ currentDomain + "/" + getExistingParam;
           }
         } else {
           document.getElementsByTagName("body")[0].style.overflow = "";
@@ -82,8 +83,15 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
       });
   };
 
+  const handleResize = () => {
+    var calHeight = window.innerHeight - 350 - 90
+    myRef.current.height = calHeight
+  }
+
   useEffect(() => {
     token && joinGame(brand);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const myRef = useRef();
@@ -101,7 +109,7 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
         ref={myRef}
         scrolling="yes"
         frameBorder="0"
-        height={height}
+        height={window.innerHeight - 350 - 90}
       ></GameFrame>
     </>
   );
