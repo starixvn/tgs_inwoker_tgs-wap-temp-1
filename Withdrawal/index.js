@@ -284,6 +284,9 @@ class Withdrawal extends Component {
         this.props.getWithdrawalChannel(); // call api every 30 mins
       }, 30 * 60 * 1000);
     }
+    else {
+      this.props.appHistory.replace("/" + i18n.language + "/login");
+    }
   }
   componentDidUpdate(preProps) {
     if (
