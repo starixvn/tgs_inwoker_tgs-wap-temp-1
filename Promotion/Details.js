@@ -7,6 +7,7 @@ import Button from "../../Wap/Share/Button";
 import { generalAction } from "../../../api-services/actions/generalAction";
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
+import config from "../../../config/config";
 const moment = require("moment");
 const Content = styled.div`
   width: 100%;
@@ -205,22 +206,24 @@ class Details extends Component {
 
         <Content>
           <EventTitle>【{i18n.t("promotion.promoDetail")}】</EventTitle>
-          <EventText>
-            {i18n.t("promotion.promoTarget")}：
-            <br />
-            {this.state.details.vipLevels
-              .sort((a, b) => {
-                return a - b;
-              })
-              .map((a, index) => {
-                return (
-                  <span key={index}>
-                    VIP{a}
-                    {index < this.state.details.vipLevels.length - 1 && ", "}
-                  </span>
-                );
-              })}
-          </EventText>
+          {config.features.HaveVIPFeature && (
+            <EventText>
+              {i18n.t("promotion.promoTarget")}：
+              <br />
+              {this.state.details.vipLevels
+                .sort((a, b) => {
+                  return a - b;
+                })
+                .map((a, index) => {
+                  return (
+                    <span key={index}>
+                      VIP{a}
+                      {index < this.state.details.vipLevels.length - 1 && ", "}
+                    </span>
+                  );
+                })}
+            </EventText>
+          )}
           <EventText>
             {i18n.t("promotion.promoDate")}：
             <br />
