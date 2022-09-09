@@ -259,6 +259,7 @@ const mapStateToProps = (state) => {
   return {
     general: state.general,
     token: state.account.token,
+    account: state.account,
   };
 };
 const mapDispatchToProps = (dispatch) => {
