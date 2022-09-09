@@ -443,12 +443,14 @@ class My extends Component {
           >
             {i18n.t("common.language")}
           </ListItem>
-          <ListItem
-            icon={process.env.PUBLIC_URL + `/assets/images/wapp/icon-vip.svg`}
-            onClick={() => this.props.navigate("/vip")}
-          >
-            VIP
-          </ListItem>
+          {config.features.HaveVIPFeature && (
+            <ListItem
+              icon={process.env.PUBLIC_URL + `/assets/images/wapp/icon-vip.svg`}
+              onClick={() => this.props.navigate("/vip")}
+            >
+              VIP
+            </ListItem>
+          )}
           {config.features.HaveDownloadFeature && (
             <ListItem
               icon={

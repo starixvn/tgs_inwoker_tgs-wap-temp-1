@@ -210,8 +210,10 @@ const GamePage = (props) => {
                         {i18n.t("wap.main.home.profile.welcomeBack")}
                       </WelcomeLabel>
                       <WelcomeUsernameLabel>
-                        {props.account.info.member_username}(VIP
-                        {props.account.info.member_level_id})
+                        {props.account.info.member_username}
+                        {config.features.HaveVIPFeature &&
+                          `(VIP
+                        ${props.account.info.member_level_id})`}
                       </WelcomeUsernameLabel>
                     </React.Fragment>
                   );
@@ -256,7 +258,7 @@ const GamePage = (props) => {
               </BalanceContainer>
               <WalletActionContainer>
                 <WalletActionUL>
-                  {config.features.HomePage_DisplayVIP && (
+                  {config.features.HaveVIPFeature && config.features.HomePage_DisplayVIP && (
                     <WalletActionLI
                       onClick={() => {
                         AppHistory.push("/" + i18n.language + "/vip");
