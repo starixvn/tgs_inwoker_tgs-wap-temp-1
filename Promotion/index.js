@@ -131,28 +131,35 @@ class Promotion extends Component {
               </PromoEmptyText>
             </EmptyPromo>
           ) : (
-            this.props.general.promotionList.items.map((row, index) => {
-              if (row.localization !== null) {
-                var checkLocale = row.localization[i18n.language];
-                return (
-                  <ListItem
-                    key={index}
-                    src={
-                      checkLocale ? checkLocale.mobileBanner : row.mobileBanner
-                    }
-                    onClick={() => this.handlePromoClick(row.id)}
-                  ></ListItem>
-                );
-              } else {
-                return (
-                  <ListItem
-                    key={index}
-                    src={row.mobileBanner}
-                    onClick={() => this.handlePromoClick(row.id)}
-                  ></ListItem>
-                );
-              }
-            })
+            this.props.general.promotionList.items
+              .sort((a, b) => {
+                return a.order - b.order;
+              })
+              .map((row, index) => {
+                if (row.localization !== null) {
+                  var checkLocale = row.localization[i18n.language];
+                  return (
+                    <ListItem
+                      key={index}
+                      order={row.order}
+                      src={
+                        checkLocale
+                          ? checkLocale.mobileBanner
+                          : row.mobileBanner
+                      }
+                      onClick={() => this.handlePromoClick(row.id)}
+                    ></ListItem>
+                  );
+                } else {
+                  return (
+                    <ListItem
+                      key={index}
+                      src={row.mobileBanner}
+                      onClick={() => this.handlePromoClick(row.id)}
+                    ></ListItem>
+                  );
+                }
+              })
           )}
         </ListView>
       </Container>
