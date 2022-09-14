@@ -766,6 +766,8 @@ class AddCard extends Component {
                       ? i18n.t("card.addCard.eWalletAccount")
                       : config.features.AddCard_DisplayFPS
                       ? i18n.t("hk28.card.addCard.BankAccountName")
+                      : config.features.AddCard_Sowin_CustomBankAccountName
+                      ? i18n.t("sowin.card.addCard.BankAccountName")
                       : i18n.t("card.addCard.BankAccountName")
                   }
                   label={
@@ -773,6 +775,8 @@ class AddCard extends Component {
                       ? i18n.t("card.addCard.eWalletAccount")
                       : config.features.AddCard_DisplayFPS
                       ? i18n.t("hk28.card.addCard.BankAccountName")
+                      : config.features.AddCard_Sowin_CustomBankAccountName
+                      ? i18n.t("sowin.card.addCard.BankAccountName")
                       : i18n.t("card.addCard.BankAccountName")
                   }
                   maxLength={255}
@@ -800,6 +804,8 @@ class AddCard extends Component {
                 ? i18n.t("card.addCard.eWalletAccount")
                 : config.features.AddCard_DisplayFPS
                 ? i18n.t("hk28.card.addCard.BankAccountName")
+                : config.features.AddCard_Sowin_CustomBankAccountName
+                ? i18n.t("sowin.card.addCard.BankAccountName")
                 : i18n.t("card.addCard.BankAccountName")
             }
             label={
@@ -807,6 +813,8 @@ class AddCard extends Component {
                 ? i18n.t("card.addCard.eWalletAccount")
                 : config.features.AddCard_DisplayFPS
                 ? i18n.t("hk28.card.addCard.BankAccountName")
+                : config.features.AddCard_Sowin_CustomBankAccountName
+                ? i18n.t("sowin.card.addCard.BankAccountName")
                 : i18n.t("card.addCard.BankAccountName")
             }
             maxLength={255}
