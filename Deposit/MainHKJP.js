@@ -108,6 +108,15 @@ const Remark = styled.div`
 const HintText = styled.div`
   color: ${({ theme }) => theme.primary};
 `;
+
+const FeeSpot = styled.div`
+  color: ${({ theme }) => theme.primary};
+  font-size: 24px;
+
+  span {
+    font-weight: bold;
+  }
+`;
 class MainHKJP extends Component {
   constructor(props) {
     super(props);
@@ -241,6 +250,23 @@ class MainHKJP extends Component {
             i18n.t("deposit.dollor")
           }
           label={i18n.t("deposit.depositAmount")}
+          custom={
+            <>
+              <FeeSpot>
+                {i18n.t("fees.deposit")}:{" "}
+                <span>
+                  {
+                    this.props.wallet.depositTypeList[
+                      this.props.selectedPaymentIndex
+                    ].method[this.props.selectedMethodIndex].channel[
+                      this.props.selectedChannelIndex
+                    ].fees
+                  }
+                  %
+                </span>
+              </FeeSpot>
+            </>
+          }
         ></Textbox>
         {this.props.wallet.depositTypeList[
           this.props.selectedPaymentIndex
@@ -332,15 +358,16 @@ class MainHKJP extends Component {
             </CustomCustomSelect>
           </CustomFormControl>
         </CustomText>
-        {config.features.Deposit_Withdrawal_PlayerNote && (isEwallet || isPulsa) && (
-          <Textbox
-            style={{ margin: "20px auto 20px auto" }}
-            value={this.props.playerNote}
-            onChange={this.props.handlePlayerNoteChange}
-            placeholder={i18n.t("deposit.plsEnterPlayerNote")}
-            label={i18n.t("deposit.playerNote")}
-          ></Textbox>
-        )}
+        {config.features.Deposit_Withdrawal_PlayerNote &&
+          (isEwallet || isPulsa) && (
+            <Textbox
+              style={{ margin: "20px auto 20px auto" }}
+              value={this.props.playerNote}
+              onChange={this.props.handlePlayerNoteChange}
+              placeholder={i18n.t("deposit.plsEnterPlayerNote")}
+              label={i18n.t("deposit.playerNote")}
+            ></Textbox>
+          )}
         <Button
           style={{ margin: "40px auto 0 auto" }}
           label={

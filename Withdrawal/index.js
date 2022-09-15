@@ -208,6 +208,15 @@ const GameWalletButton = styled.div`
   text-align: center;
   width: 100%;
 `;
+
+const FeeSpot = styled.div`
+  color: ${({ theme }) => theme.primary};
+  font-size: 24px;
+
+  span {
+    font-weight: bold;
+  }
+`;
 class Withdrawal extends Component {
   constructor(props) {
     super(props);
@@ -230,6 +239,7 @@ class Withdrawal extends Component {
 
       min: 0,
       max: 0,
+      fees: 0,
 
       exchangeRate: config.features.Withdrawal_USDT_ExchangeRate,
       playerNote: "",
@@ -283,8 +293,7 @@ class Withdrawal extends Component {
       this.countDownInterval = setInterval(() => {
         this.props.getWithdrawalChannel(); // call api every 30 mins
       }, 30 * 60 * 1000);
-    }
-    else {
+    } else {
       this.props.appHistory.replace("/" + i18n.language + "/login");
     }
   }
@@ -413,6 +422,7 @@ class Withdrawal extends Component {
     this.setState({
       min: 0,
       max: 0,
+      fees: 0,
     });
     //update new data.
 
@@ -427,6 +437,7 @@ class Withdrawal extends Component {
             this.setState({
               min: Math.min(...minValue),
               max: Math.max(...maxValue),
+              fees: channelList.fees,
             });
           }
         }
@@ -593,6 +604,13 @@ class Withdrawal extends Component {
             }
             label={i18n.t("common.amount")}
             type={"number"}
+            custom={
+              <>
+                <FeeSpot>
+                  {i18n.t("fees.withdraw")}: <span>{this.state.fees}%</span>
+                </FeeSpot>
+              </>
+            }
           ></Textbox>
         </CustomPlaceholderWrapper>
         {(() => {
