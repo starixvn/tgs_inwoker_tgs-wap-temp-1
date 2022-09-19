@@ -604,13 +604,13 @@ class Withdrawal extends Component {
             }
             label={i18n.t("common.amount")}
             type={"number"}
-            custom={
-              <>
-                <FeeSpot>
-                  {i18n.t("fees.withdraw")}: <span>{this.state.fees}%</span>
-                </FeeSpot>
-              </>
-            }
+            // custom={
+            //   <>
+            //     <FeeSpot>
+            //       {i18n.t("fees.withdraw")}: <span>{this.state.fees}%</span>
+            //     </FeeSpot>
+            //   </>
+            // }
           ></Textbox>
         </CustomPlaceholderWrapper>
         {(() => {
