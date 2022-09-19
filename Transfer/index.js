@@ -13,7 +13,7 @@ import DynamicFont from "react-dynamic-font";
 import Select from "@material-ui/core/Select";
 import { accountAction } from "../../../api-services/actions/accountAction";
 import { walletAction } from "../../../api-services/actions/walletAction";
-import { WalletType, customGPname} from "../../../api-services/utils/Enum";
+import { WalletType, customGPname } from "../../../api-services/utils/Enum";
 import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 
 import Loading from "../../Wap/Share/Loading";
@@ -315,12 +315,10 @@ class Transfer extends Component {
   }
 
   componentDidMount() {
-    if (this.props.token != null)
-    {
+    if (this.props.token != null) {
       this.props.getBalanceList();
       this.getAllGameBalance();
-    }
-    else {
+    } else {
       this.props.appHistory.replace("/" + i18n.language + "/login");
     }
     // .then((_) => {
@@ -637,10 +635,25 @@ class Transfer extends Component {
               .filter(function (item) {
                 return item.status === 0 && item.transferwallet === true;
               })
+              .filter((e) => {
+                if (config.features.MergeEVORTNT) {
+                  if (
+                    !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF")
+                  ) {
+                    return e;
+                  }
+                } else {
+                  return e;
+                }
+              })
               .map((item, index) => (
                 <ColumnWrap key={index}>
                   <ColumnContainer>
-                    <ColumnGameName>{customGPname.WGFM === "" ? item.name : customGPname.WGFM + i18n.t("customGPname.sport")}</ColumnGameName>
+                    <ColumnGameName>
+                      {customGPname.WGFM === ""
+                        ? item.name
+                        : customGPname.WGFM + i18n.t("customGPname.sport")}
+                    </ColumnGameName>
                     <ColumnGameBalance>
                       <DynamicFont
                         content={Common.formatNumberWithThousand(item.balance)}
@@ -698,7 +711,9 @@ class Transfer extends Component {
                 })
                 .map((item, index) => (
                   <option value={item.abbreviation} key={index}>
-                    {customGPname.WGFM === "" ? item.name : customGPname.WGFM + i18n.t("customGPname.sport")}
+                    {customGPname.WGFM === ""
+                      ? item.name
+                      : customGPname.WGFM + i18n.t("customGPname.sport")}
                   </option>
                 ))}
             </Select>
@@ -749,7 +764,9 @@ class Transfer extends Component {
                 })
                 .map((item, index) => (
                   <option value={item.abbreviation} key={index}>
-                    {customGPname.WGFM === "" ? item.name : customGPname.WGFM + i18n.t("customGPname.sport")}
+                    {customGPname.WGFM === ""
+                      ? item.name
+                      : customGPname.WGFM + i18n.t("customGPname.sport")}
                   </option>
                 ))}
             </Select>
