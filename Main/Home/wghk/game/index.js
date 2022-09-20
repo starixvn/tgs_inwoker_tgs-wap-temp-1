@@ -155,12 +155,11 @@ const LogoHolderAppBar = styled.div`
 `;
 
 const TheSpeaker = styled.div`
-background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.primary};
   width: 40px;
   height: 40px;
-  mask:  url(${
-    process.env.PUBLIC_URL}/assets/images/homeIcon/announceIcon.svg) no-repeat center /
-    contain;
+  mask: url(${process.env.PUBLIC_URL}/assets/images/homeIcon/announceIcon.svg)
+    no-repeat center / contain;
   z-index: 3;
 `;
 const GamePage = (props) => {
@@ -178,9 +177,9 @@ const GamePage = (props) => {
   };
 
   const updateIframeHeight = () => {
-    let elem = document.querySelector('div');
+    let elem = document.querySelector("div");
     let rect = elem.getBoundingClientRect();
-  }
+  };
   return (
     <>
       <StyledAppBar position="fixed" color="default">
@@ -191,7 +190,7 @@ const GamePage = (props) => {
         </LogoHolderAppBar>
         <FixedContainer>
           <AnnouncementContainer>
-          <TheSpeaker></TheSpeaker>
+            <TheSpeaker></TheSpeaker>
             <MarqueeContainer>
               <Marquee />
             </MarqueeContainer>
@@ -258,21 +257,22 @@ const GamePage = (props) => {
               </BalanceContainer>
               <WalletActionContainer>
                 <WalletActionUL>
-                  {config.features.HaveVIPFeature && config.features.HomePage_DisplayVIP && (
-                    <WalletActionLI
-                      onClick={() => {
-                        AppHistory.push("/" + i18n.language + "/vip");
-                      }}
-                    >
-                      <WalletActionIcon
-                        img={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/home-vip.png`
-                        }
-                      ></WalletActionIcon>
-                      VIP
-                    </WalletActionLI>
-                  )}
+                  {config.features.HaveVIPFeature &&
+                    config.features.HomePage_DisplayVIP && (
+                      <WalletActionLI
+                        onClick={() => {
+                          AppHistory.push("/" + i18n.language + "/vip");
+                        }}
+                      >
+                        <WalletActionIcon
+                          img={
+                            process.env.PUBLIC_URL +
+                            `/assets/images/wapp/home-vip.png`
+                          }
+                        ></WalletActionIcon>
+                        VIP
+                      </WalletActionLI>
+                    )}
                   <WalletActionLI
                     onClick={() => {
                       AppHistory.push("/" + i18n.language + "/deposit");
@@ -334,7 +334,7 @@ const GamePage = (props) => {
           </ProfileContainer>
         </FixedContainer>
       </StyledAppBar>
-      <div style={{ paddingTop: height + 5 }}>
+      <div style={{ marginTop: height + 5 }}>
         <GameIFrame
           brand="WGFM"
           sharedprops={sharedProps}
