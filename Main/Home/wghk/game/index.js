@@ -1,18 +1,17 @@
 import { AppBar, withStyles } from "@material-ui/core";
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Textfit } from "react-textfit";
+
 import styled from "styled-components";
-import { GameTypeEnum } from "../../../../../../api-services/utils/Enum";
+
 import config from "../../../../../../config/config";
 import { AppHistory } from "../../../../../../history/History";
 import Common from "../../../../../../utils/Common";
-import { SortedMenuList } from "../../../../../../utils/HeaderSorting";
+import { GameTypeEnum } from "../../../../../../api-services/utils/Enum";
 import i18n from "../../../../../../utils/i18n";
-import CustomPopover from "../../../../../Share/custompopover";
+
 import OnlineUserDisplayer from "../../../../../Share/online-user-displayer";
 import Marquee from "../../Marquee";
-import GameIFrame from "./iframe";
 
 var height = 350;
 
@@ -162,23 +161,43 @@ const TheSpeaker = styled.div`
     no-repeat center / contain;
   z-index: 3;
 `;
+const GameBackground = styled.div`
+  background: url(${process.env
+    .PUBLIC_URL}/assets/images/mbHomePage/WGHK/background.png);
+  background-size: cover;
+`;
+const TheButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 20%;
+  width: 100vw;
+`;
+
+const TheButton = styled.div`
+  padding: 15px 45px;
+  font-size: 36px;
+  border-radius: 10px;
+  color: #fff;
+  background: #ff9900;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 5px
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+`;
 const GamePage = (props) => {
   var checkTransferWallet =
     Object.values(props.game.providerList).filter(
       (item) => item.transferwallet === true
     ).length > 0;
 
-  const [maintenance, setMaintenance] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  const sharedProps = {
-    setMaintenance,
-    setLoading,
-  };
-
-  const updateIframeHeight = () => {
-    let elem = document.querySelector("div");
-    let rect = elem.getBoundingClientRect();
+  const onClickStartGame = () => {
+    Common.closePreviousPopup();
+    Common.PopupCenter(
+      "/" + i18n.language + "/joinlobbygame/" + GameTypeEnum.SPORTS + "/WGFM",
+      "gamewindow"
+    );
   };
   return (
     <>
@@ -334,18 +353,22 @@ const GamePage = (props) => {
           </ProfileContainer>
         </FixedContainer>
       </StyledAppBar>
-      <div
+      <GameBackground
         style={{ marginTop: height + 5, height: window.innerHeight - 350 - 90 }}
+        onClick={onClickStartGame}
       >
-        <GameIFrame
+        <TheButtonContainer>
+          <TheButton>{i18n.t("common.startGame")}</TheButton>
+        </TheButtonContainer>
+        {/* <GameIFrame
           brand="WGFM"
           sharedprops={sharedProps}
           token={props.account.token}
           type={GameTypeEnum.SPORTS}
 
           // updateHeight={updateIframeHeight}
-        />
-      </div>
+        /> */}
+      </GameBackground>
     </>
   );
 };
