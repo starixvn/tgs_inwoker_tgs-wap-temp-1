@@ -334,13 +334,15 @@ const GamePage = (props) => {
           </ProfileContainer>
         </FixedContainer>
       </StyledAppBar>
-      <div style={{ marginTop: height + 5 }}>
+      <div
+        style={{ marginTop: height + 5, height: window.innerHeight - 350 - 90 }}
+      >
         <GameIFrame
           brand="WGFM"
           sharedprops={sharedProps}
           token={props.account.token}
           type={GameTypeEnum.SPORTS}
-          height={height}
+
           // updateHeight={updateIframeHeight}
         />
       </div>
