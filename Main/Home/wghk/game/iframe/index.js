@@ -68,7 +68,7 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
 
           let arr = document.domain.split(".");
           let host = arr[arr.length - 2] + "." + arr[arr.length - 1];
-          var currentDomain = host;
+          var currentDomain = "pgdemo.online";
           setMaintenance(false);
           setLoading(false);
 
@@ -116,7 +116,7 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
         scrolling="yes"
         frameBorder="0"
         width={window.screen.width}
-        height={window.innerHeight - 350 - 90}
+        height={(window.innerHeight - 350 - 90) / (750 / 390)}
       ></GameFrame>
     </>
   );
