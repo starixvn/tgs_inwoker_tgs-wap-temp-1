@@ -9,7 +9,7 @@ import { AppHistory } from "../../../../../../history/History";
 import Common from "../../../../../../utils/Common";
 import { GameTypeEnum } from "../../../../../../api-services/utils/Enum";
 import i18n from "../../../../../../utils/i18n";
-
+import { GameService } from "../../../../../../api-services/services/GameService";
 import OnlineUserDisplayer from "../../../../../Share/online-user-displayer";
 import Marquee from "../../Marquee";
 
@@ -194,10 +194,23 @@ const GamePage = (props) => {
 
   const onClickStartGame = () => {
     Common.closePreviousPopup();
-    Common.PopupCenter(
-      "/" + i18n.language + "/joinlobbygame/" + GameTypeEnum.SPORTS + "/WGFM",
-      "gamewindow"
-    );
+    GameService.JoinLobbyGame(GameTypeEnum.SPORTS, "WGFM").then((response) => {
+      if (response.IsSuccess) {
+        var originDomain = document.domain;
+
+        let arr = document.domain.split(".");
+        let host = arr[arr.length - 2] + "." + arr[arr.length - 1];
+        var currentDomain = host;
+
+        var url =
+          (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
+          response.data.url;
+        var getExistingParam = url.split("/")[3];
+        Common.PopupCenter(
+          "https://m." + currentDomain + "/" + getExistingParam
+        );
+      }
+    });
   };
   return (
     <>
