@@ -352,7 +352,7 @@ class Login extends Component {
             this.props.getMessageList(i18n.language, 1, 99);
             this.props.getBankCardList();
             this.props.getPromotion();
-            this.props.getPromotionRouletteCount();
+            //this.props.getPromotionRouletteCount();
             this.props.getWithdrawalChannel();
           }
           if (this.state.rememberMe === true) {
