@@ -4,10 +4,10 @@ import { GameService } from "../../../../../../../api-services/services/GameServ
 import LoadingGIF from "../../../../../../../assets/images/loading.gif";
 
 const GameFrame = styled.iframe`
-  width: 390px;
-
+  width: ${window.screen.width}px;
+  transform: scale(${750 / window.screen.width});
   transform-origin: left top;
-  height: ${({ height }) => height}px;
+  height: ${(window.innerHeight - 440) / (750 / window.screen.width)}px;
 `;
 //calc(100vh - (${({ height }) => height}px + 90px));
 const LoadingLogoImg2 = styled.img`
@@ -77,8 +77,9 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
               (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
               response.data.url;
             var getExistingParam = url.split("/")[3];
-            myRef.current.src =
-              "https://m." + currentDomain + "/" + getExistingParam;
+            // myRef.current.src =
+            //   "https://m." + currentDomain + "/" + getExistingParam;
+            myRef.current.src = response.data.url;
           }
         } else {
           document.getElementsByTagName("body")[0].style.overflow = "";
@@ -110,13 +111,7 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
           </LoadingInner>
         </LoadingContainer>
       )}
-      <GameFrame
-        ref={myRef}
-        scrolling="yes"
-        frameBorder="0"
-        width="100%"
-        height="100%"
-      ></GameFrame>
+      <GameFrame ref={myRef} scrolling="yes" frameBorder="0"></GameFrame>
     </>
   );
 };

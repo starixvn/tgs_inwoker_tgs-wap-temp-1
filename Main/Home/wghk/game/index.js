@@ -334,17 +334,7 @@ const GamePage = (props) => {
           </ProfileContainer>
         </FixedContainer>
       </StyledAppBar>
-      <div
-        style={{
-          marginTop: "425px",
-          transform: "scale(" + 750 / window.screen.width + ")",
-          width: window.screen.width + "px",
-          height:
-            (window.innerHeight - 350 - 90) / (750 / window.screen.width) +
-            "px",
-          transformOrigin: "left top",
-        }}
-      >
+      <div style={{ marginTop: height + 5 }}>
         <GameIFrame
           brand="WGFM"
           sharedprops={sharedProps}
