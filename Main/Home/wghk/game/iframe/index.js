@@ -4,8 +4,10 @@ import { GameService } from "../../../../../../../api-services/services/GameServ
 import LoadingGIF from "../../../../../../../assets/images/loading.gif";
 
 const GameFrame = styled.iframe`
-  width: 100vw;
-  height: ${({ height }) => height}px; 
+  width: 390px;
+
+  transform-origin: left top;
+  height: ${({ height }) => height}px;
 `;
 //calc(100vh - (${({ height }) => height}px + 90px));
 const LoadingLogoImg2 = styled.img`
@@ -34,7 +36,9 @@ const LoadingInner = styled.div`
 const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
   const { setMaintenance } = sharedprops;
   const [loading, setLoading] = useState(true);
-  const [screenHeight, setScreenHeight] = useState(window.innerHeight - 350 - 90);
+  const [screenHeight, setScreenHeight] = useState(
+    window.innerHeight - 350 - 90
+  );
 
   const joinGame = (gameCode) => {
     if (gameCode === "BC") {
@@ -67,13 +71,14 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
           var currentDomain = host;
           setMaintenance(false);
           setLoading(false);
-          
+
           if (myRef.current) {
             var url =
               (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
               response.data.url;
             var getExistingParam = url.split("/")[3];
-            myRef.current.src = "https://m."+ currentDomain + "/" + getExistingParam;
+            myRef.current.src =
+              "https://m." + currentDomain + "/" + getExistingParam;
           }
         } else {
           document.getElementsByTagName("body")[0].style.overflow = "";
@@ -84,14 +89,14 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
   };
 
   const handleResize = () => {
-    var calHeight = window.innerHeight - 350 - 90
-    myRef.current.height = calHeight
-  }
+    var calHeight = window.innerHeight - 350 - 90;
+    myRef.current.height = calHeight;
+  };
 
   useEffect(() => {
     token && joinGame(brand);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const myRef = useRef();
@@ -106,9 +111,11 @@ const GameIFrame = ({ brand, type, sharedprops, token, height }) => {
         </LoadingContainer>
       )}
       <GameFrame
+        style={{ transform: "scale(" + 750 / 390 + ")" }}
         ref={myRef}
         scrolling="yes"
         frameBorder="0"
+        width={window.screen.width}
         height={window.innerHeight - 350 - 90}
       ></GameFrame>
     </>
