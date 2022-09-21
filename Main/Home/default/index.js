@@ -1162,10 +1162,49 @@ class Default extends Component {
             </DownloadButton>
           </DownloadContainer>
         )}
-        <RouletteFloatingPanel>
-          {config.features.HomePage_PromoRoulette &&
-            !config.features.RouletteNewFlow &&
-            this.isRouletteAvailable() && (
+        {config.features.HomePage_PromoRoulette && (
+          <RouletteFloatingPanel>
+            {
+              this.props.general.promotionList.items.length > 0 &&
+                this.props.general.rouletteCount.length > 0 &&
+                this.props.general.rouletteCount
+                  .filter(
+                    (item) =>
+                      item.promotiontype.toUpperCase() ===
+                      "DEPOSITACCUMULATEROULETTE"
+                  )
+                  .map((roulette, index) => {
+                    return roulette.roulettecount > 0 && index === 0 ? (
+                      <PromotionRoulette
+                        rouletteType={roulette.promotiontype.toUpperCase()}
+                        promotionDetail={
+                          this.props.general.promotionList.items.filter(
+                            (item) =>
+                              item.promotionType.toUpperCase() ===
+                                roulette.promotiontype.toUpperCase() &&
+                              item.id === roulette.promotionid
+                          )[0]
+                        }
+                      ></PromotionRoulette>
+                    ) : (
+                      <React.Fragment></React.Fragment>
+                    );
+                  })
+              // this.props.general.promotionList.items.map((item) => {
+              //   return (
+              //     ((item.promotionType.toUpperCase() === "ROULETTE" &&
+              //       config.features.RouletteNewFlow) ||
+              //       item.promotionType.toUpperCase() ===
+              //         "DEPOSITACCUMULATEROULETTE") && (
+              //       <PromotionRoulette
+              //         rouletteType={item.promotionType.toUpperCase()}
+              //         promotionDetail={item}
+              //       ></PromotionRoulette>
+              //     )
+              //   );
+              // })
+            }
+            {!config.features.RouletteNewFlow && this.isRouletteAvailable() && (
               <PromotionRoulette
                 rouletteType="ROULETTE"
                 promotionDetail={
@@ -1175,39 +1214,8 @@ class Default extends Component {
                 }
               ></PromotionRoulette>
             )}
-          {config.features.HomePage_PromoRoulette &&
-            this.props.general.promotionList.items.length > 0 &&
-            // this.props.general.rouletteCount.map((roulette) => {
-            //   return roulette.roulettecount > 0 ? (
-            //     <PromotionRoulette
-            //       rouletteType={roulette.promotiontype.toUpperCase()}
-            //       promotionDetail={
-            //         this.props.general.promotionList.items.filter(
-            //           (item) =>
-            //             item.promotionType.toUpperCase() ===
-            //               roulette.promotiontype.toUpperCase() &&
-            //             item.id === roulette.promotionid
-            //         )[0]
-            //       }
-            //     ></PromotionRoulette>
-            //   ) : (
-            //     <React.Fragment></React.Fragment>
-            //   );
-            // })
-            this.props.general.promotionList.items.map((item) => {
-              return (
-                ((item.promotionType.toUpperCase() === "ROULETTE" &&
-                  config.features.RouletteNewFlow) ||
-                  item.promotionType.toUpperCase() ===
-                    "DEPOSITACCUMULATEROULETTE") && (
-                  <PromotionRoulette
-                    rouletteType={item.promotionType.toUpperCase()}
-                    promotionDetail={item}
-                  ></PromotionRoulette>
-                )
-              );
-            })}
-        </RouletteFloatingPanel>
+          </RouletteFloatingPanel>
+        )}
       </React.Fragment>
     );
   }

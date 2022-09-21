@@ -36,11 +36,20 @@ const CustomInput = styled.input`
     opacity: 1;
   }
 `;
+
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 class Textbox extends Component {
   render() {
     return (
       <CustomText style={{ ...this.props.style }} onClick={this.props.onClick}>
-        <CustomLabel>{this.props.label}</CustomLabel>
+        <LabelContainer>
+          <CustomLabel>{this.props.label}</CustomLabel>
+          {this.props.custom && <div>{this.props.custom}</div>}
+        </LabelContainer>
         <CustomInput
           style={this.props.color ? { color: this.props.color } : {}}
           type={this.props.type ? this.props.type : "text"}

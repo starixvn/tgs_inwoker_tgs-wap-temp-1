@@ -208,6 +208,15 @@ const InputWrapper = styled.div`
   width: 100%;
 `;
 
+const FeeSpot = styled.div`
+  color: ${({ theme }) => theme.primary};
+  font-size: 24px;
+
+  span {
+    font-weight: bold;
+  }
+`;
+
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -231,7 +240,7 @@ class Main extends Component {
       this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
         this.props.selectedMethodIndex
       ].methodcode.toUpperCase() === "BANKTRANSFER";
-      
+
     var isEwallet =
       this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
         this.props.selectedMethodIndex
@@ -267,19 +276,23 @@ class Main extends Component {
       var detail = "";
       switch (data.banktype.toUpperCase()) {
         case "BANK":
-          detail = `${data.detail.bankName || ""} - ${data.detail.name || ""} - ${
-            data.detail.bankAccount || ""
-          }`;
+          detail = `${data.detail.bankName || ""} - ${
+            data.detail.name || ""
+          } - ${data.detail.bankAccount || ""}`;
           break;
         case "EWALLET":
         case "E-WALLET":
-          detail = `${data.detail.phone || ""} - ${data.detail.eMoneyName || ""}`;
+          detail = `${data.detail.phone || ""} - ${
+            data.detail.eMoneyName || ""
+          }`;
           break;
         case "PULSA":
           detail = `${data.detail.phone || ""}`;
           break;
         default:
-          detail = `${data.detail.bankAccount||data.detail.address||data.detail.phone}`;
+          detail = `${
+            data.detail.bankAccount || data.detail.address || data.detail.phone
+          }`;
           break;
       }
       return detail;
@@ -418,7 +431,9 @@ class Main extends Component {
                     <TransferLabel>{i18n.t("deposit.cardNum")}:</TransferLabel>
                     {channelExtend.bankAccount && (
                       <React.Fragment>
-                        <TransferValue>{channelExtend.bankAccount}</TransferValue>
+                        <TransferValue>
+                          {channelExtend.bankAccount}
+                        </TransferValue>
                         <CopyFeature copyContent={channelExtend.bankAccount} />
                       </React.Fragment>
                     )}
@@ -442,7 +457,9 @@ class Main extends Component {
                     </TransferLabel>
                     {channelExtend.eMoneyName && (
                       <React.Fragment>
-                        <TransferValue>{channelExtend.eMoneyName}</TransferValue>
+                        <TransferValue>
+                          {channelExtend.eMoneyName}
+                        </TransferValue>
                         <CopyFeature copyContent={channelExtend.eMoneyName} />
                       </React.Fragment>
                     )}
@@ -595,10 +612,7 @@ class Main extends Component {
                                 (item, index) => {
                                   var detail = item.detail;
                                   return (
-                                    <option
-                                      value={item.id}
-                                      key={index}
-                                    >
+                                    <option value={item.id} key={index}>
                                       {detail.bankAccount ||
                                         detail.address ||
                                         detail.phone}{" "}
@@ -694,6 +708,23 @@ class Main extends Component {
             i18n.t("deposit.dollor")
           }
           label={i18n.t("deposit.depositAmount")}
+          custom={
+            <>
+              <FeeSpot>
+                {i18n.t("fees.deposit")}:{" "}
+                <span>
+                  {
+                    this.props.wallet.depositTypeList[
+                      this.props.selectedPaymentIndex
+                    ].method[this.props.selectedMethodIndex].channel[
+                      this.props.selectedChannelIndex
+                    ].fees
+                  }
+                  %
+                </span>
+              </FeeSpot>
+            </>
+          }
         ></Textbox>
         {this.props.wallet.depositTypeList[
           this.props.selectedPaymentIndex
@@ -807,11 +838,16 @@ class Main extends Component {
               {this.props.general.promotionList.items
                 .filter(
                   (item) =>
-                    [
-                      "FirstDeposit",
-                      "DailySecondDeposit",
-                      "DailyFirstDeposit",
-                    ].indexOf(item.promotionType) >= 0
+                  [
+                    "FirstDeposit",
+                    "DailySecondDeposit",
+                    "DailyFirstDeposit",
+                    "DepositReward",
+                  ].indexOf(item.promotionType) >= 0 &&
+                  (item.promotionType === "DepositReward"
+                    ? this.props.amount >=
+                      item.campaignDetail.depositMinimumLimit
+                    : true)
                 )
                 .map((item, index) => {
                   return (
