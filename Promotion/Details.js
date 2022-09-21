@@ -116,7 +116,7 @@ class Details extends Component {
   handleJoinClick = (id, promotionType) => {
     if (this.props.token === null || this.props.token === "") {
       this.props.appHistory.replace({
-        pathname: "/" + i18n.language + "/",
+        pathname: "/" + i18n.language + "/Login",
       });
     } else {
       if (this.state.details.vipLevels.length === 0) {

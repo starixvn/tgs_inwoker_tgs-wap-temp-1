@@ -374,7 +374,7 @@ const LogoHolder = styled.div`
 `;
 
 const LogoHolderAppBar = styled.div`
-  background: ${({ isSowin, theme }) => isSowin ? "#000" : theme.primary};
+  background: ${({ isSowin, theme }) => (isSowin ? "#000" : theme.primary)};
   position: relative;
   height: 100px;
   display: flex;
@@ -615,7 +615,6 @@ class Default extends Component {
   };
 
   handleJoinOtherGame = (type, params, game_platform_id) => {
-    console.log("thisssssss:",this.props.navigate)
     if (!this.props.account.token) {
       this.props.appHistory.push("/" + i18n.language + "/login");
       return;
@@ -749,7 +748,7 @@ class Default extends Component {
     return (
       <React.Fragment>
         <StyledAppBar position="fixed" color="default">
-          <LogoHolderAppBar isSowin={config.brand === "SOWIN"}>
+          <LogoHolderAppBar isSowin={config.brand === "KING8"}>
             <LogoHolder
               img={
                 this.props.general.brand &&
@@ -800,7 +799,9 @@ class Default extends Component {
                     <OnlineUserDisplayer color="#fff" size="20px" />
                   </DisplayerContainer>
                 ) : (
-                  <ProfileLink onClick={() => this.props.appHistory.push("/profile")}>
+                  <ProfileLink
+                    onClick={() => this.props.appHistory.push("/profile")}
+                  >
                     {i18n.t("wap.main.home.profile.profile")}
                   </ProfileLink>
                 )}
@@ -954,7 +955,11 @@ class Default extends Component {
                       </WalletActionLI>
                     )}
                     <WalletActionLI
-                      onClick={() => this.props.appHistory.push("/" + i18n.language + "/deposit")}
+                      onClick={() =>
+                        this.props.appHistory.push(
+                          "/" + i18n.language + "/deposit"
+                        )
+                      }
                     >
                       <WalletActionIcon
                         img={
@@ -966,7 +971,11 @@ class Default extends Component {
                     </WalletActionLI>
                     {checkTransferWallet && (
                       <WalletActionLI
-                        onClick={() => this.props.appHistory.push("/" + i18n.language + "/transfer")}
+                        onClick={() =>
+                          this.props.appHistory.push(
+                            "/" + i18n.language + "/transfer"
+                          )
+                        }
                       >
                         <WalletActionIcon
                           img={
@@ -992,7 +1001,9 @@ class Default extends Component {
                               i18n.t("disabledAddCard.description")
                           );
                         } else {
-                          this.props.appHistory.push("/" + i18n.language + "/withdrawal");
+                          this.props.appHistory.push(
+                            "/" + i18n.language + "/withdrawal"
+                          );
                         }
                       }}
                     >
