@@ -581,7 +581,7 @@ class Wap extends Component {
       this.props.getBrandCommunicationList();
       this.props.getLiveChatURL();
       this.props.getPromotion();
-      //this.props.getPromotionRouletteCount();
+      this.props.getPromotionRouletteCount();
       this.props.getDepositMethod();
       this.props.getWithdrawalChannel();
     }
@@ -763,7 +763,7 @@ class Wap extends Component {
         this.props.getBrandCommunicationList();
         this.props.getLiveChatURL();
         this.props.getPromotion();
-        //this.props.getPromotionRouletteCount();
+        this.props.getPromotionRouletteCount();
       }
     }
     if (
