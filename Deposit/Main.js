@@ -838,11 +838,16 @@ class Main extends Component {
               {this.props.general.promotionList.items
                 .filter(
                   (item) =>
-                    [
-                      "FirstDeposit",
-                      "DailySecondDeposit",
-                      "DailyFirstDeposit",
-                    ].indexOf(item.promotionType) >= 0
+                  [
+                    "FirstDeposit",
+                    "DailySecondDeposit",
+                    "DailyFirstDeposit",
+                    "DepositReward",
+                  ].indexOf(item.promotionType) >= 0 &&
+                  (item.promotionType === "DepositReward"
+                    ? this.props.amount >=
+                      item.campaignDetail.depositMinimumLimit
+                    : true)
                 )
                 .map((item, index) => {
                   return (
