@@ -194,23 +194,14 @@ const GamePage = (props) => {
 
   const onClickStartGame = () => {
     Common.closePreviousPopup();
-    GameService.JoinLobbyGame(GameTypeEnum.SPORTS, "WGFM").then((response) => {
-      if (response.IsSuccess) {
-        var originDomain = document.domain;
-
-        let arr = document.domain.split(".");
-        let host = arr[arr.length - 2] + "." + arr[arr.length - 1];
-        var currentDomain = host;
-
-        var url =
-          (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
-          response.data.url;
-        var getExistingParam = url.split("/")[3];
-        Common.PopupCenter(
-          "https://m." + currentDomain + "/" + getExistingParam
-        );
-      }
-    });
+    Common.PopupCenter(
+      "/" +
+        i18n.language +
+        "/joinlobbygame/" +
+        GameTypeEnum.SPORTS +
+        "/WGFM/true",
+      "gamewindow"
+    );
   };
   return (
     <>
