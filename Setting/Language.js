@@ -14,6 +14,12 @@ import i18n from "../../../utils/i18n";
 import { withStyles } from "@material-ui/core/styles";
 import CustomButton from "../Share/Button";
 import config from "../../../config/config";
+
+import { generalAction } from "../../../api-services/actions/generalAction";
+import { uiAction } from "../../../api-services/actions/uiAction";
+import { GeneralService } from "../../../api-services/services/GeneralService";
+import ErrorSwitcher from "../../../utils/ErrorSwitcher";
+
 const imageMap = {
   "zh-CN": process.env.PUBLIC_URL + `/assets/images/wapp/cn.png`,
   "zh-TW": process.env.PUBLIC_URL + `/assets/images/wapp/tw.png`,
@@ -60,7 +66,7 @@ class Profile extends Component {
   ];
   componentDidMount() {
     if (this.props.account.token === null) {
-      this.props.appHistory.replace("/" + i18n.language + "/");
+      this.props.appHistory.replace("/" + i18n.language + "/login");
     }
   }
   handleBackClick = () => {
@@ -70,7 +76,16 @@ class Profile extends Component {
     this.setState({ ...this.state, checked: value });
   };
   handleUpdate = () => {
-    window.location.href = `/${this.state.checked}`;
+    i18n.changeLanguage(this.state.checked);
+    this.props.appHistory.push(`/${this.state.checked}`);
+    this.props.getBanner();
+    this.props.getMarquee(this.state.checked);
+    this.props.getAnnouncement(this.state.checked);
+    GeneralService.GetLocalization().then((response) => {
+      if (response.IsSuccess) {
+        ErrorSwitcher.setTranslation(response.data);
+      }
+    });
   };
   render() {
     return (
@@ -80,7 +95,7 @@ class Profile extends Component {
           balance={0}
           background={true}
           onBackClick={this.handleBackClick}
-          title={i18n.t("profile.title")}
+          title={i18n.t("common.language")}
         ></Header>
         <CustomList>
           {this.props.general.brandLanguage.map((value) => {
@@ -130,4 +145,11 @@ const mapStateToProps = (state) => {
     general: state.general,
   };
 };
-export default connect(mapStateToProps, null)(withRouter(Profile));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getBanner: () => dispatch(generalAction.getBanner()),
+    getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
+    getAnnouncement: (language) => dispatch(uiAction.getAnnouncement(language)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Profile));
