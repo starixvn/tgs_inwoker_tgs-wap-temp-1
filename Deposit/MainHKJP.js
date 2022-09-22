@@ -347,6 +347,7 @@ class MainHKJP extends Component {
                     "DailySecondDeposit",
                     "DailyFirstDeposit",
                     "DepositReward",
+                    "DepositAccumulateRoulette",
                   ].indexOf(item.promotionType) >= 0 &&
                   (item.promotionType === "DepositReward"
                     ? this.props.amount >=
