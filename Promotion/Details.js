@@ -103,7 +103,7 @@ class Details extends Component {
   performRedirect = (id, promotionType) => {
     this.props.joinPromotion(id);
     if (
-      ["FirstDeposit", "DailySecondDeposit", "DailyFirstDeposit", "DepositReward"].indexOf(
+      ["FirstDeposit", "DailySecondDeposit", "DailyFirstDeposit", "DepositReward", "DepositAccumulateRoulette"].indexOf(
         promotionType
       ) >= 0
     ) {
