@@ -251,21 +251,26 @@ class MainHKJP extends Component {
           }
           label={i18n.t("deposit.depositAmount")}
           custom={
-            <>
-              <FeeSpot>
-                {i18n.t("fees.deposit")}:{" "}
-                <span>
-                  {
-                    this.props.wallet.depositTypeList[
-                      this.props.selectedPaymentIndex
-                    ].method[this.props.selectedMethodIndex].channel[
-                      this.props.selectedChannelIndex
-                    ].fees
-                  }
-                  %
-                </span>
-              </FeeSpot>
-            </>
+            this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+              .method[this.props.selectedMethodIndex].channel[
+              this.props.selectedChannelIndex
+            ].fees > 0 && (
+              <>
+                <FeeSpot>
+                  {i18n.t("fees.deposit")}:{" "}
+                  <span>
+                    {
+                      this.props.wallet.depositTypeList[
+                        this.props.selectedPaymentIndex
+                      ].method[this.props.selectedMethodIndex].channel[
+                        this.props.selectedChannelIndex
+                      ].fees
+                    }
+                    %
+                  </span>
+                </FeeSpot>
+              </>
+            )
           }
         ></Textbox>
         {this.props.wallet.depositTypeList[
@@ -342,17 +347,17 @@ class MainHKJP extends Component {
               {this.props.general.promotionList.items
                 .filter(
                   (item) =>
-                  [
-                    "FirstDeposit",
-                    "DailySecondDeposit",
-                    "DailyFirstDeposit",
-                    "DepositReward",
-                    "DepositAccumulateRoulette",
-                  ].indexOf(item.promotionType) >= 0 &&
-                  (item.promotionType === "DepositReward"
-                    ? this.props.amount >=
-                      item.campaignDetail.depositMinimumLimit
-                    : true)
+                    [
+                      "FirstDeposit",
+                      "DailySecondDeposit",
+                      "DailyFirstDeposit",
+                      "DepositReward",
+                      "DepositAccumulateRoulette",
+                    ].indexOf(item.promotionType) >= 0 &&
+                    (item.promotionType === "DepositReward"
+                      ? this.props.amount >=
+                        item.campaignDetail.depositMinimumLimit
+                      : true)
                 )
                 .map((item, index) => {
                   return (
