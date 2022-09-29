@@ -740,6 +740,19 @@ class Default extends Component {
     );
   };
 
+  isDARAvailable = (roulette) => {
+    return (
+      this.props.general.promotionList.items &&
+      this.props.general.promotionList.items.length > 0 &&
+      this.props.general.promotionList.items.findIndex(
+        (item) =>
+          item.promotionType.toUpperCase() ===
+            roulette.promotiontype.toUpperCase() &&
+          item.id === roulette.promotionid
+      ) >= 0
+    );
+  };
+
   render() {
     var checkTransferWallet =
       Object.values(this.props.game.providerList).filter(
@@ -1174,7 +1187,9 @@ class Default extends Component {
                       "DEPOSITACCUMULATEROULETTE"
                   )
                   .map((roulette, index) => {
-                    return roulette.roulettecount > 0 && index === 0 ? (
+                    return this.isDARAvailable(roulette) &&
+                      roulette.roulettecount > 0 &&
+                      index === 0 ? (
                       <PromotionRoulette
                         rouletteType={roulette.promotiontype.toUpperCase()}
                         promotionDetail={
