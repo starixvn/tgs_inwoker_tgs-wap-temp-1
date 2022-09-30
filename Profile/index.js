@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 const BlockLabel = styled.div`
-  font-size: 32px;
+  font-size: ${() => (config.features.WGHK_Setup ? `30px` : `32px`)};
   font-weight: 600;
 
   color: #2b2b2b;
@@ -49,16 +49,15 @@ const ItemContentContainer = styled.div`
   margin: 0 0 0 10px;
 `;
 const ItemTitle = styled.div`
-  font-size: 32px;
-  font-weight: 500;
+  font-size: ${() => (config.features.WGHK_Setup ? `28px` : `32px`)};
+  font-weight: ${() => (config.features.WGHK_Setup ? `400` : `normal`)};
 
   color: #2c2c2c;
 `;
 const NotSetLabel = styled.div`
   margin-top: 5px;
-
-  font-size: 32px;
-
+  font-size: ${() => (config.features.WGHK_Setup ? `28px` : `32px`)};
+  //font-weight: ${() => (config.features.WGHK_Setup ? `400` : `500`)};
   color: #afafaf;
 `;
 const SettedLabel = styled(NotSetLabel)`

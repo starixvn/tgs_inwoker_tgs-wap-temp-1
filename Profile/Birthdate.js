@@ -38,6 +38,8 @@ const CustomDatepicker = styled.div`
 
   .MuiInputBase-input {
     background: none;
+    ${() =>
+      config.features.WGHK_Setup ? `font-size: 28px; font-weight: 400;` : ``}
   }
 
   .MuiInput-underline:before,
@@ -47,7 +49,7 @@ const CustomDatepicker = styled.div`
 `;
 
 const CustomLabel = styled.div`
-  font-size: 24px;
+  font-size: ${() => (config.features.WGHK_Setup ? `30px` : `24px`)};
   font-weight: 600;
   margin-left: 3px;
   color: ${({ theme }) => theme.secondary};
