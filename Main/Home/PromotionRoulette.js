@@ -576,6 +576,8 @@ const Roulette = (props) => {
   useEffect(() => {
     if (props.itemIndex !== null && props.itemIndex >= 0) {
       handleSpinResult();
+    } else if (props.itemIndex !== null && props.itemIndex < 0) {
+      props.handleRouletteError("INDEX_ERROR");
     }
   }, [props.itemIndex]);
 
@@ -722,7 +724,7 @@ const Roulette = (props) => {
           i18n.t("promoRoulette.dialogRewardTitle1"),
           props.items[giftIndex].label
         );
-      }, 2000);
+      }, 500);
       turntableEl.style.transition = `none`;
       labelEl.style.transition = `none`;
     };
@@ -838,7 +840,7 @@ const PromotionRoulette = (props) => {
               "",
               i18n.t("promoRoulette.dialogUnavailableTitle3")
             );
-          }, 2000);
+          }, 1500);
         }
       }
     } else if (rouletteCount === null && props.account.token !== null) {
@@ -914,10 +916,57 @@ const PromotionRoulette = (props) => {
 
   const getRouletteResult = () => {
     if (props.rouletteType === RouletteEnum.SIE) {
-      props.getPromotionRouletteResult(props.promotionDetail.id);
+      props
+        .getPromotionRouletteResult(props.promotionDetail.id)
+        .then((response) => {
+          if (!response.IsSuccess) {
+            handleRouletteError();
+          }
+        });
     } else if (props.rouletteType === RouletteEnum.DAR) {
-      props.getDepositAccumulateRouletteResult(props.promotionDetail.id);
+      props
+        .getDepositAccumulateRouletteResult(props.promotionDetail.id)
+        .then((response) => {
+          if (!response.IsSuccess) {
+            handleRouletteError();
+          }
+        });
     }
+  };
+
+  const handleRouletteError = (errorType) => {
+    let title1 = "";
+    let title2 = "";
+    switch (errorType) {
+      case "INDEX_ERROR":
+        title1 = i18n.t("promoRoulette.dialogIndexErrorTitle1");
+        break;
+      default:
+        title1 = i18n.t("promoRoulette.dialogErrorTitle1");
+        title2 = i18n.t("promoRoulette.dialogErrorTitle2");
+        break;
+    }
+    const turntableEl = document.getElementById("roulette-turntable");
+    const labelEl = document.getElementById("roulette-label");
+
+    if (
+      turntableEl.getAnimations().length > 0 &&
+      labelEl.getAnimations().length > 0
+    ) {
+      turntableEl.getAnimations()[0].pause();
+      labelEl.getAnimations()[0].pause();
+      turntableEl.getAnimations()[0].finish();
+      labelEl.getAnimations()[0].finish();
+    }
+    if (labelEl.getAnimations().length > 0) {
+      labelEl.getAnimations()[0].pause();
+      labelEl.getAnimations()[0].finish();
+    }
+    performOpenEmptyModal(
+      title1,
+      title2,
+      i18n.t("promoRoulette.dialogUnavailableTitle3")
+    );
   };
 
   const getRouletteStatus = async () => {
@@ -988,9 +1037,9 @@ const PromotionRoulette = (props) => {
       </Container>
       <RouletteModal open={rouletteModal} onClose={performCloseRouletteModal}>
         <RouletteContainer>
-          <LoadingContainer isLoading={props.general.loading}>
+          {/* <LoadingContainer isLoading={props.general.loading}>
             <LoadingIcon src={LoadingGIF}></LoadingIcon>
-          </LoadingContainer>
+          </LoadingContainer> */}
           <Roulette
             rouletteType={props.rouletteType}
             itemIndex={props.general.itemIndex}
@@ -1005,6 +1054,7 @@ const PromotionRoulette = (props) => {
             handlePhoneVerifyClick={handlePhoneVerifyClick}
             getRouletteSetting={getRouletteSetting}
             updateRouletteCount={updateRouletteCount}
+            handleRouletteError={handleRouletteError}
           ></Roulette>
           <TabContainer>
             {tabMenu.map((item, index) => {
