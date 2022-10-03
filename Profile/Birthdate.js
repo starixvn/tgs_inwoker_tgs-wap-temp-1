@@ -31,8 +31,8 @@ const CustomDatepicker = styled.div`
     return disabled && `pointer-events: none;`;
   }}
   background: white;
-  zoom: 1.5;
-  padding: 10px 20px;
+  zoom: ${() => (config.features.WGHK_Setup ? "1.0" : "1.5")};
+  padding: ${() => (config.features.WGHK_Setup ? "20px 20px" : "10px 20px")};
   border-radius: 8px;
   margin-top: 10px;
 
