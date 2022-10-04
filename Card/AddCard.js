@@ -660,7 +660,7 @@ class AddCard extends Component {
           ></Textbox>
         )}
 
-        {!(config.features.AddCard_HideChannel || isPulsa) && (
+        {!(config.features.AddCard_HideChannel) && (
           <Textbox
             style={{ margin: "20px auto 20px auto" }}
             value={
