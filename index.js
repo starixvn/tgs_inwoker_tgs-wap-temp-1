@@ -668,6 +668,9 @@ class Wap extends Component {
         this.props.getBalanceList();
         this.props.game.providerList
           .filter((item) => item.status === 0 && item.transferwallet === true)
+          .filter(
+            (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
+          )
           .map((a) => {
             this.props.getGameBalance(a.abbreviation);
           });
@@ -784,6 +787,9 @@ class Wap extends Component {
       }
       this.props.game.providerList
         .filter((item) => item.status === 0 && item.transferwallet === true)
+        .filter(
+          (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
+        )
         .map((a) => {
           this.props.getGameBalance(a.abbreviation);
         });
