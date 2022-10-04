@@ -470,6 +470,9 @@ class Withdrawal extends Component {
   getAllGameBalance = () => {
     this.props.game.providerList
       .filter((item) => item.status === 0 && item.transferwallet === true)
+      .filter(
+        (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
+      )
       .map((a) => {
         this.props.getGameBalance(a.abbreviation).then((e) => {
           if (e.IsSuccess) {
