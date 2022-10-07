@@ -14,9 +14,9 @@ const CustomText = styled.div`
 `;
 const CustomLabel = styled.div`
   font-size: ${(props) =>
-    config.features.WGHK_Setup && props.isCustomProfileStyle
+    config.brand === "WGHK" && props.isCustomProfileStyle
       ? `30px`
-      : config.features.WGHK_Setup
+      : config.brand === "WGHK"
       ? `26px`
       : `20px`};
   font-weight: 600;
@@ -26,12 +26,12 @@ const CustomLabel = styled.div`
 const CustomInput = styled.input`
   color: ${({ theme }) => theme.secondary};
   font-size: ${(props) =>
-    config.features.WGHK_Setup && props.isCustomProfileStyle
+    config.brand === "WGHK" && props.isCustomProfileStyle
       ? `28px`
-      : config.features.WGHK_Setup
+      : config.brand === "WGHK"
       ? `24px`
       : `28px`};
-  font-weight: ${() => (config.features.WGHK_Setup ? `400` : `500`)};
+  font-weight: ${() => (config.brand === "WGHK" ? `400` : `500`)};
   margin-top: 25px;
   border: 0;
   width: 100%;
@@ -40,12 +40,12 @@ const CustomInput = styled.input`
   ::-webkit-input-placeholder {
     color: #c3c3c3;
     font-size: ${(props) =>
-      config.features.WGHK_Setup && props.isCustomProfileStyle
+      config.brand === "WGHK" && props.isCustomProfileStyle
         ? `28px`
-        : config.features.WGHK_Setup
+        : config.brand === "WGHK"
         ? `24px`
         : `28px`};
-    font-weight: ${() => (config.features.WGHK_Setup ? `400` : `500`)};
+    font-weight: ${() => (config.brand === "WGHK" ? `400` : `500`)};
   }
   &:disabled {
     background: #fff;

@@ -85,7 +85,7 @@ class ChangePassword extends BaseProfile {
           onChange={this.handleChangeOldPassword}
           placeholder={i18n.t("profile.changePassword.msgEnterOriPass")}
           label={i18n.t("profile.changePassword.OriPass")}
-          isCustomProfileStyle={config.features.WGHK_Setup}
+          isCustomProfileStyle={config.brand === "WGHK"}
         ></Textbox>
         <Textbox
           type={"password"}
@@ -94,7 +94,7 @@ class ChangePassword extends BaseProfile {
           onChange={this.handleChangeNewPassword}
           placeholder={i18n.t("common.msgEnterNewPass")}
           label={i18n.t("common.NewPass")}
-          isCustomProfileStyle={config.features.WGHK_Setup}
+          isCustomProfileStyle={config.brand === "WGHK"}
         ></Textbox>
         <Textbox
           type={"password"}
@@ -103,7 +103,7 @@ class ChangePassword extends BaseProfile {
           onChange={this.handleChangeNewPassword2}
           placeholder={i18n.t("common.msgEnterConfirmPass")}
           label={i18n.t("common.ConfirmPass")}
-          isCustomProfileStyle={config.features.WGHK_Setup}
+          isCustomProfileStyle={config.brand === "WGHK"}
         ></Textbox>
       </React.Fragment>,
       i18n.t("common.complete")

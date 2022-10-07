@@ -25,7 +25,7 @@ class Approved extends BaseProfile {
           }
           disabled={true}
           maxLength={256}
-          isCustomProfileStyle={config.features.WGHK_Setup}
+          isCustomProfileStyle={config.brand === "WGHK"}
         ></Textbox>
       </React.Fragment>
     );
