@@ -31,13 +31,15 @@ const CustomDatepicker = styled.div`
     return disabled && `pointer-events: none;`;
   }}
   background: white;
-  zoom: 1.5;
-  padding: 10px 20px;
+  zoom: ${() => (config.brand === "WGHK" ? "1.0" : "1.5")};
+  padding: ${() => (config.brand === "WGHK" ? "20px 20px" : "10px 20px")};
   border-radius: 8px;
   margin-top: 10px;
 
   .MuiInputBase-input {
     background: none;
+    ${() =>
+      config.brand === "WGHK" ? `font-size: 28px; font-weight: 400;` : ``}
   }
 
   .MuiInput-underline:before,
@@ -47,7 +49,7 @@ const CustomDatepicker = styled.div`
 `;
 
 const CustomLabel = styled.div`
-  font-size: 24px;
+  font-size: ${() => (config.brand === "WGHK" ? `30px` : `24px`)};
   font-weight: 600;
   margin-left: 3px;
   color: ${({ theme }) => theme.secondary};

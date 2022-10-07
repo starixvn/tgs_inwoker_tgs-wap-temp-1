@@ -49,7 +49,7 @@ const InputWrapper = styled.div`
 `;
 
 const CustomLabel = styled.div`
-  font-size: 24px;
+  font-size: ${() => (config.brand === "WGHK" ? `30px` : `24px`)};
   font-weight: 600;
   margin-left: 3px;
   color: ${({ theme }) => theme.secondary};
@@ -82,6 +82,7 @@ class Default extends BaseProfile {
           }
           disabled={false}
           maxLength={256}
+          isCustomProfileStyle={config.brand === "WGHK"}
         ></Textbox>
         {config.features.ICVerification && (
           <Textbox
@@ -100,6 +101,7 @@ class Default extends BaseProfile {
             }
             disabled={false}
             maxLength={256}
+            isCustomProfileStyle={config.brand === "WGHK"}
           ></Textbox>
         )}
 

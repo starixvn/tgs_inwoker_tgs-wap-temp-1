@@ -12,7 +12,7 @@ import i18n from "../../../../../../utils/i18n";
 import OnlineUserDisplayer from "../../../../../Share/online-user-displayer";
 import Marquee from "../../Marquee";
 
-var height = 350;
+var height = 250;
 
 const StyledAppBar = withStyles({
   root: {
@@ -205,11 +205,11 @@ const GamePage = (props) => {
   return (
     <>
       <StyledAppBar position="fixed" color="default">
-        <LogoHolderAppBar>
+        {/* <LogoHolderAppBar>
           <LogoHolder
             img={props.general.brand && props.general.brand.mobileLogoUrl}
           />
-        </LogoHolderAppBar>
+        </LogoHolderAppBar> */}
         <FixedContainer>
           <AnnouncementContainer>
             <TheSpeaker></TheSpeaker>
@@ -357,7 +357,7 @@ const GamePage = (props) => {
         </FixedContainer>
       </StyledAppBar>
       <GameBackground
-        style={{ marginTop: height + 5, height: window.innerHeight - 350 - 90 }}
+        style={{ marginTop: height + 5, height: window.innerHeight - 250 - 90 }}
         onClick={onClickStartGame}
       >
         <TheButtonContainer>

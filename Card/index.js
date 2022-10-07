@@ -54,8 +54,8 @@ const CardItem = styled.div`
   color: ${({ theme }) => theme.secondary};
 `;
 const InfoLabel = styled.div`
-  font-size: 18px;
-  font-weight: 600;
+  font-size: ${() => (config.brand === "WGHK" ? `24px` : `18px`)};
+  font-weight: ${() => (config.brand === "WGHK" ? `400` : `600`)};
 
   color: ${({ theme }) => theme.secondary};
   float: right;
@@ -65,7 +65,7 @@ const InfoLabel = styled.div`
     no-repeat left center;
   background-size: 32px;
   padding-left: 44px;
-  height: 32px;
+  height: ${() => (config.brand === "WGHK" ? `42px` : `32px`)};
   padding-top: 4px;
 `;
 const BankIcon = styled.div`
@@ -97,7 +97,7 @@ const EmptyCardItem = styled.div`
   margin: 30px auto 0 auto;
 `;
 const EmptyCardTitle = styled.div`
-  font-size: 24px;
+  font-size: ${() => (config.brand === "WGHK" ? `26px` : `24px`)};
   font-weight: 600;
   float: left;
   color: ${({ theme }) => theme.secondary};
@@ -106,10 +106,11 @@ const EmptyCardTitle = styled.div`
   margin: 50px 0 0 45px;
 `;
 const EmptyCardDesc = styled.div`
-  font-size: 18px;
+  font-size: ${() => (config.brand === "WGHK" ? `24px` : `18px`)};
+  font-weight: ${() => (config.brand === "WGHK" ? `400` : `normal`)};
   float: left;
   color: ${({ theme }) => theme.secondary};
-  width: 450px;
+  width: ${() => (config.brand === "WGHK" ? `455px` : `450px`)};
   margin: 5px 0 0 45px;
 `;
 const EmptyCardAdd = styled.div`

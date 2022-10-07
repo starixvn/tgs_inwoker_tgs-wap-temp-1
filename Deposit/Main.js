@@ -20,6 +20,7 @@ const GMOstyle = config.brand === "GMO";
 
 const CustomSelect = withStyles((theme) => ({
   root: {
+    fontSize: config.brand === "WGHK" ? "24px" : "28px",
     "&:focus": {
       border: "none",
       backgroundColor: "#fff",
@@ -46,7 +47,7 @@ const CustomSelect = withStyles((theme) => ({
 }))(Select);
 
 const CustomCustomSelect = styled(CustomSelect)`
-  font-size: 28px;
+  font-size: ${() => (config.brand === "WGHK" ? `24px` : `28px`)};
   height: 78px;
   border: none;
 
@@ -75,7 +76,7 @@ const CustomImage = styled.img`
   height: 200px;
 `;
 const CustomLabel = styled.div`
-  font-size: 24px;
+  font-size: ${() => (config.brand === "WGHK" ? "26px" : "24px")};
   font-weight: 600;
   color: ${({ black, theme }) => {
     return black ? "#000" : theme.secondary;
@@ -112,13 +113,13 @@ const TransferContainer = styled.div`
 `;
 const TransferLabel = styled.div`
   color ${GMOstyle ? "#e9a60b" : "#747474"};
-  font-size: 28px;
+  font-size: ${() => (config.brand === "WGHK" ? `24px` : `28px`)};
   float: left;
-  font-weight: bold;
+  font-weight: ${() => (config.brand === "WGHK" ? `400` : `bold`)};
 `;
 const TransferValue = styled.div`
-color ${GMOstyle ? "#e9a60b" : "#747474"};
-  font-size: 28px;
+  color ${GMOstyle ? "#e9a60b" : "#747474"};
+  font-size: ${() => (config.brand === "WGHK" ? `24px` : `28px`)};
   float: left;
   margin-left: 10px;
 `;
@@ -128,12 +129,14 @@ const UploadInput = styled.input`
 `;
 const ExchangeRateContainer = styled.div`
   margin: 20px auto;
-  font-size: 28px;
+  font-size: ${() => (config.brand === "WGHK" ? `24px` : `28px`)};
+  font-weight: ${() => (config.brand === "WGHK" ? `400` : `normal`)};
   padding: 0px 20px 20px 48px;
 `;
 
 const Remark = styled.div`
-  font-size: 20px;
+  font-size: ${() => (config.brand === "WGHK" ? `24px` : `20px`)};
+  font-weight: ${() => (config.brand === "WGHK" ? `400` : `normal`)};
   padding: 0px 50px;
   color: ${({ theme }) => theme.primary};
   opacity: 0.75;

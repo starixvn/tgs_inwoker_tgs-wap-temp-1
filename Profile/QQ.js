@@ -96,6 +96,7 @@ class QQ extends BaseProfile {
         }
         type={'text'}
         label={i18n.t('common.qqNumber')}
+        isCustomProfileStyle={config.brand === "WGHK"}
       ></Textbox>,
       this.state.isConfigured && config.features.ChangesNotAllowed
         ? i18n.t('common.configured')
