@@ -469,6 +469,17 @@ var sortingPB3 = [
   GameTypeEnum.QIPAILOBBY,
   GameTypeEnum.LOTTERYLOBBY,
 ];
+
+var sortingBUNNY = [
+  GameTypeEnum.LIVELOBBY,
+  GameTypeEnum.QIPAILOBBY,
+  GameTypeEnum.SPORTS,
+  GameTypeEnum.ESPORTS,
+  GameTypeEnum.LOTTERYLOBBY,
+  GameTypeEnum.SLOT,
+  GameTypeEnum.TABLEGAME,
+  GameTypeEnum.FISH,
+]
 class Default extends Component {
   state = {
     value: 0,
@@ -557,6 +568,8 @@ class Default extends Component {
         return sortingPB.indexOf(a) - sortingPB.indexOf(b);
       else if (config.features.MenuItem_Sorting_GMO)
         return sortingGMO.indexOf(a) - sortingGMO.indexOf(b);
+      else if (config.features.MenuItem_Sorting_BUNNY)
+        return sortingBUNNY.indexOf(a) - sortingBUNNY.indexOf(b);
       else return a - b;
     });
   }
@@ -1103,6 +1116,10 @@ class Default extends Component {
                   else if (config.features.MenuItem_Sorting_GMO)
                     return (
                       sortingGMO.indexOf(a.type) - sortingGMO.indexOf(b.type)
+                    );
+                  else if (config.features.MenuItem_Sorting_BUNNY)
+                    return (
+                      sortingBUNNY.indexOf(a.type) - sortingBUNNY.indexOf(b.type)
                     );
                   else return a.type - b.type;
                 })
