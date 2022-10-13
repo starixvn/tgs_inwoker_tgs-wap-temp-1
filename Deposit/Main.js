@@ -259,6 +259,11 @@ class Main extends Component {
         this.props.selectedPaymentIndex
       ].paymentcode.toUpperCase() === "MANUAL";
 
+      var isThirdParty =
+      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
+        this.props.selectedMethodIndex
+      ].methodcode.toUpperCase() === "THIRDPARTY";
+
     const performCopy = (content) => {
       this.props.alert("", i18n.t("affiliate.copied"));
 
@@ -591,7 +596,7 @@ class Main extends Component {
               return (
                 <>
                   {!(
-                    !(isFPS && config.features.CustomKING8Deposit) ||
+                    (isThirdParty && config.features.CustomKING8Deposit) ||
                     config.features.Deposit_RemoveAccount ||
                     isUSDT ||
                     config.features.Deposit_AddCard
