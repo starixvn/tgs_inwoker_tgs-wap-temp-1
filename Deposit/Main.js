@@ -596,7 +596,7 @@ class Main extends Component {
               return (
                 <>
                   {!(
-                    (isThirdParty && config.features.CustomKING8Deposit) ||
+                    (config.features.CustomKING8Deposit) ||
                     config.features.Deposit_RemoveAccount ||
                     isUSDT ||
                     config.features.Deposit_AddCard
