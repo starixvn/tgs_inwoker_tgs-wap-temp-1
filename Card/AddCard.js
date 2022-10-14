@@ -437,19 +437,25 @@ class AddCard extends Component {
           detail: detail,
         })
         .then((response) => {
-          let setRealName = response.data.nextStepType === "SetRealName";
-          if (setRealName) {
-            this.props
-              .newRegister("SetRealName", {
-                realname: detail.name || detail.eMoneyName || detail.username,
-              })
-              .then((response) => {
-                this.props.getAccountInfo();
-              });
-          }
-          else
-          {
-            this.props.getAccountInfo();
+          if (response.IsSuccess) {
+            let setRealName = response.data.nextStepType === "SetRealName";
+            if (setRealName) {
+              this.props
+                .newRegister("SetRealName", {
+                  realname: detail.name || detail.eMoneyName || detail.username,
+                })
+                .then((response) => {
+                  if (response.IsSuccess) {
+                    this.props.getAccountInfo();
+                  } else {
+                    this.props.alert("", response.info);
+                  }
+                });
+            } else {
+              this.props.getAccountInfo();
+            }
+          } else {
+            this.props.alert("", response.info);
           }
         });
     } else {
@@ -660,7 +666,7 @@ class AddCard extends Component {
           ></Textbox>
         )}
 
-        {!(config.features.AddCard_HideChannel) && (
+        {!config.features.AddCard_HideChannel && (
           <Textbox
             style={{ margin: "20px auto 20px auto" }}
             value={
