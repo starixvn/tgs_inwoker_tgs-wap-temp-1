@@ -1059,65 +1059,31 @@ class Login extends Component {
             this.props.alert("", i18n.t("common.msgAlreadyExist"));
             this.setState({ ...this.state, loading: false });
           } else if (response.IsSuccess) {
-            let joinPromotion = response.data.nextStepType === "JoinPromotion";
-            if (joinPromotion) {
-              this.props
-                .newRegister("JoinPromotion", {})
-                .then(async (response) => {
-                  let setPhoneDontCareDuplicate =
-                    response.data.nextStepType === "SetPhoneDontCareDuplicate";
+            let setPhoneDontCareDuplicate =
+              response.data.nextStepType === "SetPhoneDontCareDuplicate";
 
-                  if (config.features.SMSVerification) {
-                    this.setState({
-                      ...this.state,
-                      selected: 2,
-                      loading: false,
-                    });
-                  } else if (
-                    config.features.Register_ShowPhone &&
-                    config.features.Register_ShowEmail
-                  ) {
-                    this.performLoginWithPhoneAndEmail(
-                      username,
-                      password,
-                      phone,
-                      areaCode,
-                      email,
-                      setPhoneDontCareDuplicate
-                    );
-                  } else if (config.features.Register_ShowPhone) {
-                    this.doLoginWithHp(username, password, phone, areaCode);
-                  } else {
-                    this.doLogin(username, password);
-                  }
-                });
+            if (config.features.SMSVerification) {
+              this.setState({
+                ...this.state,
+                selected: 2,
+                loading: false,
+              });
+            } else if (
+              config.features.Register_ShowPhone &&
+              config.features.Register_ShowEmail
+            ) {
+              this.performLoginWithPhoneAndEmail(
+                username,
+                password,
+                phone,
+                areaCode,
+                email,
+                setPhoneDontCareDuplicate
+              );
+            } else if (config.features.Register_ShowPhone) {
+              this.doLoginWithHp(username, password, phone, areaCode);
             } else {
-              let setPhoneDontCareDuplicate =
-                response.data.nextStepType === "SetPhoneDontCareDuplicate";
-
-              if (config.features.SMSVerification) {
-                this.setState({
-                  ...this.state,
-                  selected: 2,
-                  loading: false,
-                });
-              } else if (
-                config.features.Register_ShowPhone &&
-                config.features.Register_ShowEmail
-              ) {
-                this.performLoginWithPhoneAndEmail(
-                  username,
-                  password,
-                  phone,
-                  areaCode,
-                  email,
-                  setPhoneDontCareDuplicate
-                );
-              } else if (config.features.Register_ShowPhone) {
-                this.doLoginWithHp(username, password, phone, areaCode);
-              } else {
-                this.doLogin(username, password);
-              }
+              this.doLogin(username, password);
             }
             // if (
             //   this.props.match.params.subid &&
