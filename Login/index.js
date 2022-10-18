@@ -1542,7 +1542,8 @@ const mapDispatchToProps = (dispatch) => {
     getPromotion: () => dispatch(generalAction.getPromotion()),
     newRegister: (type, input) =>
       dispatch(accountAction.newRegister(type, input)),
-    getPromotionRouletteCount: () => dispatch(generalAction.getPromotionRouletteCount()),
+    getPromotionRouletteCount: () =>
+      dispatch(generalAction.getPromotionRouletteCount()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

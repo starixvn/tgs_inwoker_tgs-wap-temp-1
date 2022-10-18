@@ -259,6 +259,11 @@ class Main extends Component {
         this.props.selectedPaymentIndex
       ].paymentcode.toUpperCase() === "MANUAL";
 
+      var isThirdParty =
+      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
+        this.props.selectedMethodIndex
+      ].methodcode.toUpperCase() === "THIRDPARTY";
+
     const performCopy = (content) => {
       this.props.alert("", i18n.t("affiliate.copied"));
 
@@ -330,7 +335,14 @@ class Main extends Component {
                       this.props.selectedPaymentIndex
                     ].method.map((item, index) => {
                       return (
-                        <option value={index}>{i18n.t(item.methodcode)}</option>
+                        <option value={index}>
+                          {" "}
+                          {config.features.CustomKING8Deposit &&
+                          isManual &&
+                          i18n.exists(`king8.${item.methodcode}`)
+                            ? i18n.t(`king8.${item.methodcode}`)
+                            : i18n.t(item.methodcode)}
+                        </option>
                       );
                     })}
                 </CustomCustomSelect>
@@ -584,6 +596,7 @@ class Main extends Component {
               return (
                 <>
                   {!(
+                    (config.features.CustomKING8Deposit) ||
                     config.features.Deposit_RemoveAccount ||
                     isUSDT ||
                     config.features.Deposit_AddCard
