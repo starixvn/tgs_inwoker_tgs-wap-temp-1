@@ -627,14 +627,14 @@ class Withdrawal extends Component {
           ) {
             return (
               <React.Fragment>
-                <ExchangeRateContainer
+                {/* <ExchangeRateContainer
                   style={{ marginTop: "4px", whiteSpace: "break-spaces" }}
                 >
                   <LimitLabel>{i18n.t("deposit.exchangeRate")} : </LimitLabel>
                   <LimitAmount>1</LimitAmount>
                   <LimitLabel> {"\t"} USDT : </LimitLabel>
                   <LimitAmount>{`${this.state.exchangeRate}`}</LimitAmount>
-                </ExchangeRateContainer>
+                </ExchangeRateContainer> */}
                 <Textbox
                   style={{ margin: "50px auto 20px auto" }}
                   value={
