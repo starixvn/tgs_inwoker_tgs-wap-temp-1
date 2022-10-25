@@ -782,7 +782,9 @@ class Main extends Component {
                   {" :  "}
                   <LimitAmount>{` ${
                     isNaN(this.props.amount) === false
-                      ? (this.props.amount * usdtRate).toFixed(2)
+                      ? Common.formatNumberWithCommasNoRounding(
+                          this.props.amount / usdtRate
+                        )
                       : 0
                   }`}</LimitAmount>
                 </ExchangeRateContainer>
