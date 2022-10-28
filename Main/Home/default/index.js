@@ -479,7 +479,7 @@ var sortingBUNNY = [
   GameTypeEnum.SLOT,
   GameTypeEnum.TABLEGAME,
   GameTypeEnum.FISH,
-]
+];
 class Default extends Component {
   state = {
     value: 0,
@@ -1119,7 +1119,8 @@ class Default extends Component {
                     );
                   else if (config.features.MenuItem_Sorting_BUNNY)
                     return (
-                      sortingBUNNY.indexOf(a.type) - sortingBUNNY.indexOf(b.type)
+                      sortingBUNNY.indexOf(a.type) -
+                      sortingBUNNY.indexOf(b.type)
                     );
                   else return a.type - b.type;
                 })
@@ -1144,7 +1145,7 @@ class Default extends Component {
                         onClick={() =>
                           this.handleGameClick(
                             row.type,
-                            row.abbreviation,
+                            row.gpcode,
                             row.game_platform_id
                           )
                         }

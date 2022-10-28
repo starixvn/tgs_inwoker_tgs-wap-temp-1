@@ -321,7 +321,7 @@ class CustomSportPage extends Component {
       .filter(
         (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
       )
-      .map((a) => this.props.getGameBalance(a.abbreviation));
+      .map((a) => this.props.getGameBalance(a.gpcode));
   };
 
   render() {

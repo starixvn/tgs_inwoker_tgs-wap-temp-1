@@ -1460,7 +1460,15 @@ class Report extends Component {
                               <DataRowId>
                                 <CustomDataRow>
                                   <IDCell>
-                                    {config.features.WGHK_Setup ? row.subGameProviderName: row.gameProviderName} - {row.gameName}
+                                    {config.features.WGHK_Setup
+                                      ? row.subGameProviderName
+                                      : row.gameProviderName
+                                      ? row.gameProviderName === "BTI" &&
+                                        config.currency === "PHP"
+                                        ? "PHSB"
+                                        : row.gameProviderName
+                                      : ""}
+                                    - {row.gameName}
                                   </IDCell>
                                   <IDCell> {date}</IDCell>
                                 </CustomDataRow>
@@ -1648,11 +1656,25 @@ class Report extends Component {
                             <div key={index}>
                               <DataRowId>
                                 {i18n.t("report.transfer.table.from")} :{" "}
-                                <IDCell>{row.from}</IDCell>
+                                <IDCell>
+                                  {row.from
+                                    ? row.from === "BTI" &&
+                                      config.currency === "PHP"
+                                      ? "PHSB"
+                                      : row.from
+                                    : ""}
+                                </IDCell>
                               </DataRowId>
                               <DataRowId>
                                 {i18n.t("report.transfer.table.to")} :{" "}
-                                <IDCell>{row.to}</IDCell>
+                                <IDCell>
+                                  {row.to
+                                    ? row.to === "BTI" &&
+                                      config.currency === "PHP"
+                                      ? "PHSB"
+                                      : row.to
+                                    : ""}
+                                </IDCell>
                               </DataRowId>
                               <DataRowId>
                                 {i18n.t("report.amount")} :{" "}

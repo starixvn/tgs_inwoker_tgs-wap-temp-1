@@ -474,7 +474,7 @@ class Withdrawal extends Component {
         (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
       )
       .map((a) => {
-        this.props.getGameBalance(a.abbreviation).then((e) => {
+        this.props.getGameBalance(a.gpcode).then((e) => {
           if (e.IsSuccess) {
           }
         });

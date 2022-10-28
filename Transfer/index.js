@@ -387,11 +387,9 @@ class Transfer extends Component {
   getAllGameBalance = () => {
     this.props.game.providerList
       .filter((item) => item.status === 0 && item.transferwallet === true)
-      .filter(
-        (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
-      )
+      .filter((item) => item.gpcode !== "NTTF" && item.gpcode !== "RTTF")
       .map((a) => {
-        this.props.getGameBalance(a.abbreviation);
+        this.props.getGameBalance(a.gpcode);
       });
   };
   handleRefreshClick = () => {
@@ -640,9 +638,7 @@ class Transfer extends Component {
               })
               .filter((e) => {
                 if (config.features.MergeEVORTNT) {
-                  if (
-                    !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF")
-                  ) {
+                  if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF")) {
                     return e;
                   }
                 } else {
@@ -703,9 +699,7 @@ class Transfer extends Component {
                 )
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
-                    if (
-                      !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF")
-                    ) {
+                    if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF")) {
                       return e;
                     }
                   } else {
@@ -713,7 +707,7 @@ class Transfer extends Component {
                   }
                 })
                 .map((item, index) => (
-                  <option value={item.abbreviation} key={index}>
+                  <option value={item.gpcode} key={index}>
                     {customGPname.WGFM === ""
                       ? item.name
                       : customGPname.WGFM + i18n.t("customGPname.sport")}
@@ -766,7 +760,7 @@ class Transfer extends Component {
                   }
                 })
                 .map((item, index) => (
-                  <option value={item.abbreviation} key={index}>
+                  <option value={item.gpcode} key={index}>
                     {customGPname.WGFM === ""
                       ? item.name
                       : customGPname.WGFM + i18n.t("customGPname.sport")}
