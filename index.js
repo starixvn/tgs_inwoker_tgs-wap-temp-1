@@ -668,11 +668,9 @@ class Wap extends Component {
         this.props.getBalanceList();
         this.props.game.providerList
           .filter((item) => item.status === 0 && item.transferwallet === true)
-          .filter(
-            (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
-          )
+          .filter((item) => item.gpcode !== "NTTF" && item.gpcode !== "RTTF")
           .map((a) => {
-            this.props.getGameBalance(a.abbreviation);
+            this.props.getGameBalance(a.gpcode);
           });
         this.props.getMessageList(i18n.language, 1, 99);
         this.props.getBankCardList();
@@ -787,11 +785,9 @@ class Wap extends Component {
       }
       this.props.game.providerList
         .filter((item) => item.status === 0 && item.transferwallet === true)
-        .filter(
-          (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
-        )
+        .filter((item) => item.gpcode !== "NTTF" && item.gpcode !== "RTTF")
         .map((a) => {
-          this.props.getGameBalance(a.abbreviation);
+          this.props.getGameBalance(a.gpcode);
         });
     }
     // will cause blacklist issue on when registering ref:TGS-823
@@ -1067,7 +1063,11 @@ class Wap extends Component {
                 <LiveChat
                   license={config.features.LiveChatVendor.license}
                   vendor={config.features.LiveChatVendor.brand}
-                  group={config.features.LiveChatVendor.group ? config.features.LiveChatVendor.group : 0}
+                  group={
+                    config.features.LiveChatVendor.group
+                      ? config.features.LiveChatVendor.group
+                      : 0
+                  }
                 />
               );
             }
@@ -1203,7 +1203,8 @@ const mapDispatchToProps = (dispatch) => {
     getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
     getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     getPromotion: () => dispatch(generalAction.getPromotion()),
-    getPromotionRouletteCount: () => dispatch(generalAction.getPromotionRouletteCount()),
+    getPromotionRouletteCount: () =>
+      dispatch(generalAction.getPromotionRouletteCount()),
   };
 };
 
