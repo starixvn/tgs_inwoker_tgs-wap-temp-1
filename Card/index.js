@@ -22,7 +22,6 @@ const Container = styled.div`
 const StyledAppBar = withStyles((theme) => ({
   root: {
     height: "170px",
-    background: theme.palette.primary.main,
 
     background:
       `linear-gradient(rgba(` +

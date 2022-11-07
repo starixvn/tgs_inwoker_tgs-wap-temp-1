@@ -199,10 +199,7 @@ const GameSelectionUL = styled.div`
   overflow-y: auto;
   height: calc(100vh - 640px);
 `;
-const GameSelectionEmpty = styled.div`
-  height: 90px;
-  width: 130px;
-`;
+
 const GameSelectionLI = styled.div`
   width: 130px;
   height: 69px;
@@ -479,7 +476,7 @@ var sortingBUNNY = [
   GameTypeEnum.SLOT,
   GameTypeEnum.TABLEGAME,
   GameTypeEnum.FISH,
-]
+];
 class Default extends Component {
   state = {
     value: 0,
@@ -1119,7 +1116,8 @@ class Default extends Component {
                     );
                   else if (config.features.MenuItem_Sorting_BUNNY)
                     return (
-                      sortingBUNNY.indexOf(a.type) - sortingBUNNY.indexOf(b.type)
+                      sortingBUNNY.indexOf(a.type) -
+                      sortingBUNNY.indexOf(b.type)
                     );
                   else return a.type - b.type;
                 })

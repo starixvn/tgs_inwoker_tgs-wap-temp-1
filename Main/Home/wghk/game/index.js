@@ -1,5 +1,5 @@
 import { AppBar, withStyles } from "@material-ui/core";
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import styled from "styled-components";
@@ -32,12 +32,7 @@ const AnnouncementContainer = styled.div`
   margin: 10px 23px;
   display: flex;
 `;
-const AnnouncementTitle = styled.div`
-  font-size: 28px;
 
-  color: #000;
-  font-weight: bold;
-`;
 const MarqueeContainer = styled.div`
   white-space: nowrap;
   letter-spacing: 1.5px;
@@ -135,21 +130,6 @@ const WalletActionIcon = styled.div`
   background-size: 60px;
   width: 80px;
   height: 80px;
-`;
-
-const LogoHolder = styled.div`
-  background: url("${({ img }) => img}") no-repeat left center;
-  background-size: contain;
-  width: 200px;
-  height: 100px;
-`;
-
-const LogoHolderAppBar = styled.div`
-  background: ${({ theme }) => theme.primary};
-  position: relative;
-  height: 100px;
-  display: flex;
-  justify-content: center;
 `;
 
 const TheSpeaker = styled.div`

@@ -163,11 +163,6 @@ const QRCodeHolder = styled.div`
   border: solid 1px rgba(0, 0, 0, 0.5);
 `;
 
-const ResponsiveQRCode = styled.img`
-  width: 100%;
-  height: 100%;
-`;
-
 const DownloadButton = styled.div`
   color: #fff;
   background: #000;

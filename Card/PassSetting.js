@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 
-import { accountAction } from '../../../api-services/actions/accountAction'
-import { AccountService } from '../../../api-services/services/AccountService'
-import {UPDATE_INFO} from "../../..api-services/constant/actionType";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { AccountService } from "../../../api-services/services/AccountService";
+import { UPDATE_INFO } from "../../..api-services/constant/actionType";
 import { withStyles } from "@material-ui/core/styles";
 import Header from "../../Wap/Share/Header";
 
@@ -22,7 +22,6 @@ const Container = styled.div`
 const StyledAppBar = withStyles((theme) => ({
   root: {
     height: "170px",
-    background: theme.palette.primary.main,
 
     background:
       `linear-gradient(rgba(` +

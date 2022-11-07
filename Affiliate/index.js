@@ -70,36 +70,7 @@ const Button = styled.div`
   padding: 12px 20px 0 20px;
   margin-top: 12px;
 `;
-const ListView = styled.div`
-  padding: 0px 30px;
-`;
-const ListItem = styled.div`
-  border-radius: 6px;
-  box-shadow: 0px 4px 10px 0 rgba(0, 0, 0, 0.25);
-  border: solid 1px #ffffff;
-  background-image: linear-gradient(to top, #e0e0e0, #ffffff);
 
-  background-image: url(${(props) => props.icon});
-  background-repeat: no-repeat;
-  background-position: center 40px;
-
-  float: left;
-  margin: 15px 30px;
-
-  font-size: 30px;
-
-  text-align: center;
-  color: ${(props) =>
-    props.disabled ? `rgba(61, 61, 61, 0.3)` : props.theme.secondary};
-  padding-top: 100px;
-  position: relative;
-
-  width: 166px;
-  height: 154px;
-  border-radius: 6px;
-  box-shadow: 0px 4px 12px 0 rgba(0, 0, 0, 0.8);
-  border: solid 1px #ffffff;
-`;
 const LightTooltip = withStyles((theme) => ({
   tooltip: {
     fontSize: 30,
@@ -172,37 +143,6 @@ class Affiliate extends Component {
             </Button>
           </LightTooltip>
         </CustomText>
-        {
-          //     <ListView>
-          //     <ListItem
-          //       icon={
-          //         process.env.PUBLIC_URL +
-          //         `/assets/images/wapp/icon-profile-profile.png`
-          //       }
-          //       onClick={() => this.props.navigate('/affiliate/member')}
-          //     >
-          //       {i18n.t('affiliate.downline')}
-          //     </ListItem>
-          //     <ListItem
-          //       icon={
-          //         process.env.PUBLIC_URL +
-          //         `/assets/images/wapp/icon-profile-report.png`
-          //       }
-          //       onClick={() => this.props.navigate('/affiliate/report')}
-          //     >
-          //       {i18n.t('affiliate.report')}
-          //     </ListItem>
-          //     <ListItem
-          //       icon={
-          //         process.env.PUBLIC_URL +
-          //         `/assets/images/wapp/icon-profile-about.png`
-          //       }
-          //       onClick={() => this.props.navigate('/affiliate/guide')}
-          //     >
-          //       {i18n.t('affiliate.info')}
-          //     </ListItem>
-          //   </ListView>
-        }
 
         <Loading show={this.state.loading}></Loading>
       </React.Fragment>
