@@ -1,11 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import Textbox from "../../Share/Textbox";
+
 import i18n from "../../../../utils/i18n";
 import BottomNote from "../../Share/BottomNote";
 import BaseProfile from "./../BaseProfile";
-import styled from "styled-components";
 
 import { accountAction } from "../../../../api-services/actions/accountAction";
 import { RESET_ACCOUNTRESULT } from "../../../../api-services/constant/actionType";

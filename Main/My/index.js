@@ -409,31 +409,6 @@ class My extends Component {
             {i18n.t("wap.main.account.manageBank")}
           </ListItem>
 
-          {/*   <ListItem
-            icon={IconProfileRecommendPNG}
-            onClick={() => this.props.navigate("/affiliate")}
-          >
-            {i18n.t("wap.main.account.affiliate")}
-          </ListItem> */}
-
-          {/* <ListItem
-            icon={IconProfileAboutPNG}
-            onClick={() => this.props.navigate("/aboutus")}
-          >
-            {i18n.t("wap.main.account.question")}
-          </ListItem> */}
-
-          {/* <ListItem
-            icon={IconProfileDownloadPNG}
-            onClick={() =>
-              window.open(
-                "http://app.633download.com/app/download?key=lss014",
-                "_blank"
-              )
-            }
-          >
-            {i18n.t("wap.main.account.appDownload")}
-          </ListItem> */}
           <ListItem
             icon={
               process.env.PUBLIC_URL +

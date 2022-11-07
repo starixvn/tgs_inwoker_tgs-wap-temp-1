@@ -19,7 +19,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import Loading from "../../Wap/Share/Loading";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import BottomScrollListener from "react-bottom-scroll-listener";
+
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
 import config from "../../../config/config";
@@ -84,22 +84,7 @@ const GameName = styled.div`
   text-overflow: ellipsis;
   letter-spacing: 1px;
 `;
-const Bookmark = styled.div`
-  position: absolute;
-  top: 215px;
-  right: 10px;
-  width: 48px;
-  height: 44px;
-  background-repeat: no-repeat;
-  ${(props) =>
-    props.isBookmark
-      ? `  background-image: url(${
-          process.env.PUBLIC_URL + `/assets/images/wapp/bookmark-full.png`
-        });`
-      : ` background-image: url(${
-          process.env.PUBLIC_URL + `/assets/images/wapp/bookmark.png`
-        });`}
-`;
+
 const StyledAppBar = withStyles((theme) => ({
   root: {
     top: "90px",

@@ -3,31 +3,13 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Textbox from "../../../Share/Textbox";
 import i18n from "../../../../../utils/i18n";
-import BottomNote from "../../../Share/BottomNote";
+
 import BaseProfile from "./../../BaseProfile";
 import styled from "styled-components";
 
 import { accountAction } from "../../../../../api-services/actions/accountAction";
 import { RESET_ACCOUNTRESULT } from "../../../../../api-services/constant/actionType";
 import config from "../../../../../config/config";
-import { AccountService } from "../../../../../api-services/services/AccountService";
-
-const CustomInput = styled.input`
-  font-size: 28px;
-  margin-top: 18px;
-  height: 50px;
-  padding: 16px 32px;
-  font-weight: 500;
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    color: #c3c3c3;
-  }
-  &:disabled {
-    background: #fff;
-    -webkit-text-fill-color: #000;
-    opacity: 1;
-  }
-`;
 
 const AnotherWrapper = styled.div`
   width: 700px;

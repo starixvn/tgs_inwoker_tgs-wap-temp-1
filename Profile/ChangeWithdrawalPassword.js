@@ -5,11 +5,10 @@ import { withRouter } from "react-router-dom";
 import BaseProfile from "./BaseProfile";
 import ResetWithdrawalPassword from "./ResetWithdrawalPassword";
 
-import {AccountService} from "../../../api-services/services/AccountService";
+import { AccountService } from "../../../api-services/services/AccountService";
 
-import { withStyles } from "@material-ui/core/styles";
 import Header from "../Share/Header";
-import AppBar from "@material-ui/core/AppBar";
+
 import i18n from "../../../utils/i18n";
 
 class ChangeWithdrawalPassword extends BaseProfile {

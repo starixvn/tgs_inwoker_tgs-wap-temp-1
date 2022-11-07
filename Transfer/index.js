@@ -194,27 +194,6 @@ const CustomFormControl = withStyles((theme) => ({
     },
   },
 }))(FormControl);
-const OneClickReceiveButton = styled.div`
-  float: right;
-
-  padding-top: 9px;
-  margin-top: 30px;
-
-  float: right;
-
-  color: #fefeff;
-  font-size: 23px;
-
-  text-align: center;
-  padding-top: 10px;
-
-  width: 146px;
-  height: 47px;
-  border-radius: 10px;
-  background-image: linear-gradient(to top, ${({ theme }) =>
-    theme.primaryGradient},
-      ${({ theme }) => theme.primary}));
-`;
 
 const CustomSwitch = withStyles((theme) => ({
   root: {
