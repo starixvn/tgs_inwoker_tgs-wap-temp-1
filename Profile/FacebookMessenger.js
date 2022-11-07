@@ -51,7 +51,7 @@ class FacebookMessenger extends BaseProfile {
 
     this.showLoading(true);
     //api
-    AccountService.UpdateFB(fb)
+    AccountService.UpdateIM(fb, "fb")
       .then((response) => {
         if (response.IsSuccess) {
           this.props.getAccountProfile().then((responseUpdate) => {

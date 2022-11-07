@@ -51,7 +51,7 @@ class Line extends BaseProfile {
 
     this.showLoading(true);
     //api
-    AccountService.UpdateLine(line)
+    AccountService.UpdateIM(line, "line")
       .then((response) => {
         if (response.IsSuccess) {
           this.props.getAccountProfile().then((responseUpdate) => {
