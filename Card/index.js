@@ -258,11 +258,13 @@ class Card extends Component {
           );
         })}
 
-        {(!(
+        {!(
           config.features.AddCard_NotAllowedEditDelete ||
-          !config.features.AddCard_AllowedAdd
-        ) ||
-          this.props.wallet.bankCardList.length == 0) && (
+          config.features.ChangesNotAllowed ||
+          (this.props.wallet.bankCardList.length >=
+            config.features.AddCard_MaximumCardAllowed &&
+            config.features.AddCard_DisableCreateUpdateDelete)
+        ) && (
           <>
             <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
             <div className="clear"></div>
