@@ -2,20 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
-import Moment from "react-moment";
+
 // import AppBar from "@material-ui/core/AppBar";
 // import IconInboxArrowPNG from "../../../assets/images/icon-inbox-arrow.png";
-import {InboxService} from "../../../api-services/services/InboxService";
+import { InboxService } from "../../../api-services/services/InboxService";
 import Header from "../../Wap/Share/Header";
 import i18n from "../../../utils/i18n";
+import moment from "moment";
 const Container = styled.div``;
-const HeaderEdit = styled.div`
-  float: right;
-  font-size: 28px;
-  width: 80px;
-  height: 90px;
-  padding-top: 26px;
-`;
 
 const MsgTitle = styled.div`
   color: #2e2426;
@@ -151,9 +145,7 @@ class Details extends Component {
               <ItemContainer>
                 <MsgTitle>{this.state.message.title_text}</MsgTitle>
                 <MsgDate>
-                  <Moment format="YYYY-MM-DD">
-                    {this.state.message.create_time}
-                  </Moment>
+                  {moment(this.state.message.create_time).format("YYYY-MM-DD")}
                 </MsgDate>
                 <Spliter></Spliter>
                 <SplitBoth></SplitBoth>

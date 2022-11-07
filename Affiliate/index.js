@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import Tooltip from "@material-ui/core/Tooltip";
 import Header from "../../Wap/Share/Header";
-import copy from "copy-to-clipboard";
+
 import { withStyles } from "@material-ui/core/styles";
 import Loading from "../../Wap/Share/Loading";
 import i18n from "../../../utils/i18n";
 import QRCode from "react-qr-code";
+import { utility } from "../../../utils/utility";
 
 const QRCodeLabel = styled.div`
   margin: 30px auto;
@@ -119,7 +120,7 @@ class Affiliate extends Component {
   };
   handleCopyLink = (link) => {
     this.setState({ ...this.state, copyTooltips: true });
-    copy(link);
+    utility.copy(link);
     setTimeout(() => {
       this.setState({ ...this.state, copyTooltips: false });
     }, 3000);

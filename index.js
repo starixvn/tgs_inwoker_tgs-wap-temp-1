@@ -16,7 +16,7 @@ import { walletAction } from "../../api-services/actions/walletAction";
 import { accountAction } from "../../api-services/actions/accountAction";
 import { inboxAction } from "../../api-services/actions/inboxAction";
 import { GeneralService } from "../../api-services/services/GeneralService";
-import debounce from "lodash.debounce";
+
 import config from "../../config/config";
 
 // import NameVerification from "./Card/NameVerification";
@@ -552,14 +552,10 @@ class Wap extends Component {
       localStorage.setItem("promotionId", ""); //reset
     }
 
-    window.addEventListener(
-      "resize",
-      debounce(() => {
-        this.updateScreenSize();
-      }, 200)
-    );
+    window.addEventListener("resize", () => {
+      this.updateScreenSize();
+    });
 
-    this.updateScreenSize();
     // const response = await GeneralService.CheckIPRestrict();
 
     // if (response.code === 50000) {
@@ -669,7 +665,8 @@ class Wap extends Component {
         this.props.game.providerList
           .filter((item) => item.status === 0 && item.transferwallet === true)
           .filter(
-            (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
+            (item) =>
+              item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
           )
           .map((a) => {
             this.props.getGameBalance(a.abbreviation);
@@ -1067,7 +1064,11 @@ class Wap extends Component {
                 <LiveChat
                   license={config.features.LiveChatVendor.license}
                   vendor={config.features.LiveChatVendor.brand}
-                  group={config.features.LiveChatVendor.group ? config.features.LiveChatVendor.group : 0}
+                  group={
+                    config.features.LiveChatVendor.group
+                      ? config.features.LiveChatVendor.group
+                      : 0
+                  }
                 />
               );
             }
@@ -1203,7 +1204,8 @@ const mapDispatchToProps = (dispatch) => {
     getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
     getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     getPromotion: () => dispatch(generalAction.getPromotion()),
-    getPromotionRouletteCount: () => dispatch(generalAction.getPromotionRouletteCount()),
+    getPromotionRouletteCount: () =>
+      dispatch(generalAction.getPromotionRouletteCount()),
   };
 };
 

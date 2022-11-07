@@ -13,8 +13,9 @@ import Textbox from "../../Wap/Share/Textbox";
 import Button from "../../Wap/Share/Button";
 
 import i18n from "../../../utils/i18n";
-import copy from "copy-to-clipboard";
+
 import config from "../../../config/config";
+import { utility } from "../../../utils/utility";
 
 const GMOstyle = config.brand === "GMO";
 
@@ -259,7 +260,7 @@ class Main extends Component {
         this.props.selectedPaymentIndex
       ].paymentcode.toUpperCase() === "MANUAL";
 
-      var isThirdParty =
+    var isThirdParty =
       this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
         this.props.selectedMethodIndex
       ].methodcode.toUpperCase() === "THIRDPARTY";
@@ -267,7 +268,7 @@ class Main extends Component {
     const performCopy = (content) => {
       this.props.alert("", i18n.t("affiliate.copied"));
 
-      copy(content);
+      utility.copy(content);
     };
 
     const CopyFeature = ({ copyContent }) => {
@@ -596,7 +597,7 @@ class Main extends Component {
               return (
                 <>
                   {!(
-                    (config.features.CustomKING8Deposit) ||
+                    config.features.CustomKING8Deposit ||
                     config.features.Deposit_RemoveAccount ||
                     isUSDT ||
                     config.features.Deposit_AddCard
