@@ -1,40 +1,40 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from "react";
+import { connect } from "react-redux";
 
-import { withRouter } from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
-import Textbox from '../Share/Textbox'
+import Textbox from "../Share/Textbox";
 
-import BaseProfile from './BaseProfile'
-import i18n from '../../../utils/i18n'
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {AccountService} from "../../../api-services/services/AccountService";
-import config from '../../../config/config'
-import BottomNote from '../Share/BottomNote'
+import BaseProfile from "./BaseProfile";
+import i18n from "../../../utils/i18n";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { AccountService } from "../../../api-services/services/AccountService";
+import config from "../../../config/config";
+import BottomNote from "../Share/BottomNote";
 class Telegram extends BaseProfile {
   state = {
-    telegram: '',
-    isConfigured: false
-  }
+    telegram: "",
+    isConfigured: false,
+  };
   componentDidMount() {
-    let isConfigured = false
-    if (this.props.account.info.member_telegram) isConfigured = true
+    let isConfigured = false;
+    if (this.props.account.info.member_telegram) isConfigured = true;
     this.setState({
-      telegram: isConfigured ? this.props.account.info.member_telegram : '',
-      isConfigured: isConfigured
-    })
+      telegram: isConfigured ? this.props.account.info.member_telegram : "",
+      isConfigured: isConfigured,
+    });
   }
 
   handleChangeNumber = (e) => {
-    this.setState({ telegram: e.target.value })
-    this.onTextChanged()
-  }
+    this.setState({ telegram: e.target.value });
+    this.onTextChanged();
+  };
 
   isDisableButton = () => {
-    return !this.state.telegram
-  }
+    return !this.state.telegram;
+  };
   handleSubmitClicked = () => {
-    const telegram = this.state.telegram
+    const telegram = this.state.telegram;
     //validate here
     //sdasdasdasda
     // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
@@ -49,9 +49,9 @@ class Telegram extends BaseProfile {
     //   return
     // }
 
-    this.showLoading(true)
+    this.showLoading(true);
     //api
-    AccountService.UpdateTelegram(telegram)
+    AccountService.UpdateIM(telegram, "telegram")
       .then((response) => {
         if (response.IsSuccess) {
           this.props.getAccountProfile().then((responseUpdate) => {
@@ -59,79 +59,86 @@ class Telegram extends BaseProfile {
               this.setState({
                 ...this.state,
                 telegram: telegram,
-                isConfigured: true
-              })
+                isConfigured: true,
+              });
             }
-            this.showLoading(false)
-            this.props.alert(
-              '',
-              i18n.t('common.msgSuccessUpdateProfile')
-            )
-          })
+            this.showLoading(false);
+            this.props.alert("", i18n.t("common.msgSuccessUpdateProfile"));
+          });
         } else {
-          this.props.alert('', response.msg)
-          this.showLoading(false)
+          this.props.alert("", response.msg);
+          this.showLoading(false);
           // this.props.enqueueSnackbar(response.msg, {
           //   key: "error"
           // });
         }
       })
       .catch((err) => {
-        this.props.alert('', err)
+        this.props.alert("", err);
         // this.props.enqueueSnackbar(err, {
         //   key: "error"
         // });
-        this.showLoading(false)
-      })
-  }
+        this.showLoading(false);
+      });
+  };
 
   render() {
     return this.setupContent(
-      i18n.t('common.telegram'),
+      i18n.t("common.telegram"),
       <Textbox
-        style={{ margin: '50px auto 20px auto' }}
+        style={{ margin: "50px auto 20px auto" }}
         value={this.state.telegram}
         onChange={this.handleChangeNumber}
-        placeholder={i18n.t('profile.telegram.plsEnterTelegram')}
-        label={i18n.t('common.telegram')}
+        placeholder={i18n.t("profile.telegram.plsEnterTelegram")}
+        label={i18n.t("common.telegram")}
         disabled={
-          this.state.isConfigured && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)
+          this.state.isConfigured &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
             ? true
             : false
         }
         maxLength={15}
       ></Textbox>,
       this.state.isConfigured && config.features.ChangesNotAllowed
-        ? i18n.t('common.configured')
+        ? i18n.t("common.configured")
         : this.state.telegram !== this.props.account.member_telegram &&
-            i18n.t('common.complete'),
+            i18n.t("common.complete"),
       (() => {
-        if (this.state.isConfigured && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) {
+        if (
+          this.state.isConfigured &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
+        ) {
           return (
             <BottomNote
-              text1={i18n.t('profile.telegram.toEdit')}
-              link={'../chat'}
+              text1={i18n.t("profile.telegram.toEdit")}
+              link={"../chat"}
               text2={i18n.t(
-                (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)
-                  ? 'common.customerService'
-                  : 'profile.telegram.here'
+                config.features.ChangesNotAllowed ||
+                  config.features.Profile_ExistingDetails_ViewOnly
+                  ? "common.customerService"
+                  : "profile.telegram.here"
               )}
             ></BottomNote>
-          )
+          );
         }
       })()
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAccountProfile: () => dispatch(accountAction.getAccountProfile(true))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Telegram))
+    getAccountProfile: () => dispatch(accountAction.getAccountProfile(true)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Telegram));

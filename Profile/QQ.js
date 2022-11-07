@@ -47,7 +47,7 @@ class QQ extends BaseProfile {
 
     this.showLoading(true);
     //api
-    AccountService.UpdateQQ(qq)
+    AccountService.UpdateIM(qq, "qq")
       .then((response) => {
         if (response.IsSuccess) {
           this.props.getAccountProfile().then((responseUpdate) => {
