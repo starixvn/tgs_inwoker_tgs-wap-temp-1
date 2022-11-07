@@ -98,22 +98,6 @@ const CustomButton = styled.div`
   color: #ffffff;
 `;
 
-const CloseButton = styled.div`
-  border: solid 1px #000;
-  border-radius: 50%;
-  width: 20px;
-  height: 100%;
-  font-weight: bold;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
-
 const ForcedVerification = ({ forcedverify, alert }) => {
   useEffect(() => {
     setOpen(forcedverify);

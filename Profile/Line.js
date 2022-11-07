@@ -1,40 +1,40 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from "react";
+import { connect } from "react-redux";
 
-import { withRouter } from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
-import Textbox from '../Share/Textbox'
+import Textbox from "../Share/Textbox";
 
-import BaseProfile from './BaseProfile'
-import i18n from '../../../utils/i18n'
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {AccountService} from "../../../api-services/services/AccountService";
-import config from '../../../config/config'
-import BottomNote from '../Share/BottomNote'
+import BaseProfile from "./BaseProfile";
+import i18n from "../../../utils/i18n";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { AccountService } from "../../../api-services/services/AccountService";
+import config from "../../../config/config";
+import BottomNote from "../Share/BottomNote";
 class Line extends BaseProfile {
   state = {
-    line: '',
-    isConfigured: false
-  }
+    line: "",
+    isConfigured: false,
+  };
   componentDidMount() {
-    let isConfigured = false
-    if (this.props.account.info.member_line) isConfigured = true
+    let isConfigured = false;
+    if (this.props.account.info.member_line) isConfigured = true;
     this.setState({
-      line: isConfigured ? this.props.account.info.member_line : '',
-      isConfigured: isConfigured
-    })
+      line: isConfigured ? this.props.account.info.member_line : "",
+      isConfigured: isConfigured,
+    });
   }
 
   handleChangeNumber = (e) => {
-    this.setState({ line: e.target.value })
-    this.onTextChanged()
-  }
+    this.setState({ line: e.target.value });
+    this.onTextChanged();
+  };
 
   isDisableButton = () => {
-    return !this.state.line
-  }
+    return !this.state.line;
+  };
   handleSubmitClicked = () => {
-    const line = this.state.line
+    const line = this.state.line;
     //validate here
     //sdasdasdasda
     // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
@@ -49,7 +49,7 @@ class Line extends BaseProfile {
     //   return
     // }
 
-    this.showLoading(true)
+    this.showLoading(true);
     //api
     AccountService.UpdateLine(line)
       .then((response) => {
@@ -59,79 +59,83 @@ class Line extends BaseProfile {
               this.setState({
                 ...this.state,
                 line: line,
-                isConfigured: true
-              })
+                isConfigured: true,
+              });
             }
-            this.showLoading(false)
-            this.props.alert(
-              '',
-              i18n.t('common.msgSuccessUpdateProfile')
-            )
-          })
+            this.showLoading(false);
+            this.props.alert("", i18n.t("common.msgSuccessUpdateProfile"));
+          });
         } else {
-          this.props.alert('', response.msg)
-          this.showLoading(false)
+          this.props.alert("", response.msg);
+          this.showLoading(false);
           // this.props.enqueueSnackbar(response.msg, {
           //   key: "error"
           // });
         }
       })
       .catch((err) => {
-        this.props.alert('', err)
+        this.props.alert("", err);
         // this.props.enqueueSnackbar(err, {
         //   key: "error"
         // });
-        this.showLoading(false)
-      })
-  }
+        this.showLoading(false);
+      });
+  };
 
   render() {
     return this.setupContent(
-      i18n.t('common.line'),
+      i18n.t("common.line"),
       <Textbox
-        style={{ margin: '50px auto 20px auto' }}
+        style={{ margin: "50px auto 20px auto" }}
         value={this.state.line}
         onChange={this.handleChangeNumber}
-        placeholder={i18n.t('profile.line.plsEnterLine')}
-        label={i18n.t('common.line')}
+        placeholder={i18n.t("profile.line.plsEnterLine")}
+        label={i18n.t("common.line")}
         disabled={
-          this.state.isConfigured && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)
+          this.state.isConfigured &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
             ? true
             : false
         }
         maxLength={15}
       ></Textbox>,
       this.state.isConfigured && config.features.ChangesNotAllowed
-        ? i18n.t('common.configured')
+        ? i18n.t("common.configured")
         : this.state.line !== this.props.account.member_line &&
-            i18n.t('common.complete'),
+            i18n.t("common.complete"),
       (() => {
-        if (this.state.isConfigured && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) {
+        if (
+          this.state.isConfigured &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
+        ) {
           return (
             <BottomNote
-              text1={i18n.t('profile.line.toEdit')}
-              link={'../chat'}
+              text1={i18n.t("profile.line.toEdit")}
+              link={"../chat"}
               text2={i18n.t(
-                (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)
-                  ? 'common.customerService'
-                  : 'profile.line.here'
+                config.features.ChangesNotAllowed ||
+                  config.features.Profile_ExistingDetails_ViewOnly
+                  ? "common.customerService"
+                  : "profile.line.here"
               )}
             ></BottomNote>
-          )
+          );
         }
       })()
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAccountProfile: () => dispatch(accountAction.getAccountProfile(true))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Line))
+    getAccountProfile: () => dispatch(accountAction.getAccountProfile(true)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Line));

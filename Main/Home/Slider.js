@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-// import ReactDOM from "react-dom";
-import config from "../../../../config/config";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slick from "react-slick";
@@ -54,7 +53,6 @@ const settings = {
 };
 class Slider extends React.Component {
   render() {
-    const isChinese = i18n.language === "zh-CN" || i18n.language === "zh-TW";
     return (
       <Slick {...settings}>
         {(() => {

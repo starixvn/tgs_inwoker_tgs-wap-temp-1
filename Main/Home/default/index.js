@@ -199,10 +199,7 @@ const GameSelectionUL = styled.div`
   overflow-y: auto;
   height: calc(100vh - 640px);
 `;
-const GameSelectionEmpty = styled.div`
-  height: 90px;
-  width: 130px;
-`;
+
 const GameSelectionLI = styled.div`
   width: 130px;
   height: 69px;

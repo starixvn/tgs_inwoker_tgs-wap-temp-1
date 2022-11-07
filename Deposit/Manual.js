@@ -3,9 +3,6 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 
 import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Dialog";
-import Header from "../Share/Header";
 
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -58,41 +55,7 @@ const QRImage = styled.img`
   display: block;
   margin: 20px auto;
 `;
-const StyledModalPopup = withStyles((theme) => ({
-  paper: {
-    borderRadius: "50px",
-    fontSize: "28px",
-    color: "#666666",
-    padding: "30px",
-    width: "600px",
-    maxWidth: "690px",
 
-    display: "block",
-  },
-}))(Modal);
-const DialoMessage = styled.div`
-  font-size: 26px;
-  margin: 20px 45px;
-  color: #4a4a4a;
-  line-height: 1.8em;
-  text-align: center;
-`;
-const ButtonConfirm = styled.div`
-  width: 250px;
-  height: 90px;
-  border-radius: 45px;
-
-  font-size: 30px;
-  font-weight: 500;
-
-  text-align: center;
-
-  padding-top: 22px;
-
-  margin: 10px auto;
-  background-image: linear-gradient(to bottom, #ebce91, #dcb370 60%, #d2a058);
-  color: #2b2b2b;
-`;
 class Manual extends Component {
   constructor(props) {
     super(props);
@@ -123,7 +86,7 @@ class Manual extends Component {
       }
     }
     if (
-      preProps.wallet.cancelDepositResult !=
+      preProps.wallet.cancelDepositResult !==
         this.props.wallet.cancelDepositResult &&
       this.props.wallet.cancelDepositResult !== null
     ) {

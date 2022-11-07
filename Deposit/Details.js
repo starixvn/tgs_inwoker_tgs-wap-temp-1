@@ -5,7 +5,6 @@ import { WalletService } from "../../../api-services/services/WalletService";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Dialog";
-import Header from "../Share/Header";
 
 import { Textfit } from "react-textfit";
 import "react-lazy-load-image-component/src/effects/blur.css";
@@ -373,7 +372,10 @@ class Details extends Component {
           })()}
 
           {(() => {
-            if (this.props.isManual === true && config.features.Deposit_UploadRequired) {
+            if (
+              this.props.isManual === true &&
+              config.features.Deposit_UploadRequired
+            ) {
               return (
                 <React.Fragment>
                   <LeftLabel>{i18n.t("deposit.uploadReceipt")}</LeftLabel>
@@ -390,7 +392,10 @@ class Details extends Component {
           })()}
         </ContentBg>
         {(() => {
-          if (this.props.isManual === true && config.features.Deposit_UploadRequired) {
+          if (
+            this.props.isManual === true &&
+            config.features.Deposit_UploadRequired
+          ) {
             return (
               <Button
                 style={{ margin: "20px auto" }}
@@ -406,9 +411,10 @@ class Details extends Component {
           style={{ margin: "20px auto" }}
           labelStyle={{ color: "#fff" }}
           label={
-            this.props.isManual === true && config.features.Deposit_UploadRequired
-              ? i18n.t('common.back')
-              : i18n.t('common.complete')
+            this.props.isManual === true &&
+            config.features.Deposit_UploadRequired
+              ? i18n.t("common.back")
+              : i18n.t("common.complete")
           }
           onClick={this.props.handleRestartClick}
         ></Button>
