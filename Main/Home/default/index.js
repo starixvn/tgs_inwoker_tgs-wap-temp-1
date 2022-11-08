@@ -750,18 +750,6 @@ class Default extends Component {
     );
   };
 
-  isDARAvailable = (roulette) => {
-    return (
-      this.props.general.promotionList.items &&
-      this.props.general.promotionList.items.length > 0 &&
-      this.props.general.promotionList.items.findIndex(
-        (item) =>
-          item.promotionType.toUpperCase() ===
-            roulette.promotiontype.toUpperCase() &&
-          item.id === roulette.promotionid
-      ) >= 0
-    );
-  };
 
   render() {
     var checkTransferWallet =
@@ -1192,48 +1180,26 @@ class Default extends Component {
         )}
         {config.features.HomePage_PromoRoulette && (
           <RouletteFloatingPanel>
-            {
-              this.props.general.promotionList.items.length > 0 &&
-                this.props.general.rouletteCount.length > 0 &&
-                this.props.general.rouletteCount
-                  .filter(
-                    (item) =>
-                      item.promotiontype.toUpperCase() ===
-                      "DEPOSITACCUMULATEROULETTE"
-                  )
-                  .map((roulette, index) => {
-                    return this.isDARAvailable(roulette) &&
-                      roulette.roulettecount > 0 &&
-                      index === 0 ? (
-                      <PromotionRoulette
-                        rouletteType={roulette.promotiontype.toUpperCase()}
-                        promotionDetail={
-                          this.props.general.promotionList.items.filter(
-                            (item) =>
-                              item.promotionType.toUpperCase() ===
-                                roulette.promotiontype.toUpperCase() &&
-                              item.id === roulette.promotionid
-                          )[0]
-                        }
-                      ></PromotionRoulette>
-                    ) : (
-                      <React.Fragment></React.Fragment>
-                    );
-                  })
-              // this.props.general.promotionList.items.map((item) => {
-              //   return (
-              //     ((item.promotionType.toUpperCase() === "ROULETTE" &&
-              //       config.features.RouletteNewFlow) ||
-              //       item.promotionType.toUpperCase() ===
-              //         "DEPOSITACCUMULATEROULETTE") && (
-              //       <PromotionRoulette
-              //         rouletteType={item.promotionType.toUpperCase()}
-              //         promotionDetail={item}
-              //       ></PromotionRoulette>
-              //     )
-              //   );
-              // })
-            }
+            {this.props.general.promotionList.items.length > 0 &&
+              this.props.general.rouletteCount.length > 0 &&
+              this.props.general.rouletteCount
+                .filter(
+                  (item) =>
+                    item.promotiontype.toUpperCase() ===
+                    "DEPOSITACCUMULATEROULETTE"
+                )
+                .map((roulette, index) => {
+                  return roulette.roulettecount > 0 && index === 0 ? (
+                    <PromotionRoulette
+                      rouletteType={roulette.promotiontype.toUpperCase()}
+                      promotionDetail={{
+                        id: roulette.promotionid,
+                      }}
+                    ></PromotionRoulette>
+                  ) : (
+                    <React.Fragment></React.Fragment>
+                  );
+                })}
             {!config.features.RouletteNewFlow && this.isRouletteAvailable() && (
               <PromotionRoulette
                 rouletteType="ROULETTE"
