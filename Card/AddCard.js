@@ -556,69 +556,22 @@ class AddCard extends Component {
       "อาคารสงเคราะห์ (Government Housing Bank - GH)",
     ];
 
-    var depositListEWallet = false;
-    var withdrawalListEwallet = false;
-    var depositListPulsa = false;
-    var withdrawalListPulsa = false;
+    const listDetector = (list, type) => {
+      return (
+        Common.arrayValidator(list) &&
+        list[this.state.selectedBankTypeIndex].banktype === type
+      );
+    };
 
-    if (this.state.isDeposit) {
-      depositListEWallet =
-        Common.arrayValidator(this.props.wallet.depositList) &&
-        this.props.wallet.depositList[this.state.selectedBankTypeIndex]
-          .banktype === "EWallet";
-      // .filter(
-      //   (card) => card.banktype === "EWallet"
-      // ).length > 0;
-      depositListPulsa =
-        Common.arrayValidator(this.props.wallet.depositList) &&
-        this.props.wallet.depositList[this.state.selectedBankTypeIndex]
-          .banktype === "Pulsa";
-      // .filter(
-      //   (card) => card.banktype === "Pulsa"
-      // ).length > 0;
-    } else {
-      withdrawalListEwallet =
-        Common.arrayValidator(this.props.wallet.withdrawalList) &&
-        this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-          .banktype === "EWallet";
-      // .filter(
-      //   (card) => card.banktype === "EWallet"
-      // ).length > 0;
-      withdrawalListPulsa =
-        Common.arrayValidator(this.props.wallet.withdrawalList) &&
-        this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-          .banktype === "Pulsa";
-      // .filter(
-      //   (card) => card.banktype === "Pulsa"
-      // ).length > 0;
-    }
-
-    // var depositListEWallet =
-    //   Common.arrayValidator(this.props.wallet.depositList) &&
-    //   this.props.wallet.depositList.filter(
-    //     (card) => card.banktype === "EWallet"
-    //   ).length > 0;
-    // [this.state.selectedBankTypeIndex]
-    //   .banktype === "";
-
-    // var
-
-    // var depositListPulsa =
-    //   Common.arrayValidator(this.props.wallet.depositList) &&
-    //   this.props.wallet.depositList.filter(
-    //     (card) => card.banktype === "Pulsa"
-    //   ).length > 0;
-    //   // [this.state.selectedBankTypeIndex]
-    //   //   .banktype === "";
-    // var
-
-    const isEwallet = this.state.isDeposit
-      ? depositListEWallet
-      : withdrawalListEwallet;
-
-    const isPulsa = this.state.isDeposit
-      ? depositListPulsa
-      : withdrawalListPulsa;
+    const isEwallet = this.props.isDeposit
+      ? listDetector(this.props.wallet.depositList, "EWallet")
+      : listDetector(this.props.wallet.withdrawalList, "EWallet");
+    const isPulsa = this.props.isDeposit
+      ? listDetector(this.props.wallet.depositList, "Pulsa")
+      : listDetector(this.props.wallet.withdrawalList, "Pulsa");
+    const isCrypto = this.props.isDeposit
+      ? listDetector(this.props.wallet.depositList, "Crypto")
+      : listDetector(this.props.wallet.withdrawalList, "Crypto");
 
     const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 
@@ -873,7 +826,7 @@ class AddCard extends Component {
                   phone: value,
                 });
               }}
-              maxLength={config.features.MAX_PHONE_LENGTH || 10}
+              maxLength={!isCrypto && (config.features.MAX_PHONE_LENGTH || 10)}
               type={"text"}
               placeholder={
                 config.features.AddCard_InputAddFPS
