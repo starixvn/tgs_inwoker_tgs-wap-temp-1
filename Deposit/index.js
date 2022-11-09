@@ -19,8 +19,6 @@ import Tab from "@material-ui/core/Tab";
 import Header from "../Share/Header";
 
 import { withStyles } from "@material-ui/core/styles";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 
 import "react-lazy-load-image-component/src/effects/blur.css";
 

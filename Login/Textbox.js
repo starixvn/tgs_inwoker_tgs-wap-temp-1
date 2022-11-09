@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import styled from 'styled-components'
+import React, { Component } from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -10,7 +10,7 @@ const Container = styled.div`
   border: solid 1px #676666;
   background-color: #ffffff;
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.4);
-`
+`;
 
 const TextSpan = styled.span`
   margin: 22px 0 0 35px;
@@ -20,7 +20,7 @@ const TextSpan = styled.span`
 
   background: url(${(props) => props.icon}) no-repeat;
   background-size: contain;
-`
+`;
 
 const InputTextBox = styled.input`
   width: 410px;
@@ -39,12 +39,12 @@ const InputTextBox = styled.input`
   &:-webkit-autofill {
     -webkit-text-fill-color: #b7b7b7;
   }
-`
+`;
 const TextContainer = styled.div`
   float: left;
   width: 550px;
   height: 100%;
-`
+`;
 
 const RightIcon = styled.div`
   width: 40px;
@@ -54,13 +54,13 @@ const RightIcon = styled.div`
         ? props.hidden
           ? process.env.PUBLIC_URL + `/assets/images/wapp/hide-password.png`
           : process.env.PUBLIC_URL + `/assets/images/wapp/show-password.png`
-        : ''})
+        : ""})
     no-repeat;
   background-size: contain;
   margin: 25px 25px 0 0;
   display: inline-block;
   float: left;
-`
+`;
 class TextBox extends Component {
   render() {
     return (
@@ -82,10 +82,10 @@ class TextBox extends Component {
           hidden={this.props.hidePassword}
         ></RightIcon>
       </Container>
-    )
+    );
   }
 }
-export default TextBox
+export default TextBox;
 // export default function TextBox(props) {
 //   const Container = styled.div`
 //     width: 520px

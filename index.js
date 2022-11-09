@@ -16,7 +16,7 @@ import { walletAction } from "../../api-services/actions/walletAction";
 import { accountAction } from "../../api-services/actions/accountAction";
 import { inboxAction } from "../../api-services/actions/inboxAction";
 import { GeneralService } from "../../api-services/services/GeneralService";
-import debounce from "lodash.debounce";
+
 import config from "../../config/config";
 
 // import NameVerification from "./Card/NameVerification";
@@ -55,12 +55,12 @@ import ResetWithdrawalPassword from "./Profile/ResetWithdrawalPassword";
 import Slot from "./Slot";
 import Promotion from "./Promotion/index";
 import PromotionDetails from "./Promotion/Details";
-import Aboutus from "./Aboutus/index";
+
 import Inbox from "./Inbox/index";
 import InboxDetails from "./Inbox/Details";
 import Transfer from "./Transfer/index";
 import Withdrawal from "./Withdrawal/index";
-import Download from "./Download/index";
+
 import WithdrawalDetails from "./Withdrawal/Details";
 import Deposit from "./Deposit/index";
 import DepositPayment from "./Deposit/Payment";
@@ -302,12 +302,6 @@ const RouteMapping = [
     alert: true,
     navigate: true,
     promoProps: true,
-  },
-  {
-    path: "/aboutus",
-    component: Aboutus,
-    alert: true,
-    navigate: true,
   },
 
   {
@@ -552,14 +546,10 @@ class Wap extends Component {
       localStorage.setItem("promotionId", ""); //reset
     }
 
-    window.addEventListener(
-      "resize",
-      debounce(() => {
-        this.updateScreenSize();
-      }, 200)
-    );
+    window.addEventListener("resize", () => {
+      this.updateScreenSize();
+    });
 
-    this.updateScreenSize();
     // const response = await GeneralService.CheckIPRestrict();
 
     // if (response.code === 50000) {
@@ -668,9 +658,12 @@ class Wap extends Component {
         this.props.getBalanceList();
         this.props.game.providerList
           .filter((item) => item.status === 0 && item.transferwallet === true)
-          .filter((item) => item.gpcode !== "NTTF" && item.gpcode !== "RTTF")
+          .filter(
+            (item) =>
+              item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
+          )
           .map((a) => {
-            this.props.getGameBalance(a.gpcode);
+            this.props.getGameBalance(a.abbreviation);
           });
         this.props.getMessageList(i18n.language, 1, 99);
         this.props.getBankCardList();
@@ -785,9 +778,11 @@ class Wap extends Component {
       }
       this.props.game.providerList
         .filter((item) => item.status === 0 && item.transferwallet === true)
-        .filter((item) => item.gpcode !== "NTTF" && item.gpcode !== "RTTF")
+        .filter(
+          (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
+        )
         .map((a) => {
-          this.props.getGameBalance(a.gpcode);
+          this.props.getGameBalance(a.abbreviation);
         });
     }
     // will cause blacklist issue on when registering ref:TGS-823

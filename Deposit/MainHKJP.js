@@ -118,10 +118,6 @@ const FeeSpot = styled.div`
   }
 `;
 class MainHKJP extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {}
   componentDidUpdate(preProps, preState) {}
 

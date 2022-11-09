@@ -4,7 +4,8 @@ import i18n from "../../../utils/i18n";
 import { Dialog } from "@material-ui/core";
 import config from "../../../config/config";
 import QRCode from "react-qr-code";
-import copy from "copy-to-clipboard";
+
+import { utility } from "../../../utils/utility";
 
 const Container = styled.div`
   width: 100%;
@@ -162,11 +163,6 @@ const QRCodeHolder = styled.div`
   border: solid 1px rgba(0, 0, 0, 0.5);
 `;
 
-const ResponsiveQRCode = styled.img`
-  width: 100%;
-  height: 100%;
-`;
-
 const DownloadButton = styled.div`
   color: #fff;
   background: #000;
@@ -229,7 +225,7 @@ const Download = ({ alert }) => {
   }
   function copyStupidLink(link) {
     alert("", i18n.t("pointless.copy"));
-    copy(link);
+    utility.copy(link);
   }
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+
 import Header from "../../Wap/Share/Header";
 import { accountAction } from "../../../api-services/actions/accountAction";
 import { inboxAction } from "../../../api-services/actions/inboxAction";
@@ -10,75 +10,6 @@ import Loading from "../../Wap/Share/Loading";
 import i18n from "../../../utils/i18n";
 
 import InboxList from "./InboxList";
-
-const CheckboxContainer = styled.div`
-  float: left;
-  width: 46px;
-  height: 46px;
-  margin: 56px 0 0 20px;
-
-  ${(props) => (props.edit ? `display:block` : `display:none`)};
-`;
-const ContentContainer = styled.div`
-  float: left;
-  font-size: 28px;
-  width: 90%;
-`;
-
-const ListItem = styled.div`
-  width: 100%;
-  margin: 20px auto;
-  height: 155px;
-`;
-const MsgTitle = styled.div`
-  color: #2e2426;
-  width: 100%;
-  font-weight: 600;
-  font-size: 30px;
-  float: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const MsgTitleSpan = styled.span`
-  float: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-`;
-const MsgDate = styled.div`
-  color: #949494;
-
-  float: left;
-  margin-top: 15px;
-  font-size: 28px;
-`;
-
-const ItemContainer = styled.div`
-  float: right;
-  width: ${(props) => (props.edit ? `648px` : `688px`)};
-  height: 150px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px 0 rgba(58, 58, 58, 0.2);
-  border: solid 2px #f3f3f3;
-  background-color: #ffffff;
-  padding: 30px 20px 0 35px;
-  margin-right: 30px;
-`;
-const CheckboxCircle = styled.div`
-  width: 46px;
-  height: 46px;
-
-  ${(props) =>
-    props.checked
-      ? `background: url(${
-          process.env.PUBLIC_URL + `/assets/images/wapp/icon-inbox-checked.png`
-        }) no-repeat;`
-      : `border-radius: 23px;
-    border: 2px solid #949494;`}
-`;
 
 class Inbox extends Component {
   state = {
@@ -94,15 +25,6 @@ class Inbox extends Component {
   };
 
   componentDidMount() {
-    // InboxService.InboxList(0).then((response) => {
-    //   if (response.IsSuccess) {
-    //     this.setState({
-    //       ...this.state,
-    //       inbox: response.data,
-    //     });
-    //   }
-    // });
-
     if (this.props.token != null) {
       this.getMessageList(0, true);
     }

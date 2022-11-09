@@ -13,7 +13,7 @@ import Loading from "../../Wap/Share/Loading";
 import { withStyles } from "@material-ui/core/styles";
 import Common from "../../../utils/Common";
 
-import {SupportService} from "../../../api-services/services/SupportService";
+import { SupportService } from "../../../api-services/services/SupportService";
 import Textbox from "../../Wap/Share/Textbox";
 import Button from "../../Wap/Share/Button";
 import FormControl from "@material-ui/core/FormControl";
@@ -128,7 +128,6 @@ const CustomFormControl = withStyles((theme) => ({
     },
   },
 }))(FormControl);
-var csWindowTab = null;
 const BottomInfo = styled.div`
   font-size: 22px;
   font-weight: 600;
@@ -305,106 +304,6 @@ class CustomerService extends Component {
   };
   render() {
     return <React.Fragment></React.Fragment>;
-    return (
-      <Container>
-        <Header onBackClick={this.handleBackClick} title={"客服中心"}></Header>
-        <StyledAppBar>
-          <StyledTabs
-            value={this.state.selectedTab}
-            onChange={this.handleChangeTab}
-            variant="scrollable"
-            scrollButtons="auto"
-          >
-            <StyledTab label={"访客"} value={0} />
-            <StyledTab label={"会员"} value={1} />
-          </StyledTabs>
-        </StyledAppBar>
-        {(() => {
-          if (this.state.selectedTab === 0) {
-            return (
-              <React.Fragment>
-                <Textbox
-                  style={{ margin: "20px auto 20px auto" }}
-                  value={this.state.name}
-                  onChange={this.handleNameChange}
-                  placeholder={"请输入姓名"}
-                  type={"text"}
-                  label={"姓名"}
-                ></Textbox>
-
-                {/* <Textbox
-                  style={{ margin: "20px auto 20px auto" }}
-                  value={this.state.email}
-                  onChange={this.handleEmailChange}
-                  placeholder={"请输入邮箱地址"}
-                  type={"text"}
-                  label={"邮箱地址"}
-                ></Textbox> */}
-              </React.Fragment>
-            );
-          } else if (this.state.selectedTab === 1) {
-            return (
-              <React.Fragment>
-                <Textbox
-                  style={{ margin: "20px auto 20px auto" }}
-                  value={this.state.username}
-                  onChange={this.handleUsernameChange}
-                  placeholder={"请输入用户名"}
-                  type={"text"}
-                  maxLength="16"
-                  label={"用户名"}
-                ></Textbox>
-
-                <Textbox
-                  style={{ margin: "20px auto 20px auto" }}
-                  value={this.state.password}
-                  onChange={this.handlePasswordChange}
-                  placeholder={"请输入密码"}
-                  type={"password"}
-                  label={"密碼"}
-                ></Textbox>
-              </React.Fragment>
-            );
-          }
-        })()}
-
-        <CustomText>
-          <CustomLabel>问题</CustomLabel>
-          <CustomFormControl variant="outlined">
-            <CustomSelect
-              native
-              inputProps={{
-                name: "age",
-              }}
-              style={{
-                fontSize: "28px",
-                height: "78px",
-                border: "none",
-              }}
-              onChange={this.handleQuestionChange}
-              value={this.state.question}
-            >
-              <option value="存款事宜">存款事宜</option>
-              <option value="提款事宜">提款事宜</option>
-              <option value="账户问题">账户问题</option>
-              <option value="网站登录异常">网站登录异常</option>
-              <option value="红利优惠">红利优惠</option>
-              <option value="结算查询">结算查询</option>
-              <option value="代理业务">代理业务</option>
-              <option value="投诉与建议">投诉与建议</option>
-              <option value="开户谘询">开户谘询</option>
-            </CustomSelect>
-          </CustomFormControl>
-        </CustomText>
-        <BottomInfo>填写以上问题即可交谈</BottomInfo>
-        <Button
-          style={{ margin: "40px auto 0 auto" }}
-          label={"开始交谈"}
-          onClick={this.handleStartClick}
-        ></Button>
-        <Loading show={this.state.loading}></Loading>
-      </Container>
-    );
   }
 }
 
