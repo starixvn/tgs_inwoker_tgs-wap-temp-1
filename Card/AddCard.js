@@ -826,7 +826,7 @@ class AddCard extends Component {
                 (selectedBankType("ThirdParty") ||
                   selectedBankType("Pulsa") ||
                   selectedBankType("FPS")) &&
-                (config.features.MAX_PHONE_LENGTH || 10)
+                config.features.MAX_PHONE_LENGTH
               }
               type={"text"}
               placeholder={
@@ -892,7 +892,12 @@ class AddCard extends Component {
                   ? i18n.t("idr.withdrawalNumber")
                   : i18n.t("common.withdrawalNumber")
               }
-              maxLength={config.features.MAX_PHONE_LENGTH || 10}
+              maxLength={
+                (selectedBankType("ThirdParty") ||
+                  selectedBankType("Pulsa") ||
+                  selectedBankType("FPS")) &&
+                config.features.MAX_PHONE_LENGTH
+              }
             ></Textbox>
             <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>
             <Button
