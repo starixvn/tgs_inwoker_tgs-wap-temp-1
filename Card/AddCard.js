@@ -563,17 +563,14 @@ class AddCard extends Component {
       );
     };
 
-    const isEwallet = this.props.isDeposit
-      ? listDetector(this.props.wallet.depositList, "EWallet")
-      : listDetector(this.props.wallet.withdrawalList, "EWallet");
-    const isPulsa = this.props.isDeposit
-      ? listDetector(this.props.wallet.depositList, "Pulsa")
-      : listDetector(this.props.wallet.withdrawalList, "Pulsa");
-    const isCrypto = this.props.isDeposit
-      ? listDetector(this.props.wallet.depositList, "Crypto")
-      : listDetector(this.props.wallet.withdrawalList, "Crypto");
+    const selectedBankType = (type) => {
+      return this.props.isDeposit
+        ? listDetector(this.props.wallet.depositList, type)
+        : listDetector(this.props.wallet.withdrawalList, type);
+    };
 
-    const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
+    const eWalletCustom =
+      selectedBankType("EWallet") && config.features.AddCard_EWalletCustoms;
 
     return (
       <Container>
@@ -668,7 +665,7 @@ class AddCard extends Component {
                   config.features.AddCard_HideCertainField ||
                   config.features.AddCard_Bank_Custom_IDR ||
                   eWalletCustom ||
-                  isPulsa
+                  selectedBankType("Pulsa")
                 ) && (
                   <>
                     <Textbox
@@ -826,7 +823,12 @@ class AddCard extends Component {
                   phone: value,
                 });
               }}
-              maxLength={!isCrypto && (config.features.MAX_PHONE_LENGTH || 10)}
+              maxLength={
+                (selectedBankType("ThirdParty") ||
+                  selectedBankType("Pulsa") ||
+                  selectedBankType("FPS")) &&
+                (config.features.MAX_PHONE_LENGTH || 10)
+              }
               type={"text"}
               placeholder={
                 config.features.AddCard_InputAddFPS
@@ -870,7 +872,7 @@ class AddCard extends Component {
               }}
               type={"text"}
               placeholder={
-                eWalletCustom || isPulsa
+                eWalletCustom || selectedBankType("Pulsa")
                   ? i18n.t("card.addCard.msgEnterPhone")
                   : config.features.AddCard_DisplayGCash
                   ? i18n.t("piso.msgEnterWithdrawalNumber")
@@ -881,7 +883,7 @@ class AddCard extends Component {
                   : i18n.t("common.msgEnterWithdrawalNumber")
               }
               label={
-                eWalletCustom || isPulsa
+                eWalletCustom || selectedBankType("Pulsa")
                   ? i18n.t("card.addCard.phone")
                   : config.features.AddCard_DisplayGCash
                   ? i18n.t("piso.withdrawalNumber")
