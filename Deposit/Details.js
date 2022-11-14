@@ -273,8 +273,8 @@ class Details extends Component {
         <ContentBg>
           <TheGapper>
             {this.props.extended
-              ? this.props.extended.qrCodeFileUrl && (
-                  <TheQRCode src={this.props.extended.qrCodeFileUrl} />
+              ? this.props.extended.qrCode && (
+                  <TheQRCode src={this.props.extended.qrCode} />
                 )
               : ""}
             <div>

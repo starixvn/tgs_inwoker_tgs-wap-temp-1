@@ -495,15 +495,15 @@ class Main extends Component {
               return (
                 <CustomText>
                   <CustomLabel>{i18n.t("deposit.transferAccount")}</CustomLabel>
-                  <QRCodeImg src={channelExtend.qrCodeFileUrl} />
+                  <QRCodeImg src={channelExtend.qrCode} />
                 </CustomText>
               );
             } else {
               return (
                 <CustomText>
                   <CustomLabel>{i18n.t("deposit.transferAccount")}</CustomLabel>
-                  {channelExtend.qrCodeFileUrl && (
-                    <QRCodeImg src={channelExtend.qrCodeFileUrl} />
+                  {channelExtend.qrCode && (
+                    <QRCodeImg src={channelExtend.qrCode} />
                   )}
                   {channelExtend.logo && <QRCodeImg src={channelExtend.logo} />}
                   {channelExtend.qrCode && (
