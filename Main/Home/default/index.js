@@ -750,7 +750,6 @@ class Default extends Component {
     );
   };
 
-
   render() {
     var checkTransferWallet =
       Object.values(this.props.game.providerList).filter(
@@ -1180,8 +1179,7 @@ class Default extends Component {
         )}
         {config.features.HomePage_PromoRoulette && (
           <RouletteFloatingPanel>
-            {this.props.general.promotionList.items.length > 0 &&
-              this.props.general.rouletteCount.length > 0 &&
+            {this.props.general.rouletteCount.length > 0 &&
               this.props.general.rouletteCount
                 .filter(
                   (item) =>
