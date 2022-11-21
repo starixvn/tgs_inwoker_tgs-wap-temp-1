@@ -78,14 +78,7 @@ class Profile extends Component {
   handleUpdate = () => {
     i18n.changeLanguage(this.state.checked);
     this.props.appHistory.push(`/${this.state.checked}`);
-    this.props.getBanner();
-    this.props.getMarquee(this.state.checked);
-    this.props.getAnnouncement(this.state.checked);
-    GeneralService.GetLocalization().then((response) => {
-      if (response.IsSuccess) {
-        ErrorSwitcher.setTranslation(response.data);
-      }
-    });
+    window.location.reload();
   };
   render() {
     return (
@@ -152,4 +145,7 @@ const mapDispatchToProps = (dispatch) => {
     getAnnouncement: (language) => dispatch(uiAction.getAnnouncement(language)),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Profile));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Profile));
