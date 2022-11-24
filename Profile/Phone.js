@@ -214,7 +214,52 @@ class Phone extends BaseProfile {
         !this.props.account.registercompleted) ||
       config.features.InitPhone_WithoutVerify
     ) {
-      this.props
+      this.props.getRegisterStatus().then(async (response) => {
+        if (response.IsSuccess) {
+          var currentStepKey = response.data;
+          if (currentStepKey === "SetPhoneDontCareDuplicate") {
+            await this.props
+            .newRegister("SetPhoneDontCareDuplicate", {
+              areacode: this.state.areacode,
+              phone: this.state.phone,
+            })
+            .then(async (response) => {
+              if (response.IsSuccess) {
+                this.props.getAccountInfo().then((responseUpdate) => {
+                  if (responseUpdate.IsSuccess) {
+                    if (
+                      responseUpdate.data.email === null &&
+                      !responseUpdate.data.registercompleted
+                    ) {
+                      this.props.history.push({
+                        pathname:
+                          "/" + i18n.language + "/profile/email",
+                        state: { forced: true },
+                      });
+                    } else {
+                      this.setState({
+                        ...this.state,
+                        code: "",
+                        securityKey: "",
+                        countdownToken: 0,
+                        isNew: false,
+                        isConfigured: true,
+                      });
+                      this.showLoading(false);
+                    }
+                  }
+                  this.showLoading(false);
+                });
+              } else {
+                this.showErrorMessage(response.info);
+                this.showLoading(false);
+              }
+            });
+          } else {
+            
+          }
+        }else{
+          this.props
         .newRegister("InitPhone", {
           input: "Init",
           data: {
@@ -276,6 +321,8 @@ class Phone extends BaseProfile {
           }
           this.showLoading(false);
         });
+        }
+      })
     } else {
       AccountService.UpdatePhone(this.state.securityKey, this.state.code)
         .then((response) => {
@@ -357,7 +404,9 @@ class Phone extends BaseProfile {
                 this.setState({ ...this.state, areacode: e.target.value });
               }}
               disabled={
-                this.state.isConfigured ? this.state.isConfigured : false
+                (this.state.isConfigured ? this.state.isConfigured : false) || 
+                (config.features.Profile_DisableVerifyPhone && !config.features.InitPhone_WithoutVerify)
+
               }
             >
               <option value={config.features.PhonePrefix}>
@@ -454,6 +503,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
+    getRegisterStatus: () => dispatch(accountAction.GetRegisterStatus()),
     newRegister: (type, input) =>
       dispatch(accountAction.newRegister(type, input)),
   };
