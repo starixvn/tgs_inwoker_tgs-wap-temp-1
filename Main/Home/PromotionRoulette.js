@@ -169,6 +169,7 @@ const Content = styled.div`
   width: 600px;
   height: 286px;
   padding: 20px;
+  overflow: auto;
 `;
 
 const TableContent = styled.div`
