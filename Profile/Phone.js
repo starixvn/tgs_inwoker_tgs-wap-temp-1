@@ -403,7 +403,9 @@ class Phone extends BaseProfile {
                 this.setState({ ...this.state, areacode: e.target.value });
               }}
               disabled={
-                this.state.isConfigured ? this.state.isConfigured : false
+                (this.state.isConfigured ? this.state.isConfigured : false) || 
+                (config.features.Profile_DisableVerifyPhone && !config.features.InitPhone_WithoutVerify)
+
               }
             >
               <option value={config.features.PhonePrefix}>
@@ -499,6 +501,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
+    getRegisterStatus: () => dispatch(accountAction.GetRegisterStatus()),
     newRegister: (type, input) =>
       dispatch(accountAction.newRegister(type, input)),
   };
