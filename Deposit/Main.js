@@ -219,39 +219,32 @@ const FeeSpot = styled.div`
 `;
 
 class Main extends Component {
-  componentDidMount() {}
-  componentDidUpdate(preProps, preState) {}
-
   render() {
-    var isFPS =
-      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
-        this.props.selectedMethodIndex
-      ].methodcode.toUpperCase() === "FPS";
+    const methodCode = (method) => {
+      return (
+        this.props.wallet.depositTypeList[
+          this.props.selectedPaymentIndex
+        ].method[this.props.selectedMethodIndex].methodcode.toUpperCase() ===
+        method.toUpperCase()
+      );
+    };
 
-    var isUSDT =
-      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
-        this.props.selectedMethodIndex
-      ].methodcode.toUpperCase() === "USDT";
+    const alteredPaymentCode = (payment) => {
+      return this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
+        .alteredpaymentcode
+        ? this.props.wallet.depositTypeList[
+            this.props.selectedPaymentIndex
+          ].alteredpaymentcode.toUpperCase() === payment.toUpperCase()
+        : false;
+    };
 
-    var isBankTransfer =
-      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
-        this.props.selectedMethodIndex
-      ].methodcode.toUpperCase() === "BANKTRANSFER";
-
-    var isEwallet =
-      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
-        this.props.selectedMethodIndex
-      ].methodcode.toUpperCase() === "EWALLET";
-
-    var isPulsa =
-      this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
-        this.props.selectedMethodIndex
-      ].methodcode.toUpperCase() === "PULSA";
-
-    var isManual =
-      this.props.wallet.depositTypeList[
-        this.props.selectedPaymentIndex
-      ].paymentcode.toUpperCase() === "MANUAL";
+    const paymentCode = (payment) => {
+      return (
+        this.props.wallet.depositTypeList[
+          this.props.selectedPaymentIndex
+        ].paymentcode.toUpperCase() === payment.toUpperCase()
+      );
+    };
 
     const performCopy = (content) => {
       this.props.alert("", i18n.t("affiliate.copied"));
@@ -325,9 +318,8 @@ class Main extends Component {
                     ].method.map((item, index) => {
                       return (
                         <option value={index}>
-                          {" "}
                           {config.features.CustomKING8Deposit &&
-                          isManual &&
+                          paymentCode("manual") &&
                           i18n.exists(`king8.${item.methodcode}`)
                             ? i18n.t(`king8.${item.methodcode}`)
                             : i18n.t(item.methodcode)}
@@ -402,11 +394,19 @@ class Main extends Component {
                 .method[this.props.selectedMethodIndex].channel[
                 this.props.selectedChannelIndex
               ].extended;
-            if (!isBankTransfer && !isEwallet && !isPulsa) return <></>;
+            if (
+              !methodCode("BANKTRANSFER") &&
+              !methodCode("EWALLET") &&
+              !methodCode("PULSA")
+            ) {
+              return <></>;
+            }
+
             return (
               <CustomText>
                 <CustomLabel>{i18n.t("deposit.transferAccount")}</CustomLabel>
-                {isBankTransfer && (
+
+                {methodCode("BANKTRANSFER") && (
                   <TransferContainer>
                     <TransferLabel>
                       {i18n.t("deposit.details.bank")}:
@@ -419,7 +419,7 @@ class Main extends Component {
                     )}
                   </TransferContainer>
                 )}
-                {isBankTransfer && (
+                {methodCode("BANKTRANSFER") && (
                   <TransferContainer>
                     <TransferLabel>{i18n.t("deposit.accName")}:</TransferLabel>
                     {channelExtend.name && (
@@ -430,7 +430,7 @@ class Main extends Component {
                     )}
                   </TransferContainer>
                 )}
-                {isBankTransfer && (
+                {methodCode("BANKTRANSFER") && (
                   <TransferContainer>
                     <TransferLabel>{i18n.t("deposit.cardNum")}:</TransferLabel>
                     {channelExtend.bankAccount && (
@@ -443,7 +443,7 @@ class Main extends Component {
                     )}
                   </TransferContainer>
                 )}
-                {(isEwallet || isPulsa) && (
+                {(methodCode("EWALLET") || methodCode("PULSA")) && (
                   <TransferContainer>
                     <TransferLabel>{i18n.t("deposit.phone")}:</TransferLabel>
                     {channelExtend.phone && (
@@ -454,7 +454,7 @@ class Main extends Component {
                     )}
                   </TransferContainer>
                 )}
-                {isEwallet && (
+                {methodCode("EWALLET") && (
                   <TransferContainer>
                     <TransferLabel>
                       {i18n.t("deposit.eWalletAccount")}:
@@ -474,10 +474,50 @@ class Main extends Component {
           }
         })()}
         {(() => {
+          const generateDisplayContent = (content) => {
+            var displaysequence = [
+              "name",
+              "address",
+              "bankAccount",
+              "eMoneyName",
+              "phone",
+            ];
+
+            return Object.keys(content)
+              .sort((a, b) => {
+                return displaysequence.indexOf(a) - displaysequence.indexOf(b);
+              })
+              .map((key, index) => {
+                if (content[key] !== "") {
+                  if (typeof content[key] === "number") {
+                    return <></>;
+                  } else if (content[key].includes("http")) {
+                    return (
+                      <QRCodeImg
+                        src={content[key]}
+                        alt={content[key]}
+                        key={index}
+                      />
+                    );
+                  } else {
+                    return (
+                      <TransferContainer>
+                        <TransferLabel>
+                          {i18n.t("extended." + [key])}:
+                        </TransferLabel>
+                        <TransferValue>{content[key]}</TransferValue>
+                        <CopyFeature copyContent={content[key]} />
+                      </TransferContainer>
+                    );
+                  }
+                }
+              });
+          };
+
           if (
-            this.props.wallet.depositTypeList[
-              this.props.selectedPaymentIndex
-            ].paymentcode.toUpperCase() === "MANUAL" &&
+            (paymentCode("manual") ||
+              paymentCode("usdt") ||
+              alteredPaymentCode("usdt")) &&
             !config.features.Deposit_AddCard
           ) {
             var channelExtend =
@@ -485,13 +525,8 @@ class Main extends Component {
                 .method[this.props.selectedMethodIndex].channel[
                 this.props.selectedChannelIndex
               ].extended;
-            if (
-              this.props.wallet.depositTypeList[
-                this.props.selectedPaymentIndex
-              ].method[
-                this.props.selectedMethodIndex
-              ].methodcode.toUpperCase() === "THIRDPARTY"
-            ) {
+
+            if (methodCode("THIRDPARTY")) {
               return (
                 <CustomText>
                   <CustomLabel>{i18n.t("deposit.transferAccount")}</CustomLabel>
@@ -502,70 +537,7 @@ class Main extends Component {
               return (
                 <CustomText>
                   <CustomLabel>{i18n.t("deposit.transferAccount")}</CustomLabel>
-                  {channelExtend.qrCode && (
-                    <QRCodeImg src={channelExtend.qrCode} />
-                  )}
-                  {channelExtend.logo && <QRCodeImg src={channelExtend.logo} />}
-                  {channelExtend.qrCode && (
-                    <QRCodeImg src={channelExtend.qrCode} />
-                  )}
-                  {channelExtend.address && (
-                    <TransferContainer>
-                      <TransferLabel>
-                        {i18n.t("deposit.address")}:
-                      </TransferLabel>
-                      <TransferValue>{channelExtend.address}</TransferValue>
-                      <CopyFeature copyContent={channelExtend.address} />
-                    </TransferContainer>
-                  )}
-                  {channelExtend.name && (
-                    <TransferContainer>
-                      <TransferLabel>
-                        {i18n.t("deposit.accName")}:
-                      </TransferLabel>
-                      <TransferValue>{channelExtend.name}</TransferValue>
-                      <CopyFeature copyContent={channelExtend.name} />
-                    </TransferContainer>
-                  )}
-                  {channelExtend.bankAccount && (
-                    <TransferContainer>
-                      <TransferLabel>
-                        {i18n.t("deposit.cardNum")}:
-                      </TransferLabel>
-                      <TransferValue>{channelExtend.bankAccount}</TransferValue>
-                      <CopyFeature copyContent={channelExtend.bankAccount} />
-                    </TransferContainer>
-                  )}
-                  {channelExtend.phone && (
-                    <TransferContainer>
-                      <TransferLabel>{i18n.t("deposit.phone")}:</TransferLabel>
-                      <TransferValue>{channelExtend.phone}</TransferValue>
-                      <CopyFeature copyContent={channelExtend.phone} />
-                    </TransferContainer>
-                  )}
-                  {channelExtend.email && (
-                    <TransferContainer>
-                      <TransferLabel>{i18n.t("deposit.email")}:</TransferLabel>
-                      <TransferValue>{channelExtend.email}</TransferValue>
-                      <CopyFeature copyContent={channelExtend.email} />
-                    </TransferContainer>
-                  )}
-                  {channelExtend.fpsId && (
-                    <TransferContainer>
-                      <TransferLabel>{i18n.t("deposit.fpsId")}:</TransferLabel>
-                      <TransferValue>{channelExtend.fpsId}</TransferValue>
-                      <CopyFeature copyContent={channelExtend.fpsId} />
-                    </TransferContainer>
-                  )}
-                  {channelExtend.eMoneyName && (
-                    <TransferContainer>
-                      <TransferLabel>
-                        {i18n.t("deposit.eWalletAccount")}:
-                      </TransferLabel>
-                      <TransferValue>{channelExtend.eMoneyName}</TransferValue>
-                      <CopyFeature copyContent={channelExtend.eMoneyName} />
-                    </TransferContainer>
-                  )}
+                  {generateDisplayContent(channelExtend)}
                 </CustomText>
               );
             }
@@ -574,20 +546,12 @@ class Main extends Component {
         {(() => {
           if (config.features.Deposit_ManualApplePayHideBankAcc) {
           } else {
-            if (
-              this.props.wallet.depositTypeList[
-                this.props.selectedPaymentIndex
-              ].paymentcode.toUpperCase() === "MANUAL" ||
-              this.props.wallet.depositTypeList[
-                this.props.selectedPaymentIndex
-              ].paymentcode.toUpperCase() === "APPLEPAY"
-            ) {
+            if (paymentCode("MANUAL") || paymentCode("APPLEPAY")) {
               return (
                 <>
                   {!(
-                    config.features.CustomKING8Deposit ||
                     config.features.Deposit_RemoveAccount ||
-                    isUSDT ||
+                    methodCode("USDT") ||
                     config.features.Deposit_AddCard
                   ) && (
                     <>
@@ -657,7 +621,9 @@ class Main extends Component {
                       )}
                     </>
                   )}
-                  {(!(config.features.Deposit_RemoveName || isFPS) ||
+                  {(!(
+                    config.features.Deposit_RemoveName || methodCode("fps")
+                  ) ||
                     config.features.Deposit_FPSWithName) && (
                     <>
                       <Textbox
@@ -736,15 +702,10 @@ class Main extends Component {
             )
           }
         ></Textbox>
-        {this.props.wallet.depositTypeList[
-          this.props.selectedPaymentIndex
-        ].paymentcode.toUpperCase() === "UMPAY" && (
-          <Remark>{i18n.t("deposit.ppRemark")}</Remark>
-        )}
+        {paymentCode("umpay") && <Remark>{i18n.t("deposit.ppRemark")}</Remark>}
         {(() => {
           if (
-            this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
-              .method[this.props.selectedMethodIndex].methodcode === "Usdt" &&
+            methodCode("usdt") &&
             this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
               .method[this.props.selectedMethodIndex].channel[
               this.props.selectedChannelIndex
@@ -756,9 +717,9 @@ class Main extends Component {
                 this.props.selectedChannelIndex
               ].extended.rate;
             if (
-              this.props.wallet.depositTypeList[
-                this.props.selectedPaymentIndex
-              ].paymentcode.toUpperCase() === "MANUAL"
+              paymentCode("manual") ||
+              paymentCode("usdt") ||
+              alteredPaymentCode("usdt")
             ) {
               return (
                 <ExchangeRateContainer style={{ marginTop: "4px" }}>
@@ -783,14 +744,8 @@ class Main extends Component {
           }
         })()}
         {(() => {
-          if (
-            this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
-              .method[this.props.selectedMethodIndex].methodcode === "Crypto"
-          ) {
-            if (
-              this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
-                .paymentcode === "LeePay"
-            ) {
+          if (methodCode("Crypto")) {
+            if (paymentCode("leepay")) {
               return (
                 <ExchangeRateContainer style={{ marginTop: "4px" }}>
                   <LimitLabel>{i18n.t("deposit.exchangeRate")}: </LimitLabel>
@@ -874,11 +829,7 @@ class Main extends Component {
           </CustomFormControl>
         </CustomText>
         {(() => {
-          if (
-            this.props.wallet.depositTypeList[
-              this.props.selectedPaymentIndex
-            ].paymentcode.toUpperCase() === "MANUAL"
-          ) {
+          if (paymentCode("manual") || alteredPaymentCode("usdt")) {
             return (
               <>
                 <CustomText>
@@ -925,7 +876,9 @@ class Main extends Component {
           }
         })()}
         {config.features.Deposit_Withdrawal_PlayerNote &&
-          (isEwallet || isPulsa || isBankTransfer) && (
+          (methodCode("EWALLET") ||
+            methodCode("PULSA") ||
+            methodCode("BANKTRANSFER")) && (
             <Textbox
               style={{ margin: "20px auto 20px auto" }}
               value={this.props.playerNote}
@@ -957,10 +910,6 @@ class Main extends Component {
           label={i18n.t("common.submit")}
           onClick={this.props.handleDepositClick}
           disabled={(() => {
-            const paymentcode =
-              this.props.wallet.depositTypeList[
-                this.props.selectedPaymentIndex
-              ].paymentcode.toUpperCase();
             const transferlimit =
               this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
                 .method[this.props.selectedMethodIndex].channel[
@@ -974,7 +923,7 @@ class Main extends Component {
               this.props.amount === "" ||
               (this.props.files === null &&
                 config.features.Deposit_UploadRequired &&
-                isManual)
+                methodCode("MANUAL"))
             ) {
               return true;
             } else {
