@@ -506,7 +506,7 @@ class Main extends Component {
               return (
                 <CustomText>
                   <CustomLabel>{i18n.t("deposit.transferAccount")}</CustomLabel>
-                  <QRCodeImg src={channelExtend.qrCodeFileUrl} />
+                  <QRCodeImg src={channelExtend.qrCode} />
                 </CustomText>
               );
             } else {
