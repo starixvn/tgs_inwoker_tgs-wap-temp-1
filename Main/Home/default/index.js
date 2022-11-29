@@ -1178,7 +1178,7 @@ class Default extends Component {
           </DownloadContainer>
         )}
         {config.features.HomePage_PromoRoulette && (
-          <RouletteFloatingPanel>
+          <>
             {this.props.general.rouletteCount.length > 0 &&
               this.props.general.rouletteCount
                 .filter(
@@ -1208,7 +1208,7 @@ class Default extends Component {
                 }
               ></PromotionRoulette>
             )}
-          </RouletteFloatingPanel>
+          </>
         )}
       </React.Fragment>
     );
