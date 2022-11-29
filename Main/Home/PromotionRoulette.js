@@ -30,16 +30,28 @@ const RouletteEnum = {
   SIE: "ROULETTE",
   DAR: "DEPOSITACCUMULATEROULETTE",
 };
+const Container = styled.div`
+  position: fixed;
+  z-index: 2;
 
-const Container = styled.div``;
+  ${({ position }) => {
+    return position !== undefined
+      ? Object.keys(position).map((key) => {
+          return `${key}: ${position[key]}px;`;
+        })
+      : `  top: 0;
+    left: 0;
+    padding-top: 16%;
+    padding-left: 2%;`;
+  }}
+`;
 
-const BtnRoulette = styled.div`
+const BtnRoulette = styled.img`
   cursor: pointer;
-  width: 200px;
-  height: 150px;
-  background: url(${BtnRoulettePNG}) no-repeat;
-  background-size: contain;
-  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+  width: auto;
+  height: ${({ size }) => {
+    return size ? size : 200;
+  }}px;
 `;
 
 const RouletteModal = styled(Dialog)`
@@ -314,6 +326,23 @@ const RouletteCounterContainer = styled.div`
   color: #fff;
   padding: 3px 0;
   margin-top: 5px;
+`;
+
+const RouletteButtonWrapper = styled.div`
+  position: relative;
+`;
+
+const CloseIcon = styled.div`
+  position: absolute;
+  padding: 0.5px 5px;
+  border-radius: 50px;
+  border: solid 1px #000;
+  font-size: 12px;
+  top: 0px;
+  right: 0px;
+  line-height: 19px;
+  cursor: pointer;
+  user-select: none;
 `;
 
 const ROULETTE_AREA_DEG_6 = [
@@ -591,6 +620,7 @@ const ROULETTE_ITEM_12 = [
 
 const Roulette = (props) => {
   const [startRotateDeg, setStartRotateDeg] = useState(0);
+
   useEffect(() => {
     if (props.itemIndex !== null && props.itemIndex >= 0) {
       handleSpinResult();
@@ -771,6 +801,7 @@ const PromotionRoulette = (props) => {
   const [dialogContent, setDialogContent] = useState({});
   const [rouletteCount, setRouletteCount] = useState(null);
   const [rouletteHistory, setRouletteHistory] = useState([]);
+  const [displayRoulette, setDisplayRoulette] = useState(true);
   const getRouletteSetting = () => {
     switch (props.rouletteType) {
       case RouletteEnum.SIE:
@@ -1076,13 +1107,37 @@ const PromotionRoulette = (props) => {
 
   return (
     <React.Fragment>
-      <Container rouletteType={props.rouletteType}>
-        <BtnRoulette
-          onClick={() => {
-            getRouletteStatus();
-            performOpenRouletteModal();
-          }}
-        ></BtnRoulette>
+      <Container
+        rouletteType={props.rouletteType}
+        position={
+          config.features.RouletteSetting &&
+          config.features.RouletteSetting.wap &&
+          config.features.RouletteSetting.wap.position
+        }
+      >
+        {displayRoulette && (
+          <RouletteButtonWrapper>
+            <CloseIcon
+              onClick={() => {
+                setDisplayRoulette(false);
+              }}
+            >
+              ✖
+            </CloseIcon>
+            <BtnRoulette
+              size={
+                config.features.RouletteSetting &&
+                config.features.RouletteSetting.wap &&
+                config.features.RouletteSetting.wap.size
+              }
+              src={BtnRoulettePNG}
+              onClick={() => {
+                getRouletteStatus();
+                performOpenRouletteModal();
+              }}
+            ></BtnRoulette>
+          </RouletteButtonWrapper>
+        )}
       </Container>
       <RouletteModal
         open={rouletteModal}
