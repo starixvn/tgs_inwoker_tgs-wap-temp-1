@@ -933,13 +933,17 @@ const PromotionRoulette = (props) => {
   }, [props.general.rouletteHistory, rouletteHistory]);
 
   const isIdenticalArray = (arr1, arr2) => {
-    var sortedArr1 = arr1.sort(function (a, b) {
-      return new Date(a.createdon) - new Date(b.createdon);
-    });
-    var sortedArr2 = arr2.sort(function (a, b) {
-      return new Date(a.createdon) - new Date(b.createdon);
-    });
-    return JSON.stringify(sortedArr1) === JSON.stringify(sortedArr2);
+    if (arr1 && arr2) {
+      var sortedArr1 = arr1.sort(function (a, b) {
+        return new Date(a.createdon) - new Date(b.createdon);
+      });
+      var sortedArr2 = arr2.sort(function (a, b) {
+        return new Date(a.createdon) - new Date(b.createdon);
+      });
+      return JSON.stringify(sortedArr1) === JSON.stringify(sortedArr2);
+    } else {
+      return "";
+    }
   };
 
   const performOpenRouletteModal = () => {
