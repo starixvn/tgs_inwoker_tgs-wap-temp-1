@@ -32,8 +32,7 @@ const RouletteEnum = {
 };
 const Container = styled.div`
   position: fixed;
-  z-index: 2;
-
+  z-index: 5;
   ${({ position }) => {
     return position !== undefined
       ? Object.keys(position).map((key) => {
@@ -41,8 +40,11 @@ const Container = styled.div`
         })
       : `  top: 0;
     left: 0;
-    padding-top: 16%;
-    padding-left: 2%;`;
+    padding-top: 40%;
+    padding-left: 2%;
+    display: flex;
+    flex-direction: column;
+   `;
   }}
 `;
 
