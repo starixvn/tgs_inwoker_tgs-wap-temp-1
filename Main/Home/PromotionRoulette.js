@@ -32,6 +32,7 @@ const RouletteEnum = {
 };
 const Container = styled.div`
   position: fixed;
+  z-index: 2;
 
   ${({ position }) => {
     return position !== undefined
