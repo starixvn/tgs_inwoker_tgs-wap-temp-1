@@ -30,23 +30,7 @@ const RouletteEnum = {
   SIE: "ROULETTE",
   DAR: "DEPOSITACCUMULATEROULETTE",
 };
-const Container = styled.div`
-  position: fixed;
-  z-index: 5;
-  ${({ position }) => {
-    return position !== undefined
-      ? Object.keys(position).map((key) => {
-          return `${key}: ${position[key]}px;`;
-        })
-      : `  top: 0;
-    left: 0;
-    padding-top: 40%;
-    padding-left: 2%;
-    display: flex;
-    flex-direction: column;
-   `;
-  }}
-`;
+const Container = styled.div``;
 
 const BtnRoulette = styled.img`
   cursor: pointer;
