@@ -391,13 +391,23 @@ const BrandAndBalanceButBigger = styled(BrandAndBalance)`
 
 const RouletteFloatingPanel = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  padding-top: 40%;
-  padding-left: 2%;
+  z-index: 1300;
+
+  ${({ position }) => {
+    return position !== undefined
+      ? Object.keys(position).map((key) => {
+          return `${key}: ${position[key]}px;`;
+        })
+      : `  top: 0;
+    left: 0;
+    padding-top: 16%;
+    padding-left: 2%;`;
+  }}
+
   display: flex;
-  flex-direction: column;
-  z-index: 5;
+  flex-direction: ${({ orientation }) => {
+    return orientation ? orientation : "column";
+  }};
 `;
 
 var sortingHK28 = [
@@ -1178,7 +1188,18 @@ class Default extends Component {
           </DownloadContainer>
         )}
         {config.features.HomePage_PromoRoulette && (
-          <>
+          <RouletteFloatingPanel
+            position={
+              config.features.RouletteSetting &&
+              config.features.RouletteSetting.wap &&
+              config.features.RouletteSetting.wap.position
+            }
+            orientation={
+              config.features.RouletteSetting &&
+              config.features.RouletteSetting.wap &&
+              config.features.RouletteSetting.wap.orientation
+            }
+          >
             {this.props.general.rouletteCount.length > 0 &&
               this.props.general.rouletteCount
                 .filter(
@@ -1208,7 +1229,7 @@ class Default extends Component {
                 }
               ></PromotionRoulette>
             )}
-          </>
+          </RouletteFloatingPanel>
         )}
       </React.Fragment>
     );
