@@ -249,7 +249,12 @@ class Deposit extends Component {
             showTabContainer: false,
           });
         } else {
-          if (payment.paymentcode.toUpperCase() === "MANUAL") {
+          if (
+            (config.features.Deposit_SplitUsdt &&
+              payment.alteredpaymentcode &&
+              payment.alteredpaymentcode.toUpperCase() === "MANUAL") ||
+            payment.paymentcode.toUpperCase() === "MANUAL"
+          ) {
             if (config.features.Deposit_UploadRequired) {
               this.props.doUploadDepositProof(
                 response.data,
@@ -450,15 +455,11 @@ class Deposit extends Component {
     };
 
     if (
-      config.features.Deposit_SplitUsdt &&
-      payment.alteredpaymentcode.toUpperCase() === "USDT"
+      (config.features.Deposit_SplitUsdt &&
+        payment.alteredpaymentcode &&
+        payment.alteredpaymentcode.toUpperCase() === "MANUAL") ||
+      payment.paymentcode.toUpperCase() === "MANUAL"
     ) {
-      this.props.doUsdtDeposit(
-        this.state.amount.replace(/,/g, ""),
-        channel.id,
-        this.state.depositPromotion
-      );
-    } else if (payment.paymentcode.toUpperCase() === "MANUAL") {
       // handle manual deposit
       if (method.methodcode === "BankTransfer") {
         if (config.features.Deposit_AddCard) {
@@ -581,6 +582,12 @@ class Deposit extends Component {
         }
       }
     } else {
+      if (payment.paymentcode.toUpperCase() === "WANDAPAY") {
+        if (!this.props.account.info.member_name) {
+          this.props.history.push("/" + i18n.language + "/profile/name");
+          return;
+        }
+      }
       this.props.performDeposit(
         this.state.amount.replace(/,/g, ""),
         channel.id,
@@ -870,6 +877,13 @@ class Deposit extends Component {
               }
               handleRestartClick={this.handleRestartClick}
               isManual={
+                (config.features.Deposit_SplitUsdt &&
+                  this.props.wallet.depositTypeList[
+                    this.state.selectedPaymentIndex
+                  ].alteredpaymentcode &&
+                  this.props.wallet.depositTypeList[
+                    this.state.selectedPaymentIndex
+                  ].alteredpaymentcode.toUpperCase() === "MANUAL") ||
                 this.props.wallet.depositTypeList[
                   this.state.selectedPaymentIndex
                 ].paymentcode.toUpperCase() === "MANUAL"

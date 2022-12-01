@@ -321,7 +321,8 @@ class Main extends Component {
                       return (
                         <option value={index}>
                           {config.features.CustomKING8Deposit &&
-                          paymentCode("manual") &&
+                          (paymentCode("manual") ||
+                            alteredPaymentCode("manual")) &&
                           i18n.exists(`king8.${item.methodcode}`)
                             ? i18n.t(`king8.${item.methodcode}`)
                             : i18n.t(item.methodcode)}
@@ -490,7 +491,7 @@ class Main extends Component {
                 return displaysequence.indexOf(a) - displaysequence.indexOf(b);
               })
               .map((key, index) => {
-                if (content[key] !== "") {
+                if (content[key] !== "" && content[key]) {
                   if (typeof content[key] === "number") {
                     return <></>;
                   } else if (content[key].includes("http")) {
@@ -519,7 +520,8 @@ class Main extends Component {
           if (
             (paymentCode("manual") ||
               paymentCode("usdt") ||
-              alteredPaymentCode("usdt")) &&
+              alteredPaymentCode("usdt") ||
+              alteredPaymentCode("manual")) &&
             !config.features.Deposit_AddCard
           ) {
             var channelExtend =
@@ -548,7 +550,11 @@ class Main extends Component {
         {(() => {
           if (config.features.Deposit_ManualApplePayHideBankAcc) {
           } else {
-            if (paymentCode("MANUAL") || paymentCode("APPLEPAY")) {
+            if (
+              paymentCode("MANUAL") ||
+              paymentCode("APPLEPAY") ||
+              alteredPaymentCode("manual")
+            ) {
               return (
                 <>
                   {!(
@@ -721,7 +727,8 @@ class Main extends Component {
             if (
               paymentCode("manual") ||
               paymentCode("usdt") ||
-              alteredPaymentCode("usdt")
+              alteredPaymentCode("usdt") ||
+              alteredPaymentCode("manual")
             ) {
               return (
                 <ExchangeRateContainer style={{ marginTop: "4px" }}>
@@ -831,7 +838,11 @@ class Main extends Component {
           </CustomFormControl>
         </CustomText>
         {(() => {
-          if (paymentCode("manual") || alteredPaymentCode("usdt")) {
+          if (
+            paymentCode("manual") ||
+            alteredPaymentCode("usdt") ||
+            alteredPaymentCode("manual")
+          ) {
             return (
               <>
                 <CustomText>
