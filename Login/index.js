@@ -450,63 +450,52 @@ class Login extends Component {
       }
     });
   };
-  doLoginWithHp = async (username, password, phone, areacode) => {
+  doLoginWithHp = async (
+    username,
+    password,
+    phone,
+    areacode,
+    setPhoneDontCareDuplicate
+  ) => {
     this.setState({ ...this.state, loading: true });
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      // AccountService.Activation(username, password,areacode, phone).then(async (response) => {
-      //   if (response.IsSuccess) {
-      //     // setSecurityKey(response.data);
-      //     // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
-      //     //   variant: "info",
-      //     // });
-      //     AccountService.VerifyActivation(response.data, "123456").then(
-      //       async (response) => {
-      //         // if (response.IsSuccess) {
-      //         // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
-      //         //   variant: "success",
-      //         // });
-      //         //this.doLogin(username, password);
-      //         // } else {
-      //         // props.enqueueSnackbar(response.info, {
-      //         //   variant: "warning",
-      //         // });
-      //         // }
-      //         //this.doLogin(username, password);
-      //         this.handleLoginSuccess(result.data);
-      //       }
-      //     );
-      //   } else {
-      //     this.handleLoginSuccess(result.data);
-      //     //this.doLogin(username, password);
-      //   }
-      // });
-
-      this.props
-        .newRegister("InitPhone", {
-          input: "Init",
-          data: {
+      if (setPhoneDontCareDuplicate) {
+        await this.props
+          .newRegister("SetPhoneDontCareDuplicate", {
             areacode: areacode,
             phone: phone,
-          },
-        })
-        .then(async (response) => {
-          if (response.IsSuccess) {
-            this.props
-              .newRegister("InitPhone", {
-                input: "Valid",
-                data: {
-                  securitykey: response.data.stepResponse,
-                  validatecode: "123456",
-                },
-              })
-              .then(async (response) => {
-                this.handleLoginSuccess(result.data);
-              });
-          } else {
+          })
+          .then(async (response) => {
             this.handleLoginSuccess(result.data);
-          }
-        });
+          });
+      } else {
+        this.props
+          .newRegister("InitPhone", {
+            input: "Init",
+            data: {
+              areacode: areacode,
+              phone: phone,
+            },
+          })
+          .then(async (response) => {
+            if (response.IsSuccess) {
+              this.props
+                .newRegister("InitPhone", {
+                  input: "Valid",
+                  data: {
+                    securitykey: response.data.stepResponse,
+                    validatecode: "123456",
+                  },
+                })
+                .then(async (response) => {
+                  this.handleLoginSuccess(result.data);
+                });
+            } else {
+              this.handleLoginSuccess(result.data);
+            }
+          });
+      }
     }
   };
   doLoginWithHpEmail = async (username, password, phone, areacode, email) => {
@@ -1049,6 +1038,7 @@ class Login extends Component {
         .newRegister("CreatePlayer", {
           username: username,
           pwd: password,
+          upper: this.state.upper,
           invitationcode: this.state.promoId,
         })
         .then(async (response) => {
@@ -1081,7 +1071,13 @@ class Login extends Component {
                 setPhoneDontCareDuplicate
               );
             } else if (config.features.Register_ShowPhone) {
-              this.doLoginWithHp(username, password, phone, areaCode);
+              this.doLoginWithHp(
+                username,
+                password,
+                phone,
+                areaCode,
+                setPhoneDontCareDuplicate
+              );
             } else {
               this.doLogin(username, password);
             }
