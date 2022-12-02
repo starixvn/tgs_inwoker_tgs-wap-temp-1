@@ -72,7 +72,7 @@ const CustomModal = styled(Dialog)`
     background-position: -9px -6px;
 
     padding: ${({ isHistory }) => {
-      return isHistory ? `45px 50px 0 50px` : `100px 0 0 0`;
+      return isHistory ? `45px 0 0 50px` : `100px 0 0 0`;
     }};
   }
 `;
@@ -1098,7 +1098,7 @@ const PromotionRoulette = (props) => {
 
   const HistoryContent = () => {
     return (
-      <TableContent>
+      <>
         <StyledTable>
           <tr>
             <StyledTableHead>
@@ -1111,27 +1111,32 @@ const PromotionRoulette = (props) => {
               {i18n.t("promoRoulette.winnings")}
             </StyledTableHead>
           </tr>
-          {items.length > 0 &&
-            rouletteHistory.length > 0 &&
-            rouletteHistory
-              .sort((a, b) => new Date(b.createdon) - new Date(a.createdon))
-              .map((row) => {
-                return (
-                  <tr>
-                    <StyledTableData>{row.id}</StyledTableData>
-                    <StyledTableData>
-                      {moment(row.createdon)
-                        .utcOffset("+0800")
-                        .format("HH:mm:ss DD/MM/YYYY")}
-                    </StyledTableData>
-                    <StyledTableData>
-                      {items[row.itemindex].label}
-                    </StyledTableData>
-                  </tr>
-                );
-              })}
         </StyledTable>
-      </TableContent>
+
+        <TableContent>
+          <StyledTable>
+            {items.length > 0 &&
+              rouletteHistory.length > 0 &&
+              rouletteHistory
+                .sort((a, b) => new Date(b.createdon) - new Date(a.createdon))
+                .map((row) => {
+                  return (
+                    <tr>
+                      <StyledTableData>{row.id}</StyledTableData>
+                      <StyledTableData>
+                        {moment(row.createdon)
+                          .utcOffset("+0800")
+                          .format("HH:mm:ss DD/MM/YYYY")}
+                      </StyledTableData>
+                      <StyledTableData>
+                        {items[row.itemindex].label}
+                      </StyledTableData>
+                    </tr>
+                  );
+                })}
+          </StyledTable>
+        </TableContent>
+      </>
     );
   };
 
