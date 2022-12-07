@@ -199,10 +199,7 @@ const GameSelectionUL = styled.div`
   overflow-y: auto;
   height: calc(100vh - 640px);
 `;
-const GameSelectionEmpty = styled.div`
-  height: 90px;
-  width: 130px;
-`;
+
 const GameSelectionLI = styled.div`
   width: 130px;
   height: 69px;
@@ -394,13 +391,23 @@ const BrandAndBalanceButBigger = styled(BrandAndBalance)`
 
 const RouletteFloatingPanel = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  padding-top: 40%;
-  padding-left: 2%;
+  z-index: 1300;
+
+  ${({ position }) => {
+    return position !== undefined
+      ? Object.keys(position).map((key) => {
+          return `${key}: ${position[key]}px;`;
+        })
+      : `  top: 0;
+    left: 0;
+    padding-top: 16%;
+    padding-left: 2%;`;
+  }}
+
   display: flex;
-  flex-direction: column;
-  z-index: 5;
+  flex-direction: ${({ orientation }) => {
+    return orientation ? orientation : "column";
+  }};
 `;
 
 var sortingHK28 = [
@@ -749,19 +756,6 @@ class Default extends Component {
       this.props.general.promotionList.items.length > 0 &&
       this.props.general.promotionList.items.findIndex(
         (item) => item.promotionType.toUpperCase() === "ROULETTE"
-      ) >= 0
-    );
-  };
-
-  isDARAvailable = (roulette) => {
-    return (
-      this.props.general.promotionList.items &&
-      this.props.general.promotionList.items.length > 0 &&
-      this.props.general.promotionList.items.findIndex(
-        (item) =>
-          item.promotionType.toUpperCase() ===
-            roulette.promotiontype.toUpperCase() &&
-          item.id === roulette.promotionid
       ) >= 0
     );
   };
@@ -1194,49 +1188,37 @@ class Default extends Component {
           </DownloadContainer>
         )}
         {config.features.HomePage_PromoRoulette && (
-          <RouletteFloatingPanel>
-            {
-              this.props.general.promotionList.items.length > 0 &&
-                this.props.general.rouletteCount.length > 0 &&
-                this.props.general.rouletteCount
-                  .filter(
-                    (item) =>
-                      item.promotiontype.toUpperCase() ===
-                      "DEPOSITACCUMULATEROULETTE"
-                  )
-                  .map((roulette, index) => {
-                    return this.isDARAvailable(roulette) &&
-                      roulette.roulettecount > 0 &&
-                      index === 0 ? (
-                      <PromotionRoulette
-                        rouletteType={roulette.promotiontype.toUpperCase()}
-                        promotionDetail={
-                          this.props.general.promotionList.items.filter(
-                            (item) =>
-                              item.promotionType.toUpperCase() ===
-                                roulette.promotiontype.toUpperCase() &&
-                              item.id === roulette.promotionid
-                          )[0]
-                        }
-                      ></PromotionRoulette>
-                    ) : (
-                      <React.Fragment></React.Fragment>
-                    );
-                  })
-              // this.props.general.promotionList.items.map((item) => {
-              //   return (
-              //     ((item.promotionType.toUpperCase() === "ROULETTE" &&
-              //       config.features.RouletteNewFlow) ||
-              //       item.promotionType.toUpperCase() ===
-              //         "DEPOSITACCUMULATEROULETTE") && (
-              //       <PromotionRoulette
-              //         rouletteType={item.promotionType.toUpperCase()}
-              //         promotionDetail={item}
-              //       ></PromotionRoulette>
-              //     )
-              //   );
-              // })
+          <RouletteFloatingPanel
+            position={
+              config.features.RouletteSetting &&
+              config.features.RouletteSetting.wap &&
+              config.features.RouletteSetting.wap.position
             }
+            orientation={
+              config.features.RouletteSetting &&
+              config.features.RouletteSetting.wap &&
+              config.features.RouletteSetting.wap.orientation
+            }
+          >
+            {this.props.general.rouletteCount.length > 0 &&
+              this.props.general.rouletteCount
+                .filter(
+                  (item) =>
+                    item.promotiontype.toUpperCase() ===
+                    "DEPOSITACCUMULATEROULETTE"
+                )
+                .map((roulette, index) => {
+                  return roulette.roulettecount >= 0 && index === 0 ? (
+                    <PromotionRoulette
+                      rouletteType={roulette.promotiontype.toUpperCase()}
+                      promotionDetail={{
+                        id: roulette.promotionid,
+                      }}
+                    ></PromotionRoulette>
+                  ) : (
+                    <React.Fragment></React.Fragment>
+                  );
+                })}
             {!config.features.RouletteNewFlow && this.isRouletteAvailable() && (
               <PromotionRoulette
                 rouletteType="ROULETTE"
