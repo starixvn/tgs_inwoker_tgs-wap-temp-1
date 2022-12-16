@@ -137,33 +137,15 @@ class Phone extends BaseProfile {
     }
     this.showLoading(true);
 
-    // this.props
-    //   .newRegister("InitPhone", {
-    //     input: "Init",
-    //     data: {
-    //       areacode: this.state.areacode,
-    //       phone: this.state.phone,
-    //     },
-    //   })
-    //   .then(async (response) => {
-    //     if (response.IsSuccess) {
-    //       this.setState({
-    //         ...this.state,
-    //         countdownToken: 60,
-    //         securityKey: response.data,
-    //       });
-    //       this.showInfoMessage(i18n.t("common.msgTokenSent"));
-    //       setTimeout(() => {
-    //         this.checkCountdownToken();
-    //       }, 1000);
-    //     } else {
-    //       this.showErrorMessage(response.info);
-    //     }
-    //     this.showLoading(false);
-    //   });
-
-    AccountService.VerifyPhone(this.state.phone, this.state.areacode)
-      .then((response) => {
+    this.props
+      .newRegister("InitPhone", {
+        input: "Init",
+        data: {
+          areacode: this.state.areacode,
+          phone: this.state.phone,
+        },
+      })
+      .then(async (response) => {
         if (response.IsSuccess) {
           this.setState({
             ...this.state,
@@ -178,12 +160,30 @@ class Phone extends BaseProfile {
           this.showErrorMessage(response.info);
         }
         this.showLoading(false);
-      })
-      .catch((err) => {
-        this.showErrorMessage(err);
-
-        this.showLoading(false);
       });
+
+    // AccountService.VerifyPhone(this.state.phone, this.state.areacode)
+    //   .then((response) => {
+    //     if (response.IsSuccess) {
+    //       this.setState({
+    //         ...this.state,
+    //         countdownToken: 60,
+    //         securityKey: response.data,
+    //       });
+    //       this.showInfoMessage(i18n.t("common.msgTokenSent"));
+    //       setTimeout(() => {
+    //         this.checkCountdownToken();
+    //       }, 1000);
+    //     } else {
+    //       this.showErrorMessage(response.info);
+    //     }
+    //     this.showLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     this.showErrorMessage(err);
+
+    //     this.showLoading(false);
+    //   });
   };
 
   isDisableButton = () => {
