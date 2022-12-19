@@ -98,6 +98,22 @@ const CustomButton = styled.div`
   color: #ffffff;
 `;
 
+const CloseButton = styled.div`
+  border: solid 1px #000;
+  border-radius: 50%;
+  width: 20px;
+  height: 100%;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
 const ForcedVerification = ({ forcedverify, alert }) => {
   useEffect(() => {
     setOpen(forcedverify);
@@ -139,62 +155,24 @@ const ForcedVerification = ({ forcedverify, alert }) => {
           alert("", response.info);
         }
       });
-
-      // AccountService.Activation("", "", areaCode, phone).then(
-      //   async (response) => {
-      //     if (response.IsSuccess) {
-            // setSecurityKey(response.data);
-            // alert("", i18n.t("common.msgTokenSent"));
-            // setCountdown(60);
-      //     } else {
-      //       alert("", response.info);
-      //     }
-      //   }
-      // );
     }
   };
 
   function smsVerification(securityKey, code) {
-
-    AccountService
-      .NewRegister("InitPhone", {
-        input: "Valid",
-        data: {
-          securitykey: securityKey,
-          validatecode: code,
-        },
-      })
-      .then(async (response) => {
-        if (response.IsSuccess) {
-          alert("", i18n.t("common.msgTokenVerified"));
-          setOpen(false);
-        } else {
-          alert("", response.info);
-        }
-        // this.props.getAccountInfo().then(async (response) => {
-          
-          // if (
-          //   response.data.email === null &&
-          //   !response.data.registercompleted
-          // ) {
-          //   AppHistory.push(
-          //     "/" + i18n.language + "/account/profile/member_email"
-          //   );
-          // } else {
-          //   this.props.handleCloseDialog();
-          // }
-        // });
-      });
-    // AccountService.VerifyActivation(securityKey, code).then(
-    //   async (response) => {
-    //     if (response.IsSuccess) {
-    //       alert("", i18n.t("common.msgTokenVerified"));
-    //       setOpen(false);
-    //     } else {
-    //       alert("", response.info);
-    //     }
-    //   }
-    // );
+    AccountService.NewRegister("InitPhone", {
+      input: "Valid",
+      data: {
+        securitykey: securityKey,
+        validatecode: code,
+      },
+    }).then(async (response) => {
+      if (response.IsSuccess) {
+        alert("", i18n.t("common.msgTokenVerified"));
+        setOpen(false);
+      } else {
+        alert("", response.info);
+      }
+    });
   }
 
   const handleActivationClick = async () => {
@@ -219,15 +197,19 @@ const ForcedVerification = ({ forcedverify, alert }) => {
     }
 
     if (config.features.SkipSMSVerification) {
-      AccountService.Activation("", "", areaCode, phone).then(
-        async (response) => {
-          if (response.IsSuccess) {
-            smsVerification(response.data, "123456");
-          } else {
-            alert("", response.info);
-          }
+      AccountService.NewRegister("InitPhone", {
+        input: "Init",
+        data: {
+          areacode: areaCode,
+          phone: phone,
+        },
+      }).then(async (response) => {
+        if (response.IsSuccess) {
+          smsVerification(response.data, "123456");
+        } else {
+          alert("", response.info);
         }
-      );
+      });
     } else {
       smsVerification(securityKey, code);
     }
