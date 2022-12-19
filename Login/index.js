@@ -183,17 +183,16 @@ class Login extends Component {
     promotionChannelId: localStorage.getItem("promotionChannelId"),
     withdrawalPassword: "",
     confirmWithdrawalPassword: "",
-    withdrawalPassword: "",
-    withdrawalPassword: "",
+
     confirmPassword: "",
     tnc: true,
     rememberMe: false,
     loading: false,
-    areaCode: config.features.PhonePrefix,
+
     code: "",
     countdown: 0,
     securityKey: "",
-    phone: "",
+
     //TGS-357
     upper: localStorage.getItem("upper"),
     promoteType:
@@ -244,6 +243,8 @@ class Login extends Component {
           case "register":
           case "register_auth":
             this.handleChangeSelection(1);
+            break;
+          default:
             break;
         }
       } else {
@@ -503,29 +504,38 @@ class Login extends Component {
 
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      AccountService.Activation(username, password, areacode, phone).then(
-        async (response) => {
-          if (response.IsSuccess) {
-            AccountService.VerifyActivation(response.data, "123456");
-            // .then(
-            //   async (response) => {
-
-            //   }
-            // );
-          }
-          // else {
-          //   this.handleLoginSuccess(result.data);
-          // }
-        }
-      );
-      AccountService.ActivationEmail(email).then(async (response) => {
+      AccountService.NewRegister("InitPhone", {
+        input: "Init",
+        data: {
+          areacode: areacode,
+          phone: phone,
+        },
+      }).then(async (response) => {
         if (response.IsSuccess) {
-          AccountService.VerifyActivationEmail(response.data, "123456");
-          // .then(
-          //   async (response) => {
-          //     this.handleLoginSuccess(result.data);
-          //   }
-          // );
+          AccountService.NewRegister("InitPhone", {
+            input: "Valid",
+            data: {
+              securitykey: response.data,
+              validatecode: "123456",
+            },
+          });
+        }
+      });
+
+      AccountService.NewRegister("InitMail", {
+        input: "Init",
+        data: {
+          email: email,
+        },
+      }).then(async (response) => {
+        if (response.IsSuccess) {
+          AccountService.NewRegister("InitMail", {
+            input: "Init",
+            data: {
+              securitykey: response.data,
+              validatecode: "123456",
+            },
+          });
         }
       });
       this.handleLoginSuccess(result.data);
@@ -694,15 +704,19 @@ class Login extends Component {
   };
 
   smsVerification = (securityKey, code) => {
-    AccountService.VerifyActivation(securityKey, code).then(
-      async (response) => {
-        if (response.IsSuccess) {
-          this.props.appHistory.replace("/" + i18n.language + "/main/home");
-        } else {
-          this.props.alert("", response.info);
-        }
+    AccountService.NewRegister("InitPhone", {
+      input: "Valid",
+      data: {
+        securitykey: securityKey,
+        validatecode: code,
+      },
+    }).then(async (response) => {
+      if (response.IsSuccess) {
+        this.props.appHistory.replace("/" + i18n.language + "/main/home");
+      } else {
+        this.props.alert("", response.info);
       }
-    );
+    });
   };
 
   handleActivationClick = async () => {
@@ -726,12 +740,14 @@ class Login extends Component {
       const result = await this.props.accountLogin(username, password);
       if (result.IsSuccess) {
         this.props.getAccountInfo();
-        AccountService.Activation(
-          "",
-          "",
-          this.state.areaCode,
-          this.state.phone
-        ).then(async (response) => {
+
+        AccountService.NewRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: this.state.areaCode,
+            phone: this.state.phone,
+          },
+        }).then(async (response) => {
           if (response.IsSuccess) {
             this.smsVerification(securityKey, "123456");
           } else {
@@ -761,11 +777,11 @@ class Login extends Component {
   handleGetCodeClick = async () => {
     const username = this.state.username;
     const password = this.state.password;
-    const code = this.state.code;
+
     const countdown = this.state.countdown;
     const areacode = this.state.areaCode;
     const phone = this.state.phone;
-    const isLoggedIn = false; //(this.props.account.token !== "" && this.props.account.token !== null );
+
     var result = null;
 
     if (countdown <= 0) {
@@ -797,21 +813,25 @@ class Login extends Component {
       result = await AccountService.Login(username, password);
       // }
       if (result !== null && result.IsSuccess /*|| isLoggedIn*/) {
-        AccountService.Activation("", "", areacode, phone).then(
-          async (response) => {
-            if (response.IsSuccess) {
-              this.props.alert("", i18n.t("common.msgTokenSent"));
-              this.setState({
-                ...this.state,
-                countdown: 60,
-                securityKey: response.data,
-              });
-              this.checkCountdown();
-            } else {
-              this.props.alert("", response.info);
-            }
+        AccountService.NewRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: areacode,
+            phone: phone,
+          },
+        }).then(async (response) => {
+          if (response.IsSuccess) {
+            this.props.alert("", i18n.t("common.msgTokenSent"));
+            this.setState({
+              ...this.state,
+              countdown: 60,
+              securityKey: response.data,
+            });
+            this.checkCountdown();
+          } else {
+            this.props.alert("", response.info);
           }
-        );
+        });
       }
     }
   };
@@ -834,7 +854,7 @@ class Login extends Component {
     const username = this.state.username;
     const password = this.state.password;
     const phone = this.state.phone;
-    const code = this.state.code;
+
     const areaCode = this.state.areaCode;
     const confirmPassword = this.state.confirmPassword;
     const email = this.state.email;
@@ -969,12 +989,11 @@ class Login extends Component {
     const username = this.state.username;
     const password = this.state.password;
     const phone = this.state.phone;
-    const code = this.state.code;
+
     const areaCode = this.state.areaCode;
     const confirmPassword = this.state.confirmPassword;
     const email = this.state.email;
-    const promotion_id = this.state.promoId;
-    const upper = this.state.upper;
+
     const tnc = this.state.tnc;
     var expr = /^[a-zA-Z0-9]{6,16}$/;
     if (!expr.test(username)) {
@@ -1038,7 +1057,6 @@ class Login extends Component {
         .newRegister("CreatePlayer", {
           username: username,
           pwd: password,
-          upper: this.state.upper,
           invitationcode: this.state.promoId,
         })
         .then(async (response) => {
