@@ -51,7 +51,7 @@ class Telegram extends BaseProfile {
 
     this.showLoading(true);
     //api
-    AccountService.UpdateIM(telegram, "telegram")
+    AccountService.UpdateIM(telegram, "telegram", "telegram")
       .then((response) => {
         if (response.IsSuccess) {
           this.props.getAccountProfile().then((responseUpdate) => {
