@@ -540,6 +540,9 @@ class Default extends Component {
       });
     }
   }
+
+  cockfightBrandList = ["SM01"];
+
   formatSortedGameList() {
     var currentType = -1;
     var gameTypeListSorting = [];
@@ -556,6 +559,9 @@ class Default extends Component {
         return a.type - b.type;
       })
       .map((row, index) => {
+        if (this.cockfightBrandList.includes(row.game_platform_name)) {
+          row.type = GameTypeEnum.COCKFIGHT;
+        }
         if (currentType !== row.type) {
           gameTypeListSorting.push(row.type);
         }
@@ -680,6 +686,8 @@ class Default extends Component {
     switch (gameType) {
       case GameTypeEnum.LIVE:
         return i18n.t("wap.main.home.gameTab.live");
+      case GameTypeEnum.COCKFIGHT:
+        return i18n.t("common.cockfight");
       case GameTypeEnum.LIVELOBBY:
         return i18n.t("wap.main.home.gameTab.live");
       case GameTypeEnum.QIPAI:
@@ -724,6 +732,8 @@ class Default extends Component {
         return "sports";
       case GameTypeEnum.ESPORTS:
         return "esports";
+      case GameTypeEnum.COCKFIGHT:
+        return "cockfight";
       case GameTypeEnum.TIGERSLOT:
         return "slot";
       case GameTypeEnum.TABLEGAME:
