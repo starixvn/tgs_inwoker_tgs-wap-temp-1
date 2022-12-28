@@ -648,11 +648,15 @@ class Default extends Component {
     }
     if (type === GameTypeEnum.COCKFIGHT && params === "SM01") {
       this.popup = window.open("", "Cockfight");
-      GameService.GetCockfight().then((e) => {
-        this.popup.document.write(e.data);
-        this.popup.document.close();
-        this.popup.focus();
-      });
+      GameService.GetCockfight()
+        .then((e) => {
+          this.popup.document.write(e.data);
+          this.popup.document.close();
+          this.popup.focus();
+        })
+        .catch((e) => {
+          this.popup.close();
+        });
     } else if (
       type === GameTypeEnum.SLOT ||
       type === GameTypeEnum.TIGERSLOT ||
