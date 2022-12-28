@@ -21,6 +21,7 @@ import { SortedMenuList } from "../../../../../utils/HeaderSorting";
 import { Textfit } from "react-textfit";
 import PromotionRoulette from "./../PromotionRoulette";
 import OnlineUserDisplayer from "../../../../Share/online-user-displayer";
+import { GameService } from "../../../../../api-services/services/GameService";
 const StyledAppBar = withStyles({
   root: {
     height: "650px",
@@ -645,7 +646,14 @@ class Default extends Component {
       this.props.appHistory.push("/" + i18n.language + "/login");
       return;
     }
-    if (
+    if (type === GameTypeEnum.COCKFIGHT && params === "SM01") {
+      this.popup = window.open("", "Cockfight");
+      GameService.GetCockfight().then((e) => {
+        this.popup.document.write(e.data);
+        this.popup.document.close();
+        this.popup.focus();
+      });
+    } else if (
       type === GameTypeEnum.SLOT ||
       type === GameTypeEnum.TIGERSLOT ||
       type === GameTypeEnum.TABLEGAME ||
