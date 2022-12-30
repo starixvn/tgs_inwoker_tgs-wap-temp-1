@@ -205,7 +205,9 @@ const GameSelectionLI = styled.div`
   width: 130px;
   height: 69px;
   border-radius: 10px;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: solid 2px #adadad;
   background-color: #ededed;
   margin: 16px auto 0 auto;
@@ -1069,9 +1071,7 @@ class Default extends Component {
                   return (
                     <GameSelectionLI
                       style={
-                        i18n.language === "en-US"
-                          ? { fontSize: "29px", paddingTop: "6px" }
-                          : {}
+                        i18n.language === "en-US" ? { fontSize: "22px" } : {}
                       }
                       key={index}
                       selected={this.state.selectedGameType === type}
