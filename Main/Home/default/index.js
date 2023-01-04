@@ -544,7 +544,7 @@ class Default extends Component {
     }
   }
 
-  cockfightBrandList = ["SM01"];
+  cockfightBrandList = ["SM01", "AWC_COCKFIGHT"];
 
   formatSortedGameList() {
     var currentType = -1;
@@ -572,9 +572,7 @@ class Default extends Component {
       });
 
     return gameTypeListSorting.sort((a, b) => {
-      if (config.features.MenuItem_Sorting_PB3)
-        return sortingPB3.indexOf(a) - sortingPB3.indexOf(b);
-      else if (config.features.MenuItem_Sorting_WLGHK)
+      if (config.features.MenuItem_Sorting_WLGHK)
         return sortingWLGHK.indexOf(a) - sortingWLGHK.indexOf(b);
       else if (config.features.MenuItem_Sorting_HK28)
         return sortingHK28.indexOf(a) - sortingHK28.indexOf(b);
@@ -584,8 +582,6 @@ class Default extends Component {
         return sortingPB.indexOf(a) - sortingPB.indexOf(b);
       else if (config.features.MenuItem_Sorting_GMO)
         return sortingGMO.indexOf(a) - sortingGMO.indexOf(b);
-      else if (config.features.MenuItem_Sorting_BUNNY)
-        return sortingBUNNY.indexOf(a) - sortingBUNNY.indexOf(b);
       else return a - b;
     });
   }
@@ -667,15 +663,10 @@ class Default extends Component {
     ) {
       this.props.navigate(`/slots/${params}/${type}`);
     } else {
-      Common.closePreviousPopup();
       Common.PopupCenter(
         "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
         "gamewindow"
       );
-      //  window.open(
-      //    "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
-      //    "gamewindow"
-      //  );
     }
   };
 
@@ -1158,13 +1149,14 @@ class Default extends Component {
                             ? `gameType${row.type}`
                             : `gameId${row.id}`
                         }
-                        onClick={() =>
+                        onClick={() => {
+                          console.log("row.type", row);
                           this.handleGameClick(
                             row.type,
                             row.gpcode,
                             row.game_platform_id
-                          )
-                        }
+                          );
+                        }}
                       >
                         <ButtonStartGame>
                           {i18n.t("common.startGame")}
