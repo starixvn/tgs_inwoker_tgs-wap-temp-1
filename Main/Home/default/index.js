@@ -197,7 +197,8 @@ const GameSelectionUL = styled.div`
   padding: 0 0px;
   width: 176px;
   overflow-y: auto;
-  height: calc(100vh - 640px);
+  height: calc(100vh - 740px);
+  padding-bottom: 10px;
 `;
 
 const GameSelectionLI = styled.div`
@@ -582,12 +583,39 @@ class Default extends Component {
   }
 
   consistentTop = 650;
+
+  constructor(props) {
+    super(props);
+    this.scrollRef = React.createRef();
+  }
+
   handleScroll = (e) => {
     const doc = document.documentElement;
 
     let top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
-    top = top + this.consistentTop;
+    top = top + 530;
+
+    let reachedTheForthItem =
+      this.state.gameTypeListSorting.indexOf(this.state.selectedGameType) > 3 &&
+      this.state.gameTypeListSorting.indexOf(this.state.selectedGameType) < 6;
+    let reachedTheSeventhItem =
+      this.state.gameTypeListSorting.indexOf(this.state.selectedGameType) >= 6;
+    if (this.state.gameTypeListSorting.length > 5) {
+      if (reachedTheForthItem) {
+        this.scrollRef.current.scrollTo(0, 500);
+      } else if (reachedTheSeventhItem) {
+        this.scrollRef.current.scrollTo(0, 750);
+      } else {
+        this.scrollRef.current.scrollTo(0, 0);
+      }
+    } else {
+      this.scrollRef.current.scrollTo(
+        0,
+        this.state.gameTypeListSorting.indexOf(this.state.selectedGameType) *
+          150
+      );
+    }
 
     var D = document;
     var docHeight = Math.max(
@@ -1041,7 +1069,7 @@ class Default extends Component {
             </ProfileContainer>
           </FixedContainer>
           <GameSelectionContainer>
-            <GameSelectionUL>
+            <GameSelectionUL ref={this.scrollRef}>
               {(() => {
                 return this.state.gameTypeListSorting.map((type, index) => {
                   return (
@@ -1208,7 +1236,7 @@ class Default extends Component {
                     "DEPOSITACCUMULATEROULETTE"
                 )
                 .map((roulette, index) => {
-                  return roulette.roulettecount >= 0 && index === 0 ? (
+                  return roulette.roulettecount > 0 && index === 0 ? (
                     <PromotionRoulette
                       rouletteType={roulette.promotiontype.toUpperCase()}
                       promotionDetail={{
