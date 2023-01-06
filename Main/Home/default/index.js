@@ -761,6 +761,7 @@ class Default extends Component {
         return "";
     }
   }
+
   getImgPrefix(gameType) {
     switch (gameType) {
       case GameTypeEnum.FISH:
@@ -1143,38 +1144,12 @@ class Default extends Component {
                     );
                   } else return b - a;
                 })
-                .sort(function (a, b) {
-                  if (config.features.MenuItem_Sorting_PB3)
-                    return (
-                      sortingPB3.indexOf(a.type) - sortingPB3.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_HK28)
-                    return (
-                      sortingHK28.indexOf(a.type) - sortingHK28.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_WLGHK)
-                    return (
-                      sortingWLGHK.indexOf(a.type) -
-                      sortingWLGHK.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_SKY)
-                    return (
-                      sortingSKY.indexOf(a.type) - sortingSKY.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_PB)
-                    return (
-                      sortingPB.indexOf(a.type) - sortingPB.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_GMO)
-                    return (
-                      sortingGMO.indexOf(a.type) - sortingGMO.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_BUNNY)
-                    return (
-                      sortingBUNNY.indexOf(a.type) -
-                      sortingBUNNY.indexOf(b.type)
-                    );
-                  else return a.type - b.type;
+
+                .sort((a, b) => {
+                  return (
+                    this.state.gameTypeListSorting.indexOf(a.type) -
+                    this.state.gameTypeListSorting.indexOf(b.type)
+                  );
                 })
                 .map((row, index) => {
                   var jsx = (
@@ -1195,7 +1170,6 @@ class Default extends Component {
                             : `gameId${row.id}`
                         }
                         onClick={() => {
-                          console.log("row.type", row);
                           this.handleGameClick(
                             row.type,
                             row.gpcode,
