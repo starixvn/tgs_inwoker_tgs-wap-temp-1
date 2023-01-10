@@ -288,7 +288,12 @@ class Withdrawal extends Component {
     if (this.props.token != null) {
       if (this.props.wallet.bankCardList.length === 0)
         this.props.getBankCardList();
-
+      if (config.features.Withdrawal_WalletTransfer) {
+        this.props.performWithdrawFromEveryBrand().then((e) => {
+          this.props.getBalanceList();
+          this.getAllGameBalance();
+        });
+      }
       // this.GetWithdrawalDetails();
       this.countDownInterval = setInterval(() => {
         this.props.getWithdrawalChannel(); // call api every 30 mins
