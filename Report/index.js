@@ -1142,6 +1142,26 @@ class Report extends Component {
     });
   };
 
+  getDateFromMinDate = () => {
+    switch (this.state.selectedType) {
+      case 8:
+        return addDays(new Date(this.state.dateTo), -44);
+      default:
+        return undefined;
+    }
+  };
+
+  getDateToMaxDate = () => {
+    switch (this.state.selectedType) {
+      case 8:
+        return addDays(new Date(this.state.dateTo), 44) > new Date()
+          ? new Date()
+          : addDays(new Date(this.state.dateTo), 44);
+      default:
+        return new Date();
+    }
+  };
+
   render() {
     const NoRecord = () => {
       return (
@@ -1261,6 +1281,7 @@ class Report extends Component {
                     autoOk
                     clearable
                     disableFuture
+                    minDate={this.getDateFromMinDate()}
                     maxDate={new Date(this.state.dateTo)}
                     format="yyyy/MM/dd"
                     value={this.state.dateFrom}
@@ -1282,7 +1303,7 @@ class Report extends Component {
                     clearable
                     disableFuture
                     minDate={new Date(this.state.dateFrom)}
-                    maxDate={new Date()}
+                    maxDate={this.getDateToMaxDate()}
                     format="yyyy/MM/dd"
                     value={this.state.dateTo}
                     onChange={this.handleDateToChange}
