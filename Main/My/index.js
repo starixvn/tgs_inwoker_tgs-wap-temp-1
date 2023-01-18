@@ -392,6 +392,16 @@ class My extends Component {
           <ListItem
             icon={
               process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-report-transfer.svg`
+            }
+            onClick={() => this.props.navigate("/report/8")}
+          >
+            {i18n.t("report.balanceChanges.title")}
+          </ListItem>
+
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
               `/assets/images/wapp/icon-profile-card.svg`
             }
             onClick={() => {
