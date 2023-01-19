@@ -617,7 +617,7 @@ class Transfer extends Component {
               })
               .filter((e) => {
                 if (config.features.MergeEVORTNT) {
-                  if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF")) {
+                  if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "BTG" || e.gpcode === "NLC")) {
                     return e;
                   }
                 } else {
@@ -678,7 +678,7 @@ class Transfer extends Component {
                 )
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
-                    if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF")) {
+                    if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "BTG" || e.gpcode === "NLC")) {
                       return e;
                     }
                   } else {
@@ -730,7 +730,7 @@ class Transfer extends Component {
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
                     if (
-                      !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF")
+                      !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF" || e.gpcode === "BTG" || e.gpcode === "NLC")
                     ) {
                       return e;
                     }
