@@ -235,15 +235,19 @@ const ForcedVerification = ({ forcedverify, alert }) => {
     }
 
     if (config.features.SkipSMSVerification) {
-      AccountService.Activation("", "", areaCode, phone).then(
-        async (response) => {
-          if (response.IsSuccess) {
-            smsVerification(response.data, "123456");
-          } else {
-            alert("", response.info);
-          }
+      AccountService.NewRegister("InitPhone", {
+        input: "Init",
+        data: {
+          areacode: areaCode,
+          phone: phone,
+        },
+      }).then(async (response) => {
+        if (response.IsSuccess) {
+          smsVerification(response.data, "123456");
+        } else {
+          alert("", response.info);
         }
-      );
+      });
     } else {
       smsVerification(securityKey, code);
     }

@@ -463,7 +463,7 @@ class Login extends Component {
       if (setPhoneDontCareDuplicate) {
         await this.props
           .newRegister("SetPhoneDontCareDuplicate", {
-            areacode: areacode,
+            areacode: this.state.areaCode,
             phone: phone,
           })
           .then(async (response) => {
@@ -503,33 +503,70 @@ class Login extends Component {
 
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      AccountService.Activation(username, password, areacode, phone).then(
-        async (response) => {
-          if (response.IsSuccess) {
-            AccountService.VerifyActivation(response.data, "123456");
-            // .then(
-            //   async (response) => {
-
-            //   }
-            // );
-          }
-          // else {
-          //   this.handleLoginSuccess(result.data);
-          // }
-        }
-      );
-      AccountService.ActivationEmail(email).then(async (response) => {
+      AccountService.NewRegister("InitPhone", {
+        input: "Init",
+        data: {
+          areacode: areacode,
+          phone: phone,
+        },
+      }).then(async (response) => {
         if (response.IsSuccess) {
-          AccountService.VerifyActivationEmail(response.data, "123456");
-          // .then(
-          //   async (response) => {
-          //     this.handleLoginSuccess(result.data);
-          //   }
-          // );
+          AccountService.NewRegister("InitPhone", {
+            input: "Valid",
+            data: {
+              securitykey: response.data.stepResponse,
+              validatecode: "123456",
+            },
+          });
+        }
+      });
+
+      AccountService.NewRegister("InitMail", {
+        input: "Init",
+        data: {
+          email: email,
+        },
+      }).then(async (response) => {
+        if (response.IsSuccess) {
+          AccountService.NewRegister("InitMail", {
+            input: "Init",
+            data: {
+              securitykey: response.data.stepResponse,
+              validatecode: "123456",
+            },
+          });
         }
       });
       this.handleLoginSuccess(result.data);
     }
+    // if (result.IsSuccess) {
+    //   AccountService.Activation(username, password, areacode, phone).then(
+    //     async (response) => {
+    //       if (response.IsSuccess) {
+    //         AccountService.VerifyActivation(response.data, "123456");
+    //         // .then(
+    //         //   async (response) => {
+
+    //         //   }
+    //         // );
+    //       }
+    //       // else {
+    //       //   this.handleLoginSuccess(result.data);
+    //       // }
+    //     }
+    //   );
+    //   AccountService.ActivationEmail(email).then(async (response) => {
+    //     if (response.IsSuccess) {
+    //       AccountService.VerifyActivationEmail(response.data, "123456");
+    //       // .then(
+    //       //   async (response) => {
+    //       //     this.handleLoginSuccess(result.data);
+    //       //   }
+    //       // );
+    //     }
+    //   });
+    //   this.handleLoginSuccess(result.data);
+    // }
   };
   performLoginWithPhoneAndEmail = async (
     username,
@@ -545,7 +582,7 @@ class Login extends Component {
       if (setPhoneDontCareDuplicate) {
         await this.props
           .newRegister("SetPhoneDontCareDuplicate", {
-            areacode: this.state.areaCode,
+            areacode: areacode,
             phone: phone,
           })
           .then(async (response) => {
@@ -694,16 +731,33 @@ class Login extends Component {
   };
 
   smsVerification = (securityKey, code) => {
-    AccountService.VerifyActivation(securityKey, code).then(
-      async (response) => {
+    this.props
+      .newRegister("InitPhone", {
+        input: "Valid",
+        data: {
+          securitykey: securityKey,
+          validatecode: code,
+        },
+      })
+      .then(async (response) => {
         if (response.IsSuccess) {
           this.props.appHistory.replace("/" + i18n.language + "/main/home");
         } else {
           this.props.alert("", response.info);
         }
-      }
-    );
+      });
   };
+  // smsVerification = (securityKey, code) => {
+  //   AccountService.VerifyActivation(securityKey, code).then(
+  //     async (response) => {
+  //       if (response.IsSuccess) {
+  //         this.props.appHistory.replace("/" + i18n.language + "/main/home");
+  //       } else {
+  //         this.props.alert("", response.info);
+  //       }
+  //     }
+  //   );
+  // };
 
   handleActivationClick = async () => {
     const username = this.state.username;
@@ -726,12 +780,14 @@ class Login extends Component {
       const result = await this.props.accountLogin(username, password);
       if (result.IsSuccess) {
         this.props.getAccountInfo();
-        AccountService.Activation(
-          "",
-          "",
-          this.state.areaCode,
-          this.state.phone
-        ).then(async (response) => {
+
+        AccountService.NewRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: this.state.areaCode,
+            phone: this.state.phone,
+          },
+        }).then(async (response) => {
           if (response.IsSuccess) {
             this.smsVerification(securityKey, "123456");
           } else {
@@ -797,21 +853,25 @@ class Login extends Component {
       result = await AccountService.Login(username, password);
       // }
       if (result !== null && result.IsSuccess /*|| isLoggedIn*/) {
-        AccountService.Activation("", "", areacode, phone).then(
-          async (response) => {
-            if (response.IsSuccess) {
-              this.props.alert("", i18n.t("common.msgTokenSent"));
-              this.setState({
-                ...this.state,
-                countdown: 60,
-                securityKey: response.data,
-              });
-              this.checkCountdown();
-            } else {
-              this.props.alert("", response.info);
-            }
+        AccountService.NewRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: areacode,
+            phone: phone,
+          },
+        }).then(async (response) => {
+          if (response.IsSuccess) {
+            this.props.alert("", i18n.t("common.msgTokenSent"));
+            this.setState({
+              ...this.state,
+              countdown: 60,
+              securityKey: response.data.stepResponse,
+            });
+            this.checkCountdown();
+          } else {
+            this.props.alert("", response.info);
           }
-        );
+        });
       }
     }
   };
