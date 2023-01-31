@@ -21,6 +21,7 @@ import { SortedMenuList } from "../../../../../utils/HeaderSorting";
 import { Textfit } from "react-textfit";
 import PromotionRoulette from "./../PromotionRoulette";
 import OnlineUserDisplayer from "../../../../Share/online-user-displayer";
+import { GameService } from "../../../../../api-services/services/GameService";
 const StyledAppBar = withStyles({
   root: {
     height: "650px",
@@ -204,7 +205,9 @@ const GameSelectionLI = styled.div`
   width: 130px;
   height: 69px;
   border-radius: 10px;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: solid 2px #adadad;
   background-color: #ededed;
   margin: 16px auto 0 auto;
@@ -540,6 +543,9 @@ class Default extends Component {
       });
     }
   }
+
+  cockfightBrandList = ["SM01", "AWC_COCKFIGHT"];
+
   formatSortedGameList() {
     var currentType = -1;
     var gameTypeListSorting = [];
@@ -556,6 +562,9 @@ class Default extends Component {
         return a.type - b.type;
       })
       .map((row, index) => {
+        if (this.cockfightBrandList.includes(row.game_platform_name)) {
+          row.type = GameTypeEnum.COCKFIGHT;
+        }
         if (currentType !== row.type) {
           gameTypeListSorting.push(row.type);
         }
@@ -563,9 +572,7 @@ class Default extends Component {
       });
 
     return gameTypeListSorting.sort((a, b) => {
-      if (config.features.MenuItem_Sorting_PB3)
-        return sortingPB3.indexOf(a) - sortingPB3.indexOf(b);
-      else if (config.features.MenuItem_Sorting_WLGHK)
+      if (config.features.MenuItem_Sorting_WLGHK)
         return sortingWLGHK.indexOf(a) - sortingWLGHK.indexOf(b);
       else if (config.features.MenuItem_Sorting_HK28)
         return sortingHK28.indexOf(a) - sortingHK28.indexOf(b);
@@ -575,8 +582,6 @@ class Default extends Component {
         return sortingPB.indexOf(a) - sortingPB.indexOf(b);
       else if (config.features.MenuItem_Sorting_GMO)
         return sortingGMO.indexOf(a) - sortingGMO.indexOf(b);
-      else if (config.features.MenuItem_Sorting_BUNNY)
-        return sortingBUNNY.indexOf(a) - sortingBUNNY.indexOf(b);
       else return a - b;
     });
   }
@@ -639,7 +644,31 @@ class Default extends Component {
       this.props.appHistory.push("/" + i18n.language + "/login");
       return;
     }
-    if (
+    if (type === GameTypeEnum.COCKFIGHT) {
+      if (params === "SM01") {
+        this.popup = window.open("", "Cockfight");
+        GameService.GetCockfight()
+          .then((e) => {
+            this.popup.document.write(e.data);
+            this.popup.document.close();
+            this.popup.focus();
+          })
+          .catch((e) => {
+            this.popup.close();
+          });
+      } else {
+        Common.closePreviousPopup();
+        Common.PopupCenter(
+          "/" +
+            i18n.language +
+            "/joinlobbygame/" +
+            GameTypeEnum.SPORTS +
+            "/" +
+            params,
+          "gamewindow"
+        );
+      }
+    } else if (
       type === GameTypeEnum.SLOT ||
       type === GameTypeEnum.TIGERSLOT ||
       type === GameTypeEnum.TABLEGAME ||
@@ -647,15 +676,14 @@ class Default extends Component {
     ) {
       this.props.navigate(`/slots/${params}/${type}`);
     } else {
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0;
       Common.closePreviousPopup();
+
       Common.PopupCenter(
         "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
         "gamewindow"
       );
-      //  window.open(
-      //    "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
-      //    "gamewindow"
-      //  );
     }
   };
 
@@ -680,6 +708,8 @@ class Default extends Component {
     switch (gameType) {
       case GameTypeEnum.LIVE:
         return i18n.t("wap.main.home.gameTab.live");
+      case GameTypeEnum.COCKFIGHT:
+        return i18n.t("common.cockfight");
       case GameTypeEnum.LIVELOBBY:
         return i18n.t("wap.main.home.gameTab.live");
       case GameTypeEnum.QIPAI:
@@ -724,6 +754,8 @@ class Default extends Component {
         return "sports";
       case GameTypeEnum.ESPORTS:
         return "esports";
+      case GameTypeEnum.COCKFIGHT:
+        return "cockfight";
       case GameTypeEnum.TIGERSLOT:
         return "slot";
       case GameTypeEnum.TABLEGAME:
@@ -1047,9 +1079,7 @@ class Default extends Component {
                   return (
                     <GameSelectionLI
                       style={
-                        i18n.language === "en-US"
-                          ? { fontSize: "29px", paddingTop: "6px" }
-                          : {}
+                        i18n.language === "en-US" ? { fontSize: "22px" } : {}
                       }
                       key={index}
                       selected={this.state.selectedGameType === type}
@@ -1136,13 +1166,14 @@ class Default extends Component {
                             ? `gameType${row.type}`
                             : `gameId${row.id}`
                         }
-                        onClick={() =>
+                        onClick={() => {
+                          console.log("row.type", row);
                           this.handleGameClick(
                             row.type,
                             row.gpcode,
                             row.game_platform_id
-                          )
-                        }
+                          );
+                        }}
                       >
                         <ButtonStartGame>
                           {i18n.t("common.startGame")}
