@@ -136,7 +136,7 @@ class AddCard extends Component {
         });
       }
     }
-    if (this.props.wallet.withdrawalList.length === 0)
+    if (this.state.channelList.length === 0)
       this.props.getWithdrawalChannel();
     if (
       config.features.Deposit_AddCard &&
