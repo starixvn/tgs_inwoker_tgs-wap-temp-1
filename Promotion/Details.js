@@ -6,7 +6,7 @@ import Header from "../../Wap/Share/Header";
 import Button from "../../Wap/Share/Button";
 import { generalAction } from "../../../api-services/actions/generalAction";
 import i18n from "../../../utils/i18n";
-import Common from "../../../utils/Common";
+
 import config from "../../../config/config";
 const moment = require("moment");
 const Content = styled.div`
@@ -22,15 +22,7 @@ const PromoDetailImage = styled.div`
   position: relative;
   margin-bottom: 20px;
 `;
-const PromoImgTitle = styled.div`
-  color: #fff;
-  position: absolute;
-  font-size: 50px;
-  width: 350px;
-  height: 230px;
-  margin: 33px 0 0 40px;
-  line-height: 0.95em;
-`;
+
 const EventTitle = styled.div`
   color: #7e0000;
   margin-bottom: 10px;
@@ -103,9 +95,13 @@ class Details extends Component {
   performRedirect = (id, promotionType) => {
     this.props.joinPromotion(id);
     if (
-      ["FirstDeposit", "DailySecondDeposit", "DailyFirstDeposit", "DepositReward", "DepositAccumulateRoulette"].indexOf(
-        promotionType
-      ) >= 0
+      [
+        "FirstDeposit",
+        "DailySecondDeposit",
+        "DailyFirstDeposit",
+        "DepositReward",
+        "DepositAccumulateRoulette",
+      ].indexOf(promotionType) >= 0
     ) {
       this.props.appHistory.push({
         pathname: "/" + i18n.language + "/deposit/" + id,
@@ -132,22 +128,6 @@ class Details extends Component {
       }
     }
   };
-  async componentDidMount() {
-    // if (this.props.promo == null) {
-    //   this.props.appHistory.replace("/" + i18n.language + "/promotion-list");
-    // } else {
-    //   BonusService.GetActivityDetails(this.props.promo.id).then((response) => {
-    //     if (response.IsSuccess) {
-    //       this.setState({
-    //         ...this.state,
-    //         details: response.data,
-    //       });
-    //     } else {
-    //       this.props.alert("", response.info);
-    //     }
-    //   });
-    // }
-  }
 
   handleBackClick = () => {
     this.props.appHistory.replace("/" + i18n.language + "/promotion-list");

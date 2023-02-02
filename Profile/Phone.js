@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import Textbox from "../Share/Textbox";
+
 import TextboxWithButton from "../Share/TextboxWithButton";
 import BaseProfile from "./BaseProfile";
 import { accountAction } from "../../../api-services/actions/accountAction";
@@ -89,11 +89,11 @@ class Phone extends BaseProfile {
   }
 
   handleChangePhone = (e) => {
-    
     this.setState({ ...this.state, phone: e.target.value });
     if (
       (config.features.Register_CustomFlow_IDR &&
-      !this.props.account.registercompleted) || config.features.InitPhone_WithoutVerify
+        !this.props.account.registercompleted) ||
+      config.features.InitPhone_WithoutVerify
     ) {
       this.onTextChanged();
     }
@@ -211,7 +211,8 @@ class Phone extends BaseProfile {
 
     if (
       (config.features.Register_CustomFlow_IDR &&
-      !this.props.account.registercompleted ) || config.features.InitPhone_WithoutVerify
+        !this.props.account.registercompleted) ||
+      config.features.InitPhone_WithoutVerify
     ) {
       this.props.getRegisterStatus().then(async (response) => {
         if (response.IsSuccess) {
@@ -296,7 +297,7 @@ class Phone extends BaseProfile {
                           pathname: "/" + i18n.language + "/profile/email",
                           state: { forced: true },
                         });
-                      }else{
+                      } else {
                         this.setState({
                           ...this.state,
                           code: "",
@@ -436,7 +437,8 @@ class Phone extends BaseProfile {
             !this.state.isConfigured
           ) {
             return (
-              (!config.features.Profile_DisableVerifyPhone && !config.features.InitPhone_WithoutVerify) && (
+              !config.features.Profile_DisableVerifyPhone &&
+              !config.features.InitPhone_WithoutVerify && (
                 <TextboxWithButton
                   buttonlabel={
                     this.state.countdownToken <= 0

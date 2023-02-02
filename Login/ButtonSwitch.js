@@ -19,18 +19,6 @@ const Container = styled.div`
   border-radius: 10px;
 `;
 
-const SwitchContainer = styled.div`
-  width: 319px;
-  height: 81px;
-
-  border: solid 1px #ffffff;
-  background-image: linear-gradient(
-    to top,
-    ${({ theme }) => theme.primaryGradient},
-    ${({ theme }) => theme.primary}
-  );
-`;
-
 const SwitchTextContainerComponent = styled.div`
   width: 319px;
   height: 81px;

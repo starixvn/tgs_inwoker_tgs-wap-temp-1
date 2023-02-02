@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import i18n from '../../../../utils/i18n'
+import React from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+
 const AnnounceContainer = styled.div`
   width: 1280px;
   height: 38px;
   margin: 0 auto;
-`
+`;
 
 const MarqueeContainer = styled.div`
   width: 890px;
@@ -16,7 +16,7 @@ const MarqueeContainer = styled.div`
   color: #ffffff;
   float: left;
   line-hight: 26px;
-`
+`;
 
 function Marquee(props) {
   return (
@@ -46,14 +46,14 @@ function Marquee(props) {
         )}
       </MarqueeContainer>
     </AnnounceContainer>
-  )
+  );
 }
 const mapDispatchToProps = (dispatch) => {
-  return {}
-}
+  return {};
+};
 const mapStateToProps = (state) => {
   return {
-    ui: state.ui
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Marquee)
+    ui: state.ui,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Marquee);

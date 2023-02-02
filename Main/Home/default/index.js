@@ -198,7 +198,8 @@ const GameSelectionUL = styled.div`
   padding: 0 0px;
   width: 176px;
   overflow-y: auto;
-  height: calc(100vh - 640px);
+  height: calc(100vh - 740px);
+  padding-bottom: 10px;
 `;
 
 const GameSelectionLI = styled.div`
@@ -587,12 +588,39 @@ class Default extends Component {
   }
 
   consistentTop = 650;
+
+  constructor(props) {
+    super(props);
+    this.scrollRef = React.createRef();
+  }
+
   handleScroll = (e) => {
     const doc = document.documentElement;
 
     let top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
-    top = top + this.consistentTop;
+    top = top + 530;
+
+    let reachedTheForthItem =
+      this.state.gameTypeListSorting.indexOf(this.state.selectedGameType) > 3 &&
+      this.state.gameTypeListSorting.indexOf(this.state.selectedGameType) < 6;
+    let reachedTheSeventhItem =
+      this.state.gameTypeListSorting.indexOf(this.state.selectedGameType) >= 6;
+    if (this.state.gameTypeListSorting.length > 5) {
+      if (reachedTheForthItem) {
+        this.scrollRef.current.scrollTo(0, 500);
+      } else if (reachedTheSeventhItem) {
+        this.scrollRef.current.scrollTo(0, 750);
+      } else {
+        this.scrollRef.current.scrollTo(0, 0);
+      }
+    } else {
+      this.scrollRef.current.scrollTo(
+        0,
+        this.state.gameTypeListSorting.indexOf(this.state.selectedGameType) *
+          150
+      );
+    }
 
     var D = document;
     var docHeight = Math.max(
@@ -733,6 +761,7 @@ class Default extends Component {
         return "";
     }
   }
+
   getImgPrefix(gameType) {
     switch (gameType) {
       case GameTypeEnum.FISH:
@@ -1073,7 +1102,7 @@ class Default extends Component {
             </ProfileContainer>
           </FixedContainer>
           <GameSelectionContainer>
-            <GameSelectionUL>
+            <GameSelectionUL ref={this.scrollRef}>
               {(() => {
                 return this.state.gameTypeListSorting.map((type, index) => {
                   return (
@@ -1115,38 +1144,12 @@ class Default extends Component {
                     );
                   } else return b - a;
                 })
-                .sort(function (a, b) {
-                  if (config.features.MenuItem_Sorting_PB3)
-                    return (
-                      sortingPB3.indexOf(a.type) - sortingPB3.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_HK28)
-                    return (
-                      sortingHK28.indexOf(a.type) - sortingHK28.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_WLGHK)
-                    return (
-                      sortingWLGHK.indexOf(a.type) -
-                      sortingWLGHK.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_SKY)
-                    return (
-                      sortingSKY.indexOf(a.type) - sortingSKY.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_PB)
-                    return (
-                      sortingPB.indexOf(a.type) - sortingPB.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_GMO)
-                    return (
-                      sortingGMO.indexOf(a.type) - sortingGMO.indexOf(b.type)
-                    );
-                  else if (config.features.MenuItem_Sorting_BUNNY)
-                    return (
-                      sortingBUNNY.indexOf(a.type) -
-                      sortingBUNNY.indexOf(b.type)
-                    );
-                  else return a.type - b.type;
+
+                .sort((a, b) => {
+                  return (
+                    this.state.gameTypeListSorting.indexOf(a.type) -
+                    this.state.gameTypeListSorting.indexOf(b.type)
+                  );
                 })
                 .map((row, index) => {
                   var jsx = (
@@ -1167,7 +1170,6 @@ class Default extends Component {
                             : `gameId${row.id}`
                         }
                         onClick={() => {
-                          console.log("row.type", row);
                           this.handleGameClick(
                             row.type,
                             row.gpcode,
@@ -1239,7 +1241,7 @@ class Default extends Component {
                     "DEPOSITACCUMULATEROULETTE"
                 )
                 .map((roulette, index) => {
-                  return roulette.roulettecount >= 0 && index === 0 ? (
+                  return roulette.roulettecount > 0 && index === 0 ? (
                     <PromotionRoulette
                       rouletteType={roulette.promotiontype.toUpperCase()}
                       promotionDetail={{

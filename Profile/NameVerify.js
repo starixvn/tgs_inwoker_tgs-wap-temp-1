@@ -12,24 +12,6 @@ import { RESET_ACCOUNTRESULT } from "../../../api-services/constant/actionType";
 import config from "../../../config/config";
 import { AccountService } from "../../../api-services/services/AccountService";
 
-const CustomInput = styled.input`
-  font-size: 28px;
-  margin-top: 10px;
-  font-weight: 500;
-  border: 0;
-  width: 100%;
-  padding: 0;
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    color: #c3c3c3;
-  }
-  &:disabled {
-    background: #fff;
-    -webkit-text-fill-color: #000;
-    opacity: 1;
-  }
-`;
-
 const AnotherWrapper = styled.div`
   width: 700px;
   height: 170px;
@@ -92,9 +74,8 @@ class NameVerify extends BaseProfile {
     ) {
       if (this.props.account.updateCardResult.IsSuccess) {
         if (config.features.ICVerificationUpload) {
-          AccountService.UploadIC(this.state.icUpload[0]).then((response)=>{
-            if(!response.IsSuccess)
-            {
+          AccountService.UploadIC(this.state.icUpload[0]).then((response) => {
+            if (!response.IsSuccess) {
               this.props.alert("", response.info);
             }
           });

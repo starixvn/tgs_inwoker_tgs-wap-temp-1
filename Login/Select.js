@@ -12,27 +12,6 @@ const Container = styled.div`
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.4);
 `;
 
-const TextSpan = styled.span`
-  margin: 22px 15px 0 15px;
-  width: 56px;
-  height: 38px;
-  float: left;
-
-  background-color: ${({ notNull }) => {
-    return !notNull ? "#ABABAB" : "black";
-  }};
-
-  mask: url(${(props) => {
-      return props.icon;
-    }})
-    no-repeat center / contain;
-  -webkit-mask: url(${(props) => {
-      return props.icon;
-    }})
-    no-repeat center / contain;
-  background-size: 100%;
-`;
-
 const InputTextBox = styled.input`
   width: 300px;
   color: #000;
@@ -64,21 +43,6 @@ const TextContainer = styled.div`
   height: 100%;
 `;
 
-const RightIcon = styled.div`
-  width: 40px;
-  height: 60px;
-  background: url(${(props) =>
-      props.password === true
-        ? props.hidden
-          ? process.env.PUBLIC_URL + `/assets/images/wapp/hide-password.png`
-          : process.env.PUBLIC_URL + `/assets/images/wapp/show-password.png`
-        : ""})
-    no-repeat;
-  background-size: contain;
-  margin: 25px 25px 0 0;
-  display: inline-block;
-  float: left;
-`;
 class Select extends Component {
   render() {
     return (

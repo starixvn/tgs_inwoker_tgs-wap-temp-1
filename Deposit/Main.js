@@ -13,8 +13,9 @@ import Textbox from "../../Wap/Share/Textbox";
 import Button from "../../Wap/Share/Button";
 
 import i18n from "../../../utils/i18n";
-import copy from "copy-to-clipboard";
+
 import config from "../../../config/config";
+import { utility } from "../../../utils/utility";
 
 const GMOstyle = config.brand === "GMO";
 
@@ -123,10 +124,7 @@ const TransferValue = styled.div`
   float: left;
   margin-left: 10px;
 `;
-const UploadInput = styled.input`
-  font-size: 30px;
-  margin-top: 14px;
-`;
+
 const ExchangeRateContainer = styled.div`
   margin: 20px auto;
   font-size: ${() => (config.brand === "WGHK" ? `24px` : `28px`)};
@@ -251,7 +249,7 @@ class Main extends Component {
     const performCopy = (content) => {
       this.props.alert("", i18n.t("affiliate.copied"));
 
-      copy(content);
+      utility.copy(content);
     };
 
     const CopyFeature = ({ copyContent }) => {

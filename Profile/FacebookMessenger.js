@@ -1,40 +1,40 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from "react";
+import { connect } from "react-redux";
 
-import { withRouter } from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
-import Textbox from '../Share/Textbox'
+import Textbox from "../Share/Textbox";
 
-import BaseProfile from './BaseProfile'
-import i18n from '../../../utils/i18n'
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {AccountService} from "../../../api-services/services/AccountService";
-import config from '../../../config/config'
-import BottomNote from '../Share/BottomNote'
+import BaseProfile from "./BaseProfile";
+import i18n from "../../../utils/i18n";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { AccountService } from "../../../api-services/services/AccountService";
+import config from "../../../config/config";
+import BottomNote from "../Share/BottomNote";
 class FacebookMessenger extends BaseProfile {
   state = {
-    fb: '',
-    isConfigured: false
-  }
+    fb: "",
+    isConfigured: false,
+  };
   componentDidMount() {
-    let isConfigured = false
-    if (this.props.account.info.member_fb) isConfigured = true
+    let isConfigured = false;
+    if (this.props.account.info.member_fb) isConfigured = true;
     this.setState({
-      fb: isConfigured ? this.props.account.info.member_fb : '',
-      isConfigured: isConfigured
-    })
+      fb: isConfigured ? this.props.account.info.member_fb : "",
+      isConfigured: isConfigured,
+    });
   }
 
   handleChangeNumber = (e) => {
-    this.setState({ fb: e.target.value })
-    this.onTextChanged()
-  }
+    this.setState({ fb: e.target.value });
+    this.onTextChanged();
+  };
 
   isDisableButton = () => {
-    return !this.state.fb
-  }
+    return !this.state.fb;
+  };
   handleSubmitClicked = () => {
-    const fb = this.state.fb
+    const fb = this.state.fb;
     //validate here
     //sdasdasdasda
     // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
@@ -49,9 +49,9 @@ class FacebookMessenger extends BaseProfile {
     //   return
     // }
 
-    this.showLoading(true)
+    this.showLoading(true);
     //api
-    AccountService.UpdateFB(fb)
+    AccountService.UpdateIM(fb, "fb", "facebookmessenger")
       .then((response) => {
         if (response.IsSuccess) {
           this.props.getAccountProfile().then((responseUpdate) => {
@@ -59,79 +59,86 @@ class FacebookMessenger extends BaseProfile {
               this.setState({
                 ...this.state,
                 fb: fb,
-                isConfigured: true
-              })
+                isConfigured: true,
+              });
             }
-            this.showLoading(false)
-            this.props.alert(
-              '',
-              i18n.t('common.msgSuccessUpdateProfile')
-            )
-          })
+            this.showLoading(false);
+            this.props.alert("", i18n.t("common.msgSuccessUpdateProfile"));
+          });
         } else {
-          this.props.alert('', response.msg)
-          this.showLoading(false)
+          this.props.alert("", response.msg);
+          this.showLoading(false);
           // this.props.enqueueSnackbar(response.msg, {
           //   key: "error"
           // });
         }
       })
       .catch((err) => {
-        this.props.alert('', err)
+        this.props.alert("", err);
         // this.props.enqueueSnackbar(err, {
         //   key: "error"
         // });
-        this.showLoading(false)
-      })
-  }
+        this.showLoading(false);
+      });
+  };
 
   render() {
     return this.setupContent(
-      i18n.t('common.fb'),
+      i18n.t("common.fb"),
       <Textbox
-        style={{ margin: '50px auto 20px auto' }}
+        style={{ margin: "50px auto 20px auto" }}
         value={this.state.fb}
         onChange={this.handleChangeNumber}
-        placeholder={i18n.t('profile.fb.plsEnterFB')}
-        label={i18n.t('common.fb')}
+        placeholder={i18n.t("profile.fb.plsEnterFB")}
+        label={i18n.t("common.fb")}
         disabled={
-          this.state.isConfigured && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)
+          this.state.isConfigured &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
             ? true
             : false
         }
         maxLength={15}
       ></Textbox>,
       this.state.isConfigured && config.features.ChangesNotAllowed
-        ? i18n.t('common.configured')
+        ? i18n.t("common.configured")
         : this.state.fb !== this.props.account.member_fb &&
-            i18n.t('common.complete'),
+            i18n.t("common.complete"),
       (() => {
-        if (this.state.isConfigured && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) {
+        if (
+          this.state.isConfigured &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
+        ) {
           return (
             <BottomNote
-              text1={i18n.t('profile.fb.toEdit')}
-              link={'../chat'}
+              text1={i18n.t("profile.fb.toEdit")}
+              link={"../chat"}
               text2={i18n.t(
-                (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)
-                  ? 'common.customerService'
-                  : 'profile.fb.here'
+                config.features.ChangesNotAllowed ||
+                  config.features.Profile_ExistingDetails_ViewOnly
+                  ? "common.customerService"
+                  : "profile.fb.here"
               )}
             ></BottomNote>
-          )
+          );
         }
       })()
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.account
-  }
-}
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAccountProfile: () => dispatch(accountAction.getAccountProfile(true))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(FacebookMessenger))
+    getAccountProfile: () => dispatch(accountAction.getAccountProfile(true)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(FacebookMessenger));

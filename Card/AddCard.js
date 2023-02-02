@@ -25,7 +25,6 @@ const Container = styled.div`
 const StyledAppBar = withStyles((theme) => ({
   root: {
     height: "170px",
-    background: theme.palette.primary.main,
 
     background:
       `linear-gradient(rgba(` +
@@ -556,71 +555,21 @@ class AddCard extends Component {
       "อาคารสงเคราะห์ (Government Housing Bank - GH)",
     ];
 
-    var depositListEWallet = false;
-    var withdrawalListEwallet = false;
-    var depositListPulsa = false;
-    var withdrawalListPulsa = false;
+    const listDetector = (list, type) => {
+      return (
+        Common.arrayValidator(list) &&
+        list[this.state.selectedBankTypeIndex].banktype === type
+      );
+    };
 
-    if (this.state.isDeposit) {
-      depositListEWallet =
-        Common.arrayValidator(this.props.wallet.depositList) &&
-        this.props.wallet.depositList[this.state.selectedBankTypeIndex]
-          .banktype === "EWallet";
-      // .filter(
-      //   (card) => card.banktype === "EWallet"
-      // ).length > 0;
-      depositListPulsa =
-        Common.arrayValidator(this.props.wallet.depositList) &&
-        this.props.wallet.depositList[this.state.selectedBankTypeIndex]
-          .banktype === "Pulsa";
-      // .filter(
-      //   (card) => card.banktype === "Pulsa"
-      // ).length > 0;
-    } else {
-      withdrawalListEwallet =
-        Common.arrayValidator(this.props.wallet.withdrawalList) &&
-        this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-          .banktype === "EWallet";
-      // .filter(
-      //   (card) => card.banktype === "EWallet"
-      // ).length > 0;
-      withdrawalListPulsa =
-        Common.arrayValidator(this.props.wallet.withdrawalList) &&
-        this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-          .banktype === "Pulsa";
-      // .filter(
-      //   (card) => card.banktype === "Pulsa"
-      // ).length > 0;
-    }
+    const selectedBankType = (type) => {
+      return this.props.isDeposit
+        ? listDetector(this.props.wallet.depositList, type)
+        : listDetector(this.props.wallet.withdrawalList, type);
+    };
 
-    // var depositListEWallet =
-    //   Common.arrayValidator(this.props.wallet.depositList) &&
-    //   this.props.wallet.depositList.filter(
-    //     (card) => card.banktype === "EWallet"
-    //   ).length > 0;
-    // [this.state.selectedBankTypeIndex]
-    //   .banktype === "";
-
-    // var
-
-    // var depositListPulsa =
-    //   Common.arrayValidator(this.props.wallet.depositList) &&
-    //   this.props.wallet.depositList.filter(
-    //     (card) => card.banktype === "Pulsa"
-    //   ).length > 0;
-    //   // [this.state.selectedBankTypeIndex]
-    //   //   .banktype === "";
-    // var
-
-    const isEwallet = this.state.isDeposit
-      ? depositListEWallet
-      : withdrawalListEwallet;
-
-    const isPulsa = this.state.isDeposit
-      ? depositListPulsa
-      : withdrawalListPulsa;
-
-    const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
+    const eWalletCustom =
+      selectedBankType("EWallet") && config.features.AddCard_EWalletCustoms;
 
     return (
       <Container>
@@ -715,7 +664,7 @@ class AddCard extends Component {
                   config.features.AddCard_HideCertainField ||
                   config.features.AddCard_Bank_Custom_IDR ||
                   eWalletCustom ||
-                  isPulsa
+                  selectedBankType("Pulsa")
                 ) && (
                   <>
                     <Textbox
@@ -873,7 +822,12 @@ class AddCard extends Component {
                   phone: value,
                 });
               }}
-              maxLength={config.features.MAX_PHONE_LENGTH || 10}
+              maxLength={
+                (selectedBankType("ThirdParty") ||
+                  selectedBankType("Pulsa") ||
+                  selectedBankType("FPS")) &&
+                config.features.MAX_PHONE_LENGTH
+              }
               type={"text"}
               placeholder={
                 config.features.AddCard_InputAddFPS
@@ -917,7 +871,7 @@ class AddCard extends Component {
               }}
               type={"text"}
               placeholder={
-                eWalletCustom || isPulsa
+                eWalletCustom || selectedBankType("Pulsa")
                   ? i18n.t("card.addCard.msgEnterPhone")
                   : config.features.AddCard_DisplayGCash
                   ? i18n.t("piso.msgEnterWithdrawalNumber")
@@ -928,7 +882,7 @@ class AddCard extends Component {
                   : i18n.t("common.msgEnterWithdrawalNumber")
               }
               label={
-                eWalletCustom || isPulsa
+                eWalletCustom || selectedBankType("Pulsa")
                   ? i18n.t("card.addCard.phone")
                   : config.features.AddCard_DisplayGCash
                   ? i18n.t("piso.withdrawalNumber")
@@ -937,6 +891,12 @@ class AddCard extends Component {
                   : config.features.AddCard_Bank_Custom_IDR
                   ? i18n.t("idr.withdrawalNumber")
                   : i18n.t("common.withdrawalNumber")
+              }
+              maxLength={
+                (selectedBankType("ThirdParty") ||
+                  selectedBankType("Pulsa") ||
+                  selectedBankType("FPS")) &&
+                config.features.MAX_PHONE_LENGTH
               }
             ></Textbox>
             <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>

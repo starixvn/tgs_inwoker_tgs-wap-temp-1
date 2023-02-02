@@ -19,8 +19,6 @@ import Tab from "@material-ui/core/Tab";
 import Header from "../Share/Header";
 
 import { withStyles } from "@material-ui/core/styles";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -302,6 +300,15 @@ class Deposit extends Component {
       } else {
         this.props.alert("", this.props.wallet.depositResult.info);
         this.setState({ ...this.state, loading: false });
+        if (
+          this.props.wallet.depositTypeList[
+            this.state.selectedPaymentIndex
+          ].paymentcode.toUpperCase() === "WANDAPAY"
+        ) {
+          if (!this.props.account.info.member_name) {
+            this.props.history.push("/" + i18n.language + "/profile/name");
+          }
+        }
       }
     }
     if (
@@ -582,12 +589,6 @@ class Deposit extends Component {
         }
       }
     } else {
-      if (payment.paymentcode.toUpperCase() === "WANDAPAY") {
-        if (!this.props.account.info.member_name) {
-          this.props.history.push("/" + i18n.language + "/profile/name");
-          return;
-        }
-      }
       this.props.performDeposit(
         this.state.amount.replace(/,/g, ""),
         channel.id,

@@ -183,17 +183,16 @@ class Login extends Component {
     promotionChannelId: localStorage.getItem("promotionChannelId"),
     withdrawalPassword: "",
     confirmWithdrawalPassword: "",
-    withdrawalPassword: "",
-    withdrawalPassword: "",
+
     confirmPassword: "",
     tnc: true,
     rememberMe: false,
     loading: false,
-    areaCode: config.features.PhonePrefix,
+
     code: "",
     countdown: 0,
     securityKey: "",
-    phone: "",
+
     //TGS-357
     upper: localStorage.getItem("upper"),
     promoteType:
@@ -244,6 +243,8 @@ class Login extends Component {
           case "register":
           case "register_auth":
             this.handleChangeSelection(1);
+            break;
+          default:
             break;
         }
       } else {
@@ -731,21 +732,19 @@ class Login extends Component {
   };
 
   smsVerification = (securityKey, code) => {
-    this.props
-      .newRegister("InitPhone", {
-        input: "Valid",
-        data: {
-          securitykey: securityKey,
-          validatecode: code,
-        },
-      })
-      .then(async (response) => {
-        if (response.IsSuccess) {
-          this.props.appHistory.replace("/" + i18n.language + "/main/home");
-        } else {
-          this.props.alert("", response.info);
-        }
-      });
+    AccountService.NewRegister("InitPhone", {
+      input: "Valid",
+      data: {
+        securitykey: securityKey,
+        validatecode: code,
+      },
+    }).then(async (response) => {
+      if (response.IsSuccess) {
+        this.props.appHistory.replace("/" + i18n.language + "/main/home");
+      } else {
+        this.props.alert("", response.info);
+      }
+    });
   };
   // smsVerification = (securityKey, code) => {
   //   AccountService.VerifyActivation(securityKey, code).then(
@@ -817,11 +816,11 @@ class Login extends Component {
   handleGetCodeClick = async () => {
     const username = this.state.username;
     const password = this.state.password;
-    const code = this.state.code;
+
     const countdown = this.state.countdown;
     const areacode = this.state.areaCode;
     const phone = this.state.phone;
-    const isLoggedIn = false; //(this.props.account.token !== "" && this.props.account.token !== null );
+
     var result = null;
 
     if (countdown <= 0) {
@@ -894,7 +893,7 @@ class Login extends Component {
     const username = this.state.username;
     const password = this.state.password;
     const phone = this.state.phone;
-    const code = this.state.code;
+
     const areaCode = this.state.areaCode;
     const confirmPassword = this.state.confirmPassword;
     const email = this.state.email;
@@ -1029,12 +1028,11 @@ class Login extends Component {
     const username = this.state.username;
     const password = this.state.password;
     const phone = this.state.phone;
-    const code = this.state.code;
+
     const areaCode = this.state.areaCode;
     const confirmPassword = this.state.confirmPassword;
     const email = this.state.email;
-    const promotion_id = this.state.promoId;
-    const upper = this.state.upper;
+
     const tnc = this.state.tnc;
     var expr = /^[a-zA-Z0-9]{6,16}$/;
     if (!expr.test(username)) {
@@ -1098,7 +1096,6 @@ class Login extends Component {
         .newRegister("CreatePlayer", {
           username: username,
           pwd: password,
-          upper: this.state.upper,
           invitationcode: this.state.promoId,
         })
         .then(async (response) => {
