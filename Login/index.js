@@ -464,7 +464,7 @@ class Login extends Component {
       if (setPhoneDontCareDuplicate) {
         await this.props
           .newRegister("SetPhoneDontCareDuplicate", {
-            areacode: areacode,
+            areacode: this.state.areaCode,
             phone: phone,
           })
           .then(async (response) => {
@@ -540,6 +540,34 @@ class Login extends Component {
       });
       this.handleLoginSuccess(result.data);
     }
+    // if (result.IsSuccess) {
+    //   AccountService.Activation(username, password, areacode, phone).then(
+    //     async (response) => {
+    //       if (response.IsSuccess) {
+    //         AccountService.VerifyActivation(response.data, "123456");
+    //         // .then(
+    //         //   async (response) => {
+
+    //         //   }
+    //         // );
+    //       }
+    //       // else {
+    //       //   this.handleLoginSuccess(result.data);
+    //       // }
+    //     }
+    //   );
+    //   AccountService.ActivationEmail(email).then(async (response) => {
+    //     if (response.IsSuccess) {
+    //       AccountService.VerifyActivationEmail(response.data, "123456");
+    //       // .then(
+    //       //   async (response) => {
+    //       //     this.handleLoginSuccess(result.data);
+    //       //   }
+    //       // );
+    //     }
+    //   });
+    //   this.handleLoginSuccess(result.data);
+    // }
   };
   performLoginWithPhoneAndEmail = async (
     username,
@@ -555,7 +583,7 @@ class Login extends Component {
       if (setPhoneDontCareDuplicate) {
         await this.props
           .newRegister("SetPhoneDontCareDuplicate", {
-            areacode: this.state.areaCode,
+            areacode: areacode,
             phone: phone,
           })
           .then(async (response) => {
@@ -718,6 +746,17 @@ class Login extends Component {
       }
     });
   };
+  // smsVerification = (securityKey, code) => {
+  //   AccountService.VerifyActivation(securityKey, code).then(
+  //     async (response) => {
+  //       if (response.IsSuccess) {
+  //         this.props.appHistory.replace("/" + i18n.language + "/main/home");
+  //       } else {
+  //         this.props.alert("", response.info);
+  //       }
+  //     }
+  //   );
+  // };
 
   handleActivationClick = async () => {
     const username = this.state.username;
@@ -1057,6 +1096,7 @@ class Login extends Component {
         .newRegister("CreatePlayer", {
           username: username,
           pwd: password,
+          upper: this.state.upper,
           invitationcode: this.state.promoId,
         })
         .then(async (response) => {
