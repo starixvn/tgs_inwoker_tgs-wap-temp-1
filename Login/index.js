@@ -1423,7 +1423,7 @@ class Login extends Component {
                         }
                         disabled={this.state.prefill}
                       ></Textbox>
-                      {config.features.HaveAffiliateFeature && (
+                      {this.props.general.haveAffiliate && (
                         <CustomInvitationSelect
                           disabled={this.state.prefill}
                           value={this.state.promoteType}
