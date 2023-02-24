@@ -1304,6 +1304,7 @@ const PromotionRoulette = (props) => {
                       (() => {
                         return (
                           (promotionDetail.localization &&
+                            promotionDetail.localization[i18n.language] &&
                             promotionDetail.localization[i18n.language]
                               .content) ||
                           promotionDetail.content ||
@@ -1324,6 +1325,7 @@ const PromotionRoulette = (props) => {
                       (() => {
                         return (
                           (promotionDetail.localization &&
+                            promotionDetail.localization[i18n.language] &&
                             promotionDetail.localization[i18n.language]
                               .terms) ||
                           promotionDetail.terms ||
