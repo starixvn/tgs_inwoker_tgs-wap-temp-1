@@ -3,18 +3,19 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import Tooltip from "@material-ui/core/Tooltip";
 import Header from "../../Wap/Share/Header";
-
 import { withStyles } from "@material-ui/core/styles";
 import Loading from "../../Wap/Share/Loading";
 import i18n from "../../../utils/i18n";
 import QRCode from "react-qr-code";
 import { utility } from "../../../utils/utility";
+import { generalAction } from "../../../api-services/actions/generalAction";
 
 const QRCodeLabel = styled.div`
   margin: 30px auto;
   display: table;
   font-size: 30px;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) =>
+    theme.wapSecondary ? theme.wapSecondary : theme.secondary};
 `;
 const QRCodeContainer = styled.div`
   padding: 20px;
@@ -39,7 +40,7 @@ const CustomLabel = styled.div`
   color: #212e31;
 `;
 const CustomInput = styled.input`
-  color: ${({ theme }) => theme.secondary};
+  color: #000;
   font-size: 28px;
   margin: 25px 0 25px 10px;
   font-weight: 500;
@@ -71,6 +72,63 @@ const Button = styled.div`
   margin-top: 12px;
 `;
 
+const CustomSelectContainer = styled.div`
+  width: 700px;
+  height: 170px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+`;
+
+const CustomSelect = styled.select`
+  height: 104px;
+  font-size: 28px;
+  margin-top: 18px;
+  border-radius: 16px;
+  border: solid 1px transparent;
+  width: 100%;
+  padding: 16px 32px;
+`;
+
+const AnotherCustomLabel = styled.div`
+  font-size: 24px;
+  font-weight: 600;
+  margin-left: 3px;
+  color: ${({ theme }) =>
+    theme.wapSecondary ? theme.wapSecondary : theme.secondary};
+`;
+
+const Table = styled.table`
+  width: 700px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #e5e5e5;
+  font-size: 24px;
+  font-weight: 600;
+  color: #212e31;
+  text-align: center;
+  background: #fff;
+  border-radius: 30px;
+  thead {
+    tr {
+      th {
+        padding: 20px 0;
+        border-bottom: 1px solid #e5e5e5;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        padding: 20px 0;
+        font-weight: 200;
+        border-bottom: 1px solid #e5e5e5;
+      }
+    }
+  }
+`;
+
 const LightTooltip = withStyles((theme) => ({
   tooltip: {
     fontSize: 30,
@@ -83,7 +141,23 @@ class Affiliate extends Component {
     this.state = {
       loading: false,
       copyTooltips: false,
+      rebates: [],
+      rebateType: 1,
     };
+  }
+
+  componentDidMount() {
+    if (this.state.rebates.length === 0) {
+      this.props.getBrandAllAgent().then((res) => {
+        if (res.IsSuccess) {
+          console.log(res.data);
+          this.setState({
+            ...this.state,
+            rebates: res.data,
+          });
+        }
+      });
+    }
   }
 
   handleBackClick = () => {
@@ -100,6 +174,14 @@ class Affiliate extends Component {
 
   render() {
     var affiliateLink = `https://${window.location.hostname}/${i18n.language}/p/${this.props.account.info.playercode}?do=register`;
+    const types = [
+      { value: 1, title: "sport" },
+      { value: 2, title: "virtualsports" },
+      { value: 5, title: "live" },
+      { value: 7, title: "chess" },
+      { value: 13, title: "lottery" },
+      { value: 15, title: "electron" },
+    ];
     return (
       <React.Fragment>
         <Header
@@ -144,6 +226,59 @@ class Affiliate extends Component {
           </LightTooltip>
         </CustomText>
 
+        <CustomSelectContainer style={{ marginTop: 40 }}>
+          <AnotherCustomLabel>{i18n.t("rebateRate.title")}</AnotherCustomLabel>
+          <CustomSelect
+            native
+            onChange={(e) => {
+              this.setState({
+                ...this.state,
+                rebateType: e.target.value,
+              });
+            }}
+          >
+            {types.map((item, index) => {
+              return (
+                <option key={index} value={item.value}>
+                  {i18n.t(`common.${item.title}`)}
+                </option>
+              );
+            })}
+          </CustomSelect>
+        </CustomSelectContainer>
+
+        <Table>
+          <thead>
+            <tr>
+              <th>{i18n.t("rebateRate.players")}</th>
+              <th>{i18n.t("rebateRate.turnover")}</th>{" "}
+              <th>{i18n.t("rebateRate.rebates")} (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.rebates
+              .filter((item) => {
+                if (this.state.rebateType === 0) {
+                  return true;
+                } else {
+                  return (
+                    item.allagentgametype.toString() ===
+                    this.state.rebateType.toString()
+                  );
+                }
+              })
+              .map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{item.activenumber}</td>
+                    <td>{item.turnover}</td>
+                    <td>{item.rebatepercentage}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
+
         <Loading show={this.state.loading}></Loading>
       </React.Fragment>
     );
@@ -153,11 +288,13 @@ class Affiliate extends Component {
 const mapStateToProps = (state) => {
   return {
     account: state.account,
+    general: state.general,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
+    getBrandAllAgent: () => dispatch(generalAction.getBrandAllAgent()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Affiliate);
