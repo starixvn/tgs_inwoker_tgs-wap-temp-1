@@ -100,19 +100,17 @@ const GameItemSelection = styled.div`
   margin: 12px 0;
   overflow-x: auto;
 `;
-const GameItemUL = styled.ul`
-  display: -webkit-box;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+const GameItemUL = styled.div`
+  display: flex;
+  overflow-x: auto;
 `;
 
 const GameItem = styled.div`
   padding: 6px 20px 0 20px;
   font-size: 20px;
-
+  white-space: nowrap;
   text-align: center;
-
+  min-width: fit-content;
   float: left;
   ${(props) =>
     props.selected
