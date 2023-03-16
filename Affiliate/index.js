@@ -80,6 +80,10 @@ const CustomSelectContainer = styled.div`
   flex-direction: column;
 `;
 
+const CustomSelectGapLeaver = styled.div`
+  padding: 5px;
+`;
+
 const CustomSelect = styled.select`
   height: 104px;
   font-size: 28px;
@@ -88,6 +92,12 @@ const CustomSelect = styled.select`
   border: solid 1px transparent;
   width: 100%;
   padding: 16px 32px;
+  background: #fff;
+  color: #000;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const AnotherCustomLabel = styled.div`
@@ -103,7 +113,7 @@ const Table = styled.table`
   margin: 0 auto;
   border-collapse: collapse;
   border-spacing: 0;
-  border: 1px solid #e5e5e5;
+
   font-size: 24px;
   font-weight: 600;
   color: #212e31;
@@ -228,23 +238,25 @@ class Affiliate extends Component {
 
         <CustomSelectContainer style={{ marginTop: 40 }}>
           <AnotherCustomLabel>{i18n.t("rebateRate.title")}</AnotherCustomLabel>
-          <CustomSelect
-            native
-            onChange={(e) => {
-              this.setState({
-                ...this.state,
-                rebateType: e.target.value,
-              });
-            }}
-          >
-            {types.map((item, index) => {
-              return (
-                <option key={index} value={item.value}>
-                  {i18n.t(`common.${item.title}`)}
-                </option>
-              );
-            })}
-          </CustomSelect>
+          <CustomSelectGapLeaver>
+            <CustomSelect
+              native
+              onChange={(e) => {
+                this.setState({
+                  ...this.state,
+                  rebateType: e.target.value,
+                });
+              }}
+            >
+              {types.map((item, index) => {
+                return (
+                  <option key={index} value={item.value}>
+                    {i18n.t(`common.${item.title}`)}
+                  </option>
+                );
+              })}
+            </CustomSelect>
+          </CustomSelectGapLeaver>
         </CustomSelectContainer>
 
         <Table>
