@@ -573,6 +573,7 @@ class Wap extends Component {
       this.props.getPromotion();
       this.props.getDepositMethod();
       this.props.getWithdrawalChannel();
+      this.props.getAffiliateStatus();
     }
 
     // this.props.getMobilePrefix();
@@ -757,6 +758,7 @@ class Wap extends Component {
         this.props.getBrandCommunicationList();
         this.props.getLiveChatURL();
         this.props.getPromotion();
+        this.props.getAffiliateStatus();
       }
     }
     if (
@@ -1200,6 +1202,7 @@ const mapDispatchToProps = (dispatch) => {
     getPromotion: () => dispatch(generalAction.getPromotion()),
     getPromotionRouletteCount: () =>
       dispatch(generalAction.getPromotionRouletteCount()),
+    getAffiliateStatus: () => dispatch(generalAction.getAffiliateStatus()),
   };
 };
 
