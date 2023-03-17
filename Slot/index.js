@@ -99,10 +99,17 @@ const GameItemSelection = styled.div`
   height: 60px;
   margin: 12px 0;
   overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const GameItemUL = styled.div`
   display: flex;
   overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  height: 50px;
 `;
 
 const GameItem = styled.div`
