@@ -128,7 +128,6 @@ const GameItem = styled.div`
         `;`
       : `color: #bdbdbd;`}
 
-  min-width: 150px;
   height: 46px;
   width: fit-content;
 
