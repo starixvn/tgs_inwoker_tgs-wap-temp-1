@@ -190,7 +190,7 @@ class Affiliate extends Component {
       { value: 5, title: "live" },
       { value: 7, title: "chess" },
       { value: 13, title: "lottery" },
-      { value: 15, title: "electron" },
+      { value: 15, title: "egame" },
     ];
     return (
       <React.Fragment>
