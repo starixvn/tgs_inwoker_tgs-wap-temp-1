@@ -99,23 +99,25 @@ const GameItemSelection = styled.div`
   height: 60px;
   margin: 12px 0;
   overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
-const GameItemUL = styled.ul`
+const GameItemUL = styled.div`
   display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  height: 50px;
 `;
-const GameItemLI = styled.li`
-  display: inline;
-  padding: 0 10px;
-`;
+
 const GameItem = styled.div`
   padding: 6px 20px 0 20px;
   font-size: 20px;
-
+  white-space: nowrap;
   text-align: center;
-
+  min-width: fit-content;
   float: left;
   ${(props) =>
     props.selected
@@ -126,8 +128,8 @@ const GameItem = styled.div`
         `;`
       : `color: #bdbdbd;`}
 
-  min-width: 150px;
   height: 46px;
+  width: fit-content;
 
   border-radius: 22.8px;
 `;
@@ -503,14 +505,12 @@ class Slot extends Component {
             </Tabs>
             <GameItemSelection>
               <GameItemUL>
-                <GameItemLI>
-                  <GameItem
-                    selected={this.state.platform === ""}
-                    onClick={() => this.handlePlatformChange("")}
-                  >
-                    {i18n.t("slot.all")}
-                  </GameItem>
-                </GameItemLI>
+                <GameItem
+                  selected={this.state.platform === ""}
+                  onClick={() => this.handlePlatformChange("")}
+                >
+                  {i18n.t("slot.all")}
+                </GameItem>
 
                 {(() => {
                   return (
@@ -525,19 +525,15 @@ class Slot extends Component {
                       //})
                       .map((item, index) => {
                         return (
-                          <GameItemLI>
-                            <GameItem
-                              key={index}
-                              selected={
-                                this.state.platform === item.abbreviation
-                              }
-                              onClick={() =>
-                                this.handlePlatformChange(item.abbreviation)
-                              }
-                            >
-                              {item.name}
-                            </GameItem>
-                          </GameItemLI>
+                          <GameItem
+                            key={index}
+                            selected={this.state.platform === item.abbreviation}
+                            onClick={() =>
+                              this.handlePlatformChange(item.abbreviation)
+                            }
+                          >
+                            {item.name}
+                          </GameItem>
                         );
                       })
                   );
