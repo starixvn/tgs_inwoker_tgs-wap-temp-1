@@ -908,8 +908,6 @@ class Wap extends Component {
 
     var chatWidget = window.__lc;
 
-    // LiveChatWidget.off('ready', onReady
-
     if (chatWidget && typeof window.__lc) {
       function onReady(initialData) {
         if (chatWidget && window.LiveChatWidget) {
