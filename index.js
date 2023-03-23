@@ -889,18 +889,46 @@ class Wap extends Component {
   render() {
     const scale = this.props.screenWidth / 750;
 
-    document
-      .getElementById("viewport")
-      .setAttribute(
-        "content",
-        "width=750, initial-scale=" +
-          scale +
-          ", minimum-scale=" +
-          scale +
-          ", maximum-scale=" +
-          scale +
-          ", user-scalable=no"
-      );
+    const assumingAllDevicesHaveSameWidth = () => {
+      // original code, don't change unless you want to make your life miserable
+      // too much module being affected, so just leave it as it is
+      document
+        .getElementById("viewport")
+        .setAttribute(
+          "content",
+          "width=750, initial-scale=" +
+            scale +
+            ", minimum-scale=" +
+            scale +
+            ", maximum-scale=" +
+            scale +
+            ", user-scalable=no"
+        );
+    };
+
+    var chatWidget = window.__lc;
+
+    // LiveChatWidget.off('ready', onReady
+
+    if (chatWidget && typeof window.__lc) {
+      function onReady(initialData) {
+        if (chatWidget && window.LiveChatWidget) {
+          var widgetState = window.LiveChatWidget.get("state");
+
+          if (widgetState.visibility === "maximized") {
+            document
+              .getElementById("viewport")
+              .setAttribute("content", "width=device-width");
+          } else {
+            assumingAllDevicesHaveSameWidth();
+          }
+        }
+      }
+
+      window.LiveChatWidget.on("ready", onReady);
+    }
+
+    assumingAllDevicesHaveSameWidth();
 
     if (
       (this.state.loading === true ||
