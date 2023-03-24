@@ -97,15 +97,19 @@ const ColumnContainer = styled.div`
   padding-top: 20px;
 `;
 const ColumnGameName = styled.div`
-  font-size: 26px;
+  font-size: 22px;
   color: #141a36;
-  text-align: center;
+  text-align: left;
   height: 35px;
+  width: 157px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 const ColumnGameBalance = styled.div`
+  width: 157px;
   font-size: 30px;
   color: ${({ theme }) => theme.secondary};
-  text-align: center;
+  text-align: left;
   margin-top: 10px;
 `;
 
@@ -617,7 +621,14 @@ class Transfer extends Component {
               })
               .filter((e) => {
                 if (config.features.MergeEVORTNT) {
-                  if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "BTG" || e.gpcode === "NLC")) {
+                  if (
+                    !(
+                      e.gpcode === "NTTF" ||
+                      e.gpcode === "RTTF" ||
+                      e.gpcode === "BTG" ||
+                      e.gpcode === "NLC"
+                    )
+                  ) {
                     return e;
                   }
                 } else {
@@ -627,11 +638,7 @@ class Transfer extends Component {
               .map((item, index) => (
                 <ColumnWrap key={index}>
                   <ColumnContainer>
-                    <ColumnGameName>
-                      {customGPname.WGFM === ""
-                        ? item.name
-                        : customGPname.WGFM + i18n.t("customGPname.sport")}
-                    </ColumnGameName>
+                    <ColumnGameName>{item.name}</ColumnGameName>
                     <ColumnGameBalance>
                       <DynamicFont
                         content={Common.formatNumberWithThousand(item.balance)}
@@ -678,7 +685,14 @@ class Transfer extends Component {
                 )
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
-                    if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "BTG" || e.gpcode === "NLC")) {
+                    if (
+                      !(
+                        e.gpcode === "NTTF" ||
+                        e.gpcode === "RTTF" ||
+                        e.gpcode === "BTG" ||
+                        e.gpcode === "NLC"
+                      )
+                    ) {
                       return e;
                     }
                   } else {
@@ -687,9 +701,7 @@ class Transfer extends Component {
                 })
                 .map((item, index) => (
                   <option value={item.gpcode} key={index}>
-                    {customGPname.WGFM === ""
-                      ? item.name
-                      : customGPname.WGFM + i18n.t("customGPname.sport")}
+                    {item.name}
                   </option>
                 ))}
             </Select>
@@ -730,7 +742,12 @@ class Transfer extends Component {
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
                     if (
-                      !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF" || e.gpcode === "BTG" || e.gpcode === "NLC")
+                      !(
+                        e.abbreviation === "NTTF" ||
+                        e.abbreviation === "RTTF" ||
+                        e.gpcode === "BTG" ||
+                        e.gpcode === "NLC"
+                      )
                     ) {
                       return e;
                     }
@@ -740,9 +757,7 @@ class Transfer extends Component {
                 })
                 .map((item, index) => (
                   <option value={item.gpcode} key={index}>
-                    {customGPname.WGFM === ""
-                      ? item.name
-                      : customGPname.WGFM + i18n.t("customGPname.sport")}
+                    {item.name}
                   </option>
                 ))}
             </Select>
