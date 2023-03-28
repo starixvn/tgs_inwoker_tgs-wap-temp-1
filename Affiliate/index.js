@@ -80,6 +80,11 @@ const Button = styled.div`
   margin-top: 12px;
 `;
 
+const QRButton = styled(Button)`
+  background: #fff;
+  border-radius: 10px;
+`;
+
 const CustomSelectContainer = styled.div`
   width: 700px;
   height: 170px;
@@ -198,7 +203,8 @@ class Affiliate extends Component {
     }, 3000);
   };
   handleQrAction = (option) => {
-    var svgElement = document.querySelector("#qrcode-container").firstElementChild;
+    var svgElement =
+      document.querySelector("#qrcode-container").firstElementChild;
     let { width, height } = svgElement.getBBox();
     let clonedSvgElement = svgElement.cloneNode(true);
     let outerHTML = clonedSvgElement.outerHTML,
@@ -211,22 +217,19 @@ class Affiliate extends Component {
       canvas.width = 300;
       canvas.height = 300;
       let context = canvas.getContext("2d");
-      let offsetPositionX = (canvas.width - width)/2;
-      let offsetPositionY = (canvas.height - height)/2;
+      let offsetPositionX = (canvas.width - width) / 2;
+      let offsetPositionY = (canvas.height - height) / 2;
       context.fillStyle = "white";
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.drawImage(image, offsetPositionX, offsetPositionY, width, height);
       let png = canvas.toDataURL();
-      if(option==="copy")
-      {
+      if (option === "copy") {
         this.setState({ ...this.state, copyTooltipsQR: true });
         utility.copyImage(png);
         setTimeout(() => {
           this.setState({ ...this.state, copyTooltipsQR: false });
         }, 3000);
-      }
-      else if(option === "download")
-      {
+      } else if (option === "download") {
         utility.downloadImage(png, "download.png");
       }
     };
@@ -263,21 +266,21 @@ class Affiliate extends Component {
             title={i18n.t("affiliate.copied")}
             placement="top"
           >
-            <Button
+            <QRButton
               onClick={() => {
                 this.handleQrAction("copy");
               }}
             >
               {i18n.t("common.copy")}
-            </Button>
+            </QRButton>
           </LightTooltip>
-          <Button
+          <QRButton
             onClick={() => {
               this.handleQrAction("download");
             }}
           >
             {i18n.t("common.download")}
-          </Button>
+          </QRButton>
         </QRCodeActionContainer>
         <CustomText>
           <CustomLabel>{i18n.t("affiliate.promoId")}</CustomLabel>
