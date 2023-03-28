@@ -92,20 +92,23 @@ const ColumnWrap = styled.div`
   min-width: calc(25% - 2px);
 `;
 const ColumnContainer = styled.div`
-  height: 120px;
+  height: 125px;
 
   padding-top: 20px;
 `;
 const ColumnGameName = styled.div`
-  font-size: 26px;
+  font-size: 22px;
   color: #141a36;
-  text-align: center;
-  height: 35px;
+  text-align: left;
+  height: 55px;
+  width: 157px;
+  white-space: pre-line;
 `;
 const ColumnGameBalance = styled.div`
+  width: 157px;
   font-size: 30px;
   color: ${({ theme }) => theme.secondary};
-  text-align: center;
+  text-align: left;
   margin-top: 10px;
 `;
 
@@ -617,29 +620,44 @@ class Transfer extends Component {
               })
               .filter((e) => {
                 if (config.features.MergeEVORTNT) {
-                  if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "BTG" || e.gpcode === "NLC")) {
+                  if (
+                    !(
+                      e.gpcode === "NTTF" ||
+                      e.gpcode === "RTTF" ||
+                      e.gpcode === "BTG" ||
+                      e.gpcode === "NLC"
+                    )
+                  ) {
                     return e;
                   }
                 } else {
                   return e;
                 }
               })
-              .map((item, index) => (
-                <ColumnWrap key={index}>
-                  <ColumnContainer>
-                    <ColumnGameName>
-                      {customGPname.WGFM === ""
-                        ? item.name
-                        : customGPname.WGFM + i18n.t("customGPname.sport")}
-                    </ColumnGameName>
-                    <ColumnGameBalance>
-                      <DynamicFont
-                        content={Common.formatNumberWithThousand(item.balance)}
-                      ></DynamicFont>
-                    </ColumnGameBalance>
-                  </ColumnContainer>
-                </ColumnWrap>
-              ))}
+              .map((item, index) => {
+                if (item.name === "EVO (NT,RT,BTG,NLC)") {
+                  item.name = "EVO (NT,RT, BTG,NLC)";
+                }
+
+                return (
+                  <ColumnWrap key={index}>
+                    <ColumnContainer>
+                      <ColumnGameName>
+                        {customGPname.WGFM === ""
+                          ? item.name
+                          : customGPname.WGFM + i18n.t("customGPname.sport")}
+                      </ColumnGameName>
+                      <ColumnGameBalance>
+                        <DynamicFont
+                          content={Common.formatNumberWithThousand(
+                            item.balance
+                          )}
+                        ></DynamicFont>
+                      </ColumnGameBalance>
+                    </ColumnContainer>
+                  </ColumnWrap>
+                );
+              })}
           </RowContainer>
         </InnerContainer>
 
@@ -678,7 +696,14 @@ class Transfer extends Component {
                 )
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
-                    if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "BTG" || e.gpcode === "NLC")) {
+                    if (
+                      !(
+                        e.gpcode === "NTTF" ||
+                        e.gpcode === "RTTF" ||
+                        e.gpcode === "BTG" ||
+                        e.gpcode === "NLC"
+                      )
+                    ) {
                       return e;
                     }
                   } else {
@@ -730,7 +755,12 @@ class Transfer extends Component {
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
                     if (
-                      !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF" || e.gpcode === "BTG" || e.gpcode === "NLC")
+                      !(
+                        e.abbreviation === "NTTF" ||
+                        e.abbreviation === "RTTF" ||
+                        e.gpcode === "BTG" ||
+                        e.gpcode === "NLC"
+                      )
                     ) {
                       return e;
                     }
