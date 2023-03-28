@@ -23,6 +23,14 @@ const QRCodeContainer = styled.div`
   display: table;
   background-color: #fff;
 `;
+const QRCodeActionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  padding: 20px 0px 10px 0px;
+`;
 const CustomText = styled.div`
   width: 700px;
   font-size: 28px;
@@ -151,6 +159,8 @@ class Affiliate extends Component {
     this.state = {
       loading: false,
       copyTooltips: false,
+      copyTooltipsQR: false,
+      copyTooltipsReferralID: false,
       rebates: [],
       rebateType: 1,
     };
@@ -180,6 +190,48 @@ class Affiliate extends Component {
       this.setState({ ...this.state, copyTooltips: false });
     }, 3000);
   };
+  handleCopyReferralID = () => {
+    this.setState({ ...this.state, copyTooltipsReferralID: true });
+    utility.copy(this.props.account.info.playercode);
+    setTimeout(() => {
+      this.setState({ ...this.state, copyTooltipsReferralID: false });
+    }, 3000);
+  };
+  handleQrAction = (option) => {
+    var svgElement = document.querySelector("#qrcode-container").firstElementChild;
+    let { width, height } = svgElement.getBBox();
+    let clonedSvgElement = svgElement.cloneNode(true);
+    let outerHTML = clonedSvgElement.outerHTML,
+      blob = new Blob([outerHTML], { type: "image/svg+xml;charset=utf-8" });
+    let URL = window.URL || window.webkitURL || window;
+    let blobURL = URL.createObjectURL(blob);
+    let image = new Image();
+    image.onload = () => {
+      let canvas = document.createElement("canvas");
+      canvas.width = 300;
+      canvas.height = 300;
+      let context = canvas.getContext("2d");
+      let offsetPositionX = (canvas.width - width)/2;
+      let offsetPositionY = (canvas.height - height)/2;
+      context.fillStyle = "white";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, offsetPositionX, offsetPositionY, width, height);
+      let png = canvas.toDataURL();
+      if(option==="copy")
+      {
+        this.setState({ ...this.state, copyTooltipsQR: true });
+        utility.copyImage(png);
+        setTimeout(() => {
+          this.setState({ ...this.state, copyTooltipsQR: false });
+        }, 3000);
+      }
+      else if(option === "download")
+      {
+        utility.downloadImage(png, "download.png");
+      }
+    };
+    image.src = blobURL;
+  };
   handleClickAway = () => {};
 
   render() {
@@ -202,10 +254,31 @@ class Affiliate extends Component {
           title={i18n.t("affiliate.title")}
         ></Header>
         <QRCodeLabel>{i18n.t("affiliate.qrCode")}</QRCodeLabel>
-        <QRCodeContainer>
+        <QRCodeContainer id="qrcode-container">
           <QRCode value={affiliateLink}></QRCode>
         </QRCodeContainer>
-
+        <QRCodeActionContainer>
+          <LightTooltip
+            open={this.state.copyTooltipsQR}
+            title={i18n.t("affiliate.copied")}
+            placement="top"
+          >
+            <Button
+              onClick={() => {
+                this.handleQrAction("copy");
+              }}
+            >
+              {i18n.t("common.copy")}
+            </Button>
+          </LightTooltip>
+          <Button
+            onClick={() => {
+              this.handleQrAction("download");
+            }}
+          >
+            {i18n.t("common.download")}
+          </Button>
+        </QRCodeActionContainer>
         <CustomText>
           <CustomLabel>{i18n.t("affiliate.promoId")}</CustomLabel>
           <CustomInput
@@ -213,6 +286,19 @@ class Affiliate extends Component {
             value={this.props.account.info.playercode}
             readOnly={true}
           ></CustomInput>
+          <LightTooltip
+            open={this.state.copyTooltipsReferralID}
+            title={i18n.t("affiliate.copied")}
+            placement="top"
+          >
+            <Button
+              onClick={() => {
+                this.handleCopyReferralID();
+              }}
+            >
+              {i18n.t("common.copy")}
+            </Button>
+          </LightTooltip>
         </CustomText>
         <CustomText>
           <CustomLabel>{i18n.t("affiliate.promoLink")}</CustomLabel>
