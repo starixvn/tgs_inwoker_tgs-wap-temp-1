@@ -92,7 +92,7 @@ const ColumnWrap = styled.div`
   min-width: calc(25% - 2px);
 `;
 const ColumnContainer = styled.div`
-  height: 120px;
+  height: 125px;
 
   padding-top: 20px;
 `;
@@ -100,10 +100,9 @@ const ColumnGameName = styled.div`
   font-size: 22px;
   color: #141a36;
   text-align: left;
-  height: 35px;
+  height: 55px;
   width: 157px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  white-space: pre-line;
 `;
 const ColumnGameBalance = styled.div`
   width: 157px;
@@ -635,18 +634,30 @@ class Transfer extends Component {
                   return e;
                 }
               })
-              .map((item, index) => (
-                <ColumnWrap key={index}>
-                  <ColumnContainer>
-                    <ColumnGameName>{item.name}</ColumnGameName>
-                    <ColumnGameBalance>
-                      <DynamicFont
-                        content={Common.formatNumberWithThousand(item.balance)}
-                      ></DynamicFont>
-                    </ColumnGameBalance>
-                  </ColumnContainer>
-                </ColumnWrap>
-              ))}
+              .map((item, index) => {
+                if (item.name === "EVO (NT,RT,BTG,NLC)") {
+                  item.name = "EVO (NT,RT, BTG,NLC)";
+                }
+
+                return (
+                  <ColumnWrap key={index}>
+                    <ColumnContainer>
+                      <ColumnGameName>
+                        {customGPname.WGFM === ""
+                          ? item.name
+                          : customGPname.WGFM + i18n.t("customGPname.sport")}
+                      </ColumnGameName>
+                      <ColumnGameBalance>
+                        <DynamicFont
+                          content={Common.formatNumberWithThousand(
+                            item.balance
+                          )}
+                        ></DynamicFont>
+                      </ColumnGameBalance>
+                    </ColumnContainer>
+                  </ColumnWrap>
+                );
+              })}
           </RowContainer>
         </InnerContainer>
 
