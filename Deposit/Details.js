@@ -179,7 +179,7 @@ class Details extends Component {
   //   this.setCountdownTimer();
   // };
   handleDepositConfirmClick = (e) => {
-    this.props.appHistory.replace("/" + i18n.language + "/transfer");
+    this.props.appHistory.replace("/transfer");
     // this.setState({ ...this.state, loading: true });
     // WalletService.CheckDeposit(this.props.token, this.props.order.id).then(
     //   response => {
@@ -242,7 +242,7 @@ class Details extends Component {
     this.props.performUploadImage(this.state.files[0]);
   };
   handleDepositCancelClick = (e) => {
-    this.props.appHistory.replace("/" + i18n.language + "/deposit");
+    this.props.appHistory.replace("/deposit");
   };
   handleOpenPopupUrl = () => {
     if (this.state.url !== "") {

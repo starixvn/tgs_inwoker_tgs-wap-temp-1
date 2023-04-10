@@ -111,14 +111,14 @@ class Profile extends Component {
   state = {};
   componentDidMount() {
     if (this.props.account.token === null) {
-      this.props.appHistory.replace("/" + i18n.language + "/login");
+      this.props.appHistory.replace("/login");
     }
   }
   handleBackClick = () => {
     this.props.appHistory.goBack();
   };
   handleNavigate = (path) => {
-    this.props.appHistory.push("/" + i18n.language + path);
+    this.props.appHistory.push(path);
   };
   isConfigured(value) {
     if (value) return true;

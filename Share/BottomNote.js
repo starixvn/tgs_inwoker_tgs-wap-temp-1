@@ -38,7 +38,7 @@ class BottomNote extends Component {
 
   handleCSClick = () => {
     if (this.props.account.token == null) {
-      // AppHistory.push("/" + i18n.language + value);
+      // AppHistory.push( value);
       this.GetSupportUrl("", "", "", "");
     } else {
       this.GetSupportUrl(
