@@ -164,7 +164,7 @@ class Main extends Component {
   // };
   handleContactCs = () => {
     if (this.props.account.token == null) {
-      // AppHistory.push("/" + i18n.language + value);
+      // AppHistory.push( value);
       this.props.GetSupportUrl("", "", "", "");
     } else {
       this.props.GetSupportUrl(
@@ -178,11 +178,11 @@ class Main extends Component {
 
   handleChangeSelection = (value) => {
     if (value === "/main/profile" && this.props.account.token == null) {
-      this.props.appHistory.push("/" + i18n.language + "/login");
+      this.props.appHistory.push("/login");
     } else {
       //if (value === "/customer-service") {
       //  if (this.props.account.token == null) {
-      //    // AppHistory.push("/" + i18n.language + value);
+      //    // AppHistory.push( value);
       //    this.props.GetSupportUrl("", "", "");
       //  } else {
       //    this.props.GetSupportUrl(
@@ -197,13 +197,13 @@ class Main extends Component {
           ...this.state,
           currentPage: value,
         });
-        this.props.appHistory.push("/" + i18n.language + value);
+        this.props.appHistory.push(value);
       }
     }
   };
   toggleMenu = () => {
     if (this.props.account.token == null) {
-      this.props.appHistory.push("/" + i18n.language + "/login");
+      this.props.appHistory.push("/login");
     } else {
       this.setState({ ...this.state, showMenu: true });
     }

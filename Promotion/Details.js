@@ -59,7 +59,7 @@ class Details extends Component {
 
     if (index === -1) {
       this.props.appHistory.replace({
-        pathname: "/" + i18n.language + "/promotion-list",
+        pathname: "/promotion-list",
       });
     }
 
@@ -104,7 +104,7 @@ class Details extends Component {
       ].indexOf(promotionType) >= 0
     ) {
       this.props.appHistory.push({
-        pathname: "/" + i18n.language + "/deposit/" + id,
+        pathname: "/deposit/" + id,
       });
     }
   };
@@ -112,7 +112,7 @@ class Details extends Component {
   handleJoinClick = (id, promotionType) => {
     if (this.props.token === null || this.props.token === "") {
       this.props.appHistory.replace({
-        pathname: "/" + i18n.language + "/Login",
+        pathname: "/Login",
       });
     } else {
       if (this.state.details.vipLevels.length === 0) {
@@ -130,7 +130,7 @@ class Details extends Component {
   };
 
   handleBackClick = () => {
-    this.props.appHistory.replace("/" + i18n.language + "/promotion-list");
+    this.props.appHistory.replace("/promotion-list");
   };
 
   render() {
