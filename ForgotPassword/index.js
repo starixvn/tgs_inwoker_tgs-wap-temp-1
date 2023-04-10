@@ -181,7 +181,7 @@ class ForgotPassword extends Component {
         ).then((response) => {
           if (response.IsSuccess) {
             this.props.alert("", i18n.t("forgotPassword.updateSuccess"));
-            this.props.appHistory.replace("/" + i18n.language + "/login");
+            this.props.appHistory.replace("/login");
           } else {
             this.props.alert("", response.info);
           }

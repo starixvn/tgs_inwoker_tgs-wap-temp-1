@@ -156,9 +156,7 @@ class Email extends BaseProfile {
                   this.props.getAccountProfile().then((responseUpdate) => {
                     if (responseUpdate.IsSuccess) {
                       if (!responseUpdate.data.registercompleted) {
-                        this.props.history.replace(
-                          "/" + i18n.language + "/card/add"
-                        );
+                        this.props.history.replace("/card/add");
                       }
                       this.showLoading(false);
                     }
