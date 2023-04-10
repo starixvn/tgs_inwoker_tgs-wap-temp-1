@@ -82,8 +82,6 @@ import CustomSportPage from "./CustomSportPage";
 import ForcedVerification from "./ForcedVerification";
 import LiveChat from "../Share/live-chat";
 
-const baseRouteUrl = Common.baseRouteUrl;
-
 const StyledModal = withStyles((theme) => ({
   paper: {
     borderRadius: "50px",
@@ -990,7 +988,7 @@ class Wap extends Component {
                   <Route
                     exact
                     key={index}
-                    path={baseRouteUrl + row.path}
+                    path={row.path}
                     render={(props) => {
                       if (row.path === "/deposit/manual") {
                         propsObj["order"] = props.location.state;
