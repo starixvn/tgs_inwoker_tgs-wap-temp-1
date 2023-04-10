@@ -15,8 +15,8 @@ import Button from "../Share/Button";
 
 import Loading from "../Share/Loading";
 import i18n from "../../../utils/i18n";
-import {walletAction} from "../../../api-services/actions/walletAction";
-import {RESET_WALLETRESULT} from "../../../api-services/constant/actionType";
+import { walletAction } from "../../../api-services/actions/walletAction";
+import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 
 import Slide from "@material-ui/core/Slide";
 const Container = styled.div``;
@@ -119,7 +119,7 @@ class Details extends Component {
   };
   componentDidMount() {
     if (this.props.order == null) {
-      this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
+      this.props.appHistory.replace("/withdrawal");
     } else {
       this.props.addBilling(this.props.order.id, this.props.order.amount);
     }
@@ -132,7 +132,7 @@ class Details extends Component {
       if (this.props.wallet.withdrawalResult.IsSuccess) {
         this.props.resetResult();
         this.props.getBalanceList();
-        this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
+        this.props.appHistory.replace("/withdrawal");
       } else {
         this.props.alert("", this.props.wallet.withdrawalResult.info);
       }
@@ -146,7 +146,7 @@ class Details extends Component {
 
   handleWithdrawalCancelClick = (e) => {
     this.setState({ ...this.state, loading: true });
-    this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
+    this.props.appHistory.replace("/withdrawal");
   };
   handleConfirmOTP = () => {
     this.setState({ ...this.state, otp: false });

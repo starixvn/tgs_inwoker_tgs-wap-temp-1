@@ -1138,7 +1138,7 @@ class Report extends Component {
 
   handleManualDeposit = (id) => {
     this.props.appHistory.push({
-      pathname: "/" + i18n.language + "/manual/" + id,
+      pathname: "/manual/" + id,
     });
   };
 
@@ -1844,7 +1844,9 @@ class Report extends Component {
                                 </DataRowId>
                                 <DataRowId>
                                   {i18n.t("report.balanceChanges.type")}:{" "}
-                                  <IDCell>{ErrorSwitcher.getTranslation(row.type)}</IDCell>
+                                  <IDCell>
+                                    {ErrorSwitcher.getTranslation(row.type)}
+                                  </IDCell>
                                 </DataRowId>
                                 <DataRowId>
                                   {i18n.t("report.balanceChanges.amount")}:{" "}

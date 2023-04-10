@@ -188,9 +188,7 @@ class ChangePhone extends BaseProfile {
           } else {
             this.props.getAccountInfo().then((responseUpdate) => {
               if (responseUpdate.IsSuccess) {
-                this.props.appHistory.replace(
-                  "/" + i18n.language + "/profile/phone"
-                );
+                this.props.appHistory.replace("/profile/phone");
               }
             });
           }

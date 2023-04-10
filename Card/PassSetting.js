@@ -145,7 +145,7 @@ class NameVerification extends Component {
           },
         });
 
-        this.props.appHistory.replace("/" + i18n.language + "/card");
+        this.props.appHistory.replace("/card");
         this.setState({ ...this.state, loading: false });
       } else {
         this.props.alert("", response.info);

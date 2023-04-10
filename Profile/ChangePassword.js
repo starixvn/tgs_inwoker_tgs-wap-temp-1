@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import Textbox from "../Share/Textbox";
 import BaseProfile from "./BaseProfile";
 
-import {AccountService} from "../../../api-services/services/AccountService";
+import { AccountService } from "../../../api-services/services/AccountService";
 
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
@@ -29,13 +29,13 @@ class ChangePassword extends BaseProfile {
     const newpassword2 = this.state.newpassword2;
     var expr = /^.{6,20}$/;
     if (!expr.test(newpassword)) {
-      this.props.alert('', i18n.t('common.msgRegisterPassInvalid'))
+      this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
       return;
     }
     if (newpassword !== newpassword2) {
-      this.props.alert('', i18n.t('common.msgInvalidConfirmPass'))
+      this.props.alert("", i18n.t("common.msgInvalidConfirmPass"));
       return;
-    } 
+    }
     // if (newpassword !== newpassword2) {
     //   this.props.alert("", i18n.t("common.msgInvalidConfirmPass"));
     //   // this.props.enqueueSnackbar("确认密码错误", {
@@ -50,7 +50,7 @@ class ChangePassword extends BaseProfile {
           this.updateInfo({});
           this.props.alert("", i18n.t("common.msgSuccessUpdateProfile"));
 
-          this.props.appHistory.replace("/" + i18n.language + "/profile");
+          this.props.appHistory.replace("/profile");
         } else {
           this.props.alert("", i18n.t("common.msgInvalidOldPass"));
         }

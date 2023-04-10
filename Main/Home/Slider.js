@@ -72,7 +72,7 @@ class Slider extends React.Component {
         </ATag> */}
         {/* {this.props.list.map((row, index) => {
           return (
-            <ATag href={"/" + i18n.language + "/" + row.url} key={index}>
+            <ATag href={ "/" + row.url} key={index}>
               <SlideImage src={row.file_url}></SlideImage>
             </ATag>
           );
