@@ -554,7 +554,7 @@ class Wap extends Component {
 
     // if (response.code === 50000) {
     //   AppHistory.replace({
-    //     pathname: "/" + i18n.language + "/ip-restrict-mobile",
+    //     pathname:  "/ip-restrict-mobile",
     //     search: "?query=error",
     //     state: { ip: response.data.ip },
     //   });
@@ -640,16 +640,16 @@ class Wap extends Component {
           this.setState({ ...this.state, loading: false });
           if (isPhoneNull) {
             this.props.history.push({
-              pathname: "/" + i18n.language + "/profile/phone",
+              pathname: "/profile/phone",
               state: { forced: true },
             });
           } else if (isEmailNull) {
             this.props.history.push({
-              pathname: "/" + i18n.language + "/profile/email",
+              pathname: "/profile/email",
               state: { forced: true },
             });
           } else if (!isRegisterCompleted) {
-            this.props.history.push("/" + i18n.language + "/card/add");
+            this.props.history.push("/card/add");
           }
           return;
         }
@@ -802,7 +802,7 @@ class Wap extends Component {
       preProps.general.isMaintenance !== this.props.general.isMaintenance &&
       this.props.general.isMaintenance === true
     ) {
-      this.props.history.push("/" + i18n.language + "/maintenance");
+      this.props.history.push("/maintenance");
     }
     if (
       preProps.general.brandLanguage !== this.props.general.brandLanguage &&
@@ -856,7 +856,7 @@ class Wap extends Component {
         config.features.ForcedVerification
       ) {
         this.props.history.push({
-          pathname: "/" + i18n.language + "/profile/phone",
+          pathname: "/profile/phone",
           state: { forced: true },
         });
       }
@@ -869,12 +869,12 @@ class Wap extends Component {
       page.indexOf("/main/home") > -1 ||
       page.indexOf("/slot") > -1
     ) {
-      page = "/" + i18n.language + page;
+      page = page;
     } else {
       if (this.props.account.token == null) {
-        page = "/" + i18n.language + "/";
+        page = "/";
       } else {
-        page = "/" + i18n.language + page;
+        page = page;
       }
     }
 
@@ -1054,10 +1054,8 @@ class Wap extends Component {
           </Router>
           {(() => {
             const matchingpath =
-              this.props.location.pathname === "/" + i18n.language ||
-              this.props.location.pathname === "/" + i18n.language + "/" ||
-              this.props.location.pathname ===
-                "/" + i18n.language + "/main/home";
+              this.props.location.pathname === "/" ||
+              this.props.location.pathname === "/main/home";
             if (
               config.features.PopupAnnouncement &&
               this.props.ui.mains &&
