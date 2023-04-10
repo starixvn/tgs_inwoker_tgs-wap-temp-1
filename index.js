@@ -817,10 +817,7 @@ class Wap extends Component {
           })
         ) {
           i18n.changeLanguage(this.props.general.brandLanguage[0].culturecode);
-          AppHistory.push(
-            "/" + this.props.general.brandLanguage[0].culturecode
-          );
-
+      
           window.location.reload();
         }
       } else {
@@ -834,11 +831,7 @@ class Wap extends Component {
             window.location.pathname.split("/").length > 3
           ) {
             i18n.changeLanguage(i18n.language);
-            AppHistory.push(
-              "/" +
-                i18n.language +
-                window.location.pathname.split("/").slice(2).join("/")
-            );
+          
           }
         }
       }
