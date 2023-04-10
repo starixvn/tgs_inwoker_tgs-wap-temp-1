@@ -283,11 +283,11 @@ class CustomSportPage extends Component {
       Common.closePreviousPopup();
       // this.performBalanceRefresh();
       Common.PopupCenter(
-        `/${i18n.language}/joingame/${this.state.type}/${gpcode}/${gpid}`,
+        `/joingame/${this.state.type}/${gpcode}/${gpid}`,
         "gamewindow"
       );
     } else {
-      this.props.history.push(`/${i18n.language}/}`);
+      this.props.history.push(`/}`);
     }
   };
   handleChangeTab = (event, newValue) => {
