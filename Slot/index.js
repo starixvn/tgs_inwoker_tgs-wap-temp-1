@@ -380,15 +380,15 @@ class Slot extends Component {
       Common.closePreviousPopup();
       // this.performBalanceRefresh();
       Common.PopupCenter(
-        `/${i18n.language}/joingame/${this.props.match.params.type}/${gpcode}/${gpid}`,
+        `/joingame/${this.props.match.params.type}/${gpcode}/${gpid}`,
         "gamewindow"
       );
       //  window.open(
-      //    `/${i18n.language}/joingame/${this.props.match.params.type}/${gpcode}/${gpid}`,
+      //    `/joingame/${this.props.match.params.type}/${gpcode}/${gpid}`,
       //    "gamewindow"
       //  );
     } else {
-      this.props.history.push(`/${i18n.language}/}`);
+      this.props.history.push(`/}`);
     }
   };
   handleChangeTab = (event, newValue) => {

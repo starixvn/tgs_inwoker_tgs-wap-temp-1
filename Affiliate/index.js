@@ -238,7 +238,7 @@ class Affiliate extends Component {
   handleClickAway = () => {};
 
   render() {
-    var affiliateLink = `https://${window.location.hostname}/${i18n.language}/p/${this.props.account.info.playercode}?do=register`;
+    var affiliateLink = `https://${window.location.hostname}/p/${this.props.account.info.playercode}?do=register`;
     const types = [
       { value: 1, title: "sport" },
       { value: 2, title: "virtualsports" },
