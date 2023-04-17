@@ -375,7 +375,7 @@ const LogoHolder = styled.div`
 `;
 
 const LogoHolderAppBar = styled.div`
-  background: ${({ isSowin, theme }) => (isSowin ? "#000" : theme.primary)};
+  background: ${({ theme }) => theme.appbar };
   position: relative;
   height: 100px;
   display: flex;
@@ -818,7 +818,7 @@ class Default extends Component {
     return (
       <React.Fragment>
         <StyledAppBar position="fixed" color="default">
-          <LogoHolderAppBar isSowin={config.brand === "KING8"}>
+          <LogoHolderAppBar>
             <LogoHolder
               img={
                 this.props.general.brand &&
