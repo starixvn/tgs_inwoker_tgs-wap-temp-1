@@ -1021,7 +1021,8 @@ class Wap extends Component {
                     }}
                   />
                 );
-              })}
+              })}{" "}
+              <Redirect to="/" />
             </Switch>
           </Router>
           {(() => {
