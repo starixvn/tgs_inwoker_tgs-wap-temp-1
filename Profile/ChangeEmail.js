@@ -5,8 +5,8 @@ import Textbox from "../Share/Textbox";
 import TextboxWithButton from "../Share/TextboxWithButton";
 import Step from "../Share/Step";
 import BaseProfile from "./BaseProfile";
-import {accountAction} from "../../../api-services/actions/accountAction";
-import {AccountService} from "../../../api-services/services/AccountService";
+import { accountAction } from "../../../api-services/actions/accountAction";
+import { AccountService } from "../../../api-services/services/AccountService";
 
 import i18n from "../../../utils/i18n";
 class ChangeEmail extends BaseProfile {
@@ -139,9 +139,7 @@ class ChangeEmail extends BaseProfile {
           if (response.IsSuccess) {
             this.props.getAccountProfile(true).then((responseUpdate) => {
               if (responseUpdate.IsSuccess) {
-                this.props.appHistory.replace(
-                  "/" + i18n.language + "/profile/email"
-                );
+                this.props.appHistory.replace("/profile/email");
               }
               this.showLoading(false);
             });

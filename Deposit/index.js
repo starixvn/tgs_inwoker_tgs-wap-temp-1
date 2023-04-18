@@ -205,7 +205,7 @@ class Deposit extends Component {
         this.props.getDepositMethod(); // call api every 30 mins
       }, 30 * 60 * 1000);
     } else {
-      this.props.appHistory.replace("/" + i18n.language + "/login");
+      this.props.appHistory.replace("/login");
     }
   }
 
@@ -306,7 +306,7 @@ class Deposit extends Component {
           ].paymentcode.toUpperCase() === "WANDAPAY"
         ) {
           if (!this.props.account.info.member_name) {
-            this.props.history.push("/" + i18n.language + "/profile/name");
+            this.props.history.push("/profile/name");
           }
         }
       }
@@ -532,8 +532,8 @@ class Deposit extends Component {
       }
       if (method.methodcode === "Pulsa") {
         let phone = this.props.wallet.bankCardList[bankCardIndex]
-        ? this.props.wallet.bankCardList[bankCardIndex].detail.phone
-        : "";
+          ? this.props.wallet.bankCardList[bankCardIndex].detail.phone
+          : "";
         if (config.features.Deposit_AddCard) {
           this.props.doPulsaDepositWithDetail(
             this.state.amount.replace(/,/g, ""),
@@ -1145,7 +1145,14 @@ const mapDispatchToProps = (dispatch) => {
         walletAction.doUsdtDeposit(amount, paymentid, promotionid, banktype)
       );
     },
-    doPulsaDeposit: (amount, paymentid, promotionid, banktype, playerNote, phone) => {
+    doPulsaDeposit: (
+      amount,
+      paymentid,
+      promotionid,
+      banktype,
+      playerNote,
+      phone
+    ) => {
       dispatch(
         walletAction.doPulsaDeposit(
           amount,
