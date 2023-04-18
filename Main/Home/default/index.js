@@ -655,21 +655,18 @@ class Default extends Component {
   };
   handleJoinLotteryGame = (name) => {
     if (this.props.account.token != null) {
-      //  window.open("/" + i18n.language + "/joinlottery/" + name, "gamewindow");
+      //  window.open( "/joinlottery/" + name, "gamewindow");
 
       Common.closePreviousPopup();
-      Common.PopupCenter(
-        "/" + i18n.language + "/joinlottery/" + name,
-        "gamewindow"
-      );
+      Common.PopupCenter("/joinlottery/" + name, "gamewindow");
     } else {
-      this.props.appHistory.push("/" + i18n.language + "/login");
+      this.props.appHistory.push("/login");
     }
   };
 
   handleJoinOtherGame = (type, params, game_platform_id) => {
     if (!this.props.account.token) {
-      this.props.appHistory.push("/" + i18n.language + "/login");
+      this.props.appHistory.push("/login");
       return;
     }
     if (type === GameTypeEnum.COCKFIGHT) {
@@ -687,12 +684,7 @@ class Default extends Component {
       } else {
         Common.closePreviousPopup();
         Common.PopupCenter(
-          "/" +
-            i18n.language +
-            "/joinlobbygame/" +
-            GameTypeEnum.SPORTS +
-            "/" +
-            params,
+          "/joinlobbygame/" + GameTypeEnum.SPORTS + "/" + params,
           "gamewindow"
         );
       }
@@ -708,20 +700,17 @@ class Default extends Component {
         document.getElementById("audio").volume = 0;
       Common.closePreviousPopup();
 
-      Common.PopupCenter(
-        "/" + i18n.language + "/joinlobbygame/" + type + "/" + params,
-        "gamewindow"
-      );
+      Common.PopupCenter("/joinlobbygame/" + type + "/" + params, "gamewindow");
     }
   };
 
   handleGameClick = (type, params, game_platform_id) => {
     if (type === GameTypeEnum.RNGSPORTS) {
       if (!this.props.account.token) {
-        this.props.appHistory.push("/" + i18n.language + "/login");
+        this.props.appHistory.push("/login");
         return;
       } else {
-        this.props.appHistory.push("/" + i18n.language + "/sports/" + params);
+        this.props.appHistory.push("/sports/" + params);
       }
     } else {
       type === GameTypeEnum.LOTTERYLOBBY || type === GameTypeEnum.LOTTERY
@@ -730,7 +719,7 @@ class Default extends Component {
     }
   };
   handleSignupClick = () => {
-    this.props.appHistory.push("/" + i18n.language + "/login");
+    this.props.appHistory.push("/login");
   };
   convertGameTypeToText(gameType) {
     switch (gameType) {
@@ -1021,9 +1010,7 @@ class Default extends Component {
                     {config.features.HomePage_DisplayVIP && (
                       <WalletActionLI
                         onClick={() => {
-                          this.props.appHistory.push(
-                            "/" + i18n.language + "/vip"
-                          );
+                          this.props.appHistory.push("/vip");
                         }}
                       >
                         <WalletActionIcon
@@ -1036,11 +1023,7 @@ class Default extends Component {
                       </WalletActionLI>
                     )}
                     <WalletActionLI
-                      onClick={() =>
-                        this.props.appHistory.push(
-                          "/" + i18n.language + "/deposit"
-                        )
-                      }
+                      onClick={() => this.props.appHistory.push("/deposit")}
                     >
                       <WalletActionIcon
                         img={
@@ -1052,11 +1035,7 @@ class Default extends Component {
                     </WalletActionLI>
                     {checkTransferWallet && (
                       <WalletActionLI
-                        onClick={() =>
-                          this.props.appHistory.push(
-                            "/" + i18n.language + "/transfer"
-                          )
-                        }
+                        onClick={() => this.props.appHistory.push("/transfer")}
                       >
                         <WalletActionIcon
                           img={
@@ -1082,9 +1061,7 @@ class Default extends Component {
                               i18n.t("disabledAddCard.description")
                           );
                         } else {
-                          this.props.appHistory.push(
-                            "/" + i18n.language + "/withdrawal"
-                          );
+                          this.props.appHistory.push("/withdrawal");
                         }
                       }}
                     >
@@ -1203,9 +1180,7 @@ class Default extends Component {
             </CloseButton>
             <DownloadButton
               onClick={() => {
-                this.props.appHistory.push(
-                  "/" + i18n.language + "/main/download"
-                );
+                this.props.appHistory.push("/main/download");
               }}
             >
               <DownloadContent>

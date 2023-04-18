@@ -40,7 +40,7 @@ const Landing = (props) => {
       <TheButtonContainer>
         <TheButton
           onClick={() => {
-            AppHistory.push("/" + i18n.language + "/login");
+            AppHistory.push("/login");
           }}
         >
           {i18n.t("WGHK.loginRegister")}

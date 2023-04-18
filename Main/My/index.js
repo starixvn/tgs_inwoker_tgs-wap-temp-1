@@ -177,7 +177,7 @@ class My extends Component {
   }
   componentDidMount() {
     if (this.props.account.token === null) {
-      this.props.appHistory.replace("/" + i18n.language + "/");
+      this.props.appHistory.replace("/");
     }
     if (this.props.wallet.balanceList.length <= 0) {
       this.props.getBalanceList();
@@ -398,15 +398,17 @@ class My extends Component {
           >
             {i18n.t("report.balanceChanges.title")}
           </ListItem>
-          {this.props.general.haveAffiliate && (<ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-affiliate.svg`
-            }
-            onClick={() => this.props.navigate("/affiliate")}
-          >
-            {i18n.t("web.account.affiliate")}
-          </ListItem>)}
+          {this.props.general.haveAffiliate && (
+            <ListItem
+              icon={
+                process.env.PUBLIC_URL +
+                `/assets/images/wapp/icon-affiliate.svg`
+              }
+              onClick={() => this.props.navigate("/affiliate")}
+            >
+              {i18n.t("web.account.affiliate")}
+            </ListItem>
+          )}
           <ListItem
             icon={
               process.env.PUBLIC_URL +

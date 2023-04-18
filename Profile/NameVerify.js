@@ -83,7 +83,7 @@ class NameVerify extends BaseProfile {
         this.props.resetResult();
         this.setState({ disableButton: true });
         // this.props.getIDCardNo();
-        this.props.appHistory.replace("/" + i18n.language + "/profile");
+        this.props.appHistory.replace("/profile");
       } else {
         this.props.alert("", this.props.account.updateCardResult.info);
         // if (this.props.account.updateCardResult.code === 401) {

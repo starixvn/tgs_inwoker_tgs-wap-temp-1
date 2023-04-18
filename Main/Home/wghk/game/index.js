@@ -174,11 +174,7 @@ const GamePage = (props) => {
   const onClickStartGame = () => {
     Common.closePreviousPopup();
     Common.PopupCenter(
-      "/" +
-        i18n.language +
-        "/joinlobbygame/" +
-        GameTypeEnum.SPORTS +
-        "/WGFM/true",
+      "/joinlobbygame/" + GameTypeEnum.SPORTS + "/WGFM/true",
       "gamewindow"
     );
   };
@@ -263,7 +259,7 @@ const GamePage = (props) => {
                     config.features.HomePage_DisplayVIP && (
                       <WalletActionLI
                         onClick={() => {
-                          AppHistory.push("/" + i18n.language + "/vip");
+                          AppHistory.push("/vip");
                         }}
                       >
                         <WalletActionIcon
@@ -277,7 +273,7 @@ const GamePage = (props) => {
                     )}
                   <WalletActionLI
                     onClick={() => {
-                      AppHistory.push("/" + i18n.language + "/deposit");
+                      AppHistory.push("/deposit");
                     }}
                   >
                     <WalletActionIcon
@@ -291,7 +287,7 @@ const GamePage = (props) => {
                   {checkTransferWallet && (
                     <WalletActionLI
                       onClick={() => {
-                        AppHistory.push("/" + i18n.language + "/transfer");
+                        AppHistory.push("/transfer");
                       }}
                     >
                       <WalletActionIcon
@@ -318,7 +314,7 @@ const GamePage = (props) => {
                             i18n.t("disabledAddCard.description")
                         );
                       } else {
-                        AppHistory.push("/" + i18n.language + "/withdrawal");
+                        AppHistory.push("/withdrawal");
                       }
                     }}
                   >

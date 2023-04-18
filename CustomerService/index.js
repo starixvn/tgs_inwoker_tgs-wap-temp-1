@@ -258,7 +258,7 @@ class CustomerService extends Component {
         return;
       }
       this.childWindow = window.open(
-        "/" + i18n.language + "/chat/%20/%20/" + encodeURI(this.state.question),
+        "/chat/%20/%20/" + encodeURI(this.state.question),
         "_blank"
       );
       setTimeout(() => {

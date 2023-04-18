@@ -301,7 +301,7 @@ class Transfer extends Component {
       this.props.getBalanceList();
       this.getAllGameBalance();
     } else {
-      this.props.appHistory.replace("/" + i18n.language + "/login");
+      this.props.appHistory.replace("/login");
     }
     // .then((_) => {
     //   this.bindData();
@@ -331,7 +331,7 @@ class Transfer extends Component {
           loading: false,
           open: false,
         });
-        // this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
+        // this.props.appHistory.replace( "/withdrawal");
       } else {
         this.props.alert("", this.props.wallet.transferResult.info);
         // if (
@@ -360,7 +360,7 @@ class Transfer extends Component {
           loading: false,
           open: false,
         });
-        // this.props.appHistory.replace("/" + i18n.language + "/withdrawal");
+        // this.props.appHistory.replace( "/withdrawal");
       } else {
         this.props.alert("", this.props.wallet.withdrawalAllResult.info);
       }

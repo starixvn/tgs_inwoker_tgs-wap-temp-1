@@ -69,7 +69,7 @@ class Manual extends Component {
 
   componentDidMount() {
     if (this.props.order == null) {
-      this.props.appHistory.replace("/" + i18n.language + "/deposit");
+      this.props.appHistory.replace("/deposit");
     } else {
     }
   }

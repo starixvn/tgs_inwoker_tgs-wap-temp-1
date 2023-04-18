@@ -695,7 +695,7 @@ const Roulette = (props) => {
         }
       } else {
         props.handleOnSpinDisable();
-        AppHistory.push("/" + i18n.language + "/login");
+        AppHistory.push("/login");
       }
     }
   };
@@ -994,11 +994,11 @@ const PromotionRoulette = (props) => {
   };
 
   const handlePhoneVerifyClick = () => {
-    AppHistory.push("/" + i18n.language + "/profile/phone");
+    AppHistory.push("/profile/phone");
   };
 
   const handleNavigateToPromotion = () => {
-    AppHistory.push("/" + i18n.language + "/promotion-list");
+    AppHistory.push("/promotion-list");
     performCloseEmptyModal();
   };
 
