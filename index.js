@@ -722,7 +722,6 @@ class Wap extends Component {
 
     if (config.features.PopupPromotion) {
       if (
-        isInHomePage &&
         this.props.general.promotionList.items !==
           preProps.general.promotionList.items &&
         this.props.general.promotionList.items.length > 0
@@ -817,7 +816,7 @@ class Wap extends Component {
           })
         ) {
           i18n.changeLanguage(this.props.general.brandLanguage[0].culturecode);
-      
+
           window.location.reload();
         }
       } else {
@@ -831,7 +830,6 @@ class Wap extends Component {
             window.location.pathname.split("/").length > 3
           ) {
             i18n.changeLanguage(i18n.language);
-          
           }
         }
       }
