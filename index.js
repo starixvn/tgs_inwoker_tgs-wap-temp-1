@@ -1079,20 +1079,30 @@ class Wap extends Component {
             }
           })()}
 
-          {config.features.PopupPromotion &&
-            this.props.general.promotionList.items.length > 0 && (
-              <PopupAnnouncement
-                open={this.state.showPromotion}
-                type="promo"
-                onClose={() => {
-                  if (document.getElementById("audio") != null)
-                    document.getElementById("audio").play();
-                  this.setState({ ...this.state, showPromotion: false });
-                }}
-                content={this.props.general.promotionList.items}
-                header={i18n.t("promotion.title")}
-              ></PopupAnnouncement>
-            )}
+          {(() => {
+            const matchingpath =
+              this.props.location.pathname === "/" ||
+              this.props.location.pathname === "/main/home";
+            if (
+              config.features.PopupPromotion &&
+              this.props.general.promotionList.items.length > 0 &&
+              matchingpath
+            ) {
+              return (
+                <PopupAnnouncement
+                  open={this.state.showPromotion}
+                  type="promo"
+                  onClose={() => {
+                    if (document.getElementById("audio") != null)
+                      document.getElementById("audio").play();
+                    this.setState({ ...this.state, showPromotion: false });
+                  }}
+                  content={this.props.general.promotionList.items}
+                  header={i18n.t("promotion.title")}
+                ></PopupAnnouncement>
+              );
+            }
+          })()}
 
           {(() => {
             if (
