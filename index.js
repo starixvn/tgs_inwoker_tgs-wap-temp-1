@@ -486,6 +486,7 @@ class Wap extends Component {
       openAnnouncement: false,
       showPromotion: false,
       action: "",
+      hasShownPromotion: false,
     };
   }
 
@@ -1086,7 +1087,8 @@ class Wap extends Component {
             if (
               config.features.PopupPromotion &&
               this.props.general.promotionList.items.length > 0 &&
-              matchingpath
+              matchingpath &&
+              !this.state.hasShownPromotion
             ) {
               return (
                 <PopupAnnouncement
@@ -1095,7 +1097,7 @@ class Wap extends Component {
                   onClose={() => {
                     if (document.getElementById("audio") != null)
                       document.getElementById("audio").play();
-                    this.setState({ ...this.state, showPromotion: false });
+                    this.setState({ ...this.state, showPromotion: false, hasShownPromotion: true });
                   }}
                   content={this.props.general.promotionList.items}
                   header={i18n.t("promotion.title")}
