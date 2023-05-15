@@ -375,7 +375,7 @@ const LogoHolder = styled.div`
 `;
 
 const LogoHolderAppBar = styled.div`
-  background: ${({ theme }) => theme.appbar };
+  background: ${({ theme }) => theme.appbar};
   position: relative;
   height: 100px;
   display: flex;
@@ -1139,7 +1139,7 @@ class Default extends Component {
                           process.env.PUBLIC_URL
                         }/assets/images/wapGame/${this.getImgPrefix(
                           row.type
-                        )}-${row.abbreviation.toLowerCase()}.jpg`}
+                        )}-${row.abbreviation.toLowerCase()}.png`}
                         key={index}
                         id={
                           currentType !== row.type
