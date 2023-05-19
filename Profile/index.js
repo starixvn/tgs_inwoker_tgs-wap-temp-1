@@ -155,6 +155,17 @@ class Profile extends Component {
     return status;
   };
 
+  getCustomMessagingTranslation = (platform) => {
+    switch (platform) {
+      case "qq":
+        return i18n.t("common.qqNumber");
+      case "wechat":
+        return i18n.t("common.wechatNumber");
+      default:
+        return i18n.t("common." + platform);
+    }
+  };
+
   render() {
     return (
       <Container>
@@ -273,7 +284,7 @@ class Profile extends Component {
                   return ContentItem(
                     process.env.PUBLIC_URL +
                       `/assets/images/wapp/icon-${platform}.svg`,
-                    i18n.t("common." + platform),
+                    this.getCustomMessagingTranslation(platform),
                     this.isConfigured(
                       this.props.account.info["member_" + platform]
                     ),
