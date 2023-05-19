@@ -155,6 +155,19 @@ class Profile extends Component {
     return status;
   };
 
+  getCustomMessagingIcon = (platform) => {
+    switch (platform) {
+      case "qq":
+        return process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`;
+      case "wechat":
+        return process.env.PUBLIC_URL + `/assets/images/wapp/icon-wechat.png`;
+      default:
+        return (
+          process.env.PUBLIC_URL + `/assets/images/wapp/icon-${platform}.svg`
+        );
+    }
+  };
+
   getCustomMessagingTranslation = (platform) => {
     switch (platform) {
       case "qq":
@@ -282,8 +295,7 @@ class Profile extends Component {
               {config.features.CustomMessaging &&
                 config.features.CustomMessaging.map((platform) => {
                   return ContentItem(
-                    process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-${platform}.svg`,
+                    this.getCustomMessagingIcon(platform),
                     this.getCustomMessagingTranslation(platform),
                     this.isConfigured(
                       this.props.account.info["member_" + platform]
