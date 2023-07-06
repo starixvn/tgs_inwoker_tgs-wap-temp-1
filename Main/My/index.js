@@ -341,13 +341,21 @@ class My extends Component {
               }
             ></MessageRedDot>
           </ListItem>
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-inbox.svg`
+            }
+            onClick={() => this.props.navigate("/memo")}
+          >
+            {i18n.t("memo")}
+          </ListItem>
           {/* <ListItem
             icon={IconProfileCashflowPNG}
             onClick={() => this.props.navigate("/report/1")}
           >
             {i18n.t("wap.main.account.transferReport")}
           </ListItem> */}
-
           <ListItem
             icon={
               process.env.PUBLIC_URL +
@@ -376,7 +384,6 @@ class My extends Component {
           >
             {i18n.t("wap.main.account.deposit")}
           </ListItem>
-
           {checkTransferWallet && (
             <ListItem
               icon={
@@ -388,7 +395,6 @@ class My extends Component {
               {i18n.t("wap.main.account.transfer")}
             </ListItem>
           )}
-
           <ListItem
             icon={
               process.env.PUBLIC_URL +
@@ -428,7 +434,6 @@ class My extends Component {
           >
             {i18n.t("wap.main.account.manageBank")}
           </ListItem>
-
           <ListItem
             icon={
               process.env.PUBLIC_URL +
@@ -456,7 +461,6 @@ class My extends Component {
               {i18n.t("wap.main.account.appDownload")}
             </ListItem>
           )}
-
           <div className="clear"></div>
           <BtnLogout
             onClick={this.handleLogoutClick}

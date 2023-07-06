@@ -81,6 +81,7 @@ import Birthdate from "./Profile/Birthdate";
 import CustomSportPage from "./CustomSportPage";
 import ForcedVerification from "./ForcedVerification";
 import LiveChat from "../Share/live-chat";
+import memo from "./memo";
 
 const StyledModal = withStyles((theme) => ({
   paper: {
@@ -305,6 +306,12 @@ const RouteMapping = [
   {
     path: "/inbox",
     component: Inbox,
+    alert: true,
+    navigate: true,
+  },
+  {
+    path: "/memo",
+    component: memo,
     alert: true,
     navigate: true,
   },
