@@ -657,6 +657,7 @@ class Deposit extends Component {
     this.setState({
       ...this.state,
       selectedChannelIndex: e.target.value,
+      depositPromotion: ""
     });
   };
   handleAccountChange = (e) => {
