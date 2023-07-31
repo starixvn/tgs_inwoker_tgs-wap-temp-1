@@ -598,6 +598,48 @@ class Deposit extends Component {
           );
         }
       }
+      if (method.methodcode === "Coinsph") {
+        let name = this.props.wallet.bankCardList[bankCardIndex]
+        ? this.props.wallet.bankCardList[bankCardIndex].detail.name || ""
+        : "";
+        let phone = this.props.wallet.bankCardList[bankCardIndex]
+          ? this.props.wallet.bankCardList[bankCardIndex].detail.phone || ""
+          : "";
+        let address = this.props.wallet.bankCardList[bankCardIndex]
+          ? this.props.wallet.bankCardList[bankCardIndex].detail.address || ""
+          : "";
+
+        if (config.features.Deposit_AddCard) {
+          this.props.doCoinsphDepositWithDetail(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null,
+            config.features.Deposit_AddCard
+              ? this.props.wallet.bankCardList[bankCardIndex].detail
+              : null,
+              name,
+            config.features.Deposit_ManualDepositPassPhone ? phone : null,
+            address
+          );
+        } else {
+          this.props.doCoinsphDeposit(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null,
+            name,
+            config.features.Deposit_ManualDepositPassPhone ? phone : null,
+            address
+          );
+        }
+      }
     } else {
       this.props.performDeposit(
         this.state.amount.replace(/,/g, ""),
@@ -1290,6 +1332,52 @@ const mapDispatchToProps = (dispatch) => {
           detail,
           emoneyname,
           phone
+        )
+      );
+    },
+    doCoinsphDeposit: (
+      amount,
+      paymentid,
+      promotionid,
+      banktype,
+      note,
+      name,
+      phone,
+      address
+    ) => {
+      dispatch(
+        walletAction.doCoinsphDeposit(
+          amount,
+          paymentid,
+          promotionid,
+          banktype,
+          note,
+          name,
+          phone,
+          address
+        )
+      );
+    },
+    doCoinsphDepositWithDetail: (
+      amount,
+      paymentid,
+      promotionid,
+      banktype,
+      note,
+      name,
+      phone,
+      address
+    ) => {
+      dispatch(
+        walletAction.doCoinsphDepositWithDetail(
+          amount,
+          paymentid,
+          promotionid,
+          banktype,
+          note,
+          name,
+          phone,
+          address
         )
       );
     },
