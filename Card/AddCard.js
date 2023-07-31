@@ -415,6 +415,26 @@ class AddCard extends Component {
           phone: this.state.number,
         };
       }
+    } else if (selected.banktype === "Coinsph") {
+      if (this.state.phone.length < 8 || this.state.phone.length > 10) {
+        this.props.alert(
+          "",
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
+        );
+        return;
+      }
+      if (this.state.name === "") {
+        this.props.alert("", i18n.t("profile.nameVerify.msgPlsEnterName"));
+        return;
+      }
+
+      detail = {
+        name: this.state.name,
+        phone: this.state.phone,
+        address: "",
+      };
     } else {
       detail = {
         address: this.state.number,
@@ -780,11 +800,15 @@ class AddCard extends Component {
           (this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
             .banktype === "ThirdParty" ||
             this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
+            .banktype === "Coinsph" ||
+            this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
               .banktype === "FPS")) ||
         (this.state.isDeposit &&
           this.props.wallet.depositList.length > 0 &&
           (this.props.wallet.depositList[this.state.selectedBankTypeIndex]
             .banktype === "ThirdParty" ||
+            this.props.wallet.depositList[this.state.selectedBankTypeIndex]
+            .banktype === "Coinsph" ||
             this.props.wallet.depositList[this.state.selectedBankTypeIndex]
               .banktype === "FPS")) ? (
           <div>
@@ -823,6 +847,7 @@ class AddCard extends Component {
               }}
               maxLength={
                 (selectedBankType("ThirdParty") ||
+                  selectedBankType("Coinsph") ||
                   selectedBankType("Pulsa") ||
                   selectedBankType("FPS")) &&
                 config.features.MAX_PHONE_LENGTH
@@ -893,6 +918,7 @@ class AddCard extends Component {
               }
               maxLength={
                 (selectedBankType("ThirdParty") ||
+                  selectedBankType("Coinsph") ||
                   selectedBankType("Pulsa") ||
                   selectedBankType("FPS")) &&
                 config.features.MAX_PHONE_LENGTH
