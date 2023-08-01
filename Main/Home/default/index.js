@@ -138,8 +138,8 @@ const WalletActionUL = styled.ul`
 `;
 const WalletActionLI = styled.li`
   display: inline-table;
-  padding: 0 10px;
-  font-size: 24px;
+  padding: ${(props)=> i18n.language === "ta-IN" ? "0 5px" : "0 10px"};
+  font-size: ${(props)=> i18n.language === "ta-IN" ? "13px" : "24px"};
   text-align: center;
 `;
 const WalletActionIcon = styled.div`
@@ -164,7 +164,7 @@ const ButtonSignup = styled.div`
   color: ${({ theme }) => theme.loginRegisterBtnText};
   text-align: center;
   padding: 17px 0;
-  font-size: 28px;
+  font-size: ${(props)=> i18n.language === "ta-IN" ? "12px" : "28px"};
 `;
 
 const ButtonStartGame = styled.div`
@@ -213,7 +213,7 @@ const GameSelectionLI = styled.div`
   background-color: #ededed;
   margin: 16px auto 0 auto;
 
-  font-size: 35.5px;
+  font-size: ${(props)=> i18n.language === "ta-IN" ? "15.5px" : "35.5px"};
 
   line-height: 1.7;
 
