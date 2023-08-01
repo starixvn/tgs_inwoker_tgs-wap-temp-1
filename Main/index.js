@@ -32,8 +32,8 @@ const CustomBottomNavigation = withStyles((theme) => ({
       ", " +
       theme.palette.primary.main +
       ")",
-  },
-}))(BottomNavigation);
+    },
+  }))(BottomNavigation);
 const CustomBottomNavigationAction = withStyles({
   root: {
     width: "570px",
@@ -45,12 +45,12 @@ const CustomBottomNavigationAction = withStyles({
     },
   },
   label: {
-    fontSize: "21px",
+    fontSize: i18n.language === "ta-IN" ? "13px" : "21px",
     marginTop: "5px",
     color: (props) => (props.selected ? "#d09f58" : "#ffffff"),
 
     "&.Mui-selected": {
-      fontSize: "21px !important",
+      fontSize: i18n.language === "ta-IN" ? "13px !important" : "21px !important",
       marginTop: "5px",
       color: "#fde73f",
     },
