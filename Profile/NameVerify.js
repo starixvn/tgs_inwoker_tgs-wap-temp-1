@@ -73,16 +73,9 @@ class NameVerify extends BaseProfile {
       this.props.account.updateCardResult !== null
     ) {
       if (this.props.account.updateCardResult.IsSuccess) {
-        if (config.features.ICVerificationUpload) {
-          AccountService.UploadIC(this.state.icUpload[0]).then((response) => {
-            if (!response.IsSuccess) {
-              this.props.alert("", response.info);
-            }
-          });
-        }
         this.props.resetResult();
         this.setState({ disableButton: true });
-        // this.props.getIDCardNo();
+
         this.props.appHistory.replace("/profile");
       } else {
         this.props.alert("", this.props.account.updateCardResult.info);
@@ -120,16 +113,6 @@ class NameVerify extends BaseProfile {
   handleChangeIC = (e) => {
     this.setState({ ...this.state, ic: e.target.value });
     this.onTextChanged();
-  };
-  handleSubmitClicked = () => {
-    if (config.features.ICVerificationUpload && this.state.icUpload === "") {
-      return this.props.alert("", i18n.t("deposit.msgPlsSelectFile"));
-    }
-    const name = this.state.name || "";
-    const ic = this.state.ic || "";
-    this.showLoading(true);
-    this.props.updateMemberCardNo(name, ic);
-    this.showLoading(false);
   };
 
   isDisableButton = () => {
@@ -231,7 +214,6 @@ class NameVerify extends BaseProfile {
                 }}
               >
                 {i18n.t("common.upload")}
-                {console.log(this.props)}
               </button>
               <input
                 type="file"
@@ -266,10 +248,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAccountProfile: () => dispatch(accountAction.getAccountProfile()),
-    getIDCardNo: () => dispatch(accountAction.getIDCardNo()),
-    updateMemberCardNo: (name, number) =>
-      dispatch(accountAction.updateMemberCardNo(name, number)),
     resetResult: () =>
       dispatch({
         type: RESET_ACCOUNTRESULT,
