@@ -141,7 +141,6 @@ class MainHKJP extends Component {
           "DailyFirstDeposit",
           "DepositReward",
           "DepositAccumulateRoulette",
-          "PromoteDepositChannel",
         ].indexOf(item.promotionType) >= 0
       );
     };
@@ -152,23 +151,6 @@ class MainHKJP extends Component {
         : true;
     };
   
-    const hasDepositPaymentChannelPromotion = (item) => {
-      if (item.promotionType === "PromoteDepositChannel") {
-        if (
-          item.campaignDetail.channelIds &&
-          item.campaignDetail.channelIds.length > 0
-        ) {
-          return (
-            item.campaignDetail.channelIds.indexOf(
-              this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
-                .method[this.props.selectedMethodIndex].channel[
-                this.props.selectedChannelIndex
-              ].channelid
-            ) >= 0
-          );
-        }
-      } else return true;
-    };
 
     return (
       <React.Fragment>
@@ -383,8 +365,7 @@ class MainHKJP extends Component {
                 .filter(
                   (item) =>
                     hasDepositPromotion(item) &&
-                    hasDepositRewardPromotion(item) &&
-                    hasDepositPaymentChannelPromotion(item)
+                    hasDepositRewardPromotion(item)
                 )
                 .map((item, index) => {
                   return (
