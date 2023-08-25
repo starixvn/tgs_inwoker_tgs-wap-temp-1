@@ -210,9 +210,7 @@ const Download = ({ alert }) => {
   const [pointlessDialog, setPointlessDialog] = useState(false);
 
   function getJsonData() {
-    return fetch(
-      "https://" + config.configUrl + "/version_" + config.brand + ".json"
-    )
+    return fetch(config.configUrl + "/version_" + config.brand + ".json")
       .then((response) => response.json())
       .then((responseJson) => {
         setDownload(responseJson);
