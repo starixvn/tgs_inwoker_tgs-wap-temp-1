@@ -3,7 +3,10 @@ import styled from "styled-components";
 import i18n from "../../../../utils/i18n";
 import moment from "moment";
 import Modal from "../modal";
-
+const Wrapper = styled.div`
+  background: #fff;
+  padding: 20px;
+`;
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -80,7 +83,7 @@ const Sent = ({ sent, deliveryBox }) => {
     setOpen(false);
   };
   return (
-    <>
+    <Wrapper>
       <Table>
         <thead>
           <tr>
@@ -114,7 +117,7 @@ const Sent = ({ sent, deliveryBox }) => {
           <Content>{content.content}</Content>
         </ContentWrapper>
       </Modal>
-    </>
+    </Wrapper>
   );
 };
 
