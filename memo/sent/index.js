@@ -56,7 +56,7 @@ const Title = styled.div`
   font-weight: 600;
 `;
 
-const Sent = ({ sent, deliveryBox }) => {
+const Sent = ({ sent, deliveryBox, account }) => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
   const dateTimeFormatter = (date) => {
@@ -111,7 +111,8 @@ const Sent = ({ sent, deliveryBox }) => {
           <UpperSection>
             <Title>{content.subject}</Title>
             <div>
-              {content.sender} - {dateTimeFormatter(content.sentOn)}
+              {i18n.t("sentBy")} {account?.info?.member_username}{" "}
+              {dateTimeFormatter(content.sentOn)}
             </div>
           </UpperSection>
 
