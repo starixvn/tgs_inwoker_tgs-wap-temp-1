@@ -54,6 +54,7 @@ const ContentWrapper = styled.div``;
 const Content = styled.div`
   padding: 20px;
   font-size: 25px;
+  white-space: pre-wrap;
 `;
 
 const UpperSection = styled.div`
@@ -219,7 +220,13 @@ const Inbox = ({ memo, getMemoV2, performReplyMemo, readMemo }) => {
                 value={memoContent}
                 placeholder="Enter your memo here..."
                 onChange={(e) => {
-                  setMemoContent(e.target.value);
+                  const value = e.target.value;
+                  const lastChar = value.charAt(value.length - 1);
+                  if (lastChar === "\n") {
+                    setMemoContent(value + lastChar);
+                  } else {
+                    setMemoContent(value);
+                  }
                 }}
               />
             </div>

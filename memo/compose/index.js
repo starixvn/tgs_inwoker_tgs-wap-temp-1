@@ -35,7 +35,13 @@ const Compose = ({ composeMemo, alert }) => {
         value={content}
         placeholder={i18n.t("pleaseenter") + i18n.t("memo")}
         onChange={(e) => {
-          setContent(e.target.value);
+          const value = e.target.value;
+          const lastChar = value.charAt(value.length - 1);
+          if (lastChar === "\n") {
+            setContent(value + lastChar);
+          } else {
+            setContent(value);
+          }
         }}
         label={i18n.t("memo")}
       ></Textbox>
