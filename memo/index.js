@@ -175,7 +175,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getMemoV2: (letterId) => dispatch(generalAction.getMemoV2(letterId)),
+    getMemoV2: (letterId) =>
+      dispatch(generalAction.getMemoV2(letterId, 1, 100)),
     composeMemo: (subject, content) =>
       dispatch(generalAction.composeMemo(subject, content)),
     replyMemo: (letterId, content) =>
