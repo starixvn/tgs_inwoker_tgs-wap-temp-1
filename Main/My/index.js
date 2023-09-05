@@ -341,23 +341,16 @@ class My extends Component {
               }
             ></MessageRedDot>
           </ListItem>
-          {
-            //    <ListItem
-            //    icon={
-            //      process.env.PUBLIC_URL +
-            //      `/assets/images/wapp/icon-profile-inbox.svg`
-            //    }
-            //    onClick={() => this.props.navigate("/memo")}
-            //  >
-            //    {i18n.t("memo")}
-            //  </ListItem>
-          }
-          {/* <ListItem
-            icon={IconProfileCashflowPNG}
-            onClick={() => this.props.navigate("/report/1")}
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-inbox.svg`
+            }
+            onClick={() => this.props.navigate("/memo")}
           >
-            {i18n.t("wap.main.account.transferReport")}
-          </ListItem> */}
+            {i18n.t("memoinbox")}
+          </ListItem>
+
           <ListItem
             icon={
               process.env.PUBLIC_URL +
