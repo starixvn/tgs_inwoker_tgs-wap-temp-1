@@ -55,6 +55,8 @@ const Content = styled.div`
   padding: 20px;
   font-size: 25px;
   white-space: pre-wrap;
+  display: flex;
+  flex-direction: column;
 `;
 
 const UpperSection = styled.div`
@@ -64,6 +66,7 @@ const UpperSection = styled.div`
 const InputRow = styled.div`
   display: grid;
   grid-template-columns: 20% 1fr;
+  gap: 20px;
   padding-bottom: 10px;
 `;
 
@@ -73,6 +76,11 @@ const CustomTextArea = styled.textarea`
   border: solid 1px #b7c7cc;
   font-size: 25px;
   width: -webkit-fill-available;
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
 `;
 
 const CustomButton = styled.button`
@@ -80,7 +88,7 @@ const CustomButton = styled.button`
   color: #fff;
   border: none;
   outline: none;
-  padding: 10px 20px;
+  padding: 15px 30px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 25px;
@@ -177,7 +185,6 @@ const Inbox = ({ memo, getMemoV2, performReplyMemo, readMemo }) => {
         <ContentWrapper>
           <UpperSection>
             <Title>{content.subject}</Title>
-
             <div>
               {i18n.t("sentBy")} {content.sender}{" "}
               {dateTimeFormatter(content.sentOn)}
@@ -230,6 +237,17 @@ const Inbox = ({ memo, getMemoV2, performReplyMemo, readMemo }) => {
                     setMemoContent(value);
                   }
                 }}
+              />
+            </div>
+          </InputRow>
+          <InputRow>
+            <div>{i18n.t("originalmessage")}</div>
+            <div>
+              <CustomTextArea
+                rows="7"
+                cols="50"
+                value={content.content}
+                disabled
               />
             </div>
           </InputRow>
