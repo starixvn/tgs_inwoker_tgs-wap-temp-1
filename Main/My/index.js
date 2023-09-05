@@ -348,7 +348,7 @@ class My extends Component {
             }
             onClick={() => this.props.navigate("/memo")}
           >
-            {i18n.t("memo")}
+            {i18n.t("memoinbox")}
           </ListItem>
           {/* <ListItem
             icon={IconProfileCashflowPNG}

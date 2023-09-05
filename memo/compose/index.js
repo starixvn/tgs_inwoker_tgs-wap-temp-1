@@ -33,7 +33,7 @@ const Compose = ({ composeMemo, alert }) => {
         required
         style={{ margin: "0px auto 10px auto" }}
         value={content}
-        placeholder={i18n.t("pleaseenter") + i18n.t("memo")}
+        placeholder={i18n.t("pleaseenter") + i18n.t("yourmessage")}
         onChange={(e) => {
           const value = e.target.value;
           const lastChar = value.charAt(value.length - 1);
@@ -43,7 +43,7 @@ const Compose = ({ composeMemo, alert }) => {
             setContent(value);
           }
         }}
-        label={i18n.t("memo")}
+        label={i18n.t("yourmessage")}
       ></Textbox>
 
       <ButtonWap
