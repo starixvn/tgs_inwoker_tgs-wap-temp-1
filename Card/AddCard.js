@@ -124,6 +124,7 @@ class AddCard extends Component {
     name: "",
     phone: "",
     isDeposit: false,
+    ifsc: "",
   };
   componentDidMount = async () => {
     let urlParams = new URLSearchParams(this.props.appHistory.location.search);
@@ -343,6 +344,7 @@ class AddCard extends Component {
         bankName: utility.removeSpace(bankName),
         name: utility.removeSpace(this.state.bankAccountName),
         bankBranch: utility.removeSpace(this.state.bankBranch),
+        ifsc: utility.removeSpace(this.state.ifsc),
       };
     } else if (
       selected.banktype === "ThirdParty" ||
@@ -491,6 +493,10 @@ class AddCard extends Component {
 
   handleBankBranchChange = (e) => {
     this.setState({ ...this.state, bankBranch: e.target.value });
+  };
+
+  handleIFSCChange = (e) => {
+    this.setState({ ...this.state, ifsc: e.target.value });
   };
 
   handleBankTypeClick = (index) => {
@@ -794,7 +800,7 @@ class AddCard extends Component {
           (this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
             .banktype === "ThirdParty" ||
             this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-            .banktype === "Coinsph" ||
+              .banktype === "Coinsph" ||
             this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
               .banktype === "FPS")) ||
         (this.state.isDeposit &&
@@ -802,7 +808,7 @@ class AddCard extends Component {
           (this.props.wallet.depositList[this.state.selectedBankTypeIndex]
             .banktype === "ThirdParty" ||
             this.props.wallet.depositList[this.state.selectedBankTypeIndex]
-            .banktype === "Coinsph" ||
+              .banktype === "Coinsph" ||
             this.props.wallet.depositList[this.state.selectedBankTypeIndex]
               .banktype === "FPS")) ? (
           <div>
@@ -918,6 +924,36 @@ class AddCard extends Component {
                 config.features.MAX_PHONE_LENGTH
               }
             ></Textbox>
+
+            {config.currency === "INR" &&
+              ((!this.state.isDeposit &&
+                this.props.wallet.withdrawalList.length > 0 &&
+                this.props.wallet.withdrawalList[
+                  this.state.selectedBankTypeIndex
+                ].banktype === "Bank") ||
+                (this.state.isDeposit &&
+                  this.props.wallet.depositList.length > 0 &&
+                  this.props.wallet.depositList[
+                    this.state.selectedBankTypeIndex
+                  ].banktype === "Bank")) && (
+                <Textbox
+                  style={{ margin: "20px auto 20px auto" }}
+                  value={this.state.ifsc}
+                  onChange={(e) => {
+                    let value = e.target.value;
+                    value = value.replace(/[^A-Za-z0-9]/gi, "");
+                    this.setState({
+                      ...this.state,
+                      ifsc: value,
+                    });
+                  }}
+                  type={"text"}
+                  maxLength={11}
+                  placeholder={i18n.t("ifsc")}
+                  label={i18n.t("ifsc")}
+                ></Textbox>
+              )}
+
             <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>
             <Button
               style={{ margin: "40px auto 0 auto" }}
