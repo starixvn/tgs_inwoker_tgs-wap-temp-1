@@ -73,13 +73,6 @@ class NameVerify extends BaseProfile {
       this.props.account.updateCardResult !== null
     ) {
       if (this.props.account.updateCardResult.IsSuccess) {
-        if (config.features.ICVerificationUpload) {
-          AccountService.UploadIC(this.state.icUpload[0]).then((response) => {
-            if (!response.IsSuccess) {
-              this.props.alert("", response.info);
-            }
-          });
-        }
         this.props.resetResult();
         this.setState({ disableButton: true });
         // this.props.getIDCardNo();
@@ -128,7 +121,11 @@ class NameVerify extends BaseProfile {
     const name = this.state.name || "";
     const ic = this.state.ic || "";
     this.showLoading(true);
-    this.props.updateMemberCardNo(name, ic);
+    this.props.performUpdateMemberNameAndIC(
+      name,
+      ic,
+      config.features.ICVerificationUpload ? this.state.icUpload[0] : null
+    );
     this.showLoading(false);
   };
 
@@ -266,6 +263,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    performUpdateMemberNameAndIC: (name, number, file) =>
+      dispatch(accountAction.performUpdateMemberNameAndIC(name, number, file)),
     getAccountProfile: () => dispatch(accountAction.getAccountProfile()),
     getIDCardNo: () => dispatch(accountAction.getIDCardNo()),
     updateMemberCardNo: (name, number) =>
