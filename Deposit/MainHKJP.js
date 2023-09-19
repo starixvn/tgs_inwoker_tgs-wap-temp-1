@@ -131,6 +131,27 @@ class MainHKJP extends Component {
       this.props.wallet.depositTypeList[this.props.selectedPaymentIndex].method[
         this.props.selectedMethodIndex
       ].methodcode.toUpperCase() === "PULSA";
+
+      
+    const hasDepositPromotion = (item) => {
+      return (
+        [
+          "FirstDeposit",
+          "DailySecondDeposit",
+          "DailyFirstDeposit",
+          "DepositReward",
+          "DepositAccumulateRoulette",
+        ].indexOf(item.promotionType) >= 0
+      );
+    };
+  
+    const hasDepositRewardPromotion = (item) => {
+      return item.promotionType === "DepositReward"
+        ? this.props.amount >= item.campaignDetail.depositMinimumLimit
+        : true;
+    };
+  
+
     return (
       <React.Fragment>
         {this.props.wallet.depositTypeList[this.props.selectedPaymentIndex]
@@ -343,17 +364,8 @@ class MainHKJP extends Component {
               {this.props.general.promotionList.items
                 .filter(
                   (item) =>
-                    [
-                      "FirstDeposit",
-                      "DailySecondDeposit",
-                      "DailyFirstDeposit",
-                      "DepositReward",
-                      "DepositAccumulateRoulette",
-                    ].indexOf(item.promotionType) >= 0 &&
-                    (item.promotionType === "DepositReward"
-                      ? this.props.amount >=
-                        item.campaignDetail.depositMinimumLimit
-                      : true)
+                    hasDepositPromotion(item) &&
+                    hasDepositRewardPromotion(item)
                 )
                 .map((item, index) => {
                   return (
