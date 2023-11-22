@@ -94,7 +94,7 @@ class NameVerify extends BaseProfile {
         }
         this.props.resetResult();
         this.setState({ disableButton: true });
-
+        // this.props.getIDCardNo();
         this.props.appHistory.replace("/profile");
       } else {
         this.props.alert("", this.props.account.updateCardResult.info);
@@ -272,6 +272,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     performUpdateMemberNameAndIC: (name, number, file) =>
       dispatch(accountAction.performUpdateMemberNameAndIC(name, number, file)),
+    getAccountProfile: () => dispatch(accountAction.getAccountProfile()),
+    getIDCardNo: () => dispatch(accountAction.getIDCardNo()),
+    updateMemberCardNo: (name, number) =>
+      dispatch(accountAction.updateMemberCardNo(name, number)),
     resetResult: () =>
       dispatch({
         type: RESET_ACCOUNTRESULT,
