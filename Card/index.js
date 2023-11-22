@@ -18,6 +18,7 @@ import config from "../../../config/config";
 const Container = styled.div`
   width: 100%;
   padding-top: 170px;
+  padding-bottom: 50px;
 `;
 const StyledAppBar = withStyles((theme) => ({
   root: {
@@ -260,9 +261,8 @@ class Card extends Component {
         {!(
           config.features.AddCard_NotAllowedEditDelete ||
           config.features.ChangesNotAllowed ||
-          (this.props.wallet.bankCardList.length >=
-            config.features.AddCard_MaximumCardAllowed &&
-            config.features.AddCard_DisableCreateUpdateDelete)
+          this.props.wallet.bankCardList.length >=
+            config.features.AddCard_MaximumCardAllowed
         ) && (
           <>
             <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
