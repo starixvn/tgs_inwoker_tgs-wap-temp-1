@@ -172,32 +172,22 @@ const VIP = (props) => {
                       <Right>{Common.addComma(data.promotionBenefit)}</Right>
                       <Left> {i18n.t("vip.quarterlyBenefit")}</Left>
                       <Right>{Common.addComma(data.quarterlyBenefit)}</Right>
-
                       <Left style={{ marginTop: 50 }}>
                         <BoldText>{i18n.t("vip.vipBenefit")}</BoldText>
                       </Left>
                       <Right></Right>
-                      {config.features.WGHK_Setup ? (
-                        <>
-                          <Left>{i18n.t("vip.sportsRebate")} </Left>
-                          <Right>{data.sportsRebate}% </Right>
-                        </>
-                      ) : (
-                        <>
-                          <Left>{i18n.t("vip.cardGameRebate")} </Left>
-                          <Right>{data.cardGameRebate}% </Right>
-                          <Left>{i18n.t("vip.liveDealerRebate")} </Left>
-                          <Right>{data.liveDealerRebate}% </Right>
-                          <Left>{i18n.t("vip.lotteryRebate")} </Left>
-                          <Right>{data.lotteryRebate}% </Right>
-                          <Left>{i18n.t("vip.slotRebate")} </Left>
-                          <Right>{data.slotRebate}% </Right>
-                          <Left>{i18n.t("vip.sportsRebate")} </Left>
-                          <Right>{data.sportsRebate}% </Right>
-                          <Left>{i18n.t("vip.virtualSportsRebate")} </Left>
-                          <Right>{data.virtualSportsRebate}% </Right>
-                        </>
-                      )}
+                      <Left>{i18n.t("vip.liveDealerRebate")} </Left>
+                      <Right>{data.liveDealerRebate}% </Right>
+                      <Left>{i18n.t("vip.slotRebate")} </Left>
+                      <Right>{data.slotRebate}% </Right>{" "}
+                      <Left>{i18n.t("vip.cardGameRebate")} </Left>
+                      <Right>{data.cardGameRebate}% </Right>
+                      <Left>{i18n.t("vip.sportsRebate")} </Left>
+                      <Right>{data.sportsRebate}% </Right>
+                      <Left>{i18n.t("vip.virtualSportsRebate")} </Left>
+                      <Right>{data.virtualSportsRebate}% </Right>
+                      <Left>{i18n.t("vip.lotteryRebate")} </Left>
+                      <Right>{data.lotteryRebate}% </Right>
                     </CustomTable>
                   </ContentDisplayer>
                 );
