@@ -101,6 +101,7 @@ class Details extends Component {
         "DailyFirstDeposit",
         "DepositReward",
         "DepositAccumulateRoulette",
+        "AccountFirstDeposit",
       ].indexOf(promotionType) >= 0
     ) {
       this.props.appHistory.push({
@@ -136,7 +137,9 @@ class Details extends Component {
   render() {
     if (this.state.details === null) return <React.Fragment></React.Fragment>;
     var isDummy = this.state.details.promotionType.toUpperCase() === "DUMMY";
-    var isPromoteDepositChannel = this.state.details.promotionType.toUpperCase() === "PROMOTEDEPOSITCHANNEL";
+    var isPromoteDepositChannel =
+      this.state.details.promotionType.toUpperCase() ===
+      "PROMOTEDEPOSITCHANNEL";
 
     var checkIfLocalizationIsEmpty =
       JSON.stringify(this.state.details.localization) === "{}";

@@ -296,16 +296,16 @@ class Main extends Component {
           "DailyFirstDeposit",
           "DepositReward",
           "DepositAccumulateRoulette",
+          "AccountFirstDeposit",
         ].indexOf(item.promotionType) >= 0
       );
     };
-  
+
     const hasDepositRewardPromotion = (item) => {
       return item.promotionType === "DepositReward"
         ? this.props.amount >= item.campaignDetail.depositMinimumLimit
         : true;
     };
-  
 
     return (
       <React.Fragment>
@@ -832,8 +832,7 @@ class Main extends Component {
               {this.props.general.promotionList.items
                 .filter(
                   (item) =>
-                    hasDepositPromotion(item) &&
-                    hasDepositRewardPromotion(item)
+                    hasDepositPromotion(item) && hasDepositRewardPromotion(item)
                 )
                 .map((item, index) => {
                   return (
