@@ -27,6 +27,7 @@ import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 import { uiAction } from "../../../api-services/actions/uiAction";
 import ErrorSwitcher from "../../../utils/ErrorSwitcher";
+import VersionNumber from "../../../utils/versionnumber";
 const Container = styled.div`
   z-index: 10;
   overflow-y: scroll;
@@ -1533,8 +1534,7 @@ class Login extends Component {
         </ContentWrap>
 
         <Version>
-          Version {process.env.REACT_APP_VERSION} (
-          {process.env.REACT_APP_CUSTOM_NODE_ENV})
+          Version <VersionNumber />
         </Version>
         <Loading show={this.state.loading}></Loading>
       </Container>
