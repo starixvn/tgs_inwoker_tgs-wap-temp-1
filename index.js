@@ -82,6 +82,7 @@ import CustomSportPage from "./CustomSportPage";
 import ForcedVerification from "./ForcedVerification";
 import LiveChat from "../Share/live-chat";
 import memo from "./memo";
+import Zalo from "./Profile/Zalo";
 
 const StyledModal = withStyles((theme) => ({
   paper: {
@@ -215,6 +216,11 @@ const RouteMapping = [
   {
     path: "/profile/qq",
     component: QQ,
+    alert: true,
+  },
+  {
+    path: "/profile/zalo",
+    component: Zalo,
     alert: true,
   },
   {
