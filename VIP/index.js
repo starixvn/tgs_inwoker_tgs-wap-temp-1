@@ -61,7 +61,6 @@ const CustomTable = styled.div`
 
 const Left = styled.div`
   padding: 10px 20px 10px 5px;
-  text-transform: capitalize;
   opacity: 0.75;
   font-size: 20px;
 `;
