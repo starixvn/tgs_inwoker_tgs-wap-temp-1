@@ -8,7 +8,6 @@ import ButtonSwitch from "./ButtonSwitch";
 import Textbox from "./Textbox";
 import Select from "./Select";
 import VerificationCode from "./VerificationCode";
-import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import { accountAction } from "../../../api-services/actions/accountAction";
@@ -28,6 +27,8 @@ import config from "../../../config/config";
 import { uiAction } from "../../../api-services/actions/uiAction";
 import ErrorSwitcher from "../../../utils/ErrorSwitcher";
 import VersionNumber from "../../../utils/versionnumber";
+import Dropdown from "../component/dropdown";
+import Checkbox from "../component/checkbox";
 const Container = styled.div`
   z-index: 10;
   overflow-y: scroll;
@@ -35,9 +36,12 @@ const Container = styled.div`
   height: 100%;
   position: absolute;
   top: 0;
-  background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp/login-bg.jpg`})
-    no-repeat;
+  background: ${({ theme }) =>
+    theme.new_loginBg
+      ? theme.new_loginBg
+      : `url(` +
+        process.env.PUBLIC_URL +
+        `/assets/images/wapp/login-bg.jpg)  no-repeat`};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -61,23 +65,17 @@ const Logo = styled.div`
 `;
 const RememberPassContainer = styled.div`
   float: left;
-  margin: 10px 0 0 90px;
+  margin: 24px 0 0 55px;
+  padding-bottom: 20px;
 `;
 const RememberPassLabel = styled.div`
   float: left;
   font-size: 28px;
   margin-top: 14px;
   margin-bottom: 14px;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
 `;
-const CustomCheck = withStyles({
-  root: {
-    width: "50px",
-    height: "50px",
-    fontSize: "50px",
-    float: "left",
-  },
-})(Checkbox);
+
 const ForgotPassContainer = styled.div`
   float: right;
   margin: 10px 100px 0 0;
@@ -124,7 +122,7 @@ const Version = styled.div`
 `;
 
 const TNC = styled(RememberPassLabel)`
-  width: 515px;
+  width: 580px;
   margin-bottom: 14px;
 `;
 
@@ -145,6 +143,14 @@ const CustomInvitationSelect = styled.select`
 
 const CustomWrapper = styled.div`
   position: relative;
+`;
+
+const LanguageLinkWrapper = styled.div`
+  display: ${({ theme }) => (theme.new_languageUseDropdown ? "none" : "block")};
+`;
+
+const LanguageDropdownWrapper = styled.div`
+  display: ${({ theme }) => (theme.new_languageUseDropdown ? "block" : "none")};
 `;
 
 const Icon = styled.div`
@@ -1155,6 +1161,19 @@ class Login extends Component {
   };
 
   render() {
+    const performChangeLanguage = (language) => {
+      i18n.changeLanguage(language);
+      this.props.appHistory.push(`/${language}`);
+      this.props.getBanner();
+      this.props.getMarquee(language);
+      this.props.getAnnouncement(language);
+      GeneralService.GetLocalization().then((response) => {
+        if (response.IsSuccess) {
+          ErrorSwitcher.setTranslation(response.data);
+        }
+      });
+    };
+
     return (
       <Container
         style={{ height: this.props.screenHeight }}
@@ -1202,28 +1221,11 @@ class Login extends Component {
                     onChange={this.handlePasswordChange}
                   ></Textbox>
                   <RememberPassContainer>
-                    <CustomCheck
-                      style={{ fontSize: "30px" }}
-                      icon={
-                        <CircleUnchecked
-                          style={{ color: "#404040", fontSize: "38px" }}
-                        />
-                      }
-                      checkedIcon={
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            `/assets/images/wapp/icon-checked.png`
-                          }
-                          style={{ width: "40px" }}
-                        />
-                      }
+                    <Checkbox
                       checked={this.state.rememberMe}
                       onChange={this.handleRememberMeChange}
+                      label={i18n.t("wap.login.rememberMe")}
                     />
-                    <RememberPassLabel>
-                      {i18n.t("wap.login.rememberMe")}
-                    </RememberPassLabel>
                   </RememberPassContainer>
                   <ForgotPassContainer onClick={this.handleForgotpasswordClick}>
                     <ForgotPassLabel>
@@ -1265,48 +1267,51 @@ class Login extends Component {
                       onClick={this.handleBackToHomeClick}
                     ></CustomWapButton>
                   </LoginActionContainer>
-                  <LanguageWrap>
-                    {(() => {
-                      return this.props.general.brandLanguage.map(
-                        (lang, index) => {
-                          return (
-                            <React.Fragment>
-                              <LanguageLink
-                                selected={i18n.language === lang.culturecode}
-                                onClick={() => {
-                                  i18n.changeLanguage(lang.culturecode);
-                                  this.props.appHistory.push(
-                                    `/${lang.culturecode}`
-                                  );
-                                  this.props.getBanner();
-                                  this.props.getMarquee(lang.culturecode);
-                                  this.props.getAnnouncement(lang.culturecode);
-                                  GeneralService.GetLocalization().then(
-                                    (response) => {
-                                      if (response.IsSuccess) {
-                                        ErrorSwitcher.setTranslation(
-                                          response.data
-                                        );
-                                      }
-                                    }
-                                  );
-                                }}
-                              >
-                                {i18n.t("lang." + lang.culturecode)}
-                              </LanguageLink>
 
-                              {this.props.general.brandLanguage.length - 1 !==
-                              index ? (
-                                <LanguageLink> | </LanguageLink>
-                              ) : (
-                                ""
-                              )}
-                            </React.Fragment>
-                          );
-                        }
-                      );
-                    })()}
-                  </LanguageWrap>
+                  <LanguageLinkWrapper>
+                    <LanguageWrap>
+                      {(() => {
+                        return this.props.general.brandLanguage.map(
+                          (lang, index) => {
+                            return (
+                              <React.Fragment>
+                                <LanguageLink
+                                  selected={i18n.language === lang.culturecode}
+                                  onClick={() => {
+                                    performChangeLanguage(lang.culturecode);
+                                  }}
+                                >
+                                  {i18n.t("lang." + lang.culturecode)}
+                                </LanguageLink>
+
+                                {this.props.general.brandLanguage.length - 1 !==
+                                index ? (
+                                  <LanguageLink> | </LanguageLink>
+                                ) : (
+                                  ""
+                                )}
+                              </React.Fragment>
+                            );
+                          }
+                        );
+                      })()}
+                    </LanguageWrap>
+                  </LanguageLinkWrapper>
+
+                  <LanguageDropdownWrapper>
+                    <Dropdown
+                      value={i18n.language}
+                      onChange={performChangeLanguage}
+                    >
+                      {this.props.general.brandLanguage.map((data, index) => {
+                        return (
+                          <option value={data.culturecode}>
+                            {i18n.t("lang." + data.culturecode)}
+                          </option>
+                        );
+                      })}
+                    </Dropdown>
+                  </LanguageDropdownWrapper>
                   {config.features.HaveDownloadFeature && (
                     <DownloadButtonHolder>
                       <DownloadButton onClick={this.handleGoDownloadPage}>
@@ -1437,26 +1442,11 @@ class Login extends Component {
                   )}
 
                   <RememberPassContainer>
-                    <CustomCheck
-                      style={{ fontSize: "30px" }}
-                      icon={
-                        <CircleUnchecked
-                          style={{ color: "#404040", fontSize: "38px" }}
-                        />
-                      }
-                      checkedIcon={
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            `/assets/images/wapp/icon-checked.png`
-                          }
-                          style={{ width: "40px" }}
-                        />
-                      }
+                    <Checkbox
                       checked={this.state.tnc}
                       onChange={this.handleTncClick}
+                      label={i18n.t("web.register.contract")}
                     />
-                    <TNC>{i18n.t("web.register.contract")}</TNC>
                   </RememberPassContainer>
                   <ButtonWap
                     style={{ margin: "100px auto 0 auto" }}

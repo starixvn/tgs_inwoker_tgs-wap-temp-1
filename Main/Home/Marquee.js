@@ -12,10 +12,10 @@ const MarqueeContainer = styled.div`
   width: 890px;
   white-space: nowrap;
 
-  font-size: 18px;
-  color: #ffffff;
+  font-size: 21px;
+
+  color: ${({ theme }) => theme.accentText ?? "#fff"};
   float: left;
-  line-hight: 26px;
 `;
 
 function Marquee(props) {

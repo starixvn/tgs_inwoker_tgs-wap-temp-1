@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import styled, { ThemeContext } from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -30,8 +30,9 @@ const StyledAppBar = withStyles({
 })(AppBar);
 
 const FixedContainer = styled.div`
-  background-color: #fff;
-  height: 265px;
+  background-color: ${({ theme }) => theme.new_bodyColor ?? "#fff"};
+
+  height: 275px;
   border-radius: 20px 20px 0 0;
   width: 100%;
   position: absolute;
@@ -44,7 +45,7 @@ const AnnouncementContainer = styled.div`
 const AnnouncementTitle = styled.div`
   font-size: 28px;
 
-  color: #000;
+  color: ${({ theme }) => theme.accentText ?? "#000"};
   font-weight: bold;
 `;
 const MarqueeContainer = styled.div`
@@ -55,7 +56,7 @@ const MarqueeContainer = styled.div`
   line-hight: 26px;
   overflow: hidden;
   margin: 5px 0 0 8px;
-  color: #f6f6f6;
+  color: ${({ theme }) => theme.accentText ?? "#f6f6f6"};
   width: 100%;
   flex: 1;
   height: 36px;
@@ -68,7 +69,7 @@ const MarqueeContainer = styled.div`
 `;
 const ProfileContainer = styled.div`
   width: 723px;
-  height: 192px;
+  height: 210px;
   margin: 0 auto;
 `;
 const ProfileContainerTop = styled.div`
@@ -129,28 +130,47 @@ const WalletActionContainer = styled.div`
 `;
 const WalletActionUL = styled.ul`
   text-align: center;
-
-  margin-top: 15px;
-
+  display: flex;
   font-size: 28px;
 
   color: #ffffff;
 `;
 const WalletActionLI = styled.li`
-  display: inline-table;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   padding: 0 10px;
+
   font-size: 24px;
   text-align: center;
 `;
 const WalletActionIcon = styled.div`
-  ${(props) => `background:url(${props.img}) no-repeat center center; `}
-  background-color: ${(props) => props.theme.secondary};
-  margin: 0 auto;
+  ${({ img, theme }) =>
+    `mask:url(${
+      process.env.PUBLIC_URL +
+      "/assets/images/wapp/" +
+      (theme.new_iconSet ? `icons-set/${theme.new_iconSet}/` : "") +
+      img
+    }) no-repeat center center; `}
+  background: ${(props) => props.theme.new_gradientBackground};
+  width: 50px;
+  height: 50px;
+  mask-size: 100%;
+`;
+
+const ActionButton = styled.div`
   border-radius: 50%;
-  background-size: 60px;
   width: 80px;
   height: 80px;
+  margin: 0 auto;
+  background-color: ${(props) => props.theme.secondary};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
+
 const ButtonSignup = styled.div`
   min-width: 195px;
   display: flex;
@@ -158,10 +178,12 @@ const ButtonSignup = styled.div`
   justify-content: center;
   height: 71px;
   border-radius: 55px;
-  background: ${({ theme }) => theme.loginRegisterBtn};
+  background: ${({ theme }) =>
+    theme.new_altButtonColor ?? theme.loginRegisterBtn};
   border: solid 2px #fff;
   margin: 40px 0 0 0;
-  color: ${({ theme }) => theme.loginRegisterBtnText};
+  color: ${({ theme }) =>
+    theme.new_altButtonColor ? "#fff" : theme.loginRegisterBtnText};
   text-align: center;
   padding: 17px 0;
   font-size: 28px;
@@ -170,9 +192,14 @@ const ButtonSignup = styled.div`
 const ButtonStartGame = styled.div`
 width: 148px;
 height: 43px;
-background: url(${
-  process.env.PUBLIC_URL + `/assets/images/wapp/btn-start-game.png`
-}) no-repeat;
+background: url(${({ theme }) => {
+  return (
+    process.env.PUBLIC_URL +
+    `/assets/images/wapp/btn-start-game-` +
+    (theme.new_bannerButtonColor ?? "red") +
+    `.png`
+  );
+}}) no-repeat;
 background-size: 100%;
 margin: 150px 0 0 76px;
 font-size:16px;
@@ -215,7 +242,7 @@ const GameSelectionLI = styled.div`
 
   font-size: 35.5px;
 
-  line-height: 1.7;
+  line-height: 1;
 
   color: ${({ theme }) => theme.secondary};
   text-align: center;
@@ -223,7 +250,8 @@ const GameSelectionLI = styled.div`
     return selected
       ? ` 
   color: ${theme.accentText};
-  border: solid 2px #000;
+  border: solid 2px;
+  border-color: ${theme.accentText ?? "#000"};
   background-image: linear-gradient(to top, ` +
           theme.primaryGradient +
           `, ` +
@@ -239,13 +267,15 @@ const GameListContainer = styled.div`
   padding-top: 670px;
   padding-bottom: 100px;
   padding-left: 175px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.new_bodyColor ?? "#fff"};
 `;
 const GameListWrap = styled.div`
   width: 557px;
-  padding: 25px 18px;
+  padding: ${({ theme }) => {
+    return theme.new_StandardizedBodyColor ? "" : "25px 18px";
+  }};
   border-radius: 10px;
-  background-color: #ededed;
+  background-color: ${({ theme }) => theme.new_bodyColor ?? "#ededed"};
 `;
 const GameFrameImg = styled.div`
   margin: 0 auto 10px auto;
@@ -815,6 +845,7 @@ class Default extends Component {
       Object.values(this.props.game.providerList).filter(
         (item) => item.transferwallet === true
       ).length > 0;
+
     return (
       <React.Fragment>
         <StyledAppBar position="fixed" color="default">
@@ -1013,37 +1044,35 @@ class Default extends Component {
                           this.props.appHistory.push("/vip");
                         }}
                       >
-                        <WalletActionIcon
-                          img={
-                            process.env.PUBLIC_URL +
-                            `/assets/images/wapp/home-vip.png`
-                          }
-                        ></WalletActionIcon>
-                        VIP
+                        <ActionButton>
+                          <WalletActionIcon
+                            img={`home-vip.png`}
+                          ></WalletActionIcon>
+                        </ActionButton>
+                        <div> VIP</div>
                       </WalletActionLI>
                     )}
                     <WalletActionLI
                       onClick={() => this.props.appHistory.push("/deposit")}
                     >
-                      <WalletActionIcon
-                        img={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/icon-deposit.png`
-                        }
-                      ></WalletActionIcon>
-                      {i18n.t("common.deposit")}
+                      <ActionButton>
+                        <WalletActionIcon
+                          img={`icon-deposit.png`}
+                        ></WalletActionIcon>
+                      </ActionButton>
+
+                      <div>{i18n.t("common.deposit")}</div>
                     </WalletActionLI>
                     {checkTransferWallet && (
                       <WalletActionLI
                         onClick={() => this.props.appHistory.push("/transfer")}
                       >
-                        <WalletActionIcon
-                          img={
-                            process.env.PUBLIC_URL +
-                            `/assets/images/wapp/icon-transfer.png`
-                          }
-                        ></WalletActionIcon>
-                        {i18n.t("common.transfer")}
+                        <ActionButton>
+                          <WalletActionIcon
+                            img={`icon-transfer.png`}
+                          ></WalletActionIcon>
+                        </ActionButton>
+                        <div>{i18n.t("common.transfer")}</div>
                       </WalletActionLI>
                     )}
 
@@ -1065,13 +1094,12 @@ class Default extends Component {
                         }
                       }}
                     >
-                      <WalletActionIcon
-                        img={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/icon-withdrawal.png`
-                        }
-                      ></WalletActionIcon>
-                      {i18n.t("common.withdrawal")}
+                      <ActionButton>
+                        <WalletActionIcon
+                          img={`icon-withdrawal.png`}
+                        ></WalletActionIcon>
+                      </ActionButton>
+                      <div>{i18n.t("common.withdrawal")}</div>
                     </WalletActionLI>
                   </WalletActionUL>
                 </WalletActionContainer>

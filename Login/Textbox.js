@@ -8,7 +8,7 @@ const Container = styled.div`
   height: 80px;
   border-radius: 6px;
   border: solid 1px #676666;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.new_textfieldBackground ?? "#fff"};
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.4);
 `;
 
@@ -33,11 +33,12 @@ const InputTextBox = styled.input`
 
   margin-top: 20px;
   &::-webkit-input-placeholder {
-    color: #b7b7b7;
+    color: ${({ theme }) => theme.new_textfieldPlaceholder ?? "#b7b7b7"};
     font-size: 23px;
   }
   &:-webkit-autofill {
-    -webkit-text-fill-color: #b7b7b7;
+    -webkit-text-fill-color: ${({ theme }) =>
+      theme.new_textfieldPlaceholder ?? "#b7b7b7"};
   }
 `;
 const TextContainer = styled.div`

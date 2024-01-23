@@ -14,7 +14,8 @@ const Container = styled.div`
   width: 635px;
   height: 81px;
   border-radius: 6px;
-  border: solid 2px #ffffff;
+  border: solid 2px;
+  border-color: ${({ theme }) => theme.new_gradientBackground ?? "#ffffff"};
   background-color: ${({ theme }) => theme.secondary};
   border-radius: 10px;
 `;
@@ -29,14 +30,25 @@ const SwitchTextContainerComponent = styled.div`
 
   font-size: 32px;
 
-  color: #ffffff;
+  color: ${({ active, theme }) =>
+    active
+      ? theme.new_gradientBackground
+        ? "#000"
+        : "#fff"
+      : theme.new_inactiveText ?? "#fff"};
+  font-weight: ${({ theme }) =>
+    theme.new_gradientBackground ? "bold" : "normal"};
+  text-transform: ${({ theme }) =>
+    theme.new_gradientBackground ? "uppercase" : "capitalize"};
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 25px;
 
   background: ${({ active, theme }) => {
-    return active ? theme.primary : theme.secondary;
+    return active
+      ? theme.new_gradientBackground ?? theme.primary
+      : theme.secondary;
   }};
 `;
 const SwitchTextLeftContainer = styled(SwitchTextContainerComponent)`

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { Router, Switch, Route } from "react-router";
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
@@ -38,27 +37,22 @@ const CustomBottomNavigationAction = withStyles({
   root: {
     width: "570px",
     height: "90px",
-    "&.Mui-selected": {
-      "& .MuiBottomNavigationAction-wrapper>div": {
-        backgroundColor: "#fde73f",
-      },
-    },
   },
   label: {
     fontSize: "21px",
     marginTop: "5px",
-    color: (props) => (props.selected ? "#d09f58" : "#ffffff"),
+    color: "#ffffff",
 
     "&.Mui-selected": {
       fontSize: "21px !important",
       marginTop: "5px",
-      color: "#fde73f",
     },
   },
 })(BottomNavigationAction);
 
 const BottomNavigatorFrame = styled.div`
-  background-image: url(${(props) => props.src});
+  mask: url(${(props) => props.src});
+
   background-repeat: no-repeat;
   background-position: center;
 
@@ -68,14 +62,20 @@ const BottomNavigatorFrame = styled.div`
   mask-size: auto 40px;
   mask-mode: alpha;
   background-blend-mode: multiply;
-  background-color: #fff;
+  background: ${({ theme }) => theme.new_primary ?? "#fff"};
   width: 60px;
   height: 50px;
 `;
 const BottomNavigatorPlus = styled.div`
-  background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp/icon-plus.png`})
-    no-repeat center;
+background:${({ img, theme }) =>
+  `url(${
+    process.env.PUBLIC_URL +
+    "/assets/images/wapp/" +
+    (theme.new_iconSet
+      ? `icons-set/${theme.new_iconSet}/icon-plus.png`
+      : "icon-plus.png")
+  }) no-repeat center center; `}
+
   background-repeat: no-repeat;
   background-position: center;
   background-size: 70px 70px;
@@ -394,7 +394,7 @@ class Main extends Component {
             <ButtonCloseMenu onClick={this.handleCloseMenu}></ButtonCloseMenu>
           </MenuContainer>
         </StyledDialog>
-        <StyledBottomAppBar position="fixed" color="default">
+        <StyledBottomAppBar position="fixed" color="default" elevation={0}>
           <CustomBottomNavigation
             value={this.state.currentPage}
             showLabels
