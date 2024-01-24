@@ -49,7 +49,6 @@ class Default extends BaseProfile {
     return (
       <React.Fragment>
         <Textbox
-          style={{ margin: "50px auto 20px auto" }}
           value={this.props.name}
           onChange={this.props.handleChangeName}
           placeholder={
@@ -68,7 +67,6 @@ class Default extends BaseProfile {
         ></Textbox>
         {config.features.ICVerification && (
           <Textbox
-            style={{ margin: "50px auto 20px auto" }}
             value={this.props.ic}
             onChange={this.props.handleChangeIC}
             placeholder={

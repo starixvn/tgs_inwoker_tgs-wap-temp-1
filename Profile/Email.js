@@ -219,7 +219,6 @@ class Email extends BaseProfile {
       i18n.t("common.emailAddress"),
       <React.Fragment>
         <Textbox
-          style={{ margin: "50px auto 20px auto" }}
           value={this.state.email}
           onChange={this.handleChangeEmail}
           placeholder={i18n.t("common.msgEnterEmail")}

@@ -73,7 +73,7 @@ const DateContainer = styled.div`
 const DateSpliter = styled.div`
   font-size: 22px;
   font-weight: 600;
-  color: #4a4a4a;
+  color: ${({ theme }) => theme.new_textColor ?? "#404040"};
   margin: 75px 0 0 10px;
 `;
 const DateInner = styled.div`
@@ -82,13 +82,13 @@ const DateInner = styled.div`
 `;
 const DateLabel = styled.div`
   height: 40px;
-  border-left: 5px solid ${({ theme }) => theme.primary};
+  border-left: 5px solid ${({ theme }) => theme.new_primary ?? theme.primary};
   padding-left: 20px;
   padding-top: 5px;
   margin-left: 10px;
   font-size: 22px;
   font-weight: 600;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
 `;
 const DateRangContainer = styled.div`
   margin-top: 20px;
@@ -102,17 +102,13 @@ const DateRangSelection = styled.div`
   letter-spacing: normal;
   text-align: center;
   font-size: 32px;
-  ${(props) =>
-    props.selected
+  ${({ selected, theme }) =>
+    selected
       ? `  
-  color: ` +
-        props.theme.primary +
-        `;`
+  color: ` + theme.new_primary ?? theme.primary + `;`
       : `
 
-  color: ` +
-        props.theme.secondary +
-        `;`}
+  color: ` + theme.new_textColor ?? theme.secondary + `;`}
 `;
 const DataContent = styled.div`
   width: 690px;
@@ -122,7 +118,7 @@ const DataContent = styled.div`
   border: solid 2px #f9f9f9;
   background-color: #fff;
   font-size: 26px;
-  color: #4a4a4a;
+  color: ${({ theme }) => theme.new_textColor ?? "#4a4a4a"};
   padding: 0 20px;
 `;
 const DataHeader = styled.div`
@@ -131,7 +127,7 @@ const DataHeader = styled.div`
   margin: 0 auto;
 
   font-size: 26px;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
   padding: 0 20px;
 `;
 const DataRowId = styled.div`
@@ -274,53 +270,6 @@ const CustomTabs = styled(Tabs)`
 
   .MuiTabs-fixed {
     overflow: overlay !important;
-  }
-`;
-
-const CustomTabText = styled.div`
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CustomBorderBottom = styled.div`
-  height: 5px;
-`;
-
-const CustomTab = styled.div`
-  width: calc(100vw / 4);
-  display: flex;
-  flex-direction: column;
-  padding: 0px 10px;
-
-  ${CustomTabText} {
-    color: ${({ selected, theme }) => {
-      return selected ? theme.primary : theme.secondary;
-    }};
-  }
-
-  ${CustomBorderBottom} {
-    background: ${({ selected, theme }) => {
-      return selected ? theme.primary : theme.secondary;
-    }};
-  }
-`;
-
-const CustomDatepicker = styled.div`
-  background: white;
-  zoom: 1.5;
-  padding: 10px 20px;
-  border-radius: 8px;
-  margin-top: 10px;
-
-  .MuiInputBase-input {
-    background: none;
-  }
-
-  .MuiInput-underline:before,
-  .MuiInput-underline:after {
-    border-bottom: 0px;
   }
 `;
 

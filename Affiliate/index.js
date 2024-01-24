@@ -14,8 +14,7 @@ const QRCodeLabel = styled.div`
   margin: 30px auto;
   display: table;
   font-size: 30px;
-  color: ${({ theme }) =>
-    theme.wapSecondary ? theme.wapSecondary : theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
 `;
 const QRCodeContainer = styled.div`
   padding: 20px;
@@ -117,8 +116,7 @@ const AnotherCustomLabel = styled.div`
   font-size: 24px;
   font-weight: 600;
   margin-left: 3px;
-  color: ${({ theme }) =>
-    theme.wapSecondary ? theme.wapSecondary : theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
 `;
 
 const Table = styled.table`

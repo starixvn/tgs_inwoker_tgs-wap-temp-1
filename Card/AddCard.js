@@ -7,8 +7,6 @@ import { walletAction } from "../../../api-services/actions/walletAction";
 import { accountAction } from "../../../api-services/actions/accountAction";
 import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
 import Header from "../../Wap/Share/Header";
-import Textbox from "../../Wap/Share/Textbox";
-import Button from "../../Wap/Share/Button";
 import MessageDialog from "../../Wap/Share/MessageDialog";
 import Loading from "../../Wap/Share/Loading";
 import Modal from "@material-ui/core/Dialog";
@@ -18,6 +16,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 import Common from "../../../utils/Common";
+import Textfield from "../component/textfield";
+import Button from "../component/button";
 const Container = styled.div`
   width: 100%;
   padding-top: 170px;
@@ -50,7 +50,7 @@ const SubTitle = styled.div`
   font-size: 34px;
   font-weight: 550;
   margin: 40px 0 0 50px;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
 `;
 
 const BottomInfo = styled.div`
@@ -79,15 +79,6 @@ const StyledModalBank = withStyles((theme) => ({
   },
 }))(Modal);
 
-const StyledListItemIcon = withStyles((theme) => ({
-  root: {
-    marginLeft: "150px",
-  },
-}))(ListItemIcon);
-const StyledListItemImage = styled.img`
-  width: 64px;
-  height: 64px;
-`;
 const StyledListItem = withStyles((theme) => ({
   root: {
     borderBottom: "1px solid rgba(0,0,0,0.2)",
@@ -612,8 +603,7 @@ class AddCard extends Component {
         </StyledAppBar>
         <SubTitle>{i18n.t("card.addCard.title")}</SubTitle>
         {!config.features.AddCard_HideCertainField && (
-          <Textbox
-            style={{ margin: "20px auto 20px auto" }}
+          <Textfield
             value={
               !this.state.isDeposit &&
               this.props.wallet.withdrawalList.length > 0
@@ -628,14 +618,13 @@ class AddCard extends Component {
                 : ""
             }
             onClick={() => this.setState({ ...this.state, bankTypeOpen: true })}
-            type={"text"}
             label={i18n.t("common.withdrawalBankType")}
             disabled={true}
-          ></Textbox>
+          ></Textfield>
         )}
 
         {!config.features.AddCard_HideChannel && (
-          <Textbox
+          <Textfield
             style={{ margin: "20px auto 20px auto" }}
             value={
               this.state.channelList.length > 0
@@ -646,7 +635,6 @@ class AddCard extends Component {
                 : ""
             }
             onClick={() => this.setState({ ...this.state, channelOpen: true })}
-            type={"text"}
             label={
               config.features.AddCard_Bank_Custom_IDR &&
               ((!this.state.isDeposit &&
@@ -663,7 +651,7 @@ class AddCard extends Component {
                 : i18n.t("common.withdrawalChannel")
             }
             disabled={true}
-          ></Textbox>
+          ></Textfield>
         )}
 
         {(() => {
@@ -686,7 +674,7 @@ class AddCard extends Component {
                   selectedBankType("Pulsa")
                 ) && (
                   <>
-                    <Textbox
+                    <Textfield
                       style={{ margin: "20px auto 20px auto" }}
                       value={this.state.bankName}
                       onChange={this.handleBankNameChange}
@@ -709,11 +697,11 @@ class AddCard extends Component {
                           : i18n.t("card.addCard.BankName")
                       }
                       maxLength={255}
-                    ></Textbox>
+                    ></Textfield>
                     {(() => {
                       if (config.features.AddCard_BankBranch) {
                         return (
-                          <Textbox
+                          <Textfield
                             style={{ margin: "20px auto 20px auto" }}
                             value={this.state.bankBranch}
                             onChange={this.handleBankBranchChange}
@@ -723,14 +711,14 @@ class AddCard extends Component {
                             )}
                             label={i18n.t("card.addCard.branch")}
                             maxLength={255}
-                          ></Textbox>
+                          ></Textfield>
                         );
                       }
                     })()}
                   </>
                 )}
 
-                <Textbox
+                <Textfield
                   style={{ margin: "20px auto 20px auto" }}
                   value={this.state.bankAccountName}
                   onChange={this.handleBankAccountNameChange}
@@ -755,7 +743,7 @@ class AddCard extends Component {
                   }
                   maxLength={255}
                   disabled={this.state.disableBankAccountNameInput}
-                ></Textbox>
+                ></Textfield>
               </React.Fragment>
             );
           }
@@ -768,7 +756,7 @@ class AddCard extends Component {
             this.props.wallet.depositList.length > 0 &&
             this.props.wallet.depositList[this.state.selectedBankTypeIndex]
               .banktype === "EWallet")) && (
-          <Textbox
+          <Textfield
             style={{ margin: "20px auto 20px auto" }}
             value={this.state.bankAccountName}
             onChange={this.handleBankAccountNameChange}
@@ -793,14 +781,14 @@ class AddCard extends Component {
             }
             maxLength={255}
             disabled={this.state.disableBankAccountNameInput}
-          ></Textbox>
+          ></Textfield>
         )}
         {(!this.state.isDeposit &&
           this.props.wallet.withdrawalList.length > 0 &&
           (this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
             .banktype === "ThirdParty" ||
             this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-            .banktype === "Coinsph" ||
+              .banktype === "Coinsph" ||
             this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
               .banktype === "FPS")) ||
         (this.state.isDeposit &&
@@ -808,11 +796,11 @@ class AddCard extends Component {
           (this.props.wallet.depositList[this.state.selectedBankTypeIndex]
             .banktype === "ThirdParty" ||
             this.props.wallet.depositList[this.state.selectedBankTypeIndex]
-            .banktype === "Coinsph" ||
+              .banktype === "Coinsph" ||
             this.props.wallet.depositList[this.state.selectedBankTypeIndex]
               .banktype === "FPS")) ? (
           <div>
-            <Textbox
+            <Textfield
               style={{ margin: "20px auto 20px auto" }}
               value={this.state.name}
               onChange={(e) => {
@@ -833,8 +821,8 @@ class AddCard extends Component {
                   ? i18n.t("custom.addcard.name")
                   : i18n.t("profile.nameVerify.title")
               }
-            ></Textbox>
-            <Textbox
+            ></Textfield>
+            <Textfield
               style={{ margin: "20px auto 20px auto" }}
               value={this.state.phone}
               onChange={(e) => {
@@ -867,10 +855,10 @@ class AddCard extends Component {
                   ? i18n.t("bet28.phoneNumber")
                   : i18n.t("common.phoneNumber")
               }
-            ></Textbox>
+            ></Textfield>
             <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>
             <Button
-              style={{ margin: "40px auto 0 auto" }}
+              style={{ margin: "40px 25px 0 25px", width: "initial" }}
               label={
                 config.features.Register_CustomFlow_IDR && !this.state.isDeposit
                   ? i18n.t("common.register")
@@ -882,7 +870,7 @@ class AddCard extends Component {
           </div>
         ) : (
           <div>
-            <Textbox
+            <Textfield
               style={{ margin: "20px auto 20px auto" }}
               value={this.state.number}
               onChange={(e) => {
@@ -923,10 +911,10 @@ class AddCard extends Component {
                   selectedBankType("FPS")) &&
                 config.features.MAX_PHONE_LENGTH
               }
-            ></Textbox>
+            ></Textfield>
             <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>
             <Button
-              style={{ margin: "40px auto 0 auto" }}
+              style={{ margin: "40px 25px 0 25px", width: "initial" }}
               label={
                 config.features.Register_CustomFlow_IDR && !this.state.isDeposit
                   ? i18n.t("web.register.btn")

@@ -5,26 +5,22 @@ import { withRouter } from "react-router-dom";
 import Header from "../../Wap/Share/Header";
 import { withStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Dialog";
-
-import Button from "../../Wap/Share/Button";
 import Switch from "@material-ui/core/Switch";
-import FormControl from "@material-ui/core/FormControl";
 import DynamicFont from "react-dynamic-font";
-import Select from "@material-ui/core/Select";
 import { accountAction } from "../../../api-services/actions/accountAction";
 import { walletAction } from "../../../api-services/actions/walletAction";
-import { WalletType, customGPname } from "../../../api-services/utils/Enum";
+import { WalletType } from "../../../api-services/utils/Enum";
 import { RESET_WALLETRESULT } from "../../../api-services/constant/actionType";
-
 import Loading from "../../Wap/Share/Loading";
 import Common from "../../../utils/Common";
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
+import Button from "../component/button";
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
 
-  height: 100%;
+  min-height: 100vh;
 `;
 const RefreshLabel = styled.div`
   float: right;
@@ -35,146 +31,30 @@ const RefreshLabel = styled.div`
     `/assets/images/wapp/icon-transfer-refresh`})
     no-repeat;
 `;
-const InnerContainer = styled.div`
-  margin: 40px auto 40px auto;
 
-  width: 688px;
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 4px 8px 0 rgba(35, 31, 27, 0.1);
-`;
-const RowContainer = styled.div`
-  min-height: 80px;
-  padding: 30px;
-`;
-const LeftBalanceContainer = styled.div`
-  float: left;
-`;
-const LeftLabelIcon = styled.div`
-  width: 100%;
-  height: 87px;
-  float: left;
-  border-radius: 50%;
-  background: url(${(props) => props.icon}) no-repeat center center;
-`;
-
-const LeftLabel = styled.div`
-  float: left;
-  width: 100%;
-  text-align: center;
-  margin: 5px 0 0 0;
-
-  font-size: 23px;
-
-  color: #141a36;
-`;
-const RightAmountLabel = styled.div`
-  float: left;
-  margin: 38px 0px 0px 0px;
-  font-size: 30px;
-  color: #141a36;
-  padding-left: 30px;
-`;
-const SplitLine = styled.div`
-  height: 2px;
-  background-color: #eeeeee;
-  width:100%%
-  margin:0 auto;
-`;
-const SplitLineHalf = styled(SplitLine)`
-  height: 2px;
-  background-color: #eeeeee;
-  width:90%
-  margin:0 auto;
-`;
 const ColumnWrap = styled.div`
   float: left;
   min-width: calc(25% - 2px);
 `;
 const ColumnContainer = styled.div`
-  height: 125px;
+  height: 120px;
 
   padding-top: 20px;
 `;
 const ColumnGameName = styled.div`
-  font-size: 22px;
+  font-size: 26px;
   color: #141a36;
-  text-align: left;
-  height: 55px;
-  width: 157px;
-  white-space: pre-line;
+  text-align: center;
+  height: 35px;
 `;
 const ColumnGameBalance = styled.div`
-  width: 157px;
   font-size: 30px;
-  color: ${({ theme }) => theme.secondary};
-  text-align: left;
+  color: ${({ theme }) =>
+    theme.wapSecondary ? theme.wapSecondary : theme.secondary};
+  text-align: center;
   margin-top: 10px;
 `;
 
-const TransferAccountContainer = styled(InnerContainer)`
-  float: left;
-  padding: 30px;
-  width: 300px;
-  margin: 40px;
-  margin: 0px 0 0 30px;
-`;
-const TransferLabel = styled.div`
-  font-size: 22px;
-  color: #141a36;
-  margin-left: 20px;
-`;
-const TransferArrowIcon = styled.div`
-  background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp/icon-transfer-to.png`})
-    no-repeat center;
-  width: 60px;
-  height: 60px;
-  float: left;
-  margin: 48px 14px 0 14px;
-`;
-const TextboxContainer = styled(InnerContainer)`
-  height: 168px;
-  padding: 30px;
-`;
-const TextboxLabel = styled.div`
-  float: left;
-
-  margin: 0 10px;
-
-  font-size: 24px;
-  width: 400px;
-  color: #141a36;
-`;
-const TextboxInput = styled.input`
-  color: ${({ theme }) => theme.secondary};
-  float: left;
-  height: 88px;
-  font-size: 28px;
-  margin: 0 10px;
-  padding: 0;
-  border: none;
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    font-size: 28px;
-
-    color: #c3c3c3;
-  }
-`;
-const ButtonDiv = styled.div`
-  float: right;
-
-  color: #fefeff;
-  font-size: 20px;
-
-  text-align: center;
-  padding: 9px 0;
-
-  width: 146px;
-  height: 47px;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.primary};
-`;
 const DialogHeader = styled.div`
   color: #4a4a4a;
   font-weight: 600;
@@ -190,14 +70,6 @@ const StyledModal = withStyles((theme) => ({
   },
 }))(Modal);
 
-const CustomFormControl = withStyles((theme) => ({
-  root: {
-    "& fieldset": {
-      border: "none",
-    },
-  },
-}))(FormControl);
-
 const CustomSwitch = withStyles((theme) => ({
   root: {
     width: 42,
@@ -211,7 +83,7 @@ const CustomSwitch = withStyles((theme) => ({
       transform: "translateX(16px)",
       color: theme.palette.common.white,
       "& + $track": {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: "#ff9900",
         opacity: 1,
         border: "none",
       },
@@ -260,26 +132,57 @@ const CustomSwitchContainer = styled.div`
   display: flex;
   align-items: center;
   font-weight: normal;
-  padding: 0px 30px;
+  padding: 10px 20px;
+  color: ${({ theme }) =>
+    theme.wapSecondary ? theme.wapSecondary : theme.secondary};
   zoom: 1.75;
+`;
+
+const CustomTextField = styled.div`
+  display: grid;
+  grid-template-columns: 40vw auto;
+  background: white;
+  font-size: 32px;
+  height: 80px;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.5);
+  padding-right: 20px;
+`;
+
+const CustomTextFieldLabel = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  font-size: 32px;
+  padding: 0px 20px;
+`;
+
+const CustomTextInput = styled.input`
+  font-size: 32px;
+  border: solid 0px black;
+`;
+
+const CustomSelect = styled.select`
+  font-size: 32px;
+  border: solid 0px black;
 `;
 
 const ButtonWrapper = styled.div`
   display: block;
-  padding-left: 50px;
+  padding-left: 30px;
   font-size: 24px;
-  padding-top: 10px;
 `;
 
 const CustomButton = styled.div`
-  background: ${({ theme }) => theme.primary};
+  background: ${({ theme }) =>
+    theme.wapPrimary ? theme.wapPrimary : theme.primary};
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: ${({ theme }) =>
+    theme.customButtonText ? theme.customButtonText : "#ffffff"};
   width: 200px;
-  padding: 10px 20px;
+  padding: 20px;
 `;
 
 class Transfer extends Component {
@@ -292,21 +195,14 @@ class Transfer extends Component {
       loading: false,
       open: false,
       mainAccountId: "0",
+      walletBalance: [],
       disabled: false,
     };
   }
 
   componentDidMount() {
-    if (this.props.token != null) {
-      this.props.getBalanceList();
-      this.getAllGameBalance();
-    } else {
-      this.props.appHistory.replace("/login");
-    }
-    // .then((_) => {
-    //   this.bindData();
-    // });
-    //this.handleRefreshClick();
+    this.props.getBalanceList();
+    this.getAllGameBalance();
   }
   componentDidUpdate(preProps) {
     if (
@@ -331,20 +227,11 @@ class Transfer extends Component {
           loading: false,
           open: false,
         });
-        // this.props.appHistory.replace( "/withdrawal");
       } else {
         this.props.alert("", this.props.wallet.transferResult.info);
-        // if (
-        //   this.props.wallet.transferResult.code === 208 ||
-        //   this.props.wallet.transferResult.code === 209
-        // ) {
-        //   this.props.alert('', i18n.t('transfer.msgFailedTransfer'))
-        // } else {
-        //   this.props.alert('', this.props.wallet.transferResult.info)
-        // }
       }
     }
-    // withdrawal all response
+
     if (
       preProps.wallet.withdrawalAllResult !==
         this.props.wallet.withdrawalAllResult &&
@@ -360,70 +247,50 @@ class Transfer extends Component {
           loading: false,
           open: false,
         });
-        // this.props.appHistory.replace( "/withdrawal");
       } else {
         this.props.alert("", this.props.wallet.withdrawalAllResult.info);
       }
     }
   }
+
+  resetWalletBalance = () => {
+    this.setState({
+      ...this.state,
+      walletBalance: [],
+    });
+  };
+
   getAllGameBalance = () => {
+    this.resetWalletBalance();
     this.props.game.providerList
       .filter((item) => item.status === 0 && item.transferwallet === true)
       .filter((item) => item.gpcode !== "NTTF" && item.gpcode !== "RTTF")
       .map((a) => {
-        this.props.getGameBalance(a.gpcode);
+        this.props.getGameBalance(a.gpcode).then((e) => {
+          if (e) {
+            if (e.IsSuccess) {
+              this.setState({
+                ...this.state,
+                walletBalance: [
+                  ...this.state.walletBalance,
+                  {
+                    abbreviation: a.abbreviation,
+                    balance: e.data.balance,
+                  },
+                ],
+              });
+            }
+          } else {
+            console.log(a.gpcode);
+          }
+        });
       });
   };
   handleRefreshClick = () => {
     this.props.getBalanceList();
     this.getAllGameBalance();
   };
-  // bindData() {
-  //   let singleWalletGameName = "";
-  //   let transferWalletAmount = 0;
 
-  //   let totalAmount = 0;
-  //   let transferWalletList = [];
-  //   let count = 1;
-  //   for (let wallet of this.props.wallet.balanceList) {
-  //     if (wallet.purse_type === WalletType.MainWallet) {
-  //       transferWalletList.push(wallet);
-  //       this.mainAccountId = wallet.id;
-  //     } else if (wallet.purse_type === WalletType.SingleWallet) {
-  //       singleWalletGameName += count + ". " + wallet.name + "<br />";
-  //       count++;
-  //     } else if (wallet.purse_type === WalletType.TransferWallet) {
-  //       transferWalletAmount += parseFloat(wallet.balance);
-  //       transferWalletList.push(wallet);
-  //     }
-  //     totalAmount += parseFloat(wallet.balance);
-  //   }
-  //   // if (singleWalletGameName.length > 1) {
-  //   //   singleWalletGameName = singleWalletGameName.substring(
-  //   //     0,
-  //   //     singleWalletGameName.length - 1
-  //   //   );
-  //   // }
-  //   this.setState({
-  //     ...this.state,
-
-  //     singleWalletGameName,
-  //     transferWalletAmount: Common.formatNumberWithCommas(transferWalletAmount),
-  //     totalAmount: Common.formatNumberWithCommas(totalAmount),
-  //     selectListView: transferWalletList
-  //       .filter((item) => item.maintenance !== 1)
-  //       .map((item, key) => (
-  //         <option
-  //           key={item.id}
-  //           value={isNaN(item.id) === true ? item.id : item.parent_id}
-  //         >
-  //           {item.name}
-  //         </option>
-  //       )),
-  //     listView: this.GetTransferWalletQuickList(transferWalletList),
-  //     transferWalletList: transferWalletList,
-  //   });
-  // }
   GetTransferWalletQuickList = (transferWalletList) => {
     return transferWalletList
       .filter(function (wallet) {
@@ -438,8 +305,7 @@ class Transfer extends Component {
                 content={
                   item.maintenance === 1
                     ? i18n.t("transfer.maintenance")
-                    : item.symbol +
-                      Common.formatNumberWithThousand(item.balance)
+                    : item.symbol + Common.formatNumberWithCommas(item.balance)
                 }
               ></DynamicFont>
             </ColumnGameBalance>
@@ -482,8 +348,8 @@ class Transfer extends Component {
     this.props.doTransfer(
       transferAmount,
       this.state.mainAccountId,
-      transferTo == this.state.mainAccountId ? transferFrom : transferTo,
-      transferFrom == this.state.mainAccountId ? 1 : 2
+      transferTo === this.state.mainAccountId ? transferFrom : transferTo,
+      transferFrom === this.state.mainAccountId ? 1 : 2
     );
   };
   handleMaxAmountClicked = (e) => {
@@ -496,7 +362,7 @@ class Transfer extends Component {
       this.setState({
         ...this.state,
         transferAmount: this.props.game.providerList.filter(
-          (a) => a.abbreviation === this.state.fromWallet
+          (a) => a.gpcode === this.state.fromWallet
         )[0].balance,
       });
     }
@@ -525,7 +391,7 @@ class Transfer extends Component {
   handleToWallet = (e) => {
     const toWallet = e.target.value;
 
-    if (toWallet != this.state.mainAccountId) {
+    if (toWallet !== this.state.mainAccountId) {
       this.setState({
         ...this.state,
         fromWallet: this.state.mainAccountId,
@@ -551,6 +417,16 @@ class Transfer extends Component {
     this.props.updateAutoTransferStatus();
   };
 
+  gpNameSwitcher = ({ abbreviation, name }) => {
+    if (
+      abbreviation &&
+      abbreviation.toLowerCase() === "wgfm" &&
+      config.brandName === "TIGER"
+    )
+      return "Tiger Sports";
+    else return name ? name : "";
+  };
+
   render() {
     return (
       <Container>
@@ -563,61 +439,30 @@ class Transfer extends Component {
           }
           onBackClick={this.handleBackClick}
           title={i18n.t("transfer.title")}
-        ></Header>
-        <InnerContainer>
-          <RowContainer>
-            <LeftBalanceContainer>
-              <LeftLabelIcon
-                icon={
-                  process.env.PUBLIC_URL +
-                  `/assets/images/wapp/icon-transfer-total.png`
-                }
-              ></LeftLabelIcon>
-              <div className="clear"></div>
-              <LeftLabel>{i18n.t("transfer.mainAccount")}</LeftLabel>
-            </LeftBalanceContainer>
-
-            <RightAmountLabel>
-              {Common.formatNumberWithThousand(this.props.wallet.mainBalance)}
-            </RightAmountLabel>
-            {/* <OneClickReceiveButton onClick={this.handleWithdrawAllClick}>
-              {i18n.t("transfer.oneKeyReceive")}
-            </OneClickReceiveButton> */}
-          </RowContainer>
-          <SplitLineHalf></SplitLineHalf>
-        </InnerContainer>
-        <AutoTransferContainer>
-          <div></div>
-          <CustomSwitchContainer>
-            <div>
-              {i18n.t("transfer.autoTransfer")} (
-              {this.props.wallet.autotransfer === true
-                ? i18n.t("transfer.on")
-                : i18n.t("transfer.off")}
-              )
-            </div>
-            <CustomSwitch
-              checked={this.props.wallet.autotransfer === true}
-              onChange={this.handleSwitchAutoTransfer}
-            />
-          </CustomSwitchContainer>
-        </AutoTransferContainer>
-        <ButtonWrapper>
-          <CustomButton
-            onClick={() => {
-              this.props.performWithdrawFromEveryBrand();
-            }}
+        ></Header>{" "}
+        <CustomTextField>
+          <CustomTextFieldLabel>
+            {i18n.t("transfer.mainAccount")}
+          </CustomTextFieldLabel>
+          <CustomTextFieldLabel>
+            {Common.formatNumberWithCommas(this.props.wallet.mainBalance)}
+          </CustomTextFieldLabel>
+        </CustomTextField>
+        <CustomTextField>
+          <CustomTextFieldLabel>
+            {i18n.t("transfer.transferFromWallet")}
+          </CustomTextFieldLabel>
+          <CustomSelect
+            onChange={this.handleFromWallet}
+            value={this.state.fromWallet}
           >
-            {i18n.t("transfer.oneKeyTransferOut")}
-          </CustomButton>
-        </ButtonWrapper>
-
-        <InnerContainer>
-          <RowContainer>
+            <option value={this.state.mainAccountId}>
+              {i18n.t("transfer.mainAccount")}
+            </option>
             {this.props.game.providerList
-              .filter(function (item) {
-                return item.status === 0 && item.transferwallet === true;
-              })
+              .filter(
+                (item) => item.status === 0 && item.transferwallet === true
+              )
               .filter((e) => {
                 if (config.features.MergeEVORTNT) {
                   if (
@@ -634,164 +479,74 @@ class Transfer extends Component {
                   return e;
                 }
               })
-              .map((item, index) => {
-                if (item.name === "EVO (NT,RT,BTG,NLC)") {
-                  item.name = "EVO (NT,RT, BTG,NLC)";
+              .map((item, index) => (
+                <option value={item.gpcode} key={index}>
+                  {this.gpNameSwitcher(item)}{" "}
+                  {`(${this.state.walletBalance
+                    .filter((data) => data.abbreviation === item.abbreviation)
+
+                    .map((e) => Common.formatNumberWithThousand(e.balance))})`}
+                </option>
+              ))}
+          </CustomSelect>
+        </CustomTextField>
+        <CustomTextField>
+          <CustomTextFieldLabel>
+            {i18n.t("transfer.transferToWallet")}
+          </CustomTextFieldLabel>
+          <CustomSelect
+            onChange={this.handleToWallet}
+            value={this.state.toWallet}
+          >
+            <option value={this.state.mainAccountId}>
+              {i18n.t("transfer.mainAccount")}
+            </option>
+            {this.props.game.providerList
+              .filter(
+                (item) => item.status === 0 && item.transferwallet === true
+              )
+              .filter((e) => {
+                if (config.features.MergeEVORTNT) {
+                  if (
+                    !(
+                      e.gpcode === "NTTF" ||
+                      e.gpcode === "RTTF" ||
+                      e.gpcode === "BTG" ||
+                      e.gpcode === "NLC"
+                    )
+                  ) {
+                    return e;
+                  }
+                } else {
+                  return e;
                 }
+              })
 
-                return (
-                  <ColumnWrap key={index}>
-                    <ColumnContainer>
-                      <ColumnGameName>
-                        {customGPname.WGFM === ""
-                          ? item.name
-                          : customGPname.WGFM + i18n.t("customGPname.sport")}
-                      </ColumnGameName>
-                      <ColumnGameBalance>
-                        <DynamicFont
-                          content={Common.formatNumberWithThousand(
-                            item.balance
-                          )}
-                        ></DynamicFont>
-                      </ColumnGameBalance>
-                    </ColumnContainer>
-                  </ColumnWrap>
-                );
-              })}
-          </RowContainer>
-        </InnerContainer>
+              .map((item, index) => (
+                <option value={item.gpcode} key={index}>
+                  {this.gpNameSwitcher(item)}{" "}
+                  {`(${this.state.walletBalance
+                    .filter((data) => data.abbreviation === item.abbreviation)
 
-        <TransferAccountContainer>
-          <TransferLabel>{i18n.t("transfer.transferFromWallet")}</TransferLabel>
-          <CustomFormControl
-            variant="outlined"
-            style={{
-              margin: "10px 0 0 0",
-              width: "260px",
-              height: "78px",
-
-              border: "none",
-              fontSize: "28px",
-            }}
-          >
-            <Select
-              native
-              inputProps={{
-                name: "age",
-              }}
-              style={{
-                fontSize: "28px",
-                height: "78px",
-                border: "none",
-              }}
-              onChange={this.handleFromWallet}
-              value={this.state.fromWallet}
-            >
-              <option value={this.state.mainAccountId}>
-                {i18n.t("transfer.mainAccount")}
-              </option>
-              {this.props.game.providerList
-                .filter(
-                  (item) => item.status === 0 && item.transferwallet === true
-                )
-                .filter((e) => {
-                  if (config.features.MergeEVORTNT) {
-                    if (
-                      !(
-                        e.gpcode === "NTTF" ||
-                        e.gpcode === "RTTF" ||
-                        e.gpcode === "BTG" ||
-                        e.gpcode === "NLC"
-                      )
-                    ) {
-                      return e;
-                    }
-                  } else {
-                    return e;
-                  }
-                })
-                .map((item, index) => (
-                  <option value={item.gpcode} key={index}>
-                    {item.name}
-                  </option>
-                ))}
-            </Select>
-          </CustomFormControl>
-        </TransferAccountContainer>
-        <TransferArrowIcon></TransferArrowIcon>
-        <TransferAccountContainer style={{ margin: "0px" }}>
-          <TransferLabel>{i18n.t("transfer.transferToWallet")}</TransferLabel>
-          <CustomFormControl
-            variant="outlined"
-            style={{
-              margin: "10px 0 0 0",
-              width: "260px",
-              height: "78px",
-            }}
-          >
-            <Select
-              native
-              inputProps={{
-                name: "age",
-                id: "outlined-age-native-simple",
-              }}
-              style={{
-                fontSize: "28px",
-                height: "78px",
-                border: "none",
-              }}
-              onChange={this.handleToWallet}
-              value={this.state.toWallet}
-            >
-              <option value={this.state.mainAccountId}>
-                {i18n.t("transfer.mainAccount")}
-              </option>
-              {this.props.game.providerList
-                .filter(
-                  (item) => item.status === 0 && item.transferwallet === true
-                )
-                .filter((e) => {
-                  if (config.features.MergeEVORTNT) {
-                    if (
-                      !(
-                        e.abbreviation === "NTTF" ||
-                        e.abbreviation === "RTTF" ||
-                        e.gpcode === "BTG" ||
-                        e.gpcode === "NLC"
-                      )
-                    ) {
-                      return e;
-                    }
-                  } else {
-                    return e;
-                  }
-                })
-                .map((item, index) => (
-                  <option value={item.gpcode} key={index}>
-                    {item.name}
-                  </option>
-                ))}
-            </Select>
-          </CustomFormControl>
-        </TransferAccountContainer>
-        <div className="clear"></div>
-        <TextboxContainer>
-          <TextboxLabel>{i18n.t("common.amount")}</TextboxLabel>
-          <TextboxInput
+                    .map((e) => Common.formatNumberWithThousand(e.balance))})`}
+                </option>
+              ))}{" "}
+          </CustomSelect>
+        </CustomTextField>
+        <CustomTextField>
+          <CustomTextFieldLabel>{i18n.t("common.amount")}</CustomTextFieldLabel>
+          <CustomTextInput
             type={"number"}
             placeholder={i18n.t("transfer.msgEnterAmount")}
             onChange={this.handleTransferAmountChanged}
             value={this.state.transferAmount}
-          ></TextboxInput>
-          <ButtonDiv onClick={this.handleMaxAmountClicked}>
-            {i18n.t("transfer.maxAmount")}
-          </ButtonDiv>
-        </TextboxContainer>
-
+          />
+        </CustomTextField>
         <Button
-          style={{ margin: "40px auto 40px auto" }}
+          style={{ margin: "20px", width: "initial" }}
           label={i18n.t("common.confirm")}
           onClick={this.handleSubmitClicked}
+          secondary
           disabled={(() => {
             return (
               this.state.transferAmount === 0 ||
@@ -801,7 +556,29 @@ class Transfer extends Component {
             );
           })()}
         ></Button>
-
+        <AutoTransferContainer>
+          <div></div>
+          <CustomSwitchContainer>
+            <div>
+              {i18n.t("transfer.autoTransfer")} (
+              {this.props.wallet.autotransfer === true
+                ? i18n.t("transfer.on")
+                : i18n.t("transfer.off")}
+              )
+            </div>
+            <CustomSwitch
+              checked={this.props.wallet.autotransfer === true}
+              onChange={this.handleSwitchAutoTransfer}
+            />
+          </CustomSwitchContainer>
+        </AutoTransferContainer>
+        <Button
+          style={{ margin: "20px", width: "initial" }}
+          onClick={() => {
+            this.props.performWithdrawFromEveryBrand();
+          }}
+          label={i18n.t("transfer.oneKeyTransferOut")}
+        ></Button>
         <StyledModal onClose={this.handleClose} open={this.state.open}>
           <DialogHeader>温馨提示</DialogHeader>
           以下产品无需转账， <br />
@@ -827,7 +604,6 @@ class Transfer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.account.token,
     account: state.account,
     game: state.game,
     wallet: state.wallet,

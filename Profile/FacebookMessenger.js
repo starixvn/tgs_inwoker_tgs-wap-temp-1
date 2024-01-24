@@ -86,7 +86,6 @@ class FacebookMessenger extends BaseProfile {
     return this.setupContent(
       i18n.t("common.fb"),
       <Textbox
-        style={{ margin: "50px auto 20px auto" }}
         value={this.state.fb}
         onChange={this.handleChangeNumber}
         placeholder={i18n.t("profile.fb.plsEnterFB")}

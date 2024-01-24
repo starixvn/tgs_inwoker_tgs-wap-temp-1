@@ -51,30 +51,24 @@ const CardItem = styled.div`
   border-radius: 16px;
   margin-left: 60px;
   padding: 0 0 0 44px;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
 `;
 const InfoLabel = styled.div`
   font-size: ${() => (config.brand === "WGHK" ? `24px` : `18px`)};
   font-weight: ${() => (config.brand === "WGHK" ? `400` : `600`)};
 
-  color: ${({ theme }) => theme.secondary};
-  float: right;
-  margin: 15px 80px 0 0;
-  background: url(${process.env.PUBLIC_URL +
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
+
+  mask: url(${process.env.PUBLIC_URL +
     `/assets/images/wapp/icon-card-info.png`})
     no-repeat left center;
-  background-size: 32px;
+  mask-size: 32px;
+  background: ${({ theme }) => theme.new_textColor ?? theme.secondary};
   padding-left: 44px;
   height: ${() => (config.brand === "WGHK" ? `42px` : `32px`)};
   padding-top: 4px;
 `;
-const BankIcon = styled.div`
-  background: url(${(props) => props.src}) no-repeat center center;
-  margin: 0 20px 0 20px;
-  height: 170px;
-  width: 110px;
-  float: left;
-`;
+
 const BankName = styled.div`
   font-size: 24px;
 
@@ -92,7 +86,7 @@ const BankNumber = styled.div`
 const EmptyCardItem = styled.div`
   width: 632px;
   height: 170px;
-  border: 2px ${({ theme }) => theme.secondary} dashed;
+  border: 2px ${({ theme }) => theme.new_textColor ?? theme.secondary} dashed;
   border-radius: 16px;
   margin: 30px auto 0 auto;
 `;
@@ -100,7 +94,7 @@ const EmptyCardTitle = styled.div`
   font-size: ${() => (config.brand === "WGHK" ? `26px` : `24px`)};
   font-weight: 600;
   float: left;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
   width: 450px;
 
   margin: 50px 0 0 45px;
@@ -109,14 +103,15 @@ const EmptyCardDesc = styled.div`
   font-size: ${() => (config.brand === "WGHK" ? `24px` : `18px`)};
   font-weight: ${() => (config.brand === "WGHK" ? `400` : `normal`)};
   float: left;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
   width: ${() => (config.brand === "WGHK" ? `455px` : `450px`)};
   margin: 5px 0 0 45px;
 `;
 const EmptyCardAdd = styled.div`
-  background: url(${process.env.PUBLIC_URL +
+  mask: url(${process.env.PUBLIC_URL +
     `/assets/images/wapp/icon-plus-circle.png`})
     no-repeat center center;
+  background: ${({ theme }) => theme.new_textColor ?? theme.secondary};
   width: 100px;
   height: 170px;
   float: right;
@@ -126,6 +121,15 @@ const DisableSwipe = styled.div`
   pointer-events: ${({ disable }) => {
     return disable ? "none" : "auto";
   }};
+`;
+
+const InfoLabelContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 75px;
+  padding-top: 20px;
 `;
 
 class Card extends Component {
@@ -265,7 +269,11 @@ class Card extends Component {
             config.features.AddCard_MaximumCardAllowed
         ) && (
           <>
-            <InfoLabel>{i18n.t("card.msgSlideToDelete")}</InfoLabel>
+            <InfoLabelContainer>
+              <InfoLabel></InfoLabel>
+              <div>{i18n.t("card.msgSlideToDelete")}</div>
+            </InfoLabelContainer>
+
             <div className="clear"></div>
             <EmptyCardItem
               onClick={() => {

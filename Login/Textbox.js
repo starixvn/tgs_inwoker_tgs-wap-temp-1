@@ -24,7 +24,7 @@ const TextSpan = styled.span`
 
 const InputTextBox = styled.input`
   width: 410px;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
   font-size: 30px;
   float: left;
   background: none;

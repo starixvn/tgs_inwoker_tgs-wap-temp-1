@@ -86,7 +86,6 @@ class Whatsapp extends BaseProfile {
     return this.setupContent(
       i18n.t("common.whatsapp"),
       <Textbox
-        style={{ margin: "50px auto 20px auto" }}
         value={this.state.whatsapp}
         onChange={this.handleChangeNumber}
         placeholder={i18n.t("profile.whatsapp.plsEnterWhatsapp")}

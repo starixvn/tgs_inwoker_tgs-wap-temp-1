@@ -41,8 +41,9 @@ const ItemIcon = styled.div`
   height: 48px;
   margin-top: 20px;
   width: 48px;
-  background: url(${(props) => props.icon}) no-repeat left center;
-  background-size: contain;
+  mask: url(${(props) => props.icon}) no-repeat left center;
+  mask-size: contain;
+  background: ${({ theme }) => theme.new_gradientBackground ?? theme.primary};
 `;
 const ItemContentContainer = styled.div`
   float: left;

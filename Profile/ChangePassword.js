@@ -80,7 +80,6 @@ class ChangePassword extends BaseProfile {
       <React.Fragment>
         <Textbox
           type={"password"}
-          style={{ margin: "50px auto 20px auto" }}
           value={this.state.oldpassword}
           onChange={this.handleChangeOldPassword}
           placeholder={i18n.t("profile.changePassword.msgEnterOriPass")}

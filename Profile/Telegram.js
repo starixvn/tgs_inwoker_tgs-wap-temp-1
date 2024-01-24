@@ -86,7 +86,6 @@ class Telegram extends BaseProfile {
     return this.setupContent(
       i18n.t("common.telegram"),
       <Textbox
-        style={{ margin: "50px auto 20px auto" }}
         value={this.state.telegram}
         onChange={this.handleChangeNumber}
         placeholder={i18n.t("profile.telegram.plsEnterTelegram")}

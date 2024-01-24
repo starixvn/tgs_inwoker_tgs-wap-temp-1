@@ -86,7 +86,6 @@ class Viber extends BaseProfile {
     return this.setupContent(
       i18n.t("common.viber"),
       <Textbox
-        style={{ margin: "50px auto 20px auto" }}
         value={this.state.viber}
         onChange={this.handleChangeNumber}
         placeholder={i18n.t("profile.viber.plsEnterViber")}

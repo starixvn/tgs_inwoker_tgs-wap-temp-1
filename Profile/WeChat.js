@@ -83,7 +83,6 @@ class WeChat extends BaseProfile {
     return this.setupContent(
       i18n.t("common.wechatNumber"),
       <Textbox
-        style={{ margin: "50px auto 20px auto" }}
         value={this.state.wechat}
         onChange={this.handleChangeNumber}
         placeholder={i18n.t("profile.wechat.plsEnterWechat")}

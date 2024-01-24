@@ -171,7 +171,6 @@ class NameVerify extends BaseProfile {
       i18n.t("profile.nameVerify.title"),
       <React.Fragment>
         <Textbox
-          style={{ margin: "50px auto 20px auto" }}
           value={
             this.props.account.info.check_pass_account ? this.state.name : ""
           }
@@ -191,7 +190,6 @@ class NameVerify extends BaseProfile {
         ></Textbox>
         {this.state.isConfigured === false && config.features.ICVerification ? (
           <Textbox
-            style={{ margin: "50px auto 20px auto" }}
             value={this.state.ic}
             onChange={this.handleChangeIC}
             placeholder={

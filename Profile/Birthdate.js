@@ -24,6 +24,9 @@ const localeMap = {
 
 const DatepickerWrapper = styled.div`
   padding: 40px 40px 0 40px;
+  margin: 25px 25px 0 25px;
+  background: white;
+  border-radius: 20px;
 `;
 
 const CustomDatepicker = styled.div`
@@ -32,7 +35,7 @@ const CustomDatepicker = styled.div`
   }}
   background: white;
   zoom: ${() => (config.brand === "WGHK" ? "1.0" : "1.5")};
-  padding: ${() => (config.brand === "WGHK" ? "20px 20px" : "10px 20px")};
+  padding: 0 0 20px 0;
   border-radius: 8px;
   margin-top: 10px;
 

@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Header from "../../Wap/Share/Header";
-import Button from "../../Wap/Share/Button";
 import { generalAction } from "../../../api-services/actions/generalAction";
 import i18n from "../../../utils/i18n";
 
 import config from "../../../config/config";
+import Button from "../component/button";
 const moment = require("moment");
 const Content = styled.div`
   width: 100%;
@@ -136,7 +136,9 @@ class Details extends Component {
   render() {
     if (this.state.details === null) return <React.Fragment></React.Fragment>;
     var isDummy = this.state.details.promotionType.toUpperCase() === "DUMMY";
-    var isPromoteDepositChannel = this.state.details.promotionType.toUpperCase() === "PROMOTEDEPOSITCHANNEL";
+    var isPromoteDepositChannel =
+      this.state.details.promotionType.toUpperCase() ===
+      "PROMOTEDEPOSITCHANNEL";
 
     var checkIfLocalizationIsEmpty =
       JSON.stringify(this.state.details.localization) === "{}";
@@ -225,7 +227,7 @@ class Details extends Component {
         </Content>
         {!(isDummy || isPromoteDepositChannel) && (
           <Button
-            style={{ margin: "40px auto 0 auto" }}
+            style={{ margin: "40px 25px 0 25px", width: "initial" }}
             label={i18n.t("promotion.joinPromo")}
             onClick={() =>
               this.handleJoinClick(

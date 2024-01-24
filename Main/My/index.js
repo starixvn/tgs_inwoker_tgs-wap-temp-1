@@ -7,12 +7,11 @@ import { accountAction } from "../../../../api-services/actions/accountAction";
 import { walletAction } from "../../../../api-services/actions/walletAction";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
-
-import BtnLogout from "../../../Share/ButtonBlankWap";
 import Common from "../../../../utils/Common";
 
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
+import Button from "../../component/button";
 const StyledAppBar = withStyles((theme) => ({
   root: {
     height: "370px",
@@ -91,9 +90,11 @@ const IconContainer = styled.div`
   width: 716px;
   height: 190px;
   border-radius: 30px;
-  box-shadow: 0px 3px 12px 0 rgba(0, 0, 0, 0.6);
+  box-shadow: ${({ theme }) =>
+    theme.new_bodyColor ? "none" : " 0px 3px 12px 0 rgba(0, 0, 0, 0.6);"}
   border: solid 1px #a9a9a9;
-  background-image: linear-gradient(to top, #e0e0e0, #ffffff);
+  background: ${({ theme }) =>
+    theme.new_bodyColor ?? " linear-gradient(to top, #e0e0e0, #ffffff);"};
 
   margin: 10px auto 30px auto;
   padding: 40px 30px 0 30px;
@@ -118,34 +119,43 @@ const IconLabel = styled.div`
   margin-top: 5px;
 `;
 
+const ProfileButtonIcon = styled.div`
+  mask: url(${(props) => props.src}) no-repeat center center;
+  width: 80px;
+  height: 80px;
+  background: #000;
+`;
+
 const ListView = styled.div`
-  padding: 480px 30px 90px 30px;
+  padding: 480px 30px 0px 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 `;
 const ListItem = styled.div`
   border-radius: 6px;
-  box-shadow: 0px 4px 10px 0 rgba(0, 0, 0, 0.25);
+
   border: solid 1px #ffffff;
-  background-image: linear-gradient(to top, #e0e0e0, #ffffff);
+  background: #fff;
 
-  background-image: url(${(props) => props.icon});
-  background-repeat: no-repeat;
-  background-position: center 30px;
-
-  width: 166px;
-  height: 166px;
+  width: 100%;
+  aspect-ratio: 1.25/1;
+  height: 100%;
   border-radius: 6px;
   box-shadow: 0px 4px 12px 0 rgba(0, 0, 0, 0.8);
   border: solid 1px #ffffff;
   background-size: 65px;
   font-size: 22px;
-
-  float: left;
-  margin: 15px 32px;
-
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  flex-direction: column;
   text-align: center;
   color: ${(props) =>
     props.disabled ? `rgba(61, 61, 61, 0.3)` : props.theme.secondary};
-  padding-top: 110px;
+
   position: relative;
 `;
 const RedDot = styled.div`
@@ -220,6 +230,108 @@ class My extends Component {
       Object.values(this.props.game.providerList).filter(
         (item) => item.transferwallet === true
       ).length > 0;
+
+    const profileItems = [
+      {
+        name: "wap.main.account.personalInfo",
+        url: "/profile",
+        icon:
+          process.env.PUBLIC_URL +
+          `/assets/images/wapp/icon-profile-profile.svg`,
+        display: true,
+      },
+      {
+        name: "wap.main.account.inbox",
+        url: "/inbox",
+        icon:
+          process.env.PUBLIC_URL + `/assets/images/wapp/icon-profile-inbox.svg`,
+        display: true,
+        subcomp: (
+          <MessageRedDot
+            style={
+              this.props.account.info.message_num > 0
+                ? { display: "block" }
+                : { display: "none" }
+            }
+          ></MessageRedDot>
+        ),
+      },
+      {
+        name: "wap.main.account.betReport",
+        url: "/report/2",
+        icon:
+          process.env.PUBLIC_URL +
+          `/assets/images/wapp/icon-profile-report.svg`,
+        display: true,
+      },
+      {
+        name: "wap.main.account.withdrawal",
+        url: "/report/3",
+        icon:
+          process.env.PUBLIC_URL +
+          `/assets/images/wapp/icon-profile-withdrawal.svg`,
+        display: true,
+      },
+      {
+        name: "wap.main.account.deposit",
+        url: "/report/4",
+        icon:
+          process.env.PUBLIC_URL + `/assets/images/wapp/icon-profile-topup.svg`,
+        display: true,
+      },
+      {
+        name: "wap.main.account.transfer",
+        url: "/report/6",
+        icon:
+          process.env.PUBLIC_URL +
+          `/assets/images/wapp/icon-profile-report-transfer.svg`,
+        display: checkTransferWallet,
+      },
+      {
+        name: "report.balanceChanges.title",
+        url: "/report/8",
+        icon:
+          process.env.PUBLIC_URL +
+          `/assets/images/wapp/icon-profile-report-transfer.svg`,
+        display: true,
+      },
+      {
+        name: "web.account.affiliate",
+        url: "/affiliate",
+        icon: process.env.PUBLIC_URL + `/assets/images/wapp/icon-affiliate.svg`,
+        display: this.props.general.haveAffiliate,
+      },
+      {
+        name: "wap.main.account.manageBank",
+        url: "/card",
+        icon:
+          process.env.PUBLIC_URL + `/assets/images/wapp/icon-profile-card.svg`,
+        display: true,
+      },
+      {
+        name: "common.language",
+        url: "/setting/language",
+        icon:
+          process.env.PUBLIC_URL +
+          `/assets/images/wapp/icon-profile-language.svg`,
+        display: true,
+      },
+      {
+        name: "VIP",
+        url: "/vip",
+        icon: process.env.PUBLIC_URL + `/assets/images/wapp/icon-vip.svg`,
+        display: config.features.HaveVIPFeature,
+      },
+      {
+        name: "wap.main.account.appDownload",
+        url: "/main/download",
+        icon:
+          process.env.PUBLIC_URL +
+          `/assets/images/wapp/icon-profile-download.svg`,
+        display: config.features.HaveDownloadFeature,
+      },
+    ];
+
     return (
       <Container>
         <StyledAppBar position="fixed" color="default">
@@ -315,161 +427,40 @@ class My extends Component {
           </IconContainer>
         </StyledAppBar>
         <ListView>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-profile.svg`
-            }
-            onClick={() => this.props.navigate("/profile")}
-          >
-            {i18n.t("wap.main.account.personalInfo")}
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-inbox.svg`
-            }
-            onClick={() => this.props.navigate("/inbox")}
-          >
-            {i18n.t("wap.main.account.inbox")}
-
-            <MessageRedDot
-              style={
-                this.props.account.info.message_num > 0
-                  ? { display: "block" }
-                  : { display: "none" }
-              }
-            ></MessageRedDot>
-          </ListItem>
-          {
-            //    <ListItem
-            //    icon={
-            //      process.env.PUBLIC_URL +
-            //      `/assets/images/wapp/icon-profile-inbox.svg`
-            //    }
-            //    onClick={() => this.props.navigate("/memo")}
-            //  >
-            //    {i18n.t("memo")}
-            //  </ListItem>
-          }
-          {/* <ListItem
-            icon={IconProfileCashflowPNG}
-            onClick={() => this.props.navigate("/report/1")}
-          >
-            {i18n.t("wap.main.account.transferReport")}
-          </ListItem> */}
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-report.svg`
-            }
-            onClick={() => this.props.navigate("/report/2")}
-          >
-            {i18n.t("wap.main.account.betReport")}
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-withdrawal.svg`
-            }
-            onClick={() => this.props.navigate("/report/3")}
-          >
-            {i18n.t("wap.main.account.withdrawal")}
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-topup.svg`
-            }
-            style={{ backgroundSize: 60 }}
-            onClick={() => this.props.navigate("/report/4")}
-          >
-            {i18n.t("wap.main.account.deposit")}
-          </ListItem>
-          {checkTransferWallet && (
-            <ListItem
-              icon={
-                process.env.PUBLIC_URL +
-                `/assets/images/wapp/icon-profile-report-transfer.svg`
-              }
-              onClick={() => this.props.navigate("/report/6")}
-            >
-              {i18n.t("wap.main.account.transfer")}
-            </ListItem>
-          )}
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-report-transfer.svg`
-            }
-            onClick={() => this.props.navigate("/report/8")}
-          >
-            {i18n.t("report.balanceChanges.title")}
-          </ListItem>
-          {this.props.general.haveAffiliate && (
-            <ListItem
-              icon={
-                process.env.PUBLIC_URL +
-                `/assets/images/wapp/icon-affiliate.svg`
-              }
-              onClick={() => this.props.navigate("/affiliate")}
-            >
-              {i18n.t("web.account.affiliate")}
-            </ListItem>
-          )}
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-card.svg`
-            }
-            onClick={() => {
-              if (
-                this.props.wallet.bankCardList != null &&
-                this.props.wallet.bankCardList.length === 0 &&
-                config.features.AddCard_NotAllowedEditDelete
-              ) {
-                this.props.alert("", i18n.t("card.toEdit"));
-              } else {
-                this.props.navigate("/card");
-              }
-            }}
-          >
-            {i18n.t("wap.main.account.manageBank")}
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-language.svg`
-            }
-            onClick={() => this.props.navigate("/setting/language")}
-          >
-            {i18n.t("common.language")}
-          </ListItem>
-          {config.features.HaveVIPFeature && (
-            <ListItem
-              icon={process.env.PUBLIC_URL + `/assets/images/wapp/icon-vip.svg`}
-              onClick={() => this.props.navigate("/vip")}
-            >
-              VIP
-            </ListItem>
-          )}
-          {config.features.HaveDownloadFeature && (
-            <ListItem
-              icon={
-                process.env.PUBLIC_URL + `/assets/images/wapp/icon-download.svg`
-              }
-              onClick={() => this.props.navigate("/main/download")}
-            >
-              {i18n.t("wap.main.account.appDownload")}
-            </ListItem>
-          )}
-          <div className="clear"></div>
-          <BtnLogout
-            onClick={this.handleLogoutClick}
-            name={i18n.t("wap.main.account.signout")}
-            style={{ margin: "30px auto 10px auto" }}
-          ></BtnLogout>
+          {profileItems.map((item, index) => {
+            return (
+              item.display && (
+                <ListItem
+                  onClick={() => {
+                    if (item.url === "/card") {
+                      if (
+                        this.props.wallet.bankCardList != null &&
+                        this.props.wallet.bankCardList.length === 0 &&
+                        config.features.AddCard_NotAllowedEditDelete
+                      ) {
+                        this.props.alert("", i18n.t("card.toEdit"));
+                      } else {
+                        this.props.navigate(item.url);
+                      }
+                    } else {
+                      this.props.navigate(item.url);
+                    }
+                  }}
+                  key={index}
+                >
+                  <ProfileButtonIcon src={item.icon} alt="icon" />
+                  <div>{i18n.t(item.name)}</div>
+                  {item.subcomp}
+                </ListItem>
+              )
+            );
+          })}
         </ListView>
+        <Button
+          onClick={this.handleLogoutClick}
+          name={i18n.t("wap.main.account.signout")}
+          style={{ margin: "30px 25px 10px 25px", width: "initial" }}
+        />
       </Container>
     );
   }

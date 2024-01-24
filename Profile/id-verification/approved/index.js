@@ -11,7 +11,6 @@ class Approved extends BaseProfile {
     return (
       <React.Fragment>
         <Textbox
-          style={{ margin: "50px auto 20px auto" }}
           value={this.props.account.info.member_name}
           placeholder={
             config.features.Profile_CustomIdentityPageTranslation

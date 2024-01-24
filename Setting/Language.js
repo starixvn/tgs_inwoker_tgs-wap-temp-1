@@ -19,6 +19,7 @@ import { generalAction } from "../../../api-services/actions/generalAction";
 import { uiAction } from "../../../api-services/actions/uiAction";
 import { GeneralService } from "../../../api-services/services/GeneralService";
 import ErrorSwitcher from "../../../utils/ErrorSwitcher";
+import Button from "../component/button";
 
 const imageMap = {
   "zh-CN": process.env.PUBLIC_URL + `/assets/images/wapp/cn.png`,
@@ -122,11 +123,11 @@ class Profile extends Component {
             );
           })}
         </CustomList>
-        <CustomButton
+        <Button
           label={i18n.t("common.update")}
           style={{ margin: "50px auto" }}
           onClick={this.handleUpdate}
-        ></CustomButton>
+        ></Button>
       </Container>
     );
   }
