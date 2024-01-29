@@ -629,7 +629,7 @@ class Default extends Component {
 
     let top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
-    top = top + 530;
+    top = top + 650;
 
     let reachedTheForthItem =
       this.state.gameTypeListSorting.indexOf(this.state.selectedGameType) > 3 &&
@@ -1133,13 +1133,9 @@ class Default extends Component {
               var displayGameType = Common.GetDisplayGameType();
               var currentType = -1;
               return this.props.game.homePageGameList
-                .filter(
-                  (a) =>
-                    (displayGameType.indexOf(a.type) >= 0 &&
-                      a.type !== GameTypeEnum.RNGSPORTS) ||
-                    (a.type === GameTypeEnum.RNGSPORTS &&
-                      a.abbreviation === "PPTF")
-                )
+                .filter((a) => {
+                  return displayGameType.indexOf(a.type) >= 0;
+                })
                 .sort((a, b) => {
                   if (config.features.LiveGame_Sorting_SKY) {
                     var sortDGFirst = ["DG"];
