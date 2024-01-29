@@ -105,11 +105,12 @@ const IconColumn = styled.div`
   position: relative;
 `;
 const IconImg = styled.div`
-  background: url(${(props) => props.src}) no-repeat center center;
+  mask: url(${(props) => props.src}) no-repeat center center;
   width: 65px;
   height: 80px;
   margin: 0 auto;
   display: block;
+  background: ${({ theme }) => theme.new_primary};
 `;
 const IconLabel = styled.div`
   color: ${({ theme }) => theme.secondary};
@@ -117,6 +118,7 @@ const IconLabel = styled.div`
   text-align: center;
   font-weight: bold;
   margin-top: 5px;
+  color: ${({ theme }) => theme.new_primary};
 `;
 
 const ProfileButtonIcon = styled.div`
