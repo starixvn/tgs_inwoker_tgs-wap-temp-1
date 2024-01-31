@@ -30,7 +30,12 @@ const StyledAppBar = withStyles({
 })(AppBar);
 
 const FixedContainer = styled.div`
-  background-color: ${({ theme }) => theme.new_bodyColor ?? "#fff"};
+  background: rgb(20, 20, 20);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 20, 1) 0%,
+    rgba(16, 16, 16, 1) 100%
+  );
 
   height: 275px;
   border-radius: 20px 20px 0 0;
@@ -39,15 +44,16 @@ const FixedContainer = styled.div`
   bottom: -2px;
 `;
 const AnnouncementContainer = styled.div`
-  margin: 10px 23px;
+  margin: 10px 13px 10px 23px;
   display: flex;
 `;
-const AnnouncementTitle = styled.div`
-  font-size: 28px;
 
-  color: ${({ theme }) => theme.accentText ?? "#000"};
-  font-weight: bold;
+const AnnouncementWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+  align-items: center;
 `;
+
 const MarqueeContainer = styled.div`
   white-space: nowrap;
   letter-spacing: 1.5px;
@@ -75,7 +81,7 @@ const ProfileContainer = styled.div`
 const ProfileContainerTop = styled.div`
   width: 100%;
   height: 50px;
-  background-color: ${({ theme }) => theme.primary};
+
   border-radius: 10px 10px 0 0;
 
   padding: 15px 25px 0 26px;
@@ -83,12 +89,7 @@ const ProfileContainerTop = styled.div`
 const ProfileContainerBottom = styled.div`
   width: 100%;
 
-  padding: 0 25px 0 26px;
-  background-image: linear-gradient(
-    to top,
-    ${({ theme }) => theme.primaryGradient},
-    ${({ theme }) => theme.primary}
-  );
+  padding: 0 0 10px 26px;
 `;
 const WelcomeLabel = styled.div`
   float: left;
@@ -154,7 +155,9 @@ const WalletActionIcon = styled.div`
       (theme.new_iconSet ? `icons-set/${theme.new_iconSet}/` : "") +
       img
     }) no-repeat center center; `}
-  background: ${(props) => props.theme.new_gradientBackground};
+  background: ${({ theme, useAccent }) => {
+    return useAccent ? theme.accentText : theme.new_gradientBackground;
+  }};
   width: 50px;
   height: 50px;
   mask-size: 100%;
@@ -165,7 +168,7 @@ const ActionButton = styled.div`
   width: 80px;
   height: 80px;
   margin: 0 auto;
-  background-color: ${(props) => props.theme.secondary};
+  background: linear-gradient(180deg, #3c3c3c 0%, #101010 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -178,8 +181,8 @@ const ButtonSignup = styled.div`
   justify-content: center;
   height: 71px;
   border-radius: 55px;
-  background: ${({ theme }) =>
-    theme.new_altButtonColor ?? theme.loginRegisterBtn};
+
+  background: linear-gradient(180deg, #3c3c3c 0%, #101010 100%);
   border: solid 2px #fff;
   margin: 40px 0 0 0;
   color: ${({ theme }) =>
@@ -215,6 +218,7 @@ const GameSelectionContainer = styled.div`
   position: absolute;
   top: 650px;
   left: 0;
+  background: #101010;
 `;
 const GameSelectionUL = styled.div`
   font-size: 35px;
@@ -264,10 +268,11 @@ const GameSelectionLI = styled.div`
 `;
 
 const GameListContainer = styled.div`
-  padding-top: 670px;
+  padding-top: 660px;
   padding-bottom: 100px;
-  padding-left: 175px;
-  background-color: ${({ theme }) => theme.new_bodyColor ?? "#fff"};
+  padding-left: 185px;
+  background-color: ${({ theme }) =>
+    theme.new_bodyColor ? "#3C3C3C" : "#fff"};
 `;
 const GameListWrap = styled.div`
   width: 557px;
@@ -275,7 +280,6 @@ const GameListWrap = styled.div`
     return theme.new_StandardizedBodyColor ? "" : "25px 18px";
   }};
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.new_bodyColor ?? "#ededed"};
 `;
 const GameFrameImg = styled.div`
   margin: 0 auto 10px auto;
@@ -859,14 +863,19 @@ class Default extends Component {
           </LogoHolderAppBar>
           <Slider></Slider>
           <FixedContainer>
-            <AnnouncementContainer>
-              <AnnouncementTitle>
-                {i18n.t("wap.main.home.profile.announcement")}
-              </AnnouncementTitle>
-              <MarqueeContainer>
-                <Marquee />
-              </MarqueeContainer>
-            </AnnouncementContainer>
+            <AnnouncementWrapper>
+              <AnnouncementContainer>
+                <img
+                  src={
+                    process.env.PUBLIC_URL + `/assets/images/wapp/speaker.png`
+                  }
+                  alt="speaker"
+                />
+                <MarqueeContainer>
+                  <Marquee />
+                </MarqueeContainer>
+              </AnnouncementContainer>
+            </AnnouncementWrapper>
             <ProfileContainer
               src={
                 process.env.PUBLIC_URL + `/assets/images/wapp/home-profile.png`
@@ -1057,6 +1066,7 @@ class Default extends Component {
                     >
                       <ActionButton>
                         <WalletActionIcon
+                          useAccent
                           img={`icon-deposit.png`}
                         ></WalletActionIcon>
                       </ActionButton>
@@ -1069,6 +1079,7 @@ class Default extends Component {
                       >
                         <ActionButton>
                           <WalletActionIcon
+                            useAccent
                             img={`icon-transfer.png`}
                           ></WalletActionIcon>
                         </ActionButton>
@@ -1096,6 +1107,7 @@ class Default extends Component {
                     >
                       <ActionButton>
                         <WalletActionIcon
+                          useAccent
                           img={`icon-withdrawal.png`}
                         ></WalletActionIcon>
                       </ActionButton>
