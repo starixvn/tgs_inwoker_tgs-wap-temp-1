@@ -33,6 +33,11 @@ const CustomBottomNavigation = withStyles((theme) => ({
       ")",
   },
 }))(BottomNavigation);
+
+const CustomBottomNavigationBar = styled(CustomBottomNavigation)`
+  background: linear-gradient(180deg, #3c3c3c 0%, #101010 100%) !important;
+`;
+
 const CustomBottomNavigationAction = withStyles({
   root: {
     width: "570px",
@@ -62,7 +67,7 @@ const BottomNavigatorFrame = styled.div`
   mask-size: auto 40px;
   mask-mode: alpha;
   background-blend-mode: multiply;
-  background: ${({ theme }) => theme.new_primary ?? "#fff"};
+  background: ${({ theme }) => theme.new_gradientBackground2 ?? "#fff"};
   width: 60px;
   height: 50px;
 `;
@@ -395,7 +400,7 @@ class Main extends Component {
           </MenuContainer>
         </StyledDialog>
         <StyledBottomAppBar position="fixed" color="default" elevation={0}>
-          <CustomBottomNavigation
+          <CustomBottomNavigationBar
             value={this.state.currentPage}
             showLabels
             style={{ width: "750px", height: "90px" }}
@@ -460,7 +465,7 @@ class Main extends Component {
                 />
               }
             />
-          </CustomBottomNavigation>
+          </CustomBottomNavigationBar>
         </StyledBottomAppBar>
       </React.Fragment>
     );

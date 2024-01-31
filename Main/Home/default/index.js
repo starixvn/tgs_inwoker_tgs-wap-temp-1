@@ -222,7 +222,6 @@ const GameSelectionContainer = styled.div`
 `;
 const GameSelectionUL = styled.div`
   font-size: 35px;
-  font-weight: bold;
   color: #cdcdcd;
   margin: 0;
 
@@ -241,27 +240,27 @@ const GameSelectionLI = styled.div`
   justify-content: center;
   align-items: center;
   border: solid 2px #adadad;
-  background-color: #ededed;
+  background-color: #cccccc;
   margin: 16px auto 0 auto;
 
   font-size: 35.5px;
 
   line-height: 1;
 
-  color: ${({ theme }) => theme.secondary};
+  color: #626262;
   text-align: center;
   ${({ selected, theme }) => {
     return selected
       ? ` 
-  color: ${theme.accentText};
+
+
+   color:#FEFA7A;
+
+
+
   border: solid 2px;
-  border-color: ${theme.accentText ?? "#000"};
-  background-image: linear-gradient(to top, ` +
-          theme.primaryGradient +
-          `, ` +
-          theme.primary +
-          `);
-          
+  border-color: #757575;
+ background: #000000;
           `
       : ``;
   }}
@@ -409,7 +408,7 @@ const LogoHolder = styled.div`
 `;
 
 const LogoHolderAppBar = styled.div`
-  background: ${({ theme }) => theme.appbar};
+  background: linear-gradient(180deg, #3c3c3c 0%, #101010 100%);
   position: relative;
   height: 100px;
   display: flex;
