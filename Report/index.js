@@ -350,6 +350,27 @@ const FlatStraightLine = styled.div`
   flex-direction: row;
 `;
 
+const NewDataContainer = styled.div`
+  display: grid;
+  grid-template-columns: 75% 25%;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 2px solid #d7d7d7;
+`;
+
+const NewDataContainerLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const NewDataContainerRight = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+`;
+
 const NoRecordWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -374,6 +395,7 @@ class Report extends Component {
     today.setMinutes(0);
     today.setSeconds(0);
     today.setMilliseconds(0);
+
     this.state = {
       selectedType:
         this.props.match.params.tab &&
@@ -466,7 +488,7 @@ class Report extends Component {
     },
     {
       index: 8,
-      label: i18n.t("report.balanceChanges.title"),
+      label: i18n.t("balanceChange"),
     },
     {
       index: 7,
@@ -489,7 +511,7 @@ class Report extends Component {
     },
     {
       index: 8,
-      label: i18n.t("report.balanceChanges.title"),
+      label: i18n.t("balanceChange"),
     },
     {
       index: 7,
@@ -858,7 +880,7 @@ class Report extends Component {
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.count == dataList.length,
+          isMaxPage: response.data.count === dataList.length,
         });
       } else {
         this.props.alert("", response.info);
@@ -891,7 +913,7 @@ class Report extends Component {
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length,
+          isMaxPage: response.data.totalCount === dataList.length,
         });
       } else {
         this.props.alert("", response.info);
@@ -942,7 +964,7 @@ class Report extends Component {
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length,
+          isMaxPage: response.data.totalCount === dataList.length,
         });
       } else {
         this.props.alert("", response.info);
@@ -977,7 +999,7 @@ class Report extends Component {
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length,
+          isMaxPage: response.data.totalCount === dataList.length,
         });
       } else {
         this.props.alert("", response.info);
@@ -1006,7 +1028,7 @@ class Report extends Component {
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.count == dataList.length,
+          isMaxPage: response.data.count === dataList.length,
         });
       } else {
         this.props.alert("", response.info);
@@ -1041,7 +1063,7 @@ class Report extends Component {
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length,
+          isMaxPage: response.data.totalCount === dataList.length,
         });
       } else {
         this.props.alert("", response.info);
@@ -1075,7 +1097,7 @@ class Report extends Component {
           dataList: dataList,
           loading: false,
 
-          isMaxPage: response.data.totalCount == dataList.length,
+          isMaxPage: response.data.totalCount === dataList.length,
         });
       } else {
         this.props.alert("", response.info);
@@ -1142,6 +1164,45 @@ class Report extends Component {
     });
   };
 
+  gpNameSwitcher = ({ gameProviderCode, gameProviderName, from, to }, type) => {
+    let label = "";
+    switch (type) {
+      case "gp":
+        label = gameProviderName;
+        break;
+      case "from":
+        label = from;
+        break;
+      case "to":
+        label = to;
+        break;
+      default:
+        break;
+    }
+    if (
+      type === "gp" &&
+      gameProviderCode &&
+      gameProviderCode.toString().toUpperCase() === "WGFM"
+    ) {
+      if (config.brandName === "TIGER")
+        label = gameProviderName.toString().replace("WG", "Tiger");
+    }
+    if (
+      type === "from" &&
+      from &&
+      from.toString().toUpperCase() === "WG SPORTS"
+    ) {
+      if (config.brandName === "TIGER")
+        label = from.toString().replace("WG", "Tiger");
+    }
+    if (type === "to" && to && to.toString().toUpperCase() === "WG SPORTS") {
+      if (config.brandName === "TIGER")
+        label = to.toString().replace("WG", "Tiger");
+    }
+    //if currency is PHP, change BTI to PHSB
+    return config.currency === "PHP" && label === "BTI" ? "PHSB" : label;
+  };
+
   getDateFromMinDate = () => {
     switch (this.state.selectedType) {
       case 8:
@@ -1194,7 +1255,7 @@ class Report extends Component {
                 case 7:
                   return i18n.t("report.joinedPromo.title");
                 case 8:
-                  return i18n.t("report.balanceChanges.title");
+                  return i18n.t("balanceChange");
                 default:
                   return i18n.t("report.rebateDetails");
               }
@@ -1616,23 +1677,29 @@ class Report extends Component {
                             "YYYY-MM-DD hh:mm a"
                           );
                           return (
-                            <React.Fragment key={index}>
-                              <DataRowId>
-                                {i18n.t("report.NewOrderNumber")} :{" "}
-                                <IDCell>{row.orderno}</IDCell>
-                              </DataRowId>
-                              <DataRow>
-                                <DataDateCell3>{date}</DataDateCell3>
-                                <DataDateCell3>
+                            <NewDataContainer key={index}>
+                              <NewDataContainerLeft>
+                                <div>
+                                  {i18n.t("report.NewOrderNumber")} :{" "}
+                                  <IDCell>{row.orderno}</IDCell>
+                                </div>
+                                <div>{date}</div>
+                                <div>
                                   {i18n.t(
                                     `report.withdrawal.status${row.status}`
                                   )}
-                                </DataDateCell3>
-                                <DataDateCellAmount>
-                                  {row.amount}
-                                </DataDateCellAmount>
-                              </DataRow>
-                            </React.Fragment>
+                                </div>
+                                {row.remark && (
+                                  <div>
+                                    <span>{i18n.t("remark")}</span>:{" "}
+                                    {row.remark}
+                                  </div>
+                                )}
+                              </NewDataContainerLeft>
+                              <NewDataContainerRight>
+                                {row.amount}
+                              </NewDataContainerRight>
+                            </NewDataContainer>
                           );
                         })}
                       </DataContent>
@@ -1749,23 +1816,13 @@ class Report extends Component {
                               <DataRowId>
                                 {i18n.t("report.transfer.table.from")} :{" "}
                                 <IDCell>
-                                  {row.from
-                                    ? row.from === "BTI" &&
-                                      config.currency === "PHP"
-                                      ? "PHSB"
-                                      : row.from
-                                    : ""}
+                                  {this.gpNameSwitcher(row, "from")}
                                 </IDCell>
                               </DataRowId>
                               <DataRowId>
                                 {i18n.t("report.transfer.table.to")} :{" "}
                                 <IDCell>
-                                  {row.to
-                                    ? row.to === "BTI" &&
-                                      config.currency === "PHP"
-                                      ? "PHSB"
-                                      : row.to
-                                    : ""}
+                                  {this.gpNameSwitcher(row, "to")}
                                 </IDCell>
                               </DataRowId>
                               <DataRowId>
