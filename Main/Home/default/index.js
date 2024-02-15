@@ -403,14 +403,17 @@ const Balancex = styled.div`
 const LogoHolder = styled.div`
   background: url("${({ img }) => img}") no-repeat left center;
   background-size: contain;
+  background-position: center;
   width: 200px;
   height: 100px;
 `;
 
 const LogoHolderAppBar = styled.div`
   background: linear-gradient(180deg, #3c3c3c 0%, #101010 100%);
+
   position: relative;
   height: 100px;
+
   display: flex;
   justify-content: center;
 `;
