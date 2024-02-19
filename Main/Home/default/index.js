@@ -48,6 +48,16 @@ const AnnouncementContainer = styled.div`
   display: flex;
 `;
 
+const SpeakerIcon = styled.div`
+  mask: url(${process.env.PUBLIC_URL + "/assets/images/wapp/speaker.png"})
+    no-repeat center center;
+  background: ${({ theme }) => theme.accentText ?? "#f6f6f6"};
+  width: 40px;
+  height: 40px;
+  mask-size: 100%;
+  background-size: 100%;
+`;
+
 const AnnouncementWrapper = styled.div`
   display: flex;
   gap: 20px;
@@ -182,10 +192,10 @@ const ButtonSignup = styled.div`
   border-radius: 55px;
 
   background: linear-gradient(180deg, #3c3c3c 0%, #101010 100%);
-  border: solid 2px #ebca81;
+  border: solid 2px #ffe3a8;
   margin: 40px 0 0 0;
   color: ${({ theme }) =>
-    theme.new_altButtonColor ? "#ebca81" : theme.loginRegisterBtnText};
+    theme.new_altButtonColor ? "#FFE3A8" : theme.loginRegisterBtnText};
   text-align: center;
   padding: 17px 0;
   font-size: 28px;
@@ -866,7 +876,7 @@ class Default extends Component {
           <FixedContainer>
             <AnnouncementWrapper>
               <AnnouncementContainer>
-                <img
+                <SpeakerIcon
                   src={
                     process.env.PUBLIC_URL + `/assets/images/wapp/speaker.png`
                   }
