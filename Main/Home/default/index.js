@@ -99,7 +99,6 @@ const WelcomeLabel = styled.div`
   color: ${({ theme }) => theme.new_primary};
 `;
 const WelcomeUsernameLabel = styled(WelcomeLabel)`
-  color: #fde73f;
   font-weight: bold;
 `;
 

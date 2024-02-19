@@ -1,17 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-const Container = styled.div`
-  margin: 0 auto;
-
-  width: 100%;
-  height: 80px;
-  border-radius: 6px;
-  border: solid 1px #676666;
-  background-color: ${({ theme }) => theme.new_textfieldBackground ?? "#fff"};
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.4);
-`;
-
 const CustomInput = styled.div`
   font-size: 30px;
   margin: 20px;

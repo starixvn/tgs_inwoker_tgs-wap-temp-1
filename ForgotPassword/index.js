@@ -14,6 +14,7 @@ import i18n from "../../../utils/i18n";
 import LegacyPhonefield from "../component/legacy-phonefield";
 import LegacyVerificationfield from "../component/legacy-verification";
 import Button from "../component/button";
+import LegacyTextfield from "../component/legacy-textfield";
 
 const Wrapper = styled.div``;
 
