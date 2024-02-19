@@ -76,6 +76,7 @@ const CustomSwitch = withStyles((theme) => ({
     height: 26,
     padding: 0,
     marginLeft: 8,
+    zoom: 1.75,
   },
   switchBase: {
     padding: 1,
@@ -83,7 +84,7 @@ const CustomSwitch = withStyles((theme) => ({
       transform: "translateX(16px)",
       color: theme.palette.common.white,
       "& + $track": {
-        backgroundColor: "#ff9900",
+        background: "linear-gradient(to bottom,#FFDF9C,#D3B060)",
         opacity: 1,
         border: "none",
       },
@@ -123,19 +124,15 @@ const CustomSwitch = withStyles((theme) => ({
   );
 });
 
-const AutoTransferContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const CustomSwitchContainer = styled.div`
   display: flex;
   align-items: center;
   font-weight: normal;
+  justify-content: space-between;
   padding: 10px 20px;
+  font-size: 24px;
   color: ${({ theme }) =>
-    theme.wapSecondary ? theme.wapSecondary : theme.secondary};
-  zoom: 1.75;
+    theme.new_textColor ? theme.new_textColor : theme.secondary};
 `;
 
 const CustomTextField = styled.div`
@@ -164,25 +161,6 @@ const CustomTextInput = styled.input`
 const CustomSelect = styled.select`
   font-size: 32px;
   border: solid 0px black;
-`;
-
-const ButtonWrapper = styled.div`
-  display: block;
-  padding-left: 30px;
-  font-size: 24px;
-`;
-
-const CustomButton = styled.div`
-  background: ${({ theme }) =>
-    theme.wapPrimary ? theme.wapPrimary : theme.primary};
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) =>
-    theme.customButtonText ? theme.customButtonText : "#ffffff"};
-  width: 200px;
-  padding: 20px;
 `;
 
 class Transfer extends Component {
@@ -556,22 +534,19 @@ class Transfer extends Component {
             );
           })()}
         ></Button>
-        <AutoTransferContainer>
-          <div></div>
-          <CustomSwitchContainer>
-            <div>
-              {i18n.t("transfer.autoTransfer")} (
-              {this.props.wallet.autotransfer === true
-                ? i18n.t("transfer.on")
-                : i18n.t("transfer.off")}
-              )
-            </div>
-            <CustomSwitch
-              checked={this.props.wallet.autotransfer === true}
-              onChange={this.handleSwitchAutoTransfer}
-            />
-          </CustomSwitchContainer>
-        </AutoTransferContainer>
+        <CustomSwitchContainer>
+          <div>
+            {i18n.t("transfer.autoTransfer")} (
+            {this.props.wallet.autotransfer === true
+              ? i18n.t("transfer.on")
+              : i18n.t("transfer.off")}
+            )
+          </div>
+          <CustomSwitch
+            checked={this.props.wallet.autotransfer === true}
+            onChange={this.handleSwitchAutoTransfer}
+          />
+        </CustomSwitchContainer>
         <Button
           style={{ margin: "20px", width: "initial" }}
           onClick={() => {

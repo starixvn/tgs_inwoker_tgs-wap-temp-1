@@ -9,63 +9,12 @@ import { AccountService } from "../../../api-services/services/AccountService";
 
 import Textbox from "../../Wap/Share/Textbox";
 import TextboxWithButton from "../../Wap/Share/TextboxWithButton";
-import Button from "../../Wap/Share/Button";
 import config from "../../../config/config";
 import i18n from "../../../utils/i18n";
-
-const Container = styled.div`
-  margin: 0 auto;
-
-  width: 635px;
-  height: 80px;
-  border-radius: 6px;
-
-  background-color: #ffffff;
-`;
-const SelectContainer = styled.select`
-  width: 100%;
-  height: 100%;
-  border: none;
-  color: #000;
-  font-size: 30px;
-  background-color: #fff;
-  border-radius: 16px;
-`;
-const CustomInput = styled.input`
-  height: 50px;
-  width: 405px;
-  font-size: 28px;
-  margin-top: 18px;
-  border-radius: 8px;
-  padding: 16px 32px;
-  font-weight: 500;
-  border: 0;
-  display: flex;
-  flex: 1;
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    color: #c3c3c3;
-    font-size: 28px;
-  }
-  &:disabled {
-    background: #fff;
-
-    opacity: 1;
-  }
-`;
-
-const CustomText = styled.div`
-  width: 700px;
-  height: 170px;
-  padding: 20px 20px 0 20px;
-  margin: 20px auto;
-`;
-const CustomLabel = styled.div`
-  font-size: 24px;
-  font-weight: 600;
-  margin-left: 3px;
-  color: ${({ theme }) => theme.secondary};
-`;
+import LegacyPhonefield from "../component/legacy-phonefield";
+import LegacyVerificationfield from "../component/legacy-verification";
+import Button from "../component/button";
+import LegacyTextfield from "../component/legacy-textfield";
 
 const Wrapper = styled.div``;
 
@@ -81,6 +30,7 @@ class ForgotPassword extends Component {
     securityKey: "",
     phone: "",
     areaCode: config.features.PhonePrefix,
+    successGetCode: false,
   };
   handleCodeChange = (e) => {
     this.setState({ ...this.state, code: e.target.value });
@@ -133,6 +83,13 @@ class ForgotPassword extends Component {
   handlePassword2Change = (e) => {
     this.setState({ ...this.state, password2: e.target.value });
   };
+
+  resetGetCode = () => {
+    this.setState({
+      ...this.state,
+      successGetCode: false,
+    });
+  };
   getCodeResponse = (response) => {
     if (response.IsSuccess) {
       this.props.alert("", i18n.t("common.msgTokenSent"));
@@ -141,6 +98,7 @@ class ForgotPassword extends Component {
         ...this.state,
         securityKey: response.data,
         loading: true,
+        successGetCode: true,
       });
     } else {
       // if (response.code === 201) {
@@ -224,50 +182,31 @@ class ForgotPassword extends Component {
             if (this.state.step === 1) {
               return config.features.SMSVerification ? (
                 <React.Fragment>
-                  <CustomText>
-                    <CustomLabel>{i18n.t("common.phoneNumber")}</CustomLabel>
-                    <Container
-                      style={{
-                        margin: "18px 5px 0 0",
-                        width: "180px",
-                        float: "left",
-                        padding: "10px",
-                      }}
-                    >
-                      <SelectContainer
-                        value={this.state.areaCode}
-                        onChange={(e) => {
-                          this.setState({
-                            ...this.state,
-                            areaCode: e.target.value,
-                          });
-                        }}
-                      >
-                        <option value={config.features.PhonePrefix}>
-                          {config.features.PhonePrefix}
-                        </option>
-                      </SelectContainer>
-                    </Container>
-                    <CustomInput
-                      value={this.state.phone}
-                      onChange={this.handlePhoneChange}
-                      placeholder={i18n.t("common.msgEnterPhone")}
-                      type={"text"}
-                      maxLength={config.features.MAX_PHONE_LENGTH || 10}
-                      label={i18n.t("common.msgEnterPhone")}
-                    ></CustomInput>
-                  </CustomText>
-
-                  <TextboxWithButton
-                    buttonlabel={i18n.t("common.msgSendToken")}
-                    style={{ margin: "20px auto 20px auto" }}
-                    value={this.state.code}
-                    onChange={this.handleCodeChange}
+                  <LegacyPhonefield
+                    areaCode={this.state.areaCode}
+                    onAreaCodeChange={(e) => {
+                      this.setState({
+                        ...this.state,
+                        areaCode: e.target.value,
+                      });
+                    }}
+                    phone={this.state.phone}
+                    onPhoneChange={this.handlePhoneChange}
+                    placeholder={i18n.t("common.msgEnterPhone")}
+                    maxLength={config.features.MAX_PHONE_LENGTH || 10}
+                  >
+                    <option value={config.features.PhonePrefix}>
+                      {config.features.PhonePrefix}
+                    </option>
+                  </LegacyPhonefield>
+                  <LegacyVerificationfield
+                    code={this.state.code}
+                    onCodeChange={this.handleCodeChange}
                     placeholder={i18n.t("common.msgEnterCode")}
-                    label={i18n.t("common.token")}
-                    onClick={this.handleGetCodeClick}
-                    type={"text"}
-                  ></TextboxWithButton>
+                    onGetCode={this.handleGetCodeClick}
+                    resetGetCode={this.resetGetCode}
+                    successGetCode={this.state.successGetCode}
+                  ></LegacyVerificationfield>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
@@ -310,6 +249,7 @@ class ForgotPassword extends Component {
                     placeholder={i18n.t("common.msgEnterConfirmPass")}
                     type={"password"}
                     label={i18n.t("common.ConfirmPass")}
+                    successGetCode={this.state.successGetCode}
                   ></Textbox>
                 </React.Fragment>
               );
@@ -317,7 +257,7 @@ class ForgotPassword extends Component {
           })()}
 
           <Button
-            style={{ margin: "40px auto 0 auto" }}
+            style={{ width: "auto ", margin: "0px 20px" }}
             disabled={
               this.state.step === 1
                 ? (config.features.SMSVerification

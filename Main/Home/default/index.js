@@ -96,10 +96,9 @@ const WelcomeLabel = styled.div`
 
   font-size: 22px;
 
-  color: #dfdfdf;
+  color: ${({ theme }) => theme.new_primary};
 `;
 const WelcomeUsernameLabel = styled(WelcomeLabel)`
-  color: #fde73f;
   font-weight: bold;
 `;
 
@@ -183,10 +182,10 @@ const ButtonSignup = styled.div`
   border-radius: 55px;
 
   background: linear-gradient(180deg, #3c3c3c 0%, #101010 100%);
-  border: solid 2px #fff;
+  border: solid 2px #ebca81;
   margin: 40px 0 0 0;
   color: ${({ theme }) =>
-    theme.new_altButtonColor ? "#fff" : theme.loginRegisterBtnText};
+    theme.new_altButtonColor ? "#ebca81" : theme.loginRegisterBtnText};
   text-align: center;
   padding: 17px 0;
   font-size: 28px;
@@ -239,28 +238,28 @@ const GameSelectionLI = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid 2px #adadad;
-  background-color: #cccccc;
+  border: solid 2px #ebca81;
+  background-color: #000;
   margin: 16px auto 0 auto;
 
   font-size: 35.5px;
 
   line-height: 1;
 
-  color: #626262;
+  color: #ebca81;
   text-align: center;
   ${({ selected, theme }) => {
     return selected
       ? ` 
 
 
-   color:#FEFA7A;
+   color:#101010;
 
 
 
   border: solid 2px;
   border-color: #757575;
- background: #000000;
+ background: linear-gradient(180deg, #FFDF9C 0%, #D3B060 100%);
           `
       : ``;
   }}
