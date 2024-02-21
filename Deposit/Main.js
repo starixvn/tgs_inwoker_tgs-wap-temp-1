@@ -753,7 +753,7 @@ class Main extends Component {
               {i18n.t("deposit.totalAmount")}:{" "}
               <span>
                 $
-                {this.state.amount > 0
+                {this.props.amount > 0
                   ? this.props.rate * this.props.amount
                   : 0}
               </span>
