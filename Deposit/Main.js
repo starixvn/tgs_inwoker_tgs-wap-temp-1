@@ -217,8 +217,29 @@ const FeeSpot = styled.div`
     font-weight: bold;
   }
 `;
+const ExchangeRateCalculation = styled.div`
+  font-size: 20px;
+  padding: 0 50px;
+  color: ${({ black, theme }) => {
+    return black
+      ? "#000"
+      : theme.wapSecondary
+      ? theme.wapSecondary
+      : theme.secondary;
+  }};
+  .remark {
+    margin-top: 10px;
+  }
+
+  span {
+    color: ${({ theme }) => theme.primary};
+    font-weight: bold;
+  }
+`;
 
 class Main extends Component {
+  state = { rate: this.props.rate, amount: this.props.amount };
+
   render() {
     const methodCode = (method) => {
       return (
@@ -337,12 +358,7 @@ class Main extends Component {
                     ].method.map((item, index) => {
                       return (
                         <option value={index}>
-                          {config.features.CustomKING8Deposit &&
-                          (paymentCode("manual") ||
-                            alteredPaymentCode("manual")) &&
-                          i18n.exists(`king8.${item.methodcode}`)
-                            ? i18n.t(`king8.${item.methodcode}`)
-                            : i18n.t(item.methodcode)}
+                          {i18n.t(item.displayname)}
                         </option>
                       );
                     })}
@@ -727,6 +743,27 @@ class Main extends Component {
             )
           }
         ></Textbox>
+        {paymentCode("ubpay") &&
+        config.currency === "VND" &&
+        this.props.rate ? (
+          <ExchangeRateCalculation>
+            <div className="remark">
+              1 VND: <span>{this.props.rate}</span> (USDT)
+            </div>
+            <div>
+              {i18n.t("deposit.totalAmount")}:{" "}
+              <span>
+                $
+                {this.state.amount > 0
+                  ? this.props.rate * this.props.amount
+                  : 0}
+              </span>
+            </div>
+          </ExchangeRateCalculation>
+        ) : (
+          ""
+        )}
+
         {paymentCode("umpay") && <Remark>{i18n.t("deposit.ppRemark")}</Remark>}
         {(() => {
           if (
@@ -943,7 +980,7 @@ class Main extends Component {
               this.props.amount === "" ||
               (this.props.files === null &&
                 config.features.Deposit_UploadRequired &&
-                methodCode("MANUAL"))
+                paymentCode("manual"))
             ) {
               return true;
             } else {
