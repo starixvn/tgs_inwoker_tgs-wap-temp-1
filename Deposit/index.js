@@ -163,6 +163,7 @@ class Deposit extends Component {
       playerNote: "",
       selectedBankCard: "",
       showTabContainer: true,
+      rate: 0,
     };
     this.state = { ...this.initialState, name: "", account: "" };
   }
@@ -338,42 +339,69 @@ class Deposit extends Component {
       ) {
         if (
           this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
-            .paymentcode === "LeePay"
+            .paymentcode === "UBPay"
         ) {
-          WalletService.GetLeePayExchangeRate(
+          WalletService.GetExchangeRate(
+            this.props.wallet.depositTypeList[
+              this.state.selectedPaymentIndex
+            ].paymentcode.toLowerCase(),
             this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
               .method[this.state.selectedMethodIndex].channel[
               this.state.selectedChannelIndex
             ].id
           ).then((response) => {
             if (response.IsSuccess) {
-              this.setState({ ...this.state, exchangeRate: response.data });
+              this.setState({
+                ...this.state,
+                rate: response.data.rate,
+              });
             } else {
               this.setState({
                 ...this.state,
-                exchangeRate: this.initialState.exchangeRate,
+                rate: this.initialState.rate,
               });
             }
           });
         } else {
-          WalletService.GetUmPayExchangeRate(
+          if (
             this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
-              .method[this.state.selectedMethodIndex].channel[
-              this.state.selectedChannelIndex
-            ].id
-          ).then((response) => {
-            if (response.IsSuccess) {
-              this.setState({
-                ...this.state,
-                exchangeRate: response.data.rate,
-              });
-            } else {
-              this.setState({
-                ...this.state,
-                exchangeRate: this.initialState.exchangeRate,
-              });
-            }
-          });
+              .paymentcode === "LeePay"
+          ) {
+            WalletService.GetLeePayExchangeRate(
+              this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
+                .method[this.state.selectedMethodIndex].channel[
+                this.state.selectedChannelIndex
+              ].id
+            ).then((response) => {
+              if (response.IsSuccess) {
+                this.setState({ ...this.state, exchangeRate: response.data });
+              } else {
+                this.setState({
+                  ...this.state,
+                  exchangeRate: this.initialState.exchangeRate,
+                });
+              }
+            });
+          } else {
+            WalletService.GetUmPayExchangeRate(
+              this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
+                .method[this.state.selectedMethodIndex].channel[
+                this.state.selectedChannelIndex
+              ].id
+            ).then((response) => {
+              if (response.IsSuccess) {
+                this.setState({
+                  ...this.state,
+                  exchangeRate: response.data.rate,
+                });
+              } else {
+                this.setState({
+                  ...this.state,
+                  exchangeRate: this.initialState.exchangeRate,
+                });
+              }
+            });
+          }
         }
       } else {
         this.setState({
@@ -600,8 +628,8 @@ class Deposit extends Component {
       }
       if (method.methodcode === "Coinsph") {
         let name = this.props.wallet.bankCardList[bankCardIndex]
-        ? this.props.wallet.bankCardList[bankCardIndex].detail.name || ""
-        : "";
+          ? this.props.wallet.bankCardList[bankCardIndex].detail.name || ""
+          : "";
         let phone = this.props.wallet.bankCardList[bankCardIndex]
           ? this.props.wallet.bankCardList[bankCardIndex].detail.phone || ""
           : "";
@@ -621,7 +649,7 @@ class Deposit extends Component {
             config.features.Deposit_AddCard
               ? this.props.wallet.bankCardList[bankCardIndex].detail
               : null,
-              name,
+            name,
             config.features.Deposit_ManualDepositPassPhone ? phone : null,
             address
           );
@@ -699,7 +727,7 @@ class Deposit extends Component {
     this.setState({
       ...this.state,
       selectedChannelIndex: e.target.value,
-      depositPromotion: ""
+      depositPromotion: "",
     });
   };
   handleAccountChange = (e) => {
@@ -898,6 +926,7 @@ class Deposit extends Component {
                 handlePlayerNoteChange={this.handlePlayerNoteChange}
                 selectedBankCard={this.state.selectedBankCard}
                 handleBankCardChange={this.handleBankCardChange}
+                rate={this.state.rate}
                 bankCardList={
                   config.features.Deposit_AddCard
                     ? this.props.wallet.bankCardList.sort(
