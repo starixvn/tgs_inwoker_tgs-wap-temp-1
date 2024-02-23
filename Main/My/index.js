@@ -30,6 +30,7 @@ const StyledAppBar = withStyles((theme) => ({
 }))(AppBar);
 const Container = styled.div`
   width: 100%;
+  padding-bottom: 120px;
 `;
 const LevelContainer = styled.div`
   float: right;
@@ -123,6 +124,7 @@ const IconLabel = styled.div`
 
 const ProfileButtonIcon = styled.div`
   mask: url(${(props) => props.src}) no-repeat center center;
+  mask-size: cover;
   width: 80px;
   height: 80px;
   background: #000;
