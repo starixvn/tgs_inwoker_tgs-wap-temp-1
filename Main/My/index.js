@@ -124,6 +124,7 @@ const IconLabel = styled.div`
 
 const ProfileButtonIcon = styled.div`
   mask: url(${(props) => props.src}) no-repeat center center;
+  mask-size: cover;
   width: 80px;
   height: 80px;
   background: #000;
