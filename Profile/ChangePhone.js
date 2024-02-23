@@ -119,7 +119,7 @@ class ChangePhone extends BaseProfile {
           this.setState({
             ...this.state,
             countdownToken: 60,
-            securityKey: response.data,
+            securityKey: response.data.stepResponse,
           });
           setTimeout(() => {
             this.checkCountdownToken();
