@@ -30,6 +30,7 @@ const StyledAppBar = withStyles((theme) => ({
 }))(AppBar);
 const Container = styled.div`
   width: 100%;
+  padding-bottom: 120px;
 `;
 const LevelContainer = styled.div`
   float: right;
