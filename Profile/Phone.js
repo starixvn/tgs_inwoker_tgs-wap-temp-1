@@ -150,7 +150,7 @@ class Phone extends BaseProfile {
           this.setState({
             ...this.state,
             countdownToken: 60,
-            securityKey: response.data,
+            securityKey: response.data.stepResponse,
           });
           this.showInfoMessage(i18n.t("common.msgTokenSent"));
           setTimeout(() => {
