@@ -1058,20 +1058,21 @@ class Default extends Component {
                 </BalanceContainer>
                 <WalletActionContainer>
                   <WalletActionUL>
-                    {config.features.HomePage_DisplayVIP && (
-                      <WalletActionLI
-                        onClick={() => {
-                          this.props.appHistory.push("/vip");
-                        }}
-                      >
-                        <ActionButton>
-                          <WalletActionIcon
-                            img={`home-vip.png`}
-                          ></WalletActionIcon>
-                        </ActionButton>
-                        <div> VIP</div>
-                      </WalletActionLI>
-                    )}
+                    {config.features.HaveVIPFeature &&
+                      config.features.HomePage_DisplayVIP && (
+                        <WalletActionLI
+                          onClick={() => {
+                            this.props.appHistory.push("/vip");
+                          }}
+                        >
+                          <ActionButton>
+                            <WalletActionIcon
+                              img={`home-vip.png`}
+                            ></WalletActionIcon>
+                          </ActionButton>
+                          <div> VIP</div>
+                        </WalletActionLI>
+                      )}
                     <WalletActionLI
                       onClick={() => this.props.appHistory.push("/deposit")}
                     >
