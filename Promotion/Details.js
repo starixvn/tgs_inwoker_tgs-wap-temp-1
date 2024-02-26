@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Header from "../../Wap/Share/Header";
+import Button from "../../Wap/Share/Button";
 import { generalAction } from "../../../api-services/actions/generalAction";
 import i18n from "../../../utils/i18n";
 
 import config from "../../../config/config";
-import Button from "../component/button";
 const moment = require("moment");
 const Content = styled.div`
   width: 100%;
@@ -92,6 +92,7 @@ class Details extends Component {
   handleBonusChange = (e) => {
     this.setState({ ...this.state, bonusSubId: parseInt(e.target.value) });
   };
+
   performRedirect = (id, promotionType) => {
     this.props.joinPromotion(id);
     if (
@@ -112,18 +113,21 @@ class Details extends Component {
   handleJoinClick = (id, promotionType) => {
     if (this.props.token === null || this.props.token === "") {
       this.props.appHistory.replace({
-        pathname: "/Login",
+        pathname: "/login",
       });
     } else {
-      if (this.state.details.vipLevels.length === 0) {
-        //if nothing inside viplevels
-        this.performRedirect(id, promotionType);
-      } else {
-        this.state.details.vipLevels.filter((levels) => {
-          if (levels === this.props.account.info.member_level_id) {
-            //check every single level whether it match member level
-            this.performRedirect(id, promotionType);
-          }
+      this.props.joinPromotion(id);
+      if (
+        [
+          "FirstDeposit",
+          "DailySecondDeposit",
+          "DailyFirstDeposit",
+          "DepositReward",
+          "DepositAccumulateRoulette",
+        ].indexOf(promotionType) >= 0
+      ) {
+        this.props.appHistory.push({
+          pathname: "/deposit/" + id,
         });
       }
     }
@@ -136,9 +140,6 @@ class Details extends Component {
   render() {
     if (this.state.details === null) return <React.Fragment></React.Fragment>;
     var isDummy = this.state.details.promotionType.toUpperCase() === "DUMMY";
-    var isPromoteDepositChannel =
-      this.state.details.promotionType.toUpperCase() ===
-      "PROMOTEDEPOSITCHANNEL";
 
     var checkIfLocalizationIsEmpty =
       JSON.stringify(this.state.details.localization) === "{}";
@@ -154,7 +155,6 @@ class Details extends Component {
         this.state.details.localization[i18n.language].terms) ||
       this.state.details.terms ||
       "";
-
     return (
       <React.Fragment>
         <Header
@@ -166,12 +166,12 @@ class Details extends Component {
         ></Header>
         {(() => {
           if (this.state.details.localization !== null) {
-            var checkLocale = this.state.details.localization[i18n.language];
+            var checkIfExist = this.state.details.localization[i18n.language];
             return (
               <PromoDetailImage
                 img={
-                  checkLocale
-                    ? checkLocale.mobileBanner
+                  checkIfExist
+                    ? checkIfExist.mobileBanner
                     : this.state.details.mobileBanner
                 }
                 onClick={() => this.handlePromoClick(this.state.details.id)}
@@ -225,9 +225,9 @@ class Details extends Component {
             }}
           />
         </Content>
-        {!(isDummy || isPromoteDepositChannel) && (
+        {!isDummy && (
           <Button
-            style={{ margin: "40px 25px 0 25px", width: "initial" }}
+            style={{ margin: "40px auto 0 auto" }}
             label={i18n.t("promotion.joinPromo")}
             onClick={() =>
               this.handleJoinClick(
@@ -245,7 +245,6 @@ const mapStateToProps = (state) => {
   return {
     general: state.general,
     token: state.account.token,
-    account: state.account,
   };
 };
 const mapDispatchToProps = (dispatch) => {
