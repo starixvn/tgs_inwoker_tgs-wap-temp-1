@@ -227,7 +227,7 @@ class Details extends Component {
         </Content>
         {!isDummy && (
           <Button
-            style={{ margin: "40px auto 0 auto" }}
+            style={{ margin: "40px auto " }}
             label={i18n.t("promotion.joinPromo")}
             onClick={() =>
               this.handleJoinClick(
