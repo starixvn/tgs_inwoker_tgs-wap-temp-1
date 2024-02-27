@@ -244,21 +244,29 @@ class My extends Component {
           `/assets/images/wapp/icon-profile-profile.svg`,
         display: true,
       },
+      // {
+      //   name: "wap.main.account.inbox",
+      //   url: "/inbox",
+      //   icon:
+      //     process.env.PUBLIC_URL + `/assets/images/wapp/icon-profile-inbox.svg`,
+      //   display: true,
+      //   subcomp: (
+      //     <MessageRedDot
+      //       style={
+      //         this.props.account.info.message_num > 0
+      //           ? { display: "block" }
+      //           : { display: "none" }
+      //       }
+      //     ></MessageRedDot>
+      //   ),
+      // },
       {
-        name: "wap.main.account.inbox",
-        url: "/inbox",
+        name: "memoinbox",
+        url: "/memo",
+
         icon:
           process.env.PUBLIC_URL + `/assets/images/wapp/icon-profile-inbox.svg`,
         display: true,
-        subcomp: (
-          <MessageRedDot
-            style={
-              this.props.account.info.message_num > 0
-                ? { display: "block" }
-                : { display: "none" }
-            }
-          ></MessageRedDot>
-        ),
       },
       {
         name: "wap.main.account.betReport",
