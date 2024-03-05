@@ -11,6 +11,8 @@ import Common from "../../../../utils/Common";
 
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
+
+import ProgressBarVersion from "./progressbar";
 import Button from "../../component/button";
 const StyledAppBar = withStyles((theme) => ({
   root: {
@@ -344,7 +346,9 @@ class My extends Component {
       },
     ];
 
-    return (
+    return config.features.VipProgressBar ? (
+      <ProgressBarVersion navigate={this.props.navigate} />
+    ) : (
       <Container>
         <StyledAppBar position="fixed" color="default">
           <LevelContainer onClick={() => this.props.navigate("/vip")}>
