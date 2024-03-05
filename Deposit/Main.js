@@ -105,7 +105,7 @@ const LimitLabel = styled.span`
 `;
 
 const LimitAmount = styled.span`
-  color: #c0252d;
+  color: #f2e255;
 `;
 const TransferContainer = styled.div`
   margin-top: 10px;
