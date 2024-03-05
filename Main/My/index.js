@@ -11,6 +11,7 @@ import Common from "../../../../utils/Common";
 
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
+import ProgressBarVersion from "./progressbar";
 import Button from "../../component/button";
 const StyledAppBar = withStyles((theme) => ({
   root: {
@@ -344,7 +345,9 @@ class My extends Component {
       },
     ];
 
-    return (
+    return config.features.VipProgressBar ? (
+      <ProgressBarVersion navigate={this.props.navigate} />
+    ) : (
       <Container>
         <StyledAppBar position="fixed" color="default">
           <LevelContainer onClick={() => this.props.navigate("/vip")}>
@@ -439,34 +442,149 @@ class My extends Component {
           </IconContainer>
         </StyledAppBar>
         <ListView>
-          {profileItems.map((item, index) => {
-            return (
-              item.display && (
-                <ListItem
-                  onClick={() => {
-                    if (item.url === "/card") {
-                      if (
-                        this.props.wallet.bankCardList != null &&
-                        this.props.wallet.bankCardList.length === 0 &&
-                        config.features.AddCard_NotAllowedEditDelete
-                      ) {
-                        this.props.alert("", i18n.t("card.toEdit"));
-                      } else {
-                        this.props.navigate(item.url);
-                      }
-                    } else {
-                      this.props.navigate(item.url);
-                    }
-                  }}
-                  key={index}
-                >
-                  <ProfileButtonIcon src={item.icon} alt="icon" />
-                  <div>{i18n.t(item.name)}</div>
-                  {item.subcomp}
-                </ListItem>
-              )
-            );
-          })}
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-profile.svg`
+            }
+            onClick={() => this.props.navigate("/profile")}
+          >
+            {i18n.t("wap.main.account.personalInfo")}
+          </ListItem>
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-inbox.svg`
+            }
+            onClick={() => this.props.navigate("/inbox")}
+          >
+            {i18n.t("wap.main.account.inbox")}
+
+            <MessageRedDot
+              style={
+                this.props.account.info.message_num > 0
+                  ? { display: "block" }
+                  : { display: "none" }
+              }
+            ></MessageRedDot>
+          </ListItem>
+          {/* <ListItem
+            icon={IconProfileCashflowPNG}
+            onClick={() => this.props.navigate("/report/1")}
+          >
+            {i18n.t("wap.main.account.transferReport")}
+          </ListItem> */}
+
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-report.svg`
+            }
+            onClick={() => this.props.navigate("/report/2")}
+          >
+            {i18n.t("wap.main.account.betReport")}
+          </ListItem>
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-withdrawal.svg`
+            }
+            onClick={() => this.props.navigate("/report/3")}
+          >
+            {i18n.t("wap.main.account.withdrawal")}
+          </ListItem>
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-topup.svg`
+            }
+            style={{ backgroundSize: 60 }}
+            onClick={() => this.props.navigate("/report/4")}
+          >
+            {i18n.t("wap.main.account.deposit")}
+          </ListItem>
+
+          {checkTransferWallet && (
+            <ListItem
+              icon={
+                process.env.PUBLIC_URL +
+                `/assets/images/wapp/icon-profile-report-transfer.svg`
+              }
+              onClick={() => this.props.navigate("/report/6")}
+            >
+              {i18n.t("wap.main.account.transfer")}
+            </ListItem>
+          )}
+
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-report-transfer.svg`
+            }
+            onClick={() => this.props.navigate("/report/8")}
+          >
+            {i18n.t("report.balanceChanges.title")}
+          </ListItem>
+          {this.props.general.haveAffiliate && (
+            <ListItem
+              icon={
+                process.env.PUBLIC_URL +
+                `/assets/images/wapp/icon-affiliate.svg`
+              }
+              onClick={() => this.props.navigate("/affiliate")}
+            >
+              {i18n.t("web.account.affiliate")}
+            </ListItem>
+          )}
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-card.svg`
+            }
+            onClick={() => {
+              if (
+                this.props.wallet.bankCardList != null &&
+                this.props.wallet.bankCardList.length === 0 &&
+                config.features.AddCard_NotAllowedEditDelete
+              ) {
+                this.props.alert("", i18n.t("card.toEdit"));
+              } else {
+                this.props.navigate("/card");
+              }
+            }}
+          >
+            {i18n.t("wap.main.account.manageBank")}
+          </ListItem>
+
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-language.svg`
+            }
+            onClick={() => this.props.navigate("/setting/language")}
+          >
+            {i18n.t("common.language")}
+          </ListItem>
+          {config.features.HaveVIPFeature && (
+            <ListItem
+              icon={process.env.PUBLIC_URL + `/assets/images/wapp/icon-vip.svg`}
+              onClick={() => this.props.navigate("/vip")}
+            >
+              VIP
+            </ListItem>
+          )}
+          {config.features.HaveDownloadFeature && (
+            <ListItem
+              icon={
+                process.env.PUBLIC_URL + `/assets/images/wapp/icon-download.svg`
+              }
+              onClick={() => this.props.navigate("/main/download")}
+            >
+              {i18n.t("wap.main.account.appDownload")}
+            </ListItem>
+          )}
+
+          <div className="clear"></div>
         </ListView>
         <Button
           onClick={this.handleLogoutClick}
