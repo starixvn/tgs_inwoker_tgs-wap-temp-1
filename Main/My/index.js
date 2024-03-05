@@ -13,6 +13,7 @@ import Common from "../../../../utils/Common";
 
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
+import ProgressBarVersion from "./progressbar";
 const StyledAppBar = withStyles((theme) => ({
   root: {
     height: "370px",
@@ -220,7 +221,9 @@ class My extends Component {
       Object.values(this.props.game.providerList).filter(
         (item) => item.transferwallet === true
       ).length > 0;
-    return (
+    return config.features.VipProgressBar ? (
+      <ProgressBarVersion navigate={this.props.navigate} />
+    ) : (
       <Container>
         <StyledAppBar position="fixed" color="default">
           <LevelContainer onClick={() => this.props.navigate("/vip")}>
@@ -341,23 +344,13 @@ class My extends Component {
               }
             ></MessageRedDot>
           </ListItem>
-          {
-            //    <ListItem
-            //    icon={
-            //      process.env.PUBLIC_URL +
-            //      `/assets/images/wapp/icon-profile-inbox.svg`
-            //    }
-            //    onClick={() => this.props.navigate("/memo")}
-            //  >
-            //    {i18n.t("memo")}
-            //  </ListItem>
-          }
           {/* <ListItem
             icon={IconProfileCashflowPNG}
             onClick={() => this.props.navigate("/report/1")}
           >
             {i18n.t("wap.main.account.transferReport")}
           </ListItem> */}
+
           <ListItem
             icon={
               process.env.PUBLIC_URL +
@@ -386,6 +379,7 @@ class My extends Component {
           >
             {i18n.t("wap.main.account.deposit")}
           </ListItem>
+
           {checkTransferWallet && (
             <ListItem
               icon={
@@ -397,6 +391,7 @@ class My extends Component {
               {i18n.t("wap.main.account.transfer")}
             </ListItem>
           )}
+
           <ListItem
             icon={
               process.env.PUBLIC_URL +
@@ -436,6 +431,7 @@ class My extends Component {
           >
             {i18n.t("wap.main.account.manageBank")}
           </ListItem>
+
           <ListItem
             icon={
               process.env.PUBLIC_URL +
@@ -463,6 +459,7 @@ class My extends Component {
               {i18n.t("wap.main.account.appDownload")}
             </ListItem>
           )}
+
           <div className="clear"></div>
           <BtnLogout
             onClick={this.handleLogoutClick}
