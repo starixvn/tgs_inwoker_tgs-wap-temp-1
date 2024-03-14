@@ -7,9 +7,7 @@ const Container = styled.div`
   width: 635px;
   height: 80px;
   border-radius: 6px;
-  border: solid 1px #676666;
-  background-color: #ffffff;
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
 `;
 
 const InputTextBox = styled.input`
@@ -23,7 +21,7 @@ const InputTextBox = styled.input`
 
   margin: 20px 10px;
   &::-webkit-input-placeholder {
-    color: #b7b7b7;
+    color: #000;
     font-size: 23px;
   }
   &:-webkit-autofill {
@@ -35,6 +33,7 @@ const SelectContainer = styled.select`
   height: 100%;
   border: none;
   color: #000;
+  background: transparent;
   font-size: 30px;
 `;
 const TextContainer = styled.div`

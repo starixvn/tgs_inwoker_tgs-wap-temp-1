@@ -7,9 +7,7 @@ const Container = styled.div`
   width: 635px;
   height: 80px;
   border-radius: 6px;
-  border: solid 1px #676666;
-  background-color: ${({ theme }) => theme.new_textfieldBackground ?? "#fff"};
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.2);
 `;
 
 const TextSpan = styled.span`
@@ -24,16 +22,16 @@ const TextSpan = styled.span`
 
 const InputTextBox = styled.input`
   width: 410px;
-  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
   font-size: 30px;
   float: left;
+
   background: none;
   border: none;
-  padding-left: 0;
+  padding-left: 20px;
 
   margin-top: 20px;
   &::-webkit-input-placeholder {
-    color: ${({ theme }) => theme.new_textfieldPlaceholder ?? "#b7b7b7"};
+    color: rgba(0, 0, 0, 0.7);
     font-size: 23px;
   }
   &:-webkit-autofill {
@@ -50,14 +48,15 @@ const TextContainer = styled.div`
 const RightIcon = styled.div`
   width: 40px;
   height: 60px;
-  background: url(${(props) =>
+  mask: url(${(props) =>
       props.password === true
         ? props.hidden
           ? process.env.PUBLIC_URL + `/assets/images/wapp/hide-password.png`
           : process.env.PUBLIC_URL + `/assets/images/wapp/show-password.png`
         : ""})
     no-repeat;
-  background-size: contain;
+  background: rgba(0, 0, 0, 0.7);
+  mask-size: contain;
   margin: 25px 25px 0 0;
   display: inline-block;
   float: left;
@@ -67,7 +66,7 @@ class TextBox extends Component {
     return (
       <Container style={{ ...this.props.style }}>
         <TextContainer>
-          <TextSpan icon={this.props.icon}></TextSpan>
+          {this.props.icon && <TextSpan icon={this.props.icon}></TextSpan>}
           <InputTextBox
             type={this.props.type}
             value={this.props.value}

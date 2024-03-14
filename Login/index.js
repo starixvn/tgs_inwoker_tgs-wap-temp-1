@@ -37,11 +37,9 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   background: ${({ theme }) =>
-    theme.new_loginBg
-      ? theme.new_loginBg
-      : `url(` +
-        process.env.PUBLIC_URL +
-        `/assets/images/wapp/login-bg.jpg)  no-repeat`};
+    `url(` +
+    process.env.PUBLIC_URL +
+    `/assets/images/sunbet/loginbg.jpg)  no-repeat`};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -73,7 +71,6 @@ const RememberPassLabel = styled.div`
   font-size: 28px;
   margin-top: 14px;
   margin-bottom: 14px;
-  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
 `;
 
 const ForgotPassContainer = styled.div`
@@ -121,11 +118,6 @@ const Version = styled.div`
   color: ${({ theme }) => theme.secondary};
 `;
 
-const TNC = styled(RememberPassLabel)`
-  width: 580px;
-  margin-bottom: 14px;
-`;
-
 const CustomWapButton = styled(ButtonWap)`
   background: transparent;
   border: solid 2px ${({ theme }) => theme.primary};
@@ -133,6 +125,7 @@ const CustomWapButton = styled(ButtonWap)`
 `;
 
 const CustomInvitationSelect = styled.select`
+  background: transparent;
   position: absolute;
   right: 85px;
   font-size: 25px;
@@ -150,6 +143,7 @@ const LanguageLinkWrapper = styled.div`
 `;
 
 const LanguageDropdownWrapper = styled.div`
+  margin-top: 10px;
   display: ${({ theme }) => (theme.new_languageUseDropdown ? "block" : "none")};
 `;
 
@@ -164,6 +158,41 @@ const Icon = styled.div`
     }) no-repeat center /
     contain;`;
   }};
+`;
+
+const TheThreeIcon = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 0 auto;
+  width: 635px;
+
+  .item {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3px;
+
+    .icon {
+      aspect-ratio: 1;
+      width: 100%;
+    }
+
+    .title {
+      color: #000;
+      white-space: nowrap;
+    }
+
+    .subtitle {
+      color: #000;
+      font-size: 11px;
+      opacity: 0.8;
+    }
+  }
 `;
 
 class Login extends Component {
@@ -1185,6 +1214,38 @@ class Login extends Component {
               this.props.general.brand && this.props.general.brand.mobileLogoUrl
             }
           ></Logo>
+
+          {this.state.selected === 0 && (
+            <TheThreeIcon>
+              <div className="item">
+                <img
+                  className="icon"
+                  src={process.env.PUBLIC_URL + "/assets/images/sponsors/1.png"}
+                  alt=""
+                />
+                <div className="title">{i18n.t("astonvilla")}</div>
+                <div className="subtitle">{i18n.t("officialpartners")}</div>
+              </div>
+              <div className="item">
+                <img
+                  className="icon"
+                  src={process.env.PUBLIC_URL + "/assets/images/sponsors/2.png"}
+                  alt=""
+                />
+                <div className="title">{i18n.t("laclipper")}</div>
+                <div className="subtitle">{i18n.t("officialpartners")}</div>
+              </div>
+              <div className="item">
+                <img
+                  className="icon"
+                  src={process.env.PUBLIC_URL + "/assets/images/sponsors/3.png"}
+                  alt=""
+                />
+                <div className="title">{i18n.t("sscnapoli")}</div>
+                <div className="subtitle">{i18n.t("officialpartners")}</div>
+              </div>
+            </TheThreeIcon>
+          )}
           <ButtonSwitch
             handleChangeSelection={this.handleChangeSelection}
             isUpdate={this.state.isUpdate}
@@ -1195,22 +1256,14 @@ class Login extends Component {
               return (
                 <React.Fragment>
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-user.png`
-                    }
                     type={"text"}
                     placeholder={i18n.t("common.username")}
-                    style={{ marginTop: "60px" }}
+                    style={{ marginTop: "20px" }}
                     value={this.state.username}
                     maxLength="16"
                     onChange={this.handleUsernameChange}
                   ></Textbox>
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
                     type={this.state.hidePassword ? "password" : "text"}
                     hidePassword={this.state.hidePassword}
                     placeholder={i18n.t("common.password")}
@@ -1225,6 +1278,7 @@ class Login extends Component {
                       checked={this.state.rememberMe}
                       onChange={this.handleRememberMeChange}
                       label={i18n.t("wap.login.rememberMe")}
+                      center
                     />
                   </RememberPassContainer>
                   <ForgotPassContainer onClick={this.handleForgotpasswordClick}>
@@ -1232,7 +1286,6 @@ class Login extends Component {
                       {i18n.t("wap.login.forgetPass")}
                     </ForgotPassLabel>
                   </ForgotPassContainer>
-
                   {/* {(() => {
                     var brand = [
                       "HK28",
@@ -1254,7 +1307,6 @@ class Login extends Component {
                       );
                     }
                   })()} */}
-
                   <LoginActionContainer>
                     <ButtonWap
                       name={i18n.t("common.login")}
@@ -1267,7 +1319,6 @@ class Login extends Component {
                       onClick={this.handleBackToHomeClick}
                     ></CustomWapButton>
                   </LoginActionContainer>
-
                   <LanguageLinkWrapper>
                     <LanguageWrap>
                       {(() => {
@@ -1297,11 +1348,11 @@ class Login extends Component {
                       })()}
                     </LanguageWrap>
                   </LanguageLinkWrapper>
-
                   <LanguageDropdownWrapper>
                     <Dropdown
                       value={i18n.language}
                       onChange={performChangeLanguage}
+                      background="rgba(255,255,255,0.2)"
                     >
                       {this.props.general.brandLanguage.map((data, index) => {
                         return (
@@ -1326,10 +1377,6 @@ class Login extends Component {
               return (
                 <React.Fragment>
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-user.png`
-                    }
                     type={"text"}
                     placeholder={i18n.t("wap.register.username")}
                     style={{ marginTop: "60px" }}
@@ -1339,10 +1386,6 @@ class Login extends Component {
                   ></Textbox>
 
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
                     type={this.state.hidePassword ? "password" : "text"}
                     hidePassword={this.state.hidePassword}
                     placeholder={i18n.t("wap.register.password")}
@@ -1354,10 +1397,6 @@ class Login extends Component {
                     onChange={this.handlePasswordChange}
                   ></Textbox>
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
                     type={this.state.hideConfirmPassword ? "password" : "text"}
                     hidePassword={this.state.hideConfirmPassword}
                     placeholder={i18n.t("wap.register.confirmPassword")}
@@ -1408,10 +1447,6 @@ class Login extends Component {
                   ) && (
                     <CustomWrapper>
                       <Textbox
-                        icon={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/icon-promo.png`
-                        }
                         type={"text"}
                         placeholder={i18n.t("wap.register.promoteCode")}
                         style={{ marginTop: "20px" }}
