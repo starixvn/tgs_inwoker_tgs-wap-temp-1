@@ -124,6 +124,18 @@ const CustomWapButton = styled(ButtonWap)`
   color: ${({ theme }) => theme.secondary};
 `;
 
+const BackButton = styled.div`
+  font-size: 24px;
+  width: 635px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 10px;
+  font-weight: bold;
+`;
+
 const CustomInvitationSelect = styled.select`
   background: transparent;
   position: absolute;
@@ -1312,12 +1324,9 @@ class Login extends Component {
                       name={i18n.t("common.login")}
                       onClick={this.handleLoginClick}
                     ></ButtonWap>
-                    <CustomWapButton
-                      styledtype={2}
-                      name={i18n.t("wap.login.browse")}
-                      style={{ "margin-top": "10px" }}
-                      onClick={this.handleBackToHomeClick}
-                    ></CustomWapButton>
+                    <BackButton onClick={this.handleBackToHomeClick}>
+                      {i18n.t("wap.login.browse")}
+                    </BackButton>
                   </LoginActionContainer>
                   <LanguageLinkWrapper>
                     <LanguageWrap>
@@ -1476,7 +1485,7 @@ class Login extends Component {
                     </CustomWrapper>
                   )}
 
-                  <RememberPassContainer>
+                  <RememberPassContainer style={{ width: 635 }}>
                     <Checkbox
                       checked={this.state.tnc}
                       onChange={this.handleTncClick}
