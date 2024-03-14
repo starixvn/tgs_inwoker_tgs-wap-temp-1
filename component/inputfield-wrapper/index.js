@@ -2,7 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 const CustomDopdown = styled.div`
-  background-color: ${({ theme }) => theme.new_textfieldBackground ?? "#fff"};
+  background-color: ${({ theme, background }) => {
+    return background ? background : theme.new_textfieldBackground ?? "#fff";
+  }};
+
   width: 635px;
   margin: 0 auto;
   height: 80px;
@@ -11,16 +14,17 @@ const CustomDopdown = styled.div`
   input,
   select {
     background: transparent;
-    color: #fff;
+    color: #000;
     width: 100%;
     height: 100%;
+    border: none;
     font-size: 30px;
     padding: 0 20px;
   }
 `;
 
-const InputfieldWrapper = ({ children }) => {
-  return <CustomDopdown>{children}</CustomDopdown>;
+const InputfieldWrapper = ({ children, background }) => {
+  return <CustomDopdown background={background}>{children}</CustomDopdown>;
 };
 
 export default InputfieldWrapper;

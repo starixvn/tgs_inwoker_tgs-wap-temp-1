@@ -8,9 +8,9 @@ const CustomSelect = styled.select`
     font-size: 20px;
   }
 `;
-const Dropdown = ({ children, value, onChange }) => {
+const Dropdown = ({ children, value, onChange, background }) => {
   return (
-    <InputfieldWrapper>
+    <InputfieldWrapper background={background}>
       <CustomSelect
         value={value}
         onChange={(e) => {

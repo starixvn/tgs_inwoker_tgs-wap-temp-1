@@ -3,8 +3,7 @@ import styled from "styled-components";
 
 const CheckboxOuterWrapper = styled.div`
   display: flex;
-  color: #fff;
-  align-items: flex-start;
+  align-items: ${({ center }) => (center ? "center" : "flex-start")};
   gap: 20px;
   font-size: 28px;
 `;
@@ -15,7 +14,7 @@ const CheckboxWrapper = styled.div`
   aspect-ratio: 1;
   background: ${({ checked, theme }) =>
     checked ? theme.new_gradientBackground : "transparent "};
-  border: solid 1px ${({ checked }) => (checked ? "transparent" : "#fff ")};
+  border: solid 1px ${({ checked }) => (checked ? "transparent" : "#000 ")};
   font-size: 28px;
   color: #000;
   font-weight: bold;
@@ -24,13 +23,13 @@ const CheckboxWrapper = styled.div`
   justify-content: center;
 `;
 
-const Checkbox = ({ checked, onChange, label }) => {
+const Checkbox = ({ checked, onChange, label, center }) => {
   return (
-    <CheckboxOuterWrapper onClick={onChange}>
+    <CheckboxOuterWrapper onClick={onChange} center={center}>
       <CheckboxWrapper checked={checked}>
         {checked === true && "✓"}
       </CheckboxWrapper>
-      <div>{label}</div>
+      <div className="label">{label}</div>
     </CheckboxOuterWrapper>
   );
 };
