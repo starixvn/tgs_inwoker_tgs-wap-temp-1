@@ -34,7 +34,7 @@ const SelectContainer = styled.select`
   border: none;
   color: #000;
   background: transparent;
-  font-size: 30px;
+  font-size: 28px;
 `;
 const TextContainer = styled.div`
   float: right;

@@ -8,8 +8,6 @@ import ButtonSwitch from "./ButtonSwitch";
 import Textbox from "./Textbox";
 import Select from "./Select";
 import VerificationCode from "./VerificationCode";
-import { withStyles } from "@material-ui/core/styles";
-import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import { accountAction } from "../../../api-services/actions/accountAction";
 import { generalAction } from "../../../api-services/actions/generalAction";
 import { walletAction } from "../../../api-services/actions/walletAction";
@@ -118,12 +116,6 @@ const Version = styled.div`
   color: ${({ theme }) => theme.secondary};
 `;
 
-const CustomWapButton = styled(ButtonWap)`
-  background: transparent;
-  border: solid 2px ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.secondary};
-`;
-
 const BackButton = styled.div`
   font-size: 24px;
   width: 635px;
@@ -207,6 +199,67 @@ const TheThreeIcon = styled.div`
   }
 `;
 
+const VerificationWrapper = styled.div`
+  background: rgba(255, 255, 255, 0.2);
+  width: 635px;
+  margin: 0 auto;
+  margin-top: 15px;
+  border-radius: 6px;
+
+  display: flex;
+  color: #000;
+  font-size: 30px;
+  justify-content: space-between;
+  height: 80px;
+  padding: 20px;
+  input[type="text"] {
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    ::placeholder {
+      color: #000;
+      font-size: 24px;
+    }
+  }
+
+  button {
+    background: rgba(0, 173, 239, 1);
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 8px;
+    opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
+    pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
+  }
+`;
+
+const Verification = ({ code, changeCode, getCode, countdown = 0 }) => {
+  return (
+    <VerificationWrapper>
+      <input
+        type="text"
+        placeholder={i18n.t("common.msgEnterCode")}
+        value={code}
+        onChange={changeCode}
+      />
+      <button
+        onClick={() => {
+          getCode();
+        }}
+        disabled={countdown > 0}
+      >
+        {countdown <= 0
+          ? i18n.t("common.msgSendToken")
+          : i18n.t("common.btnTokenResendLabel") + "(" + countdown + "s)"}
+      </button>
+    </VerificationWrapper>
+  );
+};
+
 class Login extends Component {
   state = {
     selected: 0,
@@ -216,6 +269,7 @@ class Login extends Component {
     username: "",
     password: "",
     phone: "",
+    token: "",
     areaCode: config.features.PhonePrefix,
     withPromo:
       config.affiliateId === "" &&
@@ -935,6 +989,15 @@ class Login extends Component {
       tnc: !this.state.tnc,
     });
   };
+
+  checkInput = (regex, value, msg) => {
+    if (!regex.test(value)) {
+      this.props.alert("", msg);
+      return;
+    }
+    return true;
+  };
+
   handleRegisterClick = () => {
     const username = this.state.username;
     const password = this.state.password;
@@ -1067,6 +1130,90 @@ class Login extends Component {
             // });
           }
         });
+    }
+  };
+
+  performGetVerificationCode = () => {
+    this.checkInput(
+      /^[a-zA-Z0-9]{6,16}$/,
+      this.state.username,
+      i18n.t("common.msgRegisterUserNameInvalid")
+    );
+
+    this.checkInput(
+      /^.{6,20}$/,
+      this.state.password,
+      i18n.t("common.msgRegisterPassInvalid")
+    );
+
+    if (this.state.password !== this.state.confirmPassword) {
+      this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
+      return;
+    }
+
+    this.checkInput(
+      /^[0-9]{8,10}$/,
+      this.state.phone,
+      i18n.t("common.msgRegisterPhoneInvalid")
+    );
+
+    this.props
+      .newRegister("CreatePlayer", {
+        username: this.state.username,
+        pwd: this.state.password,
+        upper: this.state.upper,
+        invitationcode: this.state.promoId,
+      })
+      .then((response) => {
+        if (response.IsSuccess) {
+          AccountService.Login(this.state.username, this.state.password).then(
+            (response) => {
+              if (response.IsSuccess) {
+                this.setState({
+                  ...this.state,
+                  token: response.data.token,
+                });
+                AccountService.NewRegister("InitPhone", {
+                  input: "Init",
+                  data: {
+                    areacode: this.state.areaCode,
+                    phone: this.state.phone,
+                  },
+                }).then(async (response) => {
+                  if (response.IsSuccess) {
+                    this.setState({
+                      ...this.state,
+                      securityKey: response.data.stepResponse,
+                      countdown: 60,
+                    });
+                    this.checkCountdown();
+                  } else {
+                  }
+                });
+              }
+            }
+          );
+        }
+      });
+  };
+
+  performValidate = () => {
+    if (this.state.tnc) {
+      AccountService.NewRegister("InitPhone", {
+        input: "Valid",
+        data: {
+          securityKey: this.state.securityKey,
+          code: this.state.code,
+        },
+      }).then(async (response) => {
+        if (response.IsSuccess) {
+          this.props.alert("", i18n.t("common.msgTokenVerified"));
+          this.props.appHistory.replace("/main/home");
+          this.props.getAccountInfo(this.state.token);
+        } else {
+          this.props.alert("", response.info);
+        }
+      });
     }
   };
 
@@ -1417,21 +1564,26 @@ class Login extends Component {
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
 
-                  {config.features.Register_ShowPhone && (
-                    <CustomWrapper>
-                      <Select
-                        type={"text"}
-                        placeholder={i18n.t(
-                          "forgotPassword.plsEnterPhoneNumber"
-                        )}
-                        selectValue={this.state.areaCode}
-                        onSelectChange={this.handleAreaCodeChange}
-                        value={this.state.phone}
-                        maxLength={config.features.MAX_PHONE_LENGTH || 10}
-                        onChange={this.handlePhoneChange}
-                      ></Select>
-                    </CustomWrapper>
-                  )}
+                  <CustomWrapper>
+                    <Select
+                      type={"text"}
+                      placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
+                      selectValue={this.state.areaCode}
+                      onSelectChange={this.handleAreaCodeChange}
+                      value={this.state.phone}
+                      maxLength={config.features.MAX_PHONE_LENGTH || 10}
+                      onChange={this.handlePhoneChange}
+                    ></Select>
+                  </CustomWrapper>
+
+                  <Verification
+                    code={this.state.code}
+                    changeCode={(e) => {
+                      this.setState({ code: e.target.value });
+                    }}
+                    countdown={this.state.countdown}
+                    getCode={this.performGetVerificationCode}
+                  />
 
                   {config.features.Register_ShowEmail && (
                     <CustomWrapper>
@@ -1499,7 +1651,7 @@ class Login extends Component {
                         ? i18n.t("common.nextStep")
                         : i18n.t("common.register")
                     }
-                    onClick={this.performNewRegister}
+                    onClick={this.performValidate}
                     disableButton={!this.state.tnc}
                   ></ButtonWap>
                 </React.Fragment>
