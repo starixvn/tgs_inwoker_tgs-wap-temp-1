@@ -72,14 +72,19 @@ const BottomNavigatorFrame = styled.div`
   height: 50px;
 `;
 const BottomNavigatorPlus = styled.div`
-background:${({ img, theme }) =>
-  `url(${
+background:${({ img, theme }) =>{
+  return config.brand === 'V226' ?  `url(${
+    process.env.PUBLIC_URL +
+    "/assets/images/wapp/icons-set/v226.png"
+  }) no-repeat center center;` : `url(${
     process.env.PUBLIC_URL +
     "/assets/images/wapp/" +
     (theme.new_iconSet
       ? `icons-set/${theme.new_iconSet}/icon-plus.png`
       : "icon-plus.png")
-  }) no-repeat center center; `}
+  }) no-repeat center center; `
+}
+}
 
   background-repeat: no-repeat;
   background-position: center;
@@ -207,6 +212,7 @@ class Main extends Component {
     }
   };
   toggleMenu = () => {
+    if (config.brand === 'V226') return ;
     if (this.props.account.token == null) {
       this.props.appHistory.push("/login");
     } else {
