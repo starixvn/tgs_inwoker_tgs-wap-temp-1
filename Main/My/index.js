@@ -97,7 +97,6 @@ const IconContainer = styled.div`
   border: solid 1px #a9a9a9;
   background: ${({ theme }) =>
     theme.new_bodyColor ?? " linear-gradient(to top, #e0e0e0, #ffffff);"};
-
   margin: 10px auto 30px auto;
   padding: 40px 30px 0 30px;
 `;
