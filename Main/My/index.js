@@ -94,11 +94,10 @@ const IconContainer = styled.div`
   height: 190px;
   border-radius: 30px;
   box-shadow: ${({ theme }) =>
-    theme.new_bodyColor ? "none" : " 0px 3px 12px 0 rgba(0, 0, 0, 0.6);"}
+    theme.new_bodyColor ? "none" : " 0px 3px 12px 0 rgba(0, 0, 0, 0.6);"};
   border: solid 1px #a9a9a9;
   background: ${({ theme }) =>
     theme.new_bodyColor ?? " linear-gradient(to top, #e0e0e0, #ffffff);"};
-
   margin: 10px auto 30px auto;
   padding: 40px 30px 0 30px;
 `;
