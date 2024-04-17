@@ -585,6 +585,34 @@ class My extends Component {
           )}
 
           <div className="clear"></div>
+          {profileItems.map((item, index) => {
+            return (
+              item.display && (
+                <ListItem
+                  onClick={() => {
+                    if (item.url === "/card") {
+                      if (
+                        this.props.wallet.bankCardList != null &&
+                        this.props.wallet.bankCardList.length === 0 &&
+                        config.features.AddCard_NotAllowedEditDelete
+                      ) {
+                        this.props.alert("", i18n.t("card.toEdit"));
+                      } else {
+                        this.props.navigate(item.url);
+                      }
+                    } else {
+                      this.props.navigate(item.url);
+                    }
+                  }}
+                  key={index}
+                >
+                  <ProfileButtonIcon src={item.icon} alt="icon" />
+                  <div>{i18n.t(item.name)}</div>
+                  {item.subcomp}
+                </ListItem>
+              )
+            );
+          })}
         </ListView>
         <Button
           onClick={this.handleLogoutClick}
