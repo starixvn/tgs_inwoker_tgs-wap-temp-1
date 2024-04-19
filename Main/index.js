@@ -75,7 +75,7 @@ const BottomNavigatorPlus = styled.div`
   background:${({ img, theme }) =>{
     return config.brand === 'V226' ?  `url(${
       process.env.PUBLIC_URL +
-      "/assets/images/wapp/icons-set/v226.png"
+      "/assets/images/wapp/icons-set/V226.png"
     }) no-repeat center center;` : `url(${
       process.env.PUBLIC_URL +
       "/assets/images/wapp/" +
