@@ -16,6 +16,25 @@ import LegacyVerificationfield from "../component/legacy-verification";
 import Button from "../component/button";
 import LegacyTextfield from "../component/legacy-textfield";
 
+const PageWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  ${
+    () => {
+      if (config.brand === 'V226') {
+        return `
+          background: url(${process.env.PUBLIC_URL + '/assets/images/wapp/forgetBg.png'}) no-repeat;
+          background-size: 100% 100%;
+        `
+      }
+    }
+  }
+
+`;
+
+  /* background: ${({bg}) => bg ? `url(${bg}) no-repeat`: ''};
+  background-size: 100% 100%; */
+
 const Wrapper = styled.div``;
 
 class ForgotPassword extends Component {
@@ -173,107 +192,109 @@ class ForgotPassword extends Component {
   render() {
     return (
       <React.Fragment>
-        <Header
-          onBackClick={this.handleBackClick}
-          title={i18n.t("forgotPassword.title")}
-        ></Header>
-        <Wrapper>
-          {(() => {
-            if (this.state.step === 1) {
-              return config.features.SMSVerification ? (
-                <React.Fragment>
-                  <LegacyPhonefield
-                    areaCode={this.state.areaCode}
-                    onAreaCodeChange={(e) => {
-                      this.setState({
-                        ...this.state,
-                        areaCode: e.target.value,
-                      });
-                    }}
-                    phone={this.state.phone}
-                    onPhoneChange={this.handlePhoneChange}
-                    placeholder={i18n.t("common.msgEnterPhone")}
-                    maxLength={config.features.MAX_PHONE_LENGTH || 10}
-                  >
-                    <option value={config.features.PhonePrefix}>
-                      {config.features.PhonePrefix}
-                    </option>
-                  </LegacyPhonefield>
-                  <LegacyVerificationfield
-                    code={this.state.code}
-                    onCodeChange={this.handleCodeChange}
-                    placeholder={i18n.t("common.msgEnterCode")}
-                    onGetCode={this.handleGetCodeClick}
-                    resetGetCode={this.resetGetCode}
-                    successGetCode={this.state.successGetCode}
-                  ></LegacyVerificationfield>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <Textbox
-                    style={{ margin: "20px auto 20px auto" }}
-                    value={this.state.email}
-                    onChange={this.handleEmailChange}
-                    placeholder={i18n.t("common.msgEnterEmail")}
-                    type={"text"}
-                    label={i18n.t("common.emailAddress")}
-                  ></Textbox>
-                  <TextboxWithButton
-                    buttonlabel={i18n.t("common.msgSendToken")}
-                    style={{ margin: "20px auto 20px auto" }}
-                    value={this.state.code}
-                    onChange={this.handleCodeChange}
-                    placeholder={i18n.t("common.msgEnterCodeEmail")}
-                    label={i18n.t("common.token")}
-                    onClick={this.handleGetCodeClick}
-                    type={"text"}
-                  ></TextboxWithButton>
-                </React.Fragment>
-              );
-            } else if (this.state.step === 2) {
-              return (
-                <React.Fragment>
-                  <Textbox
-                    style={{ margin: "20px auto 20px auto" }}
-                    value={this.state.password}
-                    onChange={this.handlePasswordChange}
-                    placeholder={i18n.t("wap.register.password")}
-                    type={"password"}
-                    label={i18n.t("common.NewPass")}
-                  ></Textbox>
+        <PageWrapper>
+          <Header
+            onBackClick={this.handleBackClick}
+            title={i18n.t("forgotPassword.title")}
+          ></Header>
+          <Wrapper>
+            {(() => {
+              if (this.state.step === 1) {
+                return config.features.SMSVerification ? (
+                  <React.Fragment>
+                    <LegacyPhonefield
+                      areaCode={this.state.areaCode}
+                      onAreaCodeChange={(e) => {
+                        this.setState({
+                          ...this.state,
+                          areaCode: e.target.value,
+                        });
+                      }}
+                      phone={this.state.phone}
+                      onPhoneChange={this.handlePhoneChange}
+                      placeholder={i18n.t("common.msgEnterPhone")}
+                      maxLength={config.features.MAX_PHONE_LENGTH || 10}
+                    >
+                      <option value={config.features.PhonePrefix}>
+                        {config.features.PhonePrefix}
+                      </option>
+                    </LegacyPhonefield>
+                    <LegacyVerificationfield
+                      code={this.state.code}
+                      onCodeChange={this.handleCodeChange}
+                      placeholder={i18n.t("common.msgEnterCode")}
+                      onGetCode={this.handleGetCodeClick}
+                      resetGetCode={this.resetGetCode}
+                      successGetCode={this.state.successGetCode}
+                    ></LegacyVerificationfield>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <Textbox
+                      style={{ margin: "20px auto 20px auto" }}
+                      value={this.state.email}
+                      onChange={this.handleEmailChange}
+                      placeholder={i18n.t("common.msgEnterEmail")}
+                      type={"text"}
+                      label={i18n.t("common.emailAddress")}
+                    ></Textbox>
+                    <TextboxWithButton
+                      buttonlabel={i18n.t("common.msgSendToken")}
+                      style={{ margin: "20px auto 20px auto" }}
+                      value={this.state.code}
+                      onChange={this.handleCodeChange}
+                      placeholder={i18n.t("common.msgEnterCodeEmail")}
+                      label={i18n.t("common.token")}
+                      onClick={this.handleGetCodeClick}
+                      type={"text"}
+                    ></TextboxWithButton>
+                  </React.Fragment>
+                );
+              } else if (this.state.step === 2) {
+                return (
+                  <React.Fragment>
+                    <Textbox
+                      style={{ margin: "20px auto 20px auto" }}
+                      value={this.state.password}
+                      onChange={this.handlePasswordChange}
+                      placeholder={i18n.t("wap.register.password")}
+                      type={"password"}
+                      label={i18n.t("common.NewPass")}
+                    ></Textbox>
 
-                  <Textbox
-                    style={{ margin: "20px auto 20px auto" }}
-                    value={this.state.password2}
-                    onChange={this.handlePassword2Change}
-                    placeholder={i18n.t("common.msgEnterConfirmPass")}
-                    type={"password"}
-                    label={i18n.t("common.ConfirmPass")}
-                    successGetCode={this.state.successGetCode}
-                  ></Textbox>
-                </React.Fragment>
-              );
-            }
-          })()}
+                    <Textbox
+                      style={{ margin: "20px auto 20px auto" }}
+                      value={this.state.password2}
+                      onChange={this.handlePassword2Change}
+                      placeholder={i18n.t("common.msgEnterConfirmPass")}
+                      type={"password"}
+                      label={i18n.t("common.ConfirmPass")}
+                      successGetCode={this.state.successGetCode}
+                    ></Textbox>
+                  </React.Fragment>
+                );
+              }
+            })()}
 
-          <Button
-            style={{ width: "auto ", margin: "0px 20px" }}
-            disabled={
-              this.state.step === 1
-                ? (config.features.SMSVerification
-                    ? this.state.phone.length < 1
-                    : this.state.email.length < 1) || this.state.code.length < 6
-                : this.state.password.length < 6 ||
-                  this.state.password2.length < 6
-            }
-            label={
-              this.state.step === 1
-                ? i18n.t("common.nextStep")
-                : i18n.t("common.confirm")
-            }
-            onClick={this.handleNextClick}
-          ></Button>
-        </Wrapper>
+            <Button
+              style={{ width: "auto ", margin: "0px 20px" }}
+              disabled={
+                this.state.step === 1
+                  ? (config.features.SMSVerification
+                      ? this.state.phone.length < 1
+                      : this.state.email.length < 1) || this.state.code.length < 6
+                  : this.state.password.length < 6 ||
+                    this.state.password2.length < 6
+              }
+              label={
+                this.state.step === 1
+                  ? i18n.t("common.nextStep")
+                  : i18n.t("common.confirm")
+              }
+              onClick={this.handleNextClick}
+            ></Button>
+          </Wrapper>
+        </PageWrapper>
       </React.Fragment>
     );
   }
