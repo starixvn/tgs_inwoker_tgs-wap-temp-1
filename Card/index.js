@@ -51,7 +51,6 @@ const CardItem = styled.div`
   border-radius: 16px;
   margin-left: 60px;
   padding: 0 0 0 44px;
-  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
 `;
 const InfoLabel = styled.div`
   font-size: ${() => (config.brand === "WGHK" ? `24px` : `18px`)};

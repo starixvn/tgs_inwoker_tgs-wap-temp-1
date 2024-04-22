@@ -3,7 +3,7 @@ import styled from "styled-components";
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 const Container = styled.div`
-  margin: 50px auto 0 auto;
+  margin: 20px auto 0 auto;
 
   font-weight: 500;
 
@@ -13,29 +13,19 @@ const Container = styled.div`
 
   width: 635px;
   height: 81px;
-  border-radius: 6px;
-  border: solid 2px;
-  border-color: ${({ theme }) => theme.new_gradientBackground ?? "#ffffff"};
-  background-color: ${({ theme }) => theme.secondary};
-  border-radius: 10px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
 
 const SwitchTextContainerComponent = styled.div`
-  width: 319px;
   height: 81px;
-  flaot: left;
+
   text-align: center;
-  position: absolute;
-  top: 0;
 
   font-size: 32px;
 
-  color: ${({ active, theme }) =>
-    active
-      ? theme.new_gradientBackground
-        ? "#000"
-        : "#fff"
-      : theme.new_inactiveText ?? "#fff"};
+  color: #000;
   font-weight: ${({ theme }) =>
     theme.new_gradientBackground ? "bold" : "normal"};
   text-transform: ${({ theme }) =>
@@ -47,16 +37,11 @@ const SwitchTextContainerComponent = styled.div`
 
   background: ${({ active, theme }) => {
     return active
-      ? theme.new_gradientBackground ?? theme.primary
-      : theme.secondary;
+      ? `linear-gradient(180deg, rgba(255, 223, 156, 1) 0%, rgba(211, 176, 96, 1) 100%)`
+      : ` rgba(255, 255, 255, 0.2);`;
   }};
 `;
-const SwitchTextLeftContainer = styled(SwitchTextContainerComponent)`
-  left: 0;
-`;
-const SwitchTextrightContainer = styled(SwitchTextContainerComponent)`
-  right: 0;
-`;
+
 class ButtonSwitch extends Component {
   constructor(props) {
     super(props);
@@ -77,20 +62,18 @@ class ButtonSwitch extends Component {
   render() {
     return (
       <Container>
-        <SwitchTextLeftContainer
-          style={{ width: "300px" }}
+        <SwitchTextContainerComponent
           active={this.props.selected === 0}
           onClick={() => this.props.handleChangeSelection(0)}
         >
           {i18n.t("common.login")}
-        </SwitchTextLeftContainer>
-        <SwitchTextrightContainer
-          style={{ width: "300px" }}
+        </SwitchTextContainerComponent>
+        <SwitchTextContainerComponent
           active={this.props.selected === 1}
           onClick={() => this.props.handleChangeSelection(1)}
         >
           {i18n.t("common.register")}
-        </SwitchTextrightContainer>
+        </SwitchTextContainerComponent>
         {
           // this.state.activation ? (
           //   <SwitchTextrightContainer
