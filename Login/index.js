@@ -1575,7 +1575,7 @@ class Login extends Component {
                       onChange={this.handlePhoneChange}
                     ></Select>
                   </CustomWrapper>
-
+                  {/*
                   <Verification
                     code={this.state.code}
                     changeCode={(e) => {
@@ -1584,6 +1584,7 @@ class Login extends Component {
                     countdown={this.state.countdown}
                     getCode={this.performGetVerificationCode}
                   />
+                  */}
 
                   {config.features.Register_ShowEmail && (
                     <CustomWrapper>
