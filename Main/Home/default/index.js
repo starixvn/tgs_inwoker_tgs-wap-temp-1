@@ -22,6 +22,7 @@ import { Textfit } from "react-textfit";
 import PromotionRoulette from "./../PromotionRoulette";
 import OnlineUserDisplayer from "../../../../Share/online-user-displayer";
 import { GameService } from "../../../../../api-services/services/GameService";
+
 const StyledAppBar = withStyles({
   root: {
     height: "650px",
@@ -246,12 +247,12 @@ const GameSelectionLI = styled.div`
   height: 69px;
   border-radius: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: ${config.brand === 'V226' ? 'space-evenly':'center'};
   align-items: center;
   border: solid 2px #ebca81;
   background-color: #000;
   margin: 16px auto 0 auto;
-
+  padding: 0 5px;
   font-size: 35.5px;
 
   line-height: 1;
@@ -337,10 +338,10 @@ const DownloadContainer = styled.div`
 `;
 
 const DownloadButton = styled.div`
- margin-top: 20px;
+  margin-top: 20px;
   border: solid 3px ${({ theme }) => theme.primary};
   background: #fff;
-  border-radius: 10px
+  border-radius: 10px;
   width: 100px;
   height: 100px;
   display: flex;
@@ -458,6 +459,38 @@ const RouletteFloatingPanel = styled.div`
     return orientation ? orientation : "column";
   }};
 `;
+
+const GameTypeText = styled.div`
+  flex: 1;
+  text-align: center;
+`;
+
+const SportsIcon = styled.div`
+  mask: url(${({gameType}) => getGameTypeIcon(gameType)})
+    no-repeat center center;
+  background: ${({ selected }) => selected ? "#000000" : "#FFE3A8"};
+  width: 32px;
+  height: 32px;
+  mask-size: 100%;
+  background-size: 100%;
+`;
+
+const getGameTypeIcon = (gameType) => {
+  const iconObj = {
+    [GameTypeEnum.SPORTS]: 'sports',
+    [GameTypeEnum.ESPORTS]: 'esports',
+    [GameTypeEnum.LIVE]: 'live',
+    [GameTypeEnum.LIVELOBBY]: 'live',
+    [GameTypeEnum.QIPAI]:'chess',
+    [GameTypeEnum.QIPAILOBBY]: 'chess',
+    [GameTypeEnum.FISH]:'fish',
+    [GameTypeEnum.LOTTERYLOBBY]:'lottery',
+    [GameTypeEnum.SLOT]: 'slot',
+    [GameTypeEnum.TABLEGAME]: 'tablegame',
+    [GameTypeEnum.COCKFIGHT]: 'cockfight'
+  }
+  return process.env.PUBLIC_URL + `/assets/images/wapp/icons-set/2/${iconObj[gameType]}.png`
+}
 
 var sortingHK28 = [
   GameTypeEnum.LIVELOBBY,
@@ -1143,7 +1176,28 @@ class Default extends Component {
                       selected={this.state.selectedGameType === type}
                       onClick={() => this.handleGameTypeClick(type)}
                     >
-                      {this.convertGameTypeToText(type)}
+                      {
+                        config.brand === 'V226' && (
+                        <SportsIcon 
+                          gameType={type} 
+                          selected={this.state.selectedGameType === type}>
+                        </SportsIcon>
+                        )
+                      }
+                      {
+                        config.brand === 'V226' ? 
+                        (
+                        <GameTypeText>
+                          {this.convertGameTypeToText(type)}
+                        </GameTypeText>
+                        ) : 
+                        (
+                          <>
+                          {this.convertGameTypeToText(type)}
+                          </>
+                        )
+                      }
+                      
                     </GameSelectionLI>
                   );
                 });

@@ -72,19 +72,19 @@ const BottomNavigatorFrame = styled.div`
   height: 50px;
 `;
 const BottomNavigatorPlus = styled.div`
-background:${({ img, theme }) =>{
-  return config.brand === 'V226' ?  `url(${
-    process.env.PUBLIC_URL +
-    "/assets/images/wapp/icons-set/v226.png"
-  }) no-repeat center center;` : `url(${
-    process.env.PUBLIC_URL +
-    "/assets/images/wapp/" +
-    (theme.new_iconSet
-      ? `icons-set/${theme.new_iconSet}/icon-plus.png`
-      : "icon-plus.png")
-  }) no-repeat center center; `
-}
-}
+  background:${({ img, theme }) =>{
+    return config.brand === 'V226' ?  `url(${
+      process.env.PUBLIC_URL +
+      "/assets/images/wapp/icons-set/V226.png"
+    }) no-repeat center center;` : `url(${
+      process.env.PUBLIC_URL +
+      "/assets/images/wapp/" +
+      (theme.new_iconSet
+        ? `icons-set/${theme.new_iconSet}/icon-plus.png`
+        : "icon-plus.png")
+    }) no-repeat center center; `
+  }
+  };
 
   background-repeat: no-repeat;
   background-position: center;
@@ -113,9 +113,7 @@ const MenuContainer = styled.div`
   height: 100%;
 `;
 const ButtonCloseMenu = styled.div`
-  background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp/icon-menu-close.png`})
-    no-repeat;
+  background: url(${process.env.PUBLIC_URL + `/assets/images/wapp/icon-menu-close.png`}) no-repeat;
   background-size: 68px;
   width: 68px;
   height: 68px;
