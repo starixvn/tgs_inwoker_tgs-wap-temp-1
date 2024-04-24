@@ -8,8 +8,6 @@ import ButtonSwitch from "./ButtonSwitch";
 import Textbox from "./Textbox";
 import Select from "./Select";
 import VerificationCode from "./VerificationCode";
-import { withStyles } from "@material-ui/core/styles";
-import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import { accountAction } from "../../../api-services/actions/accountAction";
 import { generalAction } from "../../../api-services/actions/generalAction";
 import { walletAction } from "../../../api-services/actions/walletAction";
@@ -37,11 +35,9 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   background: ${({ theme }) =>
-    theme.new_loginBg
-      ? theme.new_loginBg
-      : `url(` +
-        process.env.PUBLIC_URL +
-        `/assets/images/wapp/login-bg.jpg)  no-repeat`};
+    `url(` +
+    process.env.PUBLIC_URL +
+    `/assets/images/sunbet/loginbg.jpg)  no-repeat`};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -73,7 +69,6 @@ const RememberPassLabel = styled.div`
   font-size: 28px;
   margin-top: 14px;
   margin-bottom: 14px;
-  color: ${({ theme }) => theme.new_textColor ?? theme.secondary};
 `;
 
 const ForgotPassContainer = styled.div`
@@ -121,18 +116,20 @@ const Version = styled.div`
   color: ${({ theme }) => theme.secondary};
 `;
 
-const TNC = styled(RememberPassLabel)`
-  width: 580px;
-  margin-bottom: 14px;
-`;
-
-const CustomWapButton = styled(ButtonWap)`
-  background: transparent;
-  border: solid 2px ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.secondary};
+const BackButton = styled.div`
+  font-size: 24px;
+  width: 635px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 10px;
+  font-weight: bold;
 `;
 
 const CustomInvitationSelect = styled.select`
+  background: transparent;
   position: absolute;
   right: 85px;
   font-size: 25px;
@@ -150,6 +147,7 @@ const LanguageLinkWrapper = styled.div`
 `;
 
 const LanguageDropdownWrapper = styled.div`
+  margin-top: 10px;
   display: ${({ theme }) => (theme.new_languageUseDropdown ? "block" : "none")};
 `;
 
@@ -166,6 +164,102 @@ const Icon = styled.div`
   }};
 `;
 
+const TheThreeIcon = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 0 auto;
+  width: 635px;
+
+  .item {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3px;
+
+    .icon {
+      aspect-ratio: 1;
+      width: 100%;
+    }
+
+    .title {
+      color: #000;
+      white-space: nowrap;
+    }
+
+    .subtitle {
+      color: #000;
+      font-size: 11px;
+      opacity: 0.8;
+    }
+  }
+`;
+
+const VerificationWrapper = styled.div`
+  background: rgba(255, 255, 255, 0.2);
+  width: 635px;
+  margin: 0 auto;
+  margin-top: 15px;
+  border-radius: 6px;
+
+  display: flex;
+  color: #000;
+  font-size: 30px;
+  justify-content: space-between;
+  height: 80px;
+  padding: 20px;
+  input[type="text"] {
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    ::placeholder {
+      color: #000;
+      font-size: 24px;
+    }
+  }
+
+  button {
+    background: rgba(0, 173, 239, 1);
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 8px;
+    opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
+    pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
+  }
+`;
+
+const Verification = ({ code, changeCode, getCode, countdown = 0 }) => {
+  return (
+    <VerificationWrapper>
+      <input
+        type="text"
+        placeholder={i18n.t("common.msgEnterCode")}
+        value={code}
+        onChange={changeCode}
+      />
+      <button
+        onClick={() => {
+          getCode();
+        }}
+        disabled={countdown > 0}
+      >
+        {countdown <= 0
+          ? i18n.t("common.msgSendToken")
+          : i18n.t("common.btnTokenResendLabel") + "(" + countdown + "s)"}
+      </button>
+    </VerificationWrapper>
+  );
+};
+
 class Login extends Component {
   state = {
     selected: 0,
@@ -175,6 +269,7 @@ class Login extends Component {
     username: "",
     password: "",
     phone: "",
+    token: "",
     areaCode: config.features.PhonePrefix,
     withPromo:
       config.affiliateId === "" &&
@@ -894,6 +989,15 @@ class Login extends Component {
       tnc: !this.state.tnc,
     });
   };
+
+  checkInput = (regex, value, msg) => {
+    if (!regex.test(value)) {
+      this.props.alert("", msg);
+      return;
+    }
+    return true;
+  };
+
   handleRegisterClick = () => {
     const username = this.state.username;
     const password = this.state.password;
@@ -1026,6 +1130,90 @@ class Login extends Component {
             // });
           }
         });
+    }
+  };
+
+  performGetVerificationCode = () => {
+    this.checkInput(
+      /^[a-zA-Z0-9]{6,16}$/,
+      this.state.username,
+      i18n.t("common.msgRegisterUserNameInvalid")
+    );
+
+    this.checkInput(
+      /^.{6,20}$/,
+      this.state.password,
+      i18n.t("common.msgRegisterPassInvalid")
+    );
+
+    if (this.state.password !== this.state.confirmPassword) {
+      this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
+      return;
+    }
+
+    this.checkInput(
+      /^[0-9]{8,10}$/,
+      this.state.phone,
+      i18n.t("common.msgRegisterPhoneInvalid")
+    );
+
+    this.props
+      .newRegister("CreatePlayer", {
+        username: this.state.username,
+        pwd: this.state.password,
+        upper: this.state.upper,
+        invitationcode: this.state.promoId,
+      })
+      .then((response) => {
+        if (response.IsSuccess) {
+          AccountService.Login(this.state.username, this.state.password).then(
+            (response) => {
+              if (response.IsSuccess) {
+                this.setState({
+                  ...this.state,
+                  token: response.data.token,
+                });
+                AccountService.NewRegister("InitPhone", {
+                  input: "Init",
+                  data: {
+                    areacode: this.state.areaCode,
+                    phone: this.state.phone,
+                  },
+                }).then(async (response) => {
+                  if (response.IsSuccess) {
+                    this.setState({
+                      ...this.state,
+                      securityKey: response.data.stepResponse,
+                      countdown: 60,
+                    });
+                    this.checkCountdown();
+                  } else {
+                  }
+                });
+              }
+            }
+          );
+        }
+      });
+  };
+
+  performValidate = () => {
+    if (this.state.tnc) {
+      AccountService.NewRegister("InitPhone", {
+        input: "Valid",
+        data: {
+          securityKey: this.state.securityKey,
+          code: this.state.code,
+        },
+      }).then(async (response) => {
+        if (response.IsSuccess) {
+          this.props.alert("", i18n.t("common.msgTokenVerified"));
+          this.props.appHistory.replace("/main/home");
+          this.props.getAccountInfo(this.state.token);
+        } else {
+          this.props.alert("", response.info);
+        }
+      });
     }
   };
 
@@ -1185,6 +1373,38 @@ class Login extends Component {
               this.props.general.brand && this.props.general.brand.mobileLogoUrl
             }
           ></Logo>
+
+          {this.state.selected === 0 && (
+            <TheThreeIcon>
+              <div className="item">
+                <img
+                  className="icon"
+                  src={process.env.PUBLIC_URL + "/assets/images/sponsors/1.png"}
+                  alt=""
+                />
+                <div className="title">{i18n.t("astonvilla")}</div>
+                <div className="subtitle">{i18n.t("officialpartners")}</div>
+              </div>
+              <div className="item">
+                <img
+                  className="icon"
+                  src={process.env.PUBLIC_URL + "/assets/images/sponsors/2.png"}
+                  alt=""
+                />
+                <div className="title">{i18n.t("laclipper")}</div>
+                <div className="subtitle">{i18n.t("officialpartners")}</div>
+              </div>
+              <div className="item">
+                <img
+                  className="icon"
+                  src={process.env.PUBLIC_URL + "/assets/images/sponsors/3.png"}
+                  alt=""
+                />
+                <div className="title">{i18n.t("sscnapoli")}</div>
+                <div className="subtitle">{i18n.t("officialpartners")}</div>
+              </div>
+            </TheThreeIcon>
+          )}
           <ButtonSwitch
             handleChangeSelection={this.handleChangeSelection}
             isUpdate={this.state.isUpdate}
@@ -1195,22 +1415,14 @@ class Login extends Component {
               return (
                 <React.Fragment>
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-user.png`
-                    }
                     type={"text"}
                     placeholder={i18n.t("common.username")}
-                    style={{ marginTop: "60px" }}
+                    style={{ marginTop: "20px" }}
                     value={this.state.username}
                     maxLength="16"
                     onChange={this.handleUsernameChange}
                   ></Textbox>
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
                     type={this.state.hidePassword ? "password" : "text"}
                     hidePassword={this.state.hidePassword}
                     placeholder={i18n.t("common.password")}
@@ -1225,6 +1437,7 @@ class Login extends Component {
                       checked={this.state.rememberMe}
                       onChange={this.handleRememberMeChange}
                       label={i18n.t("wap.login.rememberMe")}
+                      center
                     />
                   </RememberPassContainer>
                   <ForgotPassContainer onClick={this.handleForgotpasswordClick}>
@@ -1232,7 +1445,6 @@ class Login extends Component {
                       {i18n.t("wap.login.forgetPass")}
                     </ForgotPassLabel>
                   </ForgotPassContainer>
-
                   {/* {(() => {
                     var brand = [
                       "HK28",
@@ -1254,20 +1466,15 @@ class Login extends Component {
                       );
                     }
                   })()} */}
-
                   <LoginActionContainer>
                     <ButtonWap
                       name={i18n.t("common.login")}
                       onClick={this.handleLoginClick}
                     ></ButtonWap>
-                    <CustomWapButton
-                      styledtype={2}
-                      name={i18n.t("wap.login.browse")}
-                      style={{ "margin-top": "10px" }}
-                      onClick={this.handleBackToHomeClick}
-                    ></CustomWapButton>
+                    <BackButton onClick={this.handleBackToHomeClick}>
+                      {i18n.t("wap.login.browse")}
+                    </BackButton>
                   </LoginActionContainer>
-
                   <LanguageLinkWrapper>
                     <LanguageWrap>
                       {(() => {
@@ -1297,11 +1504,11 @@ class Login extends Component {
                       })()}
                     </LanguageWrap>
                   </LanguageLinkWrapper>
-
                   <LanguageDropdownWrapper>
                     <Dropdown
                       value={i18n.language}
                       onChange={performChangeLanguage}
+                      background="rgba(255,255,255,0.2)"
                     >
                       {this.props.general.brandLanguage.map((data, index) => {
                         return (
@@ -1326,10 +1533,6 @@ class Login extends Component {
               return (
                 <React.Fragment>
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-user.png`
-                    }
                     type={"text"}
                     placeholder={i18n.t("wap.register.username")}
                     style={{ marginTop: "60px" }}
@@ -1339,10 +1542,6 @@ class Login extends Component {
                   ></Textbox>
 
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
                     type={this.state.hidePassword ? "password" : "text"}
                     hidePassword={this.state.hidePassword}
                     placeholder={i18n.t("wap.register.password")}
@@ -1354,10 +1553,6 @@ class Login extends Component {
                     onChange={this.handlePasswordChange}
                   ></Textbox>
                   <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
                     type={this.state.hideConfirmPassword ? "password" : "text"}
                     hidePassword={this.state.hideConfirmPassword}
                     placeholder={i18n.t("wap.register.confirmPassword")}
@@ -1369,21 +1564,27 @@ class Login extends Component {
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
 
-                  {config.features.Register_ShowPhone && (
-                    <CustomWrapper>
-                      <Select
-                        type={"text"}
-                        placeholder={i18n.t(
-                          "forgotPassword.plsEnterPhoneNumber"
-                        )}
-                        selectValue={this.state.areaCode}
-                        onSelectChange={this.handleAreaCodeChange}
-                        value={this.state.phone}
-                        maxLength={config.features.MAX_PHONE_LENGTH || 10}
-                        onChange={this.handlePhoneChange}
-                      ></Select>
-                    </CustomWrapper>
-                  )}
+                  <CustomWrapper>
+                    <Select
+                      type={"text"}
+                      placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
+                      selectValue={this.state.areaCode}
+                      onSelectChange={this.handleAreaCodeChange}
+                      value={this.state.phone}
+                      maxLength={config.features.MAX_PHONE_LENGTH || 10}
+                      onChange={this.handlePhoneChange}
+                    ></Select>
+                  </CustomWrapper>
+                  {/*
+                  <Verification
+                    code={this.state.code}
+                    changeCode={(e) => {
+                      this.setState({ code: e.target.value });
+                    }}
+                    countdown={this.state.countdown}
+                    getCode={this.performGetVerificationCode}
+                  />
+                  */}
 
                   {config.features.Register_ShowEmail && (
                     <CustomWrapper>
@@ -1408,10 +1609,6 @@ class Login extends Component {
                   ) && (
                     <CustomWrapper>
                       <Textbox
-                        icon={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/icon-promo.png`
-                        }
                         type={"text"}
                         placeholder={i18n.t("wap.register.promoteCode")}
                         style={{ marginTop: "20px" }}
@@ -1441,7 +1638,7 @@ class Login extends Component {
                     </CustomWrapper>
                   )}
 
-                  <RememberPassContainer>
+                  <RememberPassContainer style={{ width: 635 }}>
                     <Checkbox
                       checked={this.state.tnc}
                       onChange={this.handleTncClick}
@@ -1455,7 +1652,7 @@ class Login extends Component {
                         ? i18n.t("common.nextStep")
                         : i18n.t("common.register")
                     }
-                    onClick={this.performNewRegister}
+                    onClick={this.performValidate}
                     disableButton={!this.state.tnc}
                   ></ButtonWap>
                 </React.Fragment>
