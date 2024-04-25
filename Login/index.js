@@ -1652,7 +1652,7 @@ class Login extends Component {
                         ? i18n.t("common.nextStep")
                         : i18n.t("common.register")
                     }
-                    onClick={this.performValidate}
+                    onClick={this.performNewRegister}
                     disableButton={!this.state.tnc}
                   ></ButtonWap>
                 </React.Fragment>
