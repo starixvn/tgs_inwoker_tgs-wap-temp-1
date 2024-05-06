@@ -118,7 +118,7 @@ const DataContent = styled.div`
   border: solid 2px #f9f9f9;
   background-color: #fff;
   font-size: 26px;
-  color: ${({ theme }) => theme.new_textColor ?? "#4a4a4a"};
+  color: ${({ theme }) => theme.new_textColor_detail ?? theme.new_textColor ?? "#4a4a4a"};
   padding: 0 20px;
 `;
 const DataHeader = styled.div`
@@ -171,9 +171,7 @@ const DataWinlossCell = styled.div`
   text-align: right;
 `;
 const NoRecordContainer = styled.div`
-  background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp/no-record.png`})
-    no-repeat center;
+  background: url(${process.env.PUBLIC_URL + `/assets/images/wapp/no-record.png`}) no-repeat center;
   width: 96px;
   height: 136px;
 `;
@@ -334,6 +332,11 @@ const NoDataText = styled.div`
   font-size: 24px;
   user-select: none;
   opacity: 0.5;
+  ${({theme}) => {
+    if (theme.new_textColor) {
+      return `color:${theme.new_textColor};`
+    }
+  }}
 `;
 
 class Report extends Component {
