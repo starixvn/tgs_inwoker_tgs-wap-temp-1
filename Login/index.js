@@ -911,9 +911,6 @@ class Login extends Component {
       this.props.alert("", i18n.t("common.msgInvalidPhoneCode"));
       return;
     }
-    console.log("临时测试");
-    await this.handleLoginSuccess(this.state.loginData, true);
-    return;
     
     if (tnc) {
       this.setState({ ...this.state, loading: true });
