@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
+
 const Container = styled.div`
   margin: 20px auto 0 auto;
 
