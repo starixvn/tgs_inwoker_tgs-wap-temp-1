@@ -9,7 +9,7 @@ const Container = styled.div`
   height: 80px;
   border-radius: 6px;
   border: solid 1px #676666;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.2);  //#ffffff
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.4);
 `;
 
@@ -24,11 +24,12 @@ const InputTextBox = styled.input`
 
   margin: 20px 10px;
   &::-webkit-input-placeholder {
-    color: #b7b7b7;
+    color: rgba(0, 0, 0, 0.7);
     font-size: 23px;
   }
   &:-webkit-autofill {
-    -webkit-text-fill-color: #b7b7b7;
+    -webkit-text-fill-color: ${({ theme }) =>
+            theme.new_textfieldPlaceholder ?? "#b7b7b7"};
   }
 `;
 
@@ -73,7 +74,7 @@ class VerificationCode extends Component {
               : i18n.t("common.btnTokenResendLabel") +
                 "(" +
                 this.props.countdown +
-                "s)"
+                ")"
           }
           onClick={this.props.handleGetCodeClick}
         ></ButtonWap>

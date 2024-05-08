@@ -41,8 +41,6 @@ const Container = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
-  overflow-y: scroll;
 `;
 
 const ContentWrap = styled.div`
@@ -113,6 +111,12 @@ const Version = styled.div`
   position: fixed;
   bottom: 5px;
   right: 5px;
+  color: ${({ theme }) => theme.secondary};
+`;
+
+const CustomWapButton = styled(ButtonWap)`
+  background: transparent;
+  border: solid 2px ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.secondary};
 `;
 
@@ -199,77 +203,17 @@ const TheThreeIcon = styled.div`
   }
 `;
 
-const VerificationWrapper = styled.div`
-  background: rgba(255, 255, 255, 0.2);
-  width: 635px;
-  margin: 0 auto;
-  margin-top: 15px;
-  border-radius: 6px;
-
-  display: flex;
-  color: #000;
-  font-size: 30px;
-  justify-content: space-between;
-  height: 80px;
-  padding: 20px;
-  input[type="text"] {
-    background: transparent;
-    border: none;
-    font-size: 28px;
-    ::placeholder {
-      color: #000;
-      font-size: 24px;
-    }
-  }
-
-  button {
-    background: rgba(0, 173, 239, 1);
-    border: none;
-    color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 24px;
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 8px;
-    opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
-    pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
-  }
-`;
-
-const Verification = ({ code, changeCode, getCode, countdown = 0 }) => {
-  return (
-    <VerificationWrapper>
-      <input
-        type="text"
-        placeholder={i18n.t("common.msgEnterCode")}
-        value={code}
-        onChange={changeCode}
-      />
-      <button
-        onClick={() => {
-          getCode();
-        }}
-        disabled={countdown > 0}
-      >
-        {countdown <= 0
-          ? i18n.t("common.msgSendToken")
-          : i18n.t("common.btnTokenResendLabel") + "(" + countdown + "s)"}
-      </button>
-    </VerificationWrapper>
-  );
-};
-
 class Login extends Component {
   state = {
     selected: 0,
     isUpdate: false,
     hidePassword: true,
     hideConfirmPassword: true,
+    hadSend:false,
+    loginData:"",
     username: "",
     password: "",
     phone: "",
-    token: "",
     areaCode: config.features.PhonePrefix,
     withPromo:
       config.affiliateId === "" &&
@@ -391,6 +335,8 @@ class Login extends Component {
   }
   handleChangeSelection = (index) => {
     if (this.state.selected !== index) {
+      console.log("set this.state.selected:");
+      console.log(this.state.selected);
       this.setState({
         ...this.state,
         selected: index,
@@ -398,18 +344,22 @@ class Login extends Component {
       });
     }
   };
-  handleLoginSuccess = async (token) => {
+  handleLoginSuccess = async (token, isOk=false) => {
     let urlParams = new URLSearchParams(this.props.location.search);
     if (urlParams.has("return_url")) {
-      // const returnValue = urlParams.get('return_url')
-      // if (returnValue) {
-      //   window.location.href =
-      //     returnValue + '?token=' + BlowFishEncryption.Encrypt(token)
-      // }
+
     }
     var bankInfoAuthentication = null;
     await this.props.getAccountInfo().then((response) => {
       if (response.IsSuccess) {
+        if(isOk){
+          //this.props.appHistory.replace("/main/home");
+          this.props.history.push({
+            pathname: "/main/home",
+            state: { forced: true },
+          });
+          return;
+        }
         bankInfoAuthentication = response.data.bankinfoauthentication;
         if (
           response.data.registercompleted === false &&
@@ -444,14 +394,7 @@ class Login extends Component {
             !config.features.Register_CustomFlow_IDR ||
             (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)
           ) {
-            // this.props.getAccountInfo(token);
-            // this.props.getAccountProfile(token, true);
-            // this.props.getVIPInfo(token);
-            // this.props.checkGame();
             this.props.getBalanceList();
-            // this.props.getIDCardNo();
-            // this.props.getDepositChannel();
-            // this.props.getInviteLink();
             this.props.getMessageList(i18n.language, 1, 99);
             this.props.getBankCardList();
             this.props.getPromotion();
@@ -507,22 +450,16 @@ class Login extends Component {
   doLogin = (username, password) => {
     if (username === "") {
       this.props.alert("", i18n.t("web.login.errorMsg.emptyUsername"));
-      // this.props.enqueueSnackbar("用户名不能为空", {
-      //   variant: "warning"
-      // });
       return;
     }
     if (username === "") {
       this.props.alert("", i18n.t("web.login.errorMsg.emptyPassword"));
-      // this.props.enqueueSnackbar("密码不能为空", {
-      //   variant: "warning"
-      // });
       return;
     }
     this.setState({ ...this.state, loading: true });
     this.props.accountLogin(username, password).then((result) => {
       if (result.IsSuccess) {
-        this.handleLoginSuccess(result.data);
+        this.handleLoginSuccess(result.data, true);
       } else {
         if (result.code === 210) {
           this.props.appHistory.push("/banned");
@@ -538,9 +475,6 @@ class Login extends Component {
             });
           } else {
             this.props.alert("", i18n.t("common.msgInvalidUsername"));
-            // this.props.enqueueSnackbar(result.msg, {
-            //   variant: "warning"
-            // });
             this.setState({
               ...this.state,
 
@@ -598,76 +532,6 @@ class Login extends Component {
           });
       }
     }
-  };
-  doLoginWithHpEmail = async (username, password, phone, areacode, email) => {
-    this.setState({ ...this.state, loading: true });
-
-    const result = await this.props.accountLogin(username, password);
-    if (result.IsSuccess) {
-      AccountService.NewRegister("InitPhone", {
-        input: "Init",
-        data: {
-          areacode: areacode,
-          phone: phone,
-        },
-      }).then(async (response) => {
-        if (response.IsSuccess) {
-          AccountService.NewRegister("InitPhone", {
-            input: "Valid",
-            data: {
-              securitykey: response.data.stepResponse,
-              validatecode: "123456",
-            },
-          });
-        }
-      });
-
-      AccountService.NewRegister("InitMail", {
-        input: "Init",
-        data: {
-          email: email,
-        },
-      }).then(async (response) => {
-        if (response.IsSuccess) {
-          AccountService.NewRegister("InitMail", {
-            input: "Init",
-            data: {
-              securitykey: response.data.stepResponse,
-              validatecode: "123456",
-            },
-          });
-        }
-      });
-      this.handleLoginSuccess(result.data);
-    }
-    // if (result.IsSuccess) {
-    //   AccountService.Activation(username, password, areacode, phone).then(
-    //     async (response) => {
-    //       if (response.IsSuccess) {
-    //         AccountService.VerifyActivation(response.data, "123456");
-    //         // .then(
-    //         //   async (response) => {
-
-    //         //   }
-    //         // );
-    //       }
-    //       // else {
-    //       //   this.handleLoginSuccess(result.data);
-    //       // }
-    //     }
-    //   );
-    //   AccountService.ActivationEmail(email).then(async (response) => {
-    //     if (response.IsSuccess) {
-    //       AccountService.VerifyActivationEmail(response.data, "123456");
-    //       // .then(
-    //       //   async (response) => {
-    //       //     this.handleLoginSuccess(result.data);
-    //       //   }
-    //       // );
-    //     }
-    //   });
-    //   this.handleLoginSuccess(result.data);
-    // }
   };
   performLoginWithPhoneAndEmail = async (
     username,
@@ -846,17 +710,6 @@ class Login extends Component {
       }
     });
   };
-  // smsVerification = (securityKey, code) => {
-  //   AccountService.VerifyActivation(securityKey, code).then(
-  //     async (response) => {
-  //       if (response.IsSuccess) {
-  //         this.props.appHistory.replace( "/main/home");
-  //       } else {
-  //         this.props.alert("", response.info);
-  //       }
-  //     }
-  //   );
-  // };
 
   handleActivationClick = async () => {
     const username = this.state.username;
@@ -912,32 +765,36 @@ class Login extends Component {
       promoId: "",
     });
   };
+  
 
-  handleGetCodeClick = async () => {
+  checkinfo = () => {
     const username = this.state.username;
     const password = this.state.password;
-
-    const countdown = this.state.countdown;
-    const areacode = this.state.areaCode;
     const phone = this.state.phone;
-
-    var result = null;
-
-    if (countdown <= 0) {
-      var expr = /^[a-zA-Z0-9]{6,16}$/;
-      if (!expr.test(username)) {
-        this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
-        return;
-      }
-      var expr = /^.{6,20}$/;
-      if (!expr.test(password)) {
-        this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
-        return;
-      }
-
-      var expr = new RegExp(
-        `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
-      );
+    
+    const areaCode = this.state.areaCode;
+    const confirmPassword = this.state.confirmPassword;
+    const email = this.state.email;
+    
+    const tnc = this.state.tnc;
+    
+    var expr = /^[a-zA-Z0-9]{6,16}$/;
+    if (!expr.test(username)) {
+      this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
+      return false;
+    }
+    var expr = /^.{6,20}$/;
+    if (!expr.test(password)) {
+      this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
+      
+      return false;
+    }
+    
+    
+    var expr = new RegExp(
+      `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
+    );
+    if (config.features.Register_ShowPhone) {
       if (!expr.test(phone)) {
         this.props.alert(
           "",
@@ -945,33 +802,75 @@ class Login extends Component {
             .t("common.noReachMin")
             .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
         );
-        return;
+        return false;
       }
-      // if(!isLoggedIn)
-      // {
-      result = await AccountService.Login(username, password);
-      // }
-      if (result !== null && result.IsSuccess /*|| isLoggedIn*/) {
-        AccountService.NewRegister("InitPhone", {
-          input: "Init",
-          data: {
-            areacode: areacode,
-            phone: phone,
-          },
-        }).then(async (response) => {
-          if (response.IsSuccess) {
-            this.props.alert("", i18n.t("common.msgTokenSent"));
-            this.setState({
-              ...this.state,
-              countdown: 60,
-              securityKey: response.data.stepResponse,
-            });
-            this.checkCountdown();
-          } else {
-            this.props.alert("", response.info);
-          }
+    }
+    var expr =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (config.features.Register_ShowEmail) {
+      if (!expr.test(email)) {
+        this.props.alert("", i18n.t("common.msgInvalidEmail"));
+        return false;
+      }
+    }
+    return true;
+  };
+
+  handleGetCodeClick = async () => {
+    if(!this.checkinfo()){
+      return;
+    }
+    const username = this.state.username;
+    const password = this.state.password;
+    const countdown = this.state.countdown;
+    const areaCode = this.state.areaCode;
+    const phone = this.state.phone;
+    const confirmPassword = this.state.confirmPassword;
+    const areacode = this.state.areaCode;
+    var result = null;
+    
+    if (password !== confirmPassword) {
+      this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
+      return;
+    }
+    if (countdown <= 0) {
+      this.props
+        .newRegister("CreatePlayer", {
+          username: username,
+          pwd: password,
+          upper: this.state.upper,
+          invitationcode: this.state.promoId,
+        })
+        .then(async (response) => {
+          this.props.accountLogin(username, password).then((result) => {
+            if (result !== null && result.IsSuccess) {
+              this.setState({
+                ...this.state,
+                hadSend: true,
+                loginData: result.data
+              });
+              AccountService.NewRegister("InitPhone", {
+                input: "Init",
+                data: {
+                  areacode: areacode,
+                  phone: phone,
+                },
+              }).then(async (response) => {
+                if (response.IsSuccess) {
+                  this.props.alert("", i18n.t("common.msgTokenSent"));
+                  this.setState({
+                    ...this.state,
+                    countdown: 60,
+                    securityKey: response.data.stepResponse,
+                  });
+                  this.checkCountdown();
+                } else {
+                  this.props.alert("", response.info);
+                }
+              });
+            }
+          });
         });
-      }
     }
   };
   timer = null;
@@ -989,362 +888,52 @@ class Login extends Component {
       tnc: !this.state.tnc,
     });
   };
-
-  checkInput = (regex, value, msg) => {
-    if (!regex.test(value)) {
-      this.props.alert("", msg);
+  
+  performNewRegister = async () => {
+    if(!this.checkinfo()){
       return;
     }
-    return true;
-  };
-
-  handleRegisterClick = () => {
+  
     const username = this.state.username;
     const password = this.state.password;
-    const phone = this.state.phone;
-
+    const countdown = this.state.countdown;
     const areaCode = this.state.areaCode;
+    const phone = this.state.phone;
     const confirmPassword = this.state.confirmPassword;
-    const email = this.state.email;
-    const promotion_id = this.state.promoId;
-    const upper = this.state.upper;
     const tnc = this.state.tnc;
-    var expr = /^[a-zA-Z0-9]{6,16}$/;
-    if (!expr.test(username)) {
-      this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
+    const email = this.state.email;
+    
+    if(this.state.code===""){
+      this.props.alert("", i18n.t("common.msgEnterCode"));
       return;
     }
-    var expr = /^.{6,20}$/;
-    if (!expr.test(password)) {
-      this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
-
+    if(!this.state.hadSend){
+      this.props.alert("", i18n.t("common.msgInvalidPhoneCode"));
       return;
     }
-
-    if (password !== confirmPassword) {
-      this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
-
-      return;
-    }
-    var expr = new RegExp(
-      `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
-    );
-    if (config.features.Register_ShowPhone) {
-      if (!expr.test(phone)) {
-        this.props.alert(
-          "",
-          i18n
-            .t("common.noReachMin")
-            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
-        );
-        return;
-      }
-    }
-    var expr =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (config.features.Register_ShowEmail) {
-      if (!expr.test(email)) {
-        this.props.alert("", i18n.t("common.msgInvalidEmail"));
-
-        return;
-      }
-    }
-    // if (withdrawalPassword.length < 6) {
-    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassInvalid"));
-
-    //   return;
-    // }
-    // if (withdrawalPassword !== confirmWithdrawalPassword) {
-    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassMatchInvalid"));
-
-    //   return;
-    // }
+    console.log("临时测试");
+    await this.handleLoginSuccess(this.state.loginData, true);
+    return;
+    
     if (tnc) {
       this.setState({ ...this.state, loading: true });
-      // user_account,
-      // user_password,
-      // pay_password,
-      // mobile,
-      // recommend_code,
-      // mobile_code_id
-      this.props
-        .register(username, password, confirmPassword, promotion_id, upper)
-        .then(async (response) => {
-          if (response.IsSuccess && response.data.isnew === false) {
-            this.props.alert("", i18n.t("common.msgAlreadyExist"));
-            this.setState({ ...this.state, loading: false });
-          } else if (response.IsSuccess) {
-            if (config.features.SMSVerification) {
-              this.setState({
-                ...this.state,
-                selected: 2,
-                loading: false,
-              });
-            } else if (
-              config.features.Register_ShowPhone &&
-              config.features.Register_ShowEmail
-            ) {
-              this.doLoginWithHpEmail(
-                username,
-                password,
-                phone,
-                areaCode,
-                email
-              );
-              // AccountService.VerifyPhone(areaCode,phone).then(
-              //   async (response) => {
-              //     // security key = response.data, default validatecode = 123456
-              //     AccountService.UpdatePhone(response.data, "123456").then(
-              //       async (response) => {
-              //           this.doLogin(username, password);
-              //       }
-              //     );
-              // });
-            } else if (config.features.Register_ShowPhone) {
-              this.doLoginWithHp(username, password, phone, areaCode);
-              // AccountService.VerifyPhone(areaCode,phone).then(
-              //   async (response) => {
-              //     // security key = response.data, default validatecode = 123456
-              //     AccountService.UpdatePhone(response.data, "123456").then(
-              //       async (response) => {
-              //           this.doLogin(username, password);
-              //       }
-              //     );
-              // });
-            } else {
-              this.doLogin(username, password);
-            }
-          } else {
-            // if (response.code === 206) {
-            //   this.props.alert(
-            //     '',
-            //     i18n.t('common.msgInvalidInvitationCode')
-            //   )
-            // } else {
-            //   this.props.alert('', response.info)
-            // }
-            this.props.alert("", response.info);
-            this.setState({ ...this.state, loading: false });
-            // this.props.enqueueSnackbar(response.msg, {
-            //   variant: "warning"
-            // });
-          }
-        });
-    }
-  };
-
-  performGetVerificationCode = () => {
-    this.checkInput(
-      /^[a-zA-Z0-9]{6,16}$/,
-      this.state.username,
-      i18n.t("common.msgRegisterUserNameInvalid")
-    );
-
-    this.checkInput(
-      /^.{6,20}$/,
-      this.state.password,
-      i18n.t("common.msgRegisterPassInvalid")
-    );
-
-    if (this.state.password !== this.state.confirmPassword) {
-      this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
-      return;
-    }
-
-    this.checkInput(
-      /^[0-9]{8,10}$/,
-      this.state.phone,
-      i18n.t("common.msgRegisterPhoneInvalid")
-    );
-
-    this.props
-      .newRegister("CreatePlayer", {
-        username: this.state.username,
-        pwd: this.state.password,
-        upper: this.state.upper,
-        invitationcode: this.state.promoId,
-      })
-      .then((response) => {
-        if (response.IsSuccess) {
-          AccountService.Login(this.state.username, this.state.password).then(
-            (response) => {
-              if (response.IsSuccess) {
-                this.setState({
-                  ...this.state,
-                  token: response.data.token,
-                });
-                AccountService.NewRegister("InitPhone", {
-                  input: "Init",
-                  data: {
-                    areacode: this.state.areaCode,
-                    phone: this.state.phone,
-                  },
-                }).then(async (response) => {
-                  if (response.IsSuccess) {
-                    this.setState({
-                      ...this.state,
-                      securityKey: response.data.stepResponse,
-                      countdown: 60,
-                    });
-                    this.checkCountdown();
-                  } else {
-                  }
-                });
-              }
-            }
-          );
-        }
-      });
-  };
-
-  performValidate = () => {
-    if (this.state.tnc) {
+      //--- from web ---
       AccountService.NewRegister("InitPhone", {
         input: "Valid",
         data: {
-          securityKey: this.state.securityKey,
-          code: this.state.code,
+          securitykey: this.state.securityKey,
+          validatecode: this.state.code,
         },
       }).then(async (response) => {
         if (response.IsSuccess) {
-          this.props.alert("", i18n.t("common.msgTokenVerified"));
-          this.props.appHistory.replace("/main/home");
-          this.props.getAccountInfo(this.state.token);
+          await this.handleLoginSuccess(this.state.loginData, true);
         } else {
           this.props.alert("", response.info);
         }
+        this.setState({ ...this.state, loading: false });
       });
-    }
-  };
-
-  performNewRegister = async () => {
-    const username = this.state.username;
-    const password = this.state.password;
-    const phone = this.state.phone;
-
-    const areaCode = this.state.areaCode;
-    const confirmPassword = this.state.confirmPassword;
-    const email = this.state.email;
-
-    const tnc = this.state.tnc;
-    var expr = /^[a-zA-Z0-9]{6,16}$/;
-    if (!expr.test(username)) {
-      this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
-      return;
-    }
-    var expr = /^.{6,20}$/;
-    if (!expr.test(password)) {
-      this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
-
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
-
-      return;
-    }
-    var expr = new RegExp(
-      `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
-    );
-    if (config.features.Register_ShowPhone) {
-      if (!expr.test(phone)) {
-        this.props.alert(
-          "",
-          i18n
-            .t("common.noReachMin")
-            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
-        );
-        return;
-      }
-    }
-    var expr =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (config.features.Register_ShowEmail) {
-      if (!expr.test(email)) {
-        this.props.alert("", i18n.t("common.msgInvalidEmail"));
-
-        return;
-      }
-    }
-    // if (withdrawalPassword.length < 6) {
-    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassInvalid"));
-
-    //   return;
-    // }
-    // if (withdrawalPassword !== confirmWithdrawalPassword) {
-    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassMatchInvalid"));
-
-    //   return;
-    // }
-    if (tnc) {
-      this.setState({ ...this.state, loading: true });
-      // user_account,
-      // user_password,
-      // pay_password,
-      // mobile,
-      // recommend_code,
-      // mobile_code_id
-      this.props
-        .newRegister("CreatePlayer", {
-          username: username,
-          pwd: password,
-          upper: this.state.upper,
-          invitationcode: this.state.promoId,
-        })
-        .then(async (response) => {
-          if (
-            response.IsSuccess &&
-            response.data.stepResponse.isnew === false
-          ) {
-            this.props.alert("", i18n.t("common.msgAlreadyExist"));
-            this.setState({ ...this.state, loading: false });
-          } else if (response.IsSuccess) {
-            let setPhoneDontCareDuplicate =
-              response.data.nextStepType === "SetPhoneDontCareDuplicate";
-
-            if (config.features.SMSVerification) {
-              this.setState({
-                ...this.state,
-                selected: 2,
-                loading: false,
-              });
-            } else if (
-              config.features.Register_ShowPhone &&
-              config.features.Register_ShowEmail
-            ) {
-              this.performLoginWithPhoneAndEmail(
-                username,
-                password,
-                phone,
-                areaCode,
-                email,
-                setPhoneDontCareDuplicate
-              );
-            } else if (config.features.Register_ShowPhone) {
-              this.doLoginWithHp(
-                username,
-                password,
-                phone,
-                areaCode,
-                setPhoneDontCareDuplicate
-              );
-            } else {
-              this.doLogin(username, password);
-            }
-            // if (
-            //   this.props.match.params.subid &&
-            //   this.props.match.params.subid !== ""
-            // ) {
-            //   let PAYOUT = "";
-            //   let affiliateUrl = `http://ad.propellerads.com/conversion.php?aid=3508428&pid=&tid=100917&visitor_id=${this.props.match.params.subid}&payout=${PAYOUT}`;
-            //   window.open(affiliateUrl, "_blank");
-            // }
-          } else {
-            this.props.alert("", response.info);
-            this.setState({ ...this.state, loading: false });
-          }
-        });
+    }else{
+      this.props.alert("", i18n.t("common.msgRegisterTermAndCondition"));
     }
   };
 
@@ -1445,27 +1034,6 @@ class Login extends Component {
                       {i18n.t("wap.login.forgetPass")}
                     </ForgotPassLabel>
                   </ForgotPassContainer>
-                  {/* {(() => {
-                    var brand = [
-                      "HK28",
-                      "WLGHK",
-                      "21GEN",
-                      "MESS8",
-                      "PISO",
-                      "BUNNY",
-                    ];
-                    if (brand.indexOf(config.brand) <= 0) {
-                      return (
-                        <ForgotPassContainer
-                          onClick={this.handleForgotpasswordClick}
-                        >
-                          <ForgotPassLabel>
-                            {i18n.t("wap.login.forgetPass")}
-                          </ForgotPassLabel>
-                        </ForgotPassContainer>
-                      );
-                    }
-                  })()} */}
                   <LoginActionContainer>
                     <ButtonWap
                       name={i18n.t("common.login")}
@@ -1529,7 +1097,7 @@ class Login extends Component {
                   )}
                 </React.Fragment>
               );
-            } else if (this.state.selected === 1) {
+            } else if (this.state.selected === 1 || this.state.selected === 2) {
               return (
                 <React.Fragment>
                   <Textbox
@@ -1564,27 +1132,7 @@ class Login extends Component {
                     onChange={this.handleConfirmPasswordChange}
                   ></Textbox>
 
-                  <CustomWrapper>
-                    <Select
-                      type={"text"}
-                      placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
-                      selectValue={this.state.areaCode}
-                      onSelectChange={this.handleAreaCodeChange}
-                      value={this.state.phone}
-                      maxLength={config.features.MAX_PHONE_LENGTH || 10}
-                      onChange={this.handlePhoneChange}
-                    ></Select>
-                  </CustomWrapper>
-                  {/*
-                  <Verification
-                    code={this.state.code}
-                    changeCode={(e) => {
-                      this.setState({ code: e.target.value });
-                    }}
-                    countdown={this.state.countdown}
-                    getCode={this.performGetVerificationCode}
-                  />
-                  */}
+         
 
                   {config.features.Register_ShowEmail && (
                     <CustomWrapper>
@@ -1637,6 +1185,32 @@ class Login extends Component {
                       )}
                     </CustomWrapper>
                   )}
+                  {config.features.Register_ShowPhone && (
+                    <CustomWrapper>
+                      <Select
+                        type={"text"}
+                        placeholder={i18n.t(
+                          "forgotPassword.plsEnterPhoneNumber"
+                        )}
+                        selectValue={this.state.areaCode}
+                        onSelectChange={this.handleAreaCodeChange}
+                        value={this.state.phone}
+                        maxLength={config.features.MAX_PHONE_LENGTH || 10}
+                        onChange={this.handlePhoneChange}
+                      ></Select>
+                    </CustomWrapper>
+                  )}
+                  {!config.features.SkipSMSVerification && (
+                    <>
+                      <VerificationCode
+                        value={this.state.code}
+                        onChange={this.handleCodeChange}
+                        countdown={this.state.countdown}
+                        placeholder={i18n.t("common.msgEnterCode")}
+                        handleGetCodeClick={this.handleGetCodeClick}
+                      ></VerificationCode>
+                    </>
+                  )}
 
                   <RememberPassContainer style={{ width: 635 }}>
                     <Checkbox
@@ -1645,6 +1219,7 @@ class Login extends Component {
                       label={i18n.t("web.register.contract")}
                     />
                   </RememberPassContainer>
+                  
                   <ButtonWap
                     style={{ margin: "100px auto 0 auto" }}
                     name={
@@ -1652,43 +1227,14 @@ class Login extends Component {
                         ? i18n.t("common.nextStep")
                         : i18n.t("common.register")
                     }
-                    onClick={this.performValidate}
+                    onClick={this.performNewRegister}
                     disableButton={!this.state.tnc}
                   ></ButtonWap>
                 </React.Fragment>
               );
-            } else if (this.state.selected === 2) {
+            } else if ( false && this.state.selected === 2) {
               return (
                 <React.Fragment>
-                  {
-                    //        <Textbox
-                    //        icon={
-                    //          process.env.PUBLIC_URL +
-                    //          `/assets/images/wapp/icon-user.png`
-                    //        }
-                    //        type={"text"}
-                    //        placeholder={i18n.t("wap.register.username")}
-                    //        style={{ marginTop: "60px" }}
-                    //        maxLength="16"
-                    //        value={this.state.username}
-                    //        onChange={this.handleUsernameChange}
-                    //      ></Textbox>
-                    //      <Textbox
-                    //        icon={
-                    //          process.env.PUBLIC_URL +
-                    //          `/assets/images/wapp/icon-unlock.png`
-                    //        }
-                    //        type={this.state.hidePassword ? "password" : "text"}
-                    //        hidePassword={this.state.hidePassword}
-                    //        placeholder={i18n.t("wap.register.password")}
-                    //        style={{ marginTop: "20px" }}
-                    //        password={true}
-                    //        maxLength="20"
-                    //        toggleShow={this.handleToggleShow}
-                    //        value={this.state.password}
-                    //        onChange={this.handlePasswordChange}
-                    //      ></Textbox>
-                  }
                   <Select
                     type={"text"}
                     placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}

@@ -20,7 +20,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import DateFnsUtils from "@date-io/date-fns"; // import
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import zhLocale from "date-fns/locale/zh-CN";
 import enLocale from "date-fns/locale/en-US";
@@ -118,7 +118,7 @@ const DataContent = styled.div`
   border: solid 2px #f9f9f9;
   background-color: #fff;
   font-size: 26px;
-  color: ${({ theme }) => theme.new_textColor ?? "#4a4a4a"};
+  color: ${({ theme }) => theme.new_textColor_detail ?? theme.new_textColor ?? "#4a4a4a"};
   padding: 0 20px;
 `;
 const DataHeader = styled.div`
@@ -171,13 +171,11 @@ const DataWinlossCell = styled.div`
   text-align: right;
 `;
 const NoRecordContainer = styled.div`
-  background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp/no-record.png`})
-    no-repeat center;
+  background: url(${process.env.PUBLIC_URL + `/assets/images/wapp/no-record.png`}) no-repeat center;
   width: 96px;
   height: 136px;
 `;
-const materialTheme = createMuiTheme({
+const materialTheme = createTheme({
   overrides: {
     MuiPickersModal: {
       dialogAction: {
@@ -334,6 +332,11 @@ const NoDataText = styled.div`
   font-size: 24px;
   user-select: none;
   opacity: 0.5;
+  ${({theme}) => {
+    if (theme.new_textColor) {
+      return `color:${theme.new_textColor};`
+    }
+  }}
 `;
 
 class Report extends Component {
