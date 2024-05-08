@@ -852,10 +852,11 @@ class Wap extends Component {
         config.features.Register_ShowPhone &&
         config.features.ForcedVerification
       ) {
-        this.props.history.push({
-          pathname: "/profile/phone",
-          state: { forced: true },
-        });
+        // by e01 240508
+        //this.props.history.push({
+        //  pathname: "/profile/phone",
+        //  state: { forced: true },
+        //});
       }
     }
   }
