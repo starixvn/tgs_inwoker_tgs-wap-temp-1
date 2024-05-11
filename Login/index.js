@@ -815,6 +815,31 @@ class Login extends Component {
     }
     return true;
   };
+  
+  doInitPhone = async () => {
+    const areacode = this.state.areaCode;
+    const phone = this.state.phone;
+    AccountService.NewRegister("InitPhone", {
+      input: "Init",
+      data: {
+        areacode: areacode,
+        phone: phone,
+      },
+    }).then(async (response) => {
+      if (response.IsSuccess) {
+        this.props.alert("", i18n.t("common.msgTokenSent"));
+        this.setState({
+          ...this.state,
+          countdown: 60,
+          hadSend: true,
+          securityKey: response.data.stepResponse,
+        });
+        this.checkCountdown();
+      } else {
+        this.props.alert("", response.info);
+      }
+    });
+  };
 
   handleGetCodeClick = async () => {
     if(!this.checkinfo()){
@@ -823,55 +848,50 @@ class Login extends Component {
     const username = this.state.username;
     const password = this.state.password;
     const countdown = this.state.countdown;
-    const areaCode = this.state.areaCode;
     const phone = this.state.phone;
     const confirmPassword = this.state.confirmPassword;
     const areacode = this.state.areaCode;
     var result = null;
-    
+    this.setState({ ...this.state, loading: true });
     if (password !== confirmPassword) {
       this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
       return;
     }
     if (countdown <= 0) {
-      this.props
-        .newRegister("CreatePlayer", {
-          username: username,
-          pwd: password,
-          upper: this.state.upper,
-          invitationcode: this.state.promoId,
-        })
-        .then(async (response) => {
-          this.props.accountLogin(username, password).then((result) => {
-            if (result !== null && result.IsSuccess) {
-              this.setState({
-                ...this.state,
-                hadSend: true,
-                loginData: result.data
-              });
-              AccountService.NewRegister("InitPhone", {
-                input: "Init",
-                data: {
-                  areacode: areacode,
-                  phone: phone,
-                },
-              }).then(async (response) => {
-                if (response.IsSuccess) {
-                  this.props.alert("", i18n.t("common.msgTokenSent"));
-                  this.setState({
-                    ...this.state,
-                    countdown: 60,
-                    securityKey: response.data.stepResponse,
-                  });
-                  this.checkCountdown();
-                } else {
-                  this.props.alert("", response.info);
-                }
-              });
+      if(this.state.hadSend){
+        this.doInitPhone();
+      }else {
+        this.props
+          .newRegister("CreatePlayer", {
+            username: username,
+            pwd: password,
+            upper: this.state.upper,
+            invitationcode: this.state.promoId,
+          })
+          .then(async (response) => {
+            if (response.IsSuccess) {
+              if(response.data.stepResponse?.isnew === false){
+                this.props.alert("", i18n.t("common.msgAlreadyExist"));
+                this.setState({
+                  ...this.state,
+                  hadSend: false
+                });
+              }else {
+                this.props.accountLogin(username, password).then((result) => {
+                  if (result !== null && result.IsSuccess) {
+                    this.setState({
+                      ...this.state,
+                      loginData: result.data
+                    });
+                    this.doInitPhone();
+                  }
+                });
+              }
             }
           });
-        });
+      }
     }
+    this.setState({ ...this.state, loading: false });
   };
   timer = null;
   checkCountdown = () => {
