@@ -176,8 +176,9 @@ const TheThreeIcon = styled.div`
   width: 635px;
 
   .item {
-    background: rgba(255, 255, 255, 0.2);
+    /* background: rgba(255, 255, 255, 0.2); */
     border-radius: 6px;
+    box-sizing: border-box;
     padding: 10px 20px;
     display: flex;
     justify-content: center;
@@ -332,11 +333,9 @@ class Login extends Component {
     ) {
       this.getInvitationCode();
     }
-  }
+  };
   handleChangeSelection = (index) => {
     if (this.state.selected !== index) {
-      console.log("set this.state.selected:");
-      console.log(this.state.selected);
       this.setState({
         ...this.state,
         selected: index,
