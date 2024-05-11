@@ -11,6 +11,7 @@ import Common from "../../../../utils/Common";
 
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
+
 import ProgressBarVersion from "./progressbar";
 import Button from "../../component/button";
 const StyledAppBar = withStyles((theme) => ({
@@ -18,7 +19,7 @@ const StyledAppBar = withStyles((theme) => ({
     height: "370px",
     display: "block",
     background: theme.palette.primary.main,
-
+    
     background:
       `linear-gradient(rgba(` +
       theme.palette.primary.mainRgb +
@@ -93,10 +94,10 @@ const IconContainer = styled.div`
   height: 190px;
   border-radius: 30px;
   box-shadow: ${({ theme }) =>
-    theme.new_bodyColor ? "none" : " 0px 3px 12px 0 rgba(0, 0, 0, 0.6);"};
+          theme.new_bodyColor ? "none" : " 0px 3px 12px 0 rgba(0, 0, 0, 0.6);"};
   border: solid 1px #a9a9a9;
   background: ${({ theme }) =>
-    theme.new_bodyColor ?? " linear-gradient(to top, #e0e0e0, #ffffff);"};
+          theme.new_bodyColor ?? " linear-gradient(to top, #e0e0e0, #ffffff);"};
   margin: 10px auto 30px auto;
   padding: 40px 30px 0 30px;
 `;
@@ -158,7 +159,7 @@ const ListItem = styled.div`
   flex-direction: column;
   text-align: center;
   color: ${(props) =>
-    props.disabled ? `rgba(61, 61, 61, 0.3)` : props.theme.secondary};
+          props.disabled ? `rgba(61, 61, 61, 0.3)` : props.theme.secondary};
 
   position: relative;
 `;
@@ -200,7 +201,7 @@ class My extends Component {
   componentDidUpdate(preProps) {
     if (
       preProps.wallet.balanceList.length !==
-        this.props.wallet.balanceList.length &&
+      this.props.wallet.balanceList.length &&
       this.props.wallet.balanceList.length > 0
     ) {
       this.setState({
@@ -228,13 +229,13 @@ class My extends Component {
       }
     });
   };
-
+  
   render() {
     var checkTransferWallet =
       Object.values(this.props.game.providerList).filter(
         (item) => item.transferwallet === true
       ).length > 0;
-
+    
     const profileItems = [
       {
         name: "wap.main.account.personalInfo",
@@ -263,7 +264,7 @@ class My extends Component {
       {
         name: "memoinbox",
         url: "/memo",
-
+        
         icon:
           process.env.PUBLIC_URL + `/assets/images/wapp/icon-profile-inbox.svg`,
         display: true,
@@ -343,7 +344,7 @@ class My extends Component {
         display: config.features.HaveDownloadFeature,
       },
     ];
-
+    
     return config.features.VipProgressBar ? (
       <ProgressBarVersion navigate={this.props.navigate} />
     ) : (
@@ -364,7 +365,7 @@ class My extends Component {
             <NameContainer>
               {this.props.account.info.member_username}
             </NameContainer>
-
+            
             <div className="clear"></div>
             <MainWalletContainer>
               <WalletLabel>
@@ -384,13 +385,13 @@ class My extends Component {
                       this.props.wallet.mainSymbol +
                       Common.formatNumberWithThousand(
                         this.props.wallet.mainBalance +
-                          this.props.game.providerList
-                            .filter(
-                              (item) =>
-                                item.status === 0 &&
-                                item.transferwallet === true
-                            )
-                            .reduce((a, v) => (a = a + v.balance), 0)
+                        this.props.game.providerList
+                          .filter(
+                            (item) =>
+                              item.status === 0 &&
+                              item.transferwallet === true
+                          )
+                          .reduce((a, v) => (a = a + v.balance), 0)
                       )
                     );
                   } else {
@@ -406,7 +407,7 @@ class My extends Component {
               </WalletAmount>
             </TotalWalletContainer>
           </InfoContainer>
-
+          
           <div className="clear"></div>
           <IconContainer>
             <IconColumn onClick={() => this.props.navigate("/deposit")}>
@@ -441,149 +442,6 @@ class My extends Component {
           </IconContainer>
         </StyledAppBar>
         <ListView>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-profile.svg`
-            }
-            onClick={() => this.props.navigate("/profile")}
-          >
-            {i18n.t("wap.main.account.personalInfo")}
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-inbox.svg`
-            }
-            onClick={() => this.props.navigate("/inbox")}
-          >
-            {i18n.t("wap.main.account.inbox")}
-
-            <MessageRedDot
-              style={
-                this.props.account.info.message_num > 0
-                  ? { display: "block" }
-                  : { display: "none" }
-              }
-            ></MessageRedDot>
-          </ListItem>
-          {/* <ListItem
-            icon={IconProfileCashflowPNG}
-            onClick={() => this.props.navigate("/report/1")}
-          >
-            {i18n.t("wap.main.account.transferReport")}
-          </ListItem> */}
-
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-report.svg`
-            }
-            onClick={() => this.props.navigate("/report/2")}
-          >
-            {i18n.t("wap.main.account.betReport")}
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-withdrawal.svg`
-            }
-            onClick={() => this.props.navigate("/report/3")}
-          >
-            {i18n.t("wap.main.account.withdrawal")}
-          </ListItem>
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-topup.svg`
-            }
-            style={{ backgroundSize: 60 }}
-            onClick={() => this.props.navigate("/report/4")}
-          >
-            {i18n.t("wap.main.account.deposit")}
-          </ListItem>
-
-          {checkTransferWallet && (
-            <ListItem
-              icon={
-                process.env.PUBLIC_URL +
-                `/assets/images/wapp/icon-profile-report-transfer.svg`
-              }
-              onClick={() => this.props.navigate("/report/6")}
-            >
-              {i18n.t("wap.main.account.transfer")}
-            </ListItem>
-          )}
-
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-report-transfer.svg`
-            }
-            onClick={() => this.props.navigate("/report/8")}
-          >
-            {i18n.t("report.balanceChanges.title")}
-          </ListItem>
-          {this.props.general.haveAffiliate && (
-            <ListItem
-              icon={
-                process.env.PUBLIC_URL +
-                `/assets/images/wapp/icon-affiliate.svg`
-              }
-              onClick={() => this.props.navigate("/affiliate")}
-            >
-              {i18n.t("web.account.affiliate")}
-            </ListItem>
-          )}
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-card.svg`
-            }
-            onClick={() => {
-              if (
-                this.props.wallet.bankCardList != null &&
-                this.props.wallet.bankCardList.length === 0 &&
-                config.features.AddCard_NotAllowedEditDelete
-              ) {
-                this.props.alert("", i18n.t("card.toEdit"));
-              } else {
-                this.props.navigate("/card");
-              }
-            }}
-          >
-            {i18n.t("wap.main.account.manageBank")}
-          </ListItem>
-
-          <ListItem
-            icon={
-              process.env.PUBLIC_URL +
-              `/assets/images/wapp/icon-profile-language.svg`
-            }
-            onClick={() => this.props.navigate("/setting/language")}
-          >
-            {i18n.t("common.language")}
-          </ListItem>
-          {config.features.HaveVIPFeature && (
-            <ListItem
-              icon={process.env.PUBLIC_URL + `/assets/images/wapp/icon-vip.svg`}
-              onClick={() => this.props.navigate("/vip")}
-            >
-              VIP
-            </ListItem>
-          )}
-          {config.features.HaveDownloadFeature && (
-            <ListItem
-              icon={
-                process.env.PUBLIC_URL + `/assets/images/wapp/icon-download.svg`
-              }
-              onClick={() => this.props.navigate("/main/download")}
-            >
-              {i18n.t("wap.main.account.appDownload")}
-            </ListItem>
-          )}
-
-          <div className="clear"></div>
           {profileItems.map((item, index) => {
             return (
               item.display && (
