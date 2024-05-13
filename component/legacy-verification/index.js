@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../utils/i18n";
+import config from "../../../../config/config"
 
 const CustomInput = styled.div`
   font-size: 30px;
@@ -70,7 +71,7 @@ const Button = styled.div`
 `;
 
 const LegacyVerificationfield = (props) => {
-  const [countdown, setCountdown] = React.useState(60);
+  const [countdown, setCountdown] = React.useState(config.features.SendCodeInterval || 60);
   const [timer, setTimer] = React.useState(null);
 
   React.useEffect(() => {
@@ -81,7 +82,7 @@ const LegacyVerificationfield = (props) => {
             if (prev === 0) {
               clearInterval(timer);
               props.resetGetCode();
-              return 60;
+              return config.features.SendCodeInterval || 60;
             } else {
               return prev - 1;
             }
