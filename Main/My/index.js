@@ -19,7 +19,7 @@ const StyledAppBar = withStyles((theme) => ({
     height: "370px",
     display: "block",
     background: theme.palette.primary.main,
-
+    
     background:
       `linear-gradient(rgba(` +
       theme.palette.primary.mainRgb +
@@ -94,10 +94,10 @@ const IconContainer = styled.div`
   height: 190px;
   border-radius: 30px;
   box-shadow: ${({ theme }) =>
-    theme.new_bodyColor ? "none" : " 0px 3px 12px 0 rgba(0, 0, 0, 0.6);"};
+          theme.new_bodyColor ? "none" : " 0px 3px 12px 0 rgba(0, 0, 0, 0.6);"};
   border: solid 1px #a9a9a9;
   background: ${({ theme }) =>
-    theme.new_bodyColor ?? " linear-gradient(to top, #e0e0e0, #ffffff);"};
+          theme.new_bodyColor ?? " linear-gradient(to top, #e0e0e0, #ffffff);"};
   margin: 10px auto 30px auto;
   padding: 40px 30px 0 30px;
 `;
@@ -159,7 +159,7 @@ const ListItem = styled.div`
   flex-direction: column;
   text-align: center;
   color: ${(props) =>
-    props.disabled ? `rgba(61, 61, 61, 0.3)` : props.theme.secondary};
+          props.disabled ? `rgba(61, 61, 61, 0.3)` : props.theme.secondary};
 
   position: relative;
 `;
@@ -201,7 +201,7 @@ class My extends Component {
   componentDidUpdate(preProps) {
     if (
       preProps.wallet.balanceList.length !==
-        this.props.wallet.balanceList.length &&
+      this.props.wallet.balanceList.length &&
       this.props.wallet.balanceList.length > 0
     ) {
       this.setState({
@@ -229,13 +229,13 @@ class My extends Component {
       }
     });
   };
-
+  
   render() {
     var checkTransferWallet =
       Object.values(this.props.game.providerList).filter(
         (item) => item.transferwallet === true
       ).length > 0;
-
+    
     const profileItems = [
       {
         name: "wap.main.account.personalInfo",
@@ -264,7 +264,7 @@ class My extends Component {
       {
         name: "memoinbox",
         url: "/memo",
-
+        
         icon:
           process.env.PUBLIC_URL + `/assets/images/wapp/icon-profile-inbox.svg`,
         display: true,
@@ -344,7 +344,7 @@ class My extends Component {
         display: config.features.HaveDownloadFeature,
       },
     ];
-
+    
     return config.features.VipProgressBar ? (
       <ProgressBarVersion navigate={this.props.navigate} />
     ) : (
@@ -365,7 +365,7 @@ class My extends Component {
             <NameContainer>
               {this.props.account.info.member_username}
             </NameContainer>
-
+            
             <div className="clear"></div>
             <MainWalletContainer>
               <WalletLabel>
@@ -385,13 +385,13 @@ class My extends Component {
                       this.props.wallet.mainSymbol +
                       Common.formatNumberWithThousand(
                         this.props.wallet.mainBalance +
-                          this.props.game.providerList
-                            .filter(
-                              (item) =>
-                                item.status === 0 &&
-                                item.transferwallet === true
-                            )
-                            .reduce((a, v) => (a = a + v.balance), 0)
+                        this.props.game.providerList
+                          .filter(
+                            (item) =>
+                              item.status === 0 &&
+                              item.transferwallet === true
+                          )
+                          .reduce((a, v) => (a = a + v.balance), 0)
                       )
                     );
                   } else {
@@ -407,7 +407,7 @@ class My extends Component {
               </WalletAmount>
             </TotalWalletContainer>
           </InfoContainer>
-
+          
           <div className="clear"></div>
           <IconContainer>
             <IconColumn onClick={() => this.props.navigate("/deposit")}>
