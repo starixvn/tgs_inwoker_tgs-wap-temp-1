@@ -843,21 +843,22 @@ class Wap extends Component {
       }
     }
 
-    //  if (
-    //    preProps.account.registercompleted !==
-    //    this.props.account.registercompleted
-    //  ) {
-    //    if (
-    //      this.props.account.registercompleted === false &&
-    //      config.features.Register_ShowPhone &&
-    //      config.features.ForcedVerification
-    //    ) {
-    //      this.props.history.push({
-    //        pathname: "/profile/phone",
-    //        state: { forced: true },
-    //      });
-    //    }
-    //  }
+    if (
+      preProps.account.registercompleted !==
+      this.props.account.registercompleted
+    ) {
+      if (
+        this.props.account.registercompleted === false &&
+        config.features.Register_ShowPhone &&
+        config.features.ForcedVerification
+      ) {
+        // by e01 240508
+        //this.props.history.push({
+        //  pathname: "/profile/phone",
+        //  state: { forced: true },
+        //});
+      }
+    }
   }
   handleNavigate = (page) => {
     if (
