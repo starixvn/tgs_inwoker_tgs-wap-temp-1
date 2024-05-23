@@ -343,7 +343,14 @@ class My extends Component {
                   : { display: "none" }
               }
             ></MessageRedDot>
+          </ListItem>
+          {/* <ListItem
+            icon={IconProfileCashflowPNG}
+            onClick={() => this.props.navigate("/report/1")}
+          >
+            {i18n.t("wap.main.account.transferReport")}
           </ListItem> */}
+
           <ListItem
             icon={
               process.env.PUBLIC_URL +
@@ -353,12 +360,6 @@ class My extends Component {
           >
             {i18n.t("memoinbox")}
           </ListItem>
-          {/* <ListItem
-            icon={IconProfileCashflowPNG}
-            onClick={() => this.props.navigate("/report/1")}
-          >
-            {i18n.t("wap.main.account.transferReport")}
-          </ListItem> */}
 
           <ListItem
             icon={

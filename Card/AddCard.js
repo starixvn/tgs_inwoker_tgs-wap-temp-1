@@ -344,7 +344,7 @@ class AddCard extends Component {
         bankName: utility.removeSpace(bankName),
         name: utility.removeSpace(this.state.bankAccountName),
         bankBranch: utility.removeSpace(this.state.bankBranch),
-        ifsc: utility.removeSpace(this.state.ifsc),
+        IFSCcode: utility.removeSpace(this.state.ifsc),
       };
     } else if (
       selected.banktype === "ThirdParty" ||
