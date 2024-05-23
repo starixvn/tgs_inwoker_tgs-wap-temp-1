@@ -327,7 +327,7 @@ class My extends Component {
           >
             {i18n.t("wap.main.account.personalInfo")}
           </ListItem>
-          <ListItem
+          {/* <ListItem
             icon={
               process.env.PUBLIC_URL +
               `/assets/images/wapp/icon-profile-inbox.svg`
@@ -350,6 +350,16 @@ class My extends Component {
           >
             {i18n.t("wap.main.account.transferReport")}
           </ListItem> */}
+
+          <ListItem
+            icon={
+              process.env.PUBLIC_URL +
+              `/assets/images/wapp/icon-profile-inbox.svg`
+            }
+            onClick={() => this.props.navigate("/memo")}
+          >
+            {i18n.t("memoinbox")}
+          </ListItem>
 
           <ListItem
             icon={

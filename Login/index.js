@@ -65,10 +65,17 @@ const RememberPassContainer = styled.div`
 `;
 const RememberPassLabel = styled.div`
   float: left;
-  font-size: 28px;
+  font-size: ${(props)=> i18n.language === "ta-IN" ? "20px" : "28px"};
   margin-top: 14px;
   margin-bottom: 14px;
   color: ${({ theme }) => theme.secondary};
+  ${(props) =>
+    i18n.language === "ta-IN"
+      ? `
+  width: 220px;
+  `
+      : ``}
+
 `;
 const CustomCheck = withStyles({
   root: {

@@ -642,11 +642,7 @@ class Transfer extends Component {
                 return (
                   <ColumnWrap key={index}>
                     <ColumnContainer>
-                      <ColumnGameName>
-                        {customGPname.WGFM === ""
-                          ? item.name
-                          : customGPname.WGFM + i18n.t("customGPname.sport")}
-                      </ColumnGameName>
+                      <ColumnGameName>{item.name}</ColumnGameName>
                       <ColumnGameBalance>
                         <DynamicFont
                           content={Common.formatNumberWithThousand(

@@ -21,12 +21,15 @@ import { GeneralService } from "../../../api-services/services/GeneralService";
 import ErrorSwitcher from "../../../utils/ErrorSwitcher";
 
 const imageMap = {
-  "zh-CN": process.env.PUBLIC_URL + `/assets/images/wapp/cn.png`,
-  "zh-TW": process.env.PUBLIC_URL + `/assets/images/wapp/tw.png`,
-  "en-US": process.env.PUBLIC_URL + `/assets/images/wapp/en.png`,
-  "th-TH": process.env.PUBLIC_URL + `/assets/images/wapp/th.png`,
-  "vi-VN": process.env.PUBLIC_URL + `/assets/images/wapp/vn.png`,
-  "id-ID": process.env.PUBLIC_URL + `/assets/images/wapp/id.png`,
+  "zh-CN": process.env.PUBLIC_URL + `/assets/images/flags/cn.png`,
+  "zh-TW": process.env.PUBLIC_URL + `/assets/images/flags/tw.png`,
+  "en-US": process.env.PUBLIC_URL + `/assets/images/flags/en.png`,
+  "th-TH": process.env.PUBLIC_URL + `/assets/images/flags/th.png`,
+  "vi-VN": process.env.PUBLIC_URL + `/assets/images/flags/vn.png`,
+  "id-ID": process.env.PUBLIC_URL + `/assets/images/flags/id.png`,
+  "hi-IN": process.env.PUBLIC_URL + `/assets/images/flags/in.png`,
+  "ta-IN": process.env.PUBLIC_URL + `/assets/images/flags/in.png`,
+  "tgl-PH": process.env.PUBLIC_URL + `/assets/images/flags/ph.png`,
 };
 const Container = styled.div`
   width: 100%;

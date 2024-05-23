@@ -3,7 +3,10 @@ import styled from "styled-components";
 import i18n from "../../../../utils/i18n";
 import moment from "moment";
 import Modal from "../modal";
-
+const Wrapper = styled.div`
+  background: #fff;
+  padding: 20px;
+`;
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -42,6 +45,7 @@ const ContentWrapper = styled.div``;
 
 const Content = styled.div`
   padding: 20px;
+  white-space: pre-wrap;
 `;
 
 const UpperSection = styled.div`
@@ -52,7 +56,7 @@ const Title = styled.div`
   font-weight: 600;
 `;
 
-const Sent = ({ sent, deliveryBox }) => {
+const Sent = ({ sent, deliveryBox, account }) => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
   const dateTimeFormatter = (date) => {
@@ -80,7 +84,7 @@ const Sent = ({ sent, deliveryBox }) => {
     setOpen(false);
   };
   return (
-    <>
+    <Wrapper>
       <Table>
         <thead>
           <tr>
@@ -107,14 +111,15 @@ const Sent = ({ sent, deliveryBox }) => {
           <UpperSection>
             <Title>{content.subject}</Title>
             <div>
-              {content.sender} - {dateTimeFormatter(content.sentOn)}
+              {i18n.t("sentBy")} {account?.info?.member_username}{" "}
+              {dateTimeFormatter(content.sentOn)}
             </div>
           </UpperSection>
 
           <Content>{content.content}</Content>
         </ContentWrapper>
       </Modal>
-    </>
+    </Wrapper>
   );
 };
 

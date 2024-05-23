@@ -32,8 +32,8 @@ const CustomBottomNavigation = withStyles((theme) => ({
       ", " +
       theme.palette.primary.main +
       ")",
-  },
-}))(BottomNavigation);
+    },
+  }))(BottomNavigation);
 const CustomBottomNavigationAction = withStyles({
   root: {
     width: "570px",
@@ -56,6 +56,13 @@ const CustomBottomNavigationAction = withStyles({
     },
   },
 })(BottomNavigationAction);
+
+const CustomCustomBottomNavAction = styled(CustomBottomNavigationAction)`
+  & .MuiBottomNavigationAction-label {
+    ${(props)=> i18n.language === "ta-IN" ? "font-size: 13px !important;" : ""}
+  }
+
+`;
 
 const BottomNavigatorFrame = styled.div`
   background-image: url(${(props) => props.src});
@@ -400,7 +407,7 @@ class Main extends Component {
             showLabels
             style={{ width: "750px", height: "90px" }}
           >
-            <CustomBottomNavigationAction
+            <CustomCustomBottomNavAction
               label={i18n.t("wap.main.homePage")}
               value="/main/home"
               onClick={() => this.handleChangeSelection("/main/home")}
@@ -412,7 +419,7 @@ class Main extends Component {
                 />
               }
             />
-            <CustomBottomNavigationAction
+            <CustomCustomBottomNavAction
               label={i18n.t("wap.main.promo")}
               value="/promotion-list"
               onClick={() => this.handleChangeSelection("/promotion-list")}
@@ -425,7 +432,7 @@ class Main extends Component {
                 />
               }
             />
-            <CustomBottomNavigationAction
+            <CustomCustomBottomNavAction
               onClick={this.toggleMenu}
               label=""
               icon={
@@ -435,7 +442,7 @@ class Main extends Component {
               }
             />
 
-            <CustomBottomNavigationAction
+            <CustomCustomBottomNavAction
               onClick={() => this.handleChangeSelection("/main/support")}
               value="/customer-service"
               label={i18n.t("wap.main.cs")}
@@ -447,7 +454,7 @@ class Main extends Component {
                 />
               }
             />
-            <CustomBottomNavigationAction
+            <CustomCustomBottomNavAction
               label={i18n.t("wap.main.my")}
               value="/main/profile"
               onClick={() => this.handleChangeSelection("/main/profile")}

@@ -18,6 +18,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 import Common from "../../../utils/Common";
+import { utility } from "../../../utils/utility";
 const Container = styled.div`
   width: 100%;
   padding-top: 170px;
@@ -123,6 +124,7 @@ class AddCard extends Component {
     name: "",
     phone: "",
     isDeposit: false,
+    ifsc: "",
   };
   componentDidMount = async () => {
     let urlParams = new URLSearchParams(this.props.appHistory.location.search);
@@ -338,10 +340,11 @@ class AddCard extends Component {
       }
 
       detail = {
-        bankAccount: this.state.number,
-        bankName: bankName,
-        name: this.state.bankAccountName,
-        bankBranch: this.state.bankBranch,
+        bankAccount: utility.removeSpace(this.state.number),
+        bankName: utility.removeSpace(bankName),
+        name: utility.removeSpace(this.state.bankAccountName),
+        bankBranch: utility.removeSpace(this.state.bankBranch),
+        IFSCcode: utility.removeSpace(this.state.ifsc),
       };
     } else if (
       selected.banktype === "ThirdParty" ||
@@ -362,8 +365,8 @@ class AddCard extends Component {
       }
 
       detail = {
-        username: this.state.name,
-        phone: this.state.phone,
+        username: utility.removeSpace(this.state.name),
+        phone: utility.removeSpace(this.state.phone),
       };
     } else if (selected.banktype === "EWallet") {
       if (this.state.bankAccountName === "") {
@@ -384,13 +387,13 @@ class AddCard extends Component {
       }
       if (config.features.AddCard_CustomParam_IDR) {
         detail = {
-          eMoneyName: this.state.bankAccountName,
-          phone: this.state.number,
+          eMoneyName: utility.removeSpace(this.state.bankAccountName),
+          phone: utility.removeSpace(this.state.number),
         };
       } else {
         detail = {
-          name: this.state.bankAccountName,
-          phone: this.state.number,
+          name: utility.removeSpace(this.state.bankAccountName),
+          phone: utility.removeSpace(this.state.number),
         };
       }
     } else if (selected.banktype === "Pulsa") {
@@ -408,11 +411,11 @@ class AddCard extends Component {
       }
       if (config.features.AddCard_CustomParam_IDR) {
         detail = {
-          phone: this.state.number,
+          phone: utility.removeSpace(this.state.number),
         };
       } else {
         detail = {
-          phone: this.state.number,
+          phone: utility.removeSpace(this.state.number),
         };
       }
     } else if (selected.banktype === "Coinsph") {
@@ -437,17 +440,10 @@ class AddCard extends Component {
       };
     } else {
       detail = {
-        address: this.state.number,
+        address: utility.removeSpace(this.state.number),
       };
     }
     if (config.features.Register_CustomFlow_IDR && !this.state.isDeposit) {
-      // this.props.initBankCard(
-      //   selectedChannel.channelid,
-      //   selected.banktype,
-      //   detail
-      // ).then((response)=>{
-      //   this.props.getAccountInfo();
-      // });
       this.props
         .newRegister("SetWithdrawBankInfo", {
           banktype: selected.banktype,
@@ -497,6 +493,10 @@ class AddCard extends Component {
 
   handleBankBranchChange = (e) => {
     this.setState({ ...this.state, bankBranch: e.target.value });
+  };
+
+  handleIFSCChange = (e) => {
+    this.setState({ ...this.state, ifsc: e.target.value });
   };
 
   handleBankTypeClick = (index) => {
@@ -800,7 +800,7 @@ class AddCard extends Component {
           (this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
             .banktype === "ThirdParty" ||
             this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
-            .banktype === "Coinsph" ||
+              .banktype === "Coinsph" ||
             this.props.wallet.withdrawalList[this.state.selectedBankTypeIndex]
               .banktype === "FPS")) ||
         (this.state.isDeposit &&
@@ -808,7 +808,7 @@ class AddCard extends Component {
           (this.props.wallet.depositList[this.state.selectedBankTypeIndex]
             .banktype === "ThirdParty" ||
             this.props.wallet.depositList[this.state.selectedBankTypeIndex]
-            .banktype === "Coinsph" ||
+              .banktype === "Coinsph" ||
             this.props.wallet.depositList[this.state.selectedBankTypeIndex]
               .banktype === "FPS")) ? (
           <div>
@@ -924,6 +924,36 @@ class AddCard extends Component {
                 config.features.MAX_PHONE_LENGTH
               }
             ></Textbox>
+
+            {config.currency === "INR" &&
+              ((!this.state.isDeposit &&
+                this.props.wallet.withdrawalList.length > 0 &&
+                this.props.wallet.withdrawalList[
+                  this.state.selectedBankTypeIndex
+                ].banktype === "Bank") ||
+                (this.state.isDeposit &&
+                  this.props.wallet.depositList.length > 0 &&
+                  this.props.wallet.depositList[
+                    this.state.selectedBankTypeIndex
+                  ].banktype === "Bank")) && (
+                <Textbox
+                  style={{ margin: "20px auto 20px auto" }}
+                  value={this.state.ifsc}
+                  onChange={(e) => {
+                    let value = e.target.value;
+                    value = value.replace(/[^A-Za-z0-9]/gi, "");
+                    this.setState({
+                      ...this.state,
+                      ifsc: value,
+                    });
+                  }}
+                  type={"text"}
+                  maxLength={11}
+                  placeholder={i18n.t("ifsc")}
+                  label={i18n.t("ifsc")}
+                ></Textbox>
+              )}
+
             <BottomInfo>{i18n.t("card.addCard.desc")}</BottomInfo>
             <Button
               style={{ margin: "40px auto 0 auto" }}

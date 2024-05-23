@@ -155,6 +155,30 @@ class Profile extends Component {
     return status;
   };
 
+  getCustomMessagingIcon = (platform) => {
+    switch (platform) {
+      case "qq":
+        return process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`;
+      case "wechat":
+        return process.env.PUBLIC_URL + `/assets/images/wapp/icon-wechat.png`;
+      default:
+        return (
+          process.env.PUBLIC_URL + `/assets/images/wapp/icon-${platform}.svg`
+        );
+    }
+  };
+
+  getCustomMessagingTranslation = (platform) => {
+    switch (platform) {
+      case "qq":
+        return i18n.t("common.qqNumber");
+      case "wechat":
+        return i18n.t("common.wechatNumber");
+      default:
+        return i18n.t("common." + platform);
+    }
+  };
+
   render() {
     return (
       <Container>
@@ -271,9 +295,8 @@ class Profile extends Component {
               {config.features.CustomMessaging &&
                 config.features.CustomMessaging.map((platform) => {
                   return ContentItem(
-                    process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-${platform}.svg`,
-                    i18n.t("common." + platform),
+                    this.getCustomMessagingIcon(platform),
+                    this.getCustomMessagingTranslation(platform),
                     this.isConfigured(
                       this.props.account.info["member_" + platform]
                     ),

@@ -82,6 +82,7 @@ import CustomSportPage from "./CustomSportPage";
 import ForcedVerification from "./ForcedVerification";
 import LiveChat from "../Share/live-chat";
 import memo from "./memo";
+import Zalo from "./Profile/Zalo";
 
 const StyledModal = withStyles((theme) => ({
   paper: {
@@ -215,6 +216,11 @@ const RouteMapping = [
   {
     path: "/profile/qq",
     component: QQ,
+    alert: true,
+  },
+  {
+    path: "/profile/zalo",
+    component: Zalo,
     alert: true,
   },
   {
@@ -493,6 +499,7 @@ class Wap extends Component {
       openAnnouncement: false,
       showPromotion: false,
       action: "",
+      hasShownPromotion: false,
     };
   }
 
@@ -729,7 +736,6 @@ class Wap extends Component {
 
     if (config.features.PopupPromotion) {
       if (
-        isInHomePage &&
         this.props.general.promotionList.items !==
           preProps.general.promotionList.items &&
         this.props.general.promotionList.items.length > 0
@@ -1087,20 +1093,31 @@ class Wap extends Component {
             }
           })()}
 
-          {config.features.PopupPromotion &&
-            this.props.general.promotionList.items.length > 0 && (
-              <PopupAnnouncement
-                open={this.state.showPromotion}
-                type="promo"
-                onClose={() => {
-                  if (document.getElementById("audio") != null)
-                    document.getElementById("audio").play();
-                  this.setState({ ...this.state, showPromotion: false });
-                }}
-                content={this.props.general.promotionList.items}
-                header={i18n.t("promotion.title")}
-              ></PopupAnnouncement>
-            )}
+          {(() => {
+            const matchingpath =
+              this.props.location.pathname === "/" ||
+              this.props.location.pathname === "/main/home";
+            if (
+              config.features.PopupPromotion &&
+              this.props.general.promotionList.items.length > 0 &&
+              matchingpath &&
+              !this.state.hasShownPromotion
+            ) {
+              return (
+                <PopupAnnouncement
+                  open={this.state.showPromotion}
+                  type="promo"
+                  onClose={() => {
+                    if (document.getElementById("audio") != null)
+                      document.getElementById("audio").play();
+                    this.setState({ ...this.state, showPromotion: false, hasShownPromotion: true });
+                  }}
+                  content={this.props.general.promotionList.items}
+                  header={i18n.t("promotion.title")}
+                ></PopupAnnouncement>
+              );
+            }
+          })()}
 
           {(() => {
             if (

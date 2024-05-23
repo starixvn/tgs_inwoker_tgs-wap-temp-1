@@ -126,16 +126,7 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return {
-    getAccountProfile: () => dispatch(accountAction.getAccountProfile()),
-    getIDCardNo: () => dispatch(accountAction.getIDCardNo()),
-    updateMemberCardNo: (name, number) =>
-      dispatch(accountAction.updateMemberCardNo(name, number)),
-    resetResult: () =>
-      dispatch({
-        type: RESET_ACCOUNTRESULT,
-      }),
-  };
+  return {};
 };
 export default connect(
   mapStateToProps,

@@ -65,6 +65,7 @@ class Textbox extends Component {
       <CustomText style={{ ...this.props.style }} onClick={this.props.onClick}>
         <LabelContainer>
           <CustomLabel isCustomProfileStyle={this.props.isCustomProfileStyle}>
+            {this.props.required && <span style={{ color: "Red" }}>*</span>}{" "}
             {this.props.label}
           </CustomLabel>
           {this.props.custom && <div>{this.props.custom}</div>}
