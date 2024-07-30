@@ -316,13 +316,14 @@ class Main extends Component {
           "DailySecondDeposit",
           "DailyFirstDeposit",
           "DepositReward",
+          "DepositRewardV2",
           "DepositAccumulateRoulette",
         ].indexOf(item.promotionType) >= 0
       );
     };
 
     const hasDepositRewardPromotion = (item) => {
-      return item.promotionType === "DepositReward"
+      return (item.promotionType === "DepositReward" || item.promotionType === "DepositRewardV2")
         ? this.props.amount >= item.campaignDetail.depositMinimumLimit
         : true;
     };
