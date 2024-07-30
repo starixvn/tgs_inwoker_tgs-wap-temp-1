@@ -139,6 +139,7 @@ class MainHKJP extends Component {
           "DailySecondDeposit",
           "DailyFirstDeposit",
           "DepositReward",
+          "DepositRewardV2",
           "DepositAccumulateRoulette",
           "AccountFirstDeposit",
         ].indexOf(item.promotionType) >= 0
@@ -146,7 +147,7 @@ class MainHKJP extends Component {
     };
 
     const hasDepositRewardPromotion = (item) => {
-      return item.promotionType === "DepositReward"
+      return (item.promotionType === "DepositReward" || item.promotionType === "DepositRewardV2")
         ? this.props.amount >= item.campaignDetail.depositMinimumLimit
         : true;
     };
