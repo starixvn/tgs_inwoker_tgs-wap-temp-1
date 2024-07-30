@@ -51,8 +51,7 @@ const MarqueeContainer = styled.div`
   white-space: nowrap;
   letter-spacing: 1.5px;
   font-size: 21px;
-
-  line-hight: 26px;
+  line-height: 26px;
   overflow: hidden;
   margin: 5px 0 0 8px;
   color: #f6f6f6;
@@ -168,20 +167,17 @@ const ButtonSignup = styled.div`
 `;
 
 const ButtonStartGame = styled.div`
-width: 148px;
-height: 43px;
-background: url(${
-  process.env.PUBLIC_URL + `/assets/images/wapp/btn-start-game.png`
-}) no-repeat;
-background-size: 100%;
-margin: 150px 0 0 76px;
-font-size:16px;
-font-weight:bold;
-line-height:37px;
-text-align:center;
-color:#fff;
-padding-top: 5px;
-}
+  width: 148px;
+  height: 43px;
+  background: url(${process.env.PUBLIC_URL + '/assets/images/wapp/btn-start-game.png'}) no-repeat;
+  background-size: 100%;
+  margin: 150px 0 0 76px;
+  font-size:16px;
+  font-weight:bold;
+  line-height:37px;
+  text-align:center;
+  color:#fff;
+  padding-top: 5px;
 `;
 const GameSelectionContainer = styled.div`
   font-size: 48px;
@@ -295,10 +291,10 @@ const DownloadContainer = styled.div`
 `;
 
 const DownloadButton = styled.div`
- margin-top: 20px;
+  margin-top: 20px;
   border: solid 3px ${({ theme }) => theme.primary};
   background: #fff;
-  border-radius: 10px
+  border-radius: 10px;
   width: 100px;
   height: 100px;
   display: flex;
@@ -545,10 +541,10 @@ class Default extends Component {
     }
   }
 
-  cockfightBrandList = ["SM01", "AWC_COCKFIGHT"];
+  cockfightBrandList = ["SM01", "AWC_COCKFIGHT", "GA28"];
 
   formatSortedGameList() {
-    var currentType = -1;
+    // var currentType = -1;
     var gameTypeListSorting = [];
     var displayGameType = Common.GetDisplayGameType();
 
@@ -566,10 +562,13 @@ class Default extends Component {
         if (this.cockfightBrandList.includes(row.game_platform_name)) {
           row.type = GameTypeEnum.COCKFIGHT;
         }
-        if (currentType !== row.type) {
+        if (!gameTypeListSorting.includes(row.type)) {
           gameTypeListSorting.push(row.type);
         }
-        currentType = row.type;
+        // if (currentType !== row.type) {
+        //   gameTypeListSorting.push(row.type);
+        // }
+        // currentType = row.type;
       });
 
     return gameTypeListSorting.sort((a, b) => {
