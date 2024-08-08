@@ -623,7 +623,7 @@ class Default extends Component {
     }
   }
 
-  cockfightBrandList = ["SM01", "AWC_COCKFIGHT"];
+  cockfightBrandList = ["SM01", "AWC_COCKFIGHT", "GA28"];
 
   formatSortedGameList() {
     var currentType = -1;
