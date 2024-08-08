@@ -101,6 +101,7 @@ class Details extends Component {
         "DailySecondDeposit",
         "DailyFirstDeposit",
         "DepositReward",
+        "DepositRewardV2",
         "DepositAccumulateRoulette",
       ].indexOf(promotionType) >= 0
     ) {
@@ -123,6 +124,7 @@ class Details extends Component {
           "DailySecondDeposit",
           "DailyFirstDeposit",
           "DepositReward",
+          "DepositRewardV2",
           "DepositAccumulateRoulette",
         ].indexOf(promotionType) >= 0
       ) {
