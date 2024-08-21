@@ -20,6 +20,8 @@ import Loading from "../../Wap/Share/Loading";
 import Common from "../../../utils/Common";
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
+import {CommonUtil} from "../../Common/utilc";
+
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -645,7 +647,7 @@ class Transfer extends Component {
                       <ColumnGameName>{item.name}</ColumnGameName>
                       <ColumnGameBalance>
                         <DynamicFont
-                          content={Common.formatNumberWithThousand(
+                          content={CommonUtil.roundUpToTwoDecimals(
                             item.balance
                           )}
                         ></DynamicFont>
