@@ -6,6 +6,8 @@ import Header from "../Share/Header";
 
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
+
+import { useCustomMsg } from "../../../components/Common/hooks/pages/profile"
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -108,6 +110,32 @@ const ContentItem = (
   );
 };
 
+const CustomMessaging = ({
+  getCustomMessagingIcon,
+  handleNavigate
+}) => {
+  const { list } = useCustomMsg()
+  return list.length ? (
+    <BlockContainer>
+      <BlockLabel>{i18n.t("profile.otherInfo")}</BlockLabel>
+      {
+        list.map(item => (
+          ContentItem(
+            getCustomMessagingIcon(item.name),
+            item.label,
+            item.isVerified,
+            () => {
+              handleNavigate(item.path);
+            },
+            item.showAccountName
+        )))
+      }
+    </BlockContainer>
+  ) : (
+    <></>
+  )
+};
+
 class Profile extends Component {
   state = {};
   componentDidMount() {
@@ -156,6 +184,18 @@ class Profile extends Component {
     return status;
   };
 
+  getCustomMessagingIcon = (platform) => {
+    switch (platform) {
+      case "qq":
+        return process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`;
+      case "wechat":
+        return process.env.PUBLIC_URL + `/assets/images/wapp/icon-wechat.png`;
+      default:
+        return (
+          process.env.PUBLIC_URL + `/assets/images/wapp/icon-${platform}.svg`
+        );
+    }
+  };
   render() {
     return (
       <Container>
@@ -237,7 +277,7 @@ class Profile extends Component {
             )}
           </BlockContainer>
 
-          {(config.features.QQWeChat ||
+          {/* {(config.features.QQWeChat ||
             config.features.CustomMessaging.length > 0) && (
             <BlockContainer>
               <BlockLabel>{i18n.t("profile.otherInfo")}</BlockLabel>
@@ -290,7 +330,8 @@ class Profile extends Component {
                   );
                 })}
             </BlockContainer>
-          )}
+          )} */}
+          <CustomMessaging getCustomMessagingIcon={this.getCustomMessagingIcon} handleNavigate={this.handleNavigate}></CustomMessaging>
         </div>
 
         <BlockContainer>
