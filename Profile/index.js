@@ -190,6 +190,8 @@ class Profile extends Component {
         return process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`;
       case "wechat":
         return process.env.PUBLIC_URL + `/assets/images/wapp/icon-wechat.png`;
+      case "facebookmessenger":
+        return process.env.PUBLIC_URL + `/assets/images/wapp/icon-fb.png`;  
       default:
         return (
           process.env.PUBLIC_URL + `/assets/images/wapp/icon-${platform}.svg`
