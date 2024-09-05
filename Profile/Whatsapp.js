@@ -98,7 +98,6 @@ class Whatsapp extends BaseProfile {
             ? true
             : false
         }
-        maxLength={15}
       ></Textbox>,
       this.state.isConfigured && config.features.ChangesNotAllowed
         ? i18n.t("common.configured")
