@@ -39,6 +39,7 @@ import Profile from "./Profile/index";
 import NameVerify from "./Profile/id-verification";
 import WeChat from "./Profile/WeChat";
 import QQ from "./Profile/QQ";
+import Zalo from "./Profile/Zalo";
 import FacebookMessenger from "./Profile/FacebookMessenger";
 import Telegram from "./Profile/Telegram";
 import Line from "./Profile/Line";
@@ -215,6 +216,11 @@ const RouteMapping = [
   {
     path: "/profile/qq",
     component: QQ,
+    alert: true,
+  },
+  {
+    path: "/profile/zalo",
+    component: Zalo,
     alert: true,
   },
   {
