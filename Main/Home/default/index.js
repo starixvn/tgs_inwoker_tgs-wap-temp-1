@@ -626,7 +626,7 @@ class Default extends Component {
   cockfightBrandList = ["SM01", "AWC_COCKFIGHT", "GA28"];
 
   formatSortedGameList() {
-    var currentType = -1;
+    // var currentType = -1;
     var gameTypeListSorting = [];
     var displayGameType = Common.GetDisplayGameType();
 
@@ -644,10 +644,13 @@ class Default extends Component {
         if (this.cockfightBrandList.includes(row.game_platform_name)) {
           row.type = GameTypeEnum.COCKFIGHT;
         }
-        if (currentType !== row.type) {
+        if (!gameTypeListSorting.includes(row.type)) {
           gameTypeListSorting.push(row.type);
         }
-        currentType = row.type;
+        // if (currentType !== row.type) {
+        //   gameTypeListSorting.push(row.type);
+        // }
+        // currentType = row.type;
       });
 
     return gameTypeListSorting.sort((a, b) => {
