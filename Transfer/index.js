@@ -16,6 +16,8 @@ import Common from "../../../utils/Common";
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 import Button from "../component/button";
+import {CommonUtil} from "../../Common/utilc";
+
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -506,7 +508,7 @@ class Transfer extends Component {
                   {`(${this.state.walletBalance
                     .filter((data) => data.abbreviation === item.abbreviation)
 
-                    .map((e) => Common.formatNumberWithThousand(e.balance))})`}
+                    .map((e) => CommonUtil.roundUpToTwoDecimals(e.balance))})`}
                 </option>
               ))}{" "}
           </CustomSelect>
