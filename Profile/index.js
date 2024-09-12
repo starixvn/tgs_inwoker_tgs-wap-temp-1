@@ -6,6 +6,8 @@ import Header from "../Share/Header";
 
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
+import { useCustomMsg } from "../../../components/Common/hooks/pages/profile";
+
 const Container = styled.div`
   width: 100%;
   overflow: hidden;
@@ -41,8 +43,9 @@ const ItemIcon = styled.div`
   height: 48px;
   margin-top: 20px;
   width: 48px;
-  background: url(${(props) => props.icon}) no-repeat left center;
-  background-size: contain;
+  mask: url(${(props) => props.icon})  left center / contain no-repeat;
+  background: #2c2c2c;
+  /* background-size: contain; */
 `;
 const ItemContentContainer = styled.div`
   float: left;
@@ -107,6 +110,32 @@ const ContentItem = (
   );
 };
 
+const CustomMessaging = ({
+  getCustomMessagingIcon,
+  handleNavigate
+}) => {
+  const { list } = useCustomMsg()
+  return list.length ? (
+    <BlockContainer>
+      <BlockLabel>{i18n.t("profile.otherInfo")}</BlockLabel>
+      {
+        list.map(item => (
+          ContentItem(
+            getCustomMessagingIcon(item.name),
+            item.label,
+            item.isVerified,
+            () => {
+              handleNavigate(item.path);
+            },
+            item.showAccountName
+        )))
+      }
+    </BlockContainer>
+  ) : (
+    <></>
+  )
+};
+
 class Profile extends Component {
   state = {};
   componentDidMount() {
@@ -161,6 +190,8 @@ class Profile extends Component {
         return process.env.PUBLIC_URL + `/assets/images/wapp/icon-qq.png`;
       case "wechat":
         return process.env.PUBLIC_URL + `/assets/images/wapp/icon-wechat.png`;
+      case "facebookmessenger":
+        return process.env.PUBLIC_URL + `/assets/images/wapp/icon-fb.svg`;
       default:
         return (
           process.env.PUBLIC_URL + `/assets/images/wapp/icon-${platform}.svg`
@@ -260,7 +291,7 @@ class Profile extends Component {
             )}
           </BlockContainer>
 
-          {(config.features.QQWeChat ||
+          {/* {(config.features.QQWeChat ||
             config.features.CustomMessaging.length > 0) && (
             <BlockContainer>
               <BlockLabel>{i18n.t("profile.otherInfo")}</BlockLabel>
@@ -312,7 +343,8 @@ class Profile extends Component {
                   );
                 })}
             </BlockContainer>
-          )}
+          )} */}
+          <CustomMessaging getCustomMessagingIcon={this.getCustomMessagingIcon} handleNavigate={this.handleNavigate}></CustomMessaging>
         </div>
 
         <BlockContainer>

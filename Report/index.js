@@ -901,7 +901,8 @@ class Report extends Component {
       this.state.pageSize,
       true,
       "",
-      false
+      false,
+      i18n.language
     ).then((response) => {
       if (response.IsSuccess) {
         const dataList =
