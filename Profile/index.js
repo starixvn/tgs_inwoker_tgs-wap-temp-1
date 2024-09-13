@@ -6,7 +6,7 @@ import Header from "../Share/Header";
 
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
-import { useCustomMsg } from "../../../components/Common/hooks/pages/profile";
+import { useCustomMsg, useBaseInfo } from "../../../components/Common/hooks/pages/profile";
 
 const Container = styled.div`
   width: 100%;
@@ -76,15 +76,16 @@ const BtnBack = styled.div`
   float: right;
   margin: 0 50px 0 0px;
 `;
-const ContentItem = (
+const ContentItem = ({
   icon,
   title,
   isConfigured,
   onClickEvent,
-  configuredValue = i18n.t("profile.setted"),
+  configuredValue,
   category,
   disabled
-) => {
+}) => {
+  configuredValue = configuredValue ? configuredValue : i18n.t("profile.setted")
   var configureElement = isConfigured ? (
     <SettedLabel>{configuredValue}</SettedLabel>
   ) : (
@@ -120,21 +121,48 @@ const CustomMessaging = ({
       <BlockLabel>{i18n.t("profile.otherInfo")}</BlockLabel>
       {
         list.map(item => (
-          ContentItem(
-            getCustomMessagingIcon(item.name),
-            item.label,
-            item.isVerified,
-            () => {
+          <ContentItem
+            icon = {getCustomMessagingIcon(item.name)}
+            title= {item.label}
+            isConfigured={item.isVerified}
+            onClickEvent={() => {
               handleNavigate(item.path);
-            },
-            item.showAccountName
-        )))
+            }}
+            configuredValue={item.showAccountName}
+          ></ContentItem>
+        ))
       }
     </BlockContainer>
   ) : (
     <></>
   )
 };
+
+const BaseInfoList = ({accountInfo, handleNavigate}) => {
+  const { baseInfoList, getBaseInfoValue } = useBaseInfo()
+  const setConfigured = (type) => {
+    if (type === 'member_name') {
+      return !([null, ""].includes(accountInfo['member_name']))
+    }
+    return !!accountInfo[type]
+  }
+  return baseInfoList.filter(item => item.show).map((infoItem, infoIndex) => {
+    const comProps = infoItem.comProps
+    return (
+      <ContentItem
+        key={infoIndex}
+        icon={comProps.icon}
+        title={comProps.title}
+        isConfigured={setConfigured(comProps.attr)}
+        onClickEvent={() => {
+          handleNavigate(comProps.path);
+        }}
+        configuredValue={getBaseInfoValue(comProps.attr)}
+        category={comProps.attr}
+      ></ContentItem>
+    )
+  })
+}
 
 class Profile extends Component {
   state = {};
@@ -224,7 +252,7 @@ class Profile extends Component {
         <div style={{ marginBottom: "-30px" }}>
           <BlockContainer>
             <BlockLabel>{i18n.t("profile.basicInfo")}</BlockLabel>
-            {config.features.ICVerification &&
+            {/* {config.features.ICVerification &&
               ContentItem(
                 process.env.PUBLIC_URL + `/assets/images/wapp/icon-user.png`,
                 i18n.t("profile.nameVerify.icNum"),
@@ -240,7 +268,7 @@ class Profile extends Component {
                     ? `(` + i18n.t("verified." + this.getStatus()) + `)`
                     : ""
                 }`
-              )}
+              )} */}
 
             {/* {ContentItem(
             IconMobilePNG,
@@ -251,7 +279,7 @@ class Profile extends Component {
             },
             this.props.account.info.member_phone
           )} */}
-
+{/* 
             {(config.features.SMSVerification ||
               config.features.PromoRoulette_SMSVerification ||
               config.features.Register_ShowPhone) &&
@@ -288,7 +316,8 @@ class Profile extends Component {
               this.props.account.info.member_birthdate
                 ? this.props.account.info.member_birthdate
                 : ""
-            )}
+            )} */}
+            <BaseInfoList accountInfo={this.props.account.info} handleNavigate={this.handleNavigate}></BaseInfoList>
           </BlockContainer>
 
           {/* {(config.features.QQWeChat ||
@@ -349,15 +378,15 @@ class Profile extends Component {
 
         <BlockContainer>
           <BlockLabel>{i18n.t("profile.securityInfo")}</BlockLabel>
-          {ContentItem(
-            process.env.PUBLIC_URL + `/assets/images/wapp/icon-unlock.png`,
-            i18n.t("profile.password.title"),
-            true,
-            () => {
+          <ContentItem
+            icon={process.env.PUBLIC_URL + `/assets/images/wapp/icon-unlock.png`}
+            title={i18n.t("profile.password.title")}
+            isConfigured={true}
+            onClickEvent={() => {
               this.handleNavigate("/profile/changepassword");
-            },
-            ""
-          )}
+            }}
+            configuredValue=""
+          ></ContentItem>
 
           {/* {config.brand !== 'HKJP' && config.brand !== 'GPI'
             ? ContentItem(
