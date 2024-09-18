@@ -134,7 +134,7 @@ class NameVerify extends BaseProfile {
     this.onTextChanged();
   };
   handleSubmitClicked = () => {
-    if (config.features.ICVerificationUpload && this.state.icUpload === "") {
+    if (this.props.general.brand.playerIdentityAuthenticationEnabled && this.state.icUpload === "") {
       return this.props.alert("", i18n.t("deposit.msgPlsSelectFile"));
     }
     const name = this.state.name || "";
@@ -143,7 +143,7 @@ class NameVerify extends BaseProfile {
     this.props.performUpdateMemberNameAndIC(
       name,
       ic,
-      config.features.ICVerificationUpload ? this.state.icUpload[0] : null
+      this.props.general.brand.playerIdentityAuthenticationEnabled ? this.state.icUpload[0] : null
     );
 
     this.showLoading(false);
@@ -153,7 +153,7 @@ class NameVerify extends BaseProfile {
     const name = this.state.name || "";
     const ic = this.state.ic || "";
 
-    const isDisableButton = config.features.ICVerification
+    const isDisableButton = this.props.general.brand.playerIdentityAuthenticationEnabled
       ? !(name && ic)
       : name === "";
     return isDisableButton;
@@ -266,6 +266,7 @@ class NameVerify extends BaseProfile {
 const mapStateToProps = (state) => {
   return {
     account: state.account,
+    general: state.general
   };
 };
 const mapDispatchToProps = (dispatch) => {
