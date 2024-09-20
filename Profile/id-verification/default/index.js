@@ -20,6 +20,8 @@ const AnotherWrapper = styled.div`
   margin: 20px auto;
   display: flex;
   flex-direction: column;
+  background: #fff;
+  border-radius: 20px;
 `;
 
 const InputWrapper = styled.div`
