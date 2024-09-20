@@ -134,6 +134,12 @@ class NameVerify extends BaseProfile {
     this.onTextChanged();
   };
   handleSubmitClicked = () => {
+    if (!this.state.name) {
+      return this.props.alert("", i18n.t("profile.nameVerify.msgPlsEnterName"));
+    }
+    if (this.props.general.brand.playerIdentityAuthenticationEnabled && !this.state.ic) {
+      return this.props.alert("", i18n.t("profile.nameVerify.msgPlsEnterICNum"));
+    }
     if (this.props.general.brand.playerIdentityAuthenticationEnabled && this.state.icUpload === "") {
       return this.props.alert("", i18n.t("deposit.msgPlsSelectFile"));
     }
