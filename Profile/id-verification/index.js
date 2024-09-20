@@ -242,13 +242,7 @@ class NameVerify extends BaseProfile {
       case "approved":
         return <BottomNote text1={""} empty text2={""}></BottomNote>;
       default:
-        return (
-          <BottomNote
-            text1={i18n.t("profile.nameVerify.toEdit")}
-            link={"../chat"}
-            text2={i18n.t("profile.nameVerify.editHere")}
-          ></BottomNote>
-        );
+        return <BottomNote empty></BottomNote>;
     }
   };
 
