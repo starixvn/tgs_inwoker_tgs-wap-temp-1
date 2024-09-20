@@ -11,6 +11,8 @@ import { accountAction } from "../../../../../api-services/actions/accountAction
 import { RESET_ACCOUNTRESULT } from "../../../../../api-services/constant/actionType";
 import config from "../../../../../config/config";
 
+import { useBaseInfo } from "../../../../Common/hooks/pages/profile";
+
 const AnotherWrapper = styled.div`
   width: 700px;
   min-height: 170px;
@@ -36,6 +38,60 @@ const CustomLabel = styled.div`
   margin-left: 3px;
   color: ${({ theme }) => theme.secondary};
 `;
+
+const ShowIdInfo = ({
+  ic,
+  icUpload,
+  handleFileChange,
+  handleChangeIC
+}) => {
+  const { playerIdentityAuthenticationEnabled } = useBaseInfo()
+  return playerIdentityAuthenticationEnabled ? <>
+    <Textbox
+      value={ic}
+      onChange={handleChangeIC}
+      placeholder={
+        config.features.Profile_CustomIdentityPageTranslation
+          ? i18n.t("piso.profile.enterDocumentNumber")
+          : i18n.t("profile.nameVerify.msgEnterICNum")
+      }
+      label={
+        config.features.Profile_CustomIdentityPageTranslation
+          ? i18n.t("piso.profile.documentNumber")
+          : i18n.t("profile.nameVerify.icNum")
+      }
+      disabled={false}
+      maxLength={256}
+      isCustomProfileStyle={config.brand === "WGHK"}
+    ></Textbox>
+    <AnotherWrapper>
+      <CustomLabel>{i18n.t("common.upload")}</CustomLabel>
+      <InputWrapper style={{ padding: 10 }}>
+        <button
+          onClick={() => {
+            document.getElementById("getFile").click();
+          }}
+          style={{
+            marginRight: 10,
+            height: 80,
+            minWidth: 200,
+            fontSize: 24,
+          }}
+        >
+          {i18n.t("common.upload")}
+        </button>
+        <input
+          type="file"
+          id="getFile"
+          onChange={handleFileChange}
+          accept="image/jpg, image/jpeg, image/png, image/tiff"
+          style={{ display: "none" }}
+        />
+        {icUpload ? icUpload[0].name : ""}
+      </InputWrapper>
+    </AnotherWrapper>
+  </> : <></>
+}
 
 class Default extends BaseProfile {
   constructor(props) {
@@ -66,55 +122,7 @@ class Default extends BaseProfile {
           maxLength={256}
           isCustomProfileStyle={config.brand === "WGHK"}
         ></Textbox>
-        {config.features.ICVerification && (
-          <Textbox
-            style={{ margin: "50px auto 20px auto" }}
-            value={this.props.ic}
-            onChange={this.props.handleChangeIC}
-            placeholder={
-              config.features.Profile_CustomIdentityPageTranslation
-                ? i18n.t("piso.profile.enterDocumentNumber")
-                : i18n.t("profile.nameVerify.msgEnterICNum")
-            }
-            label={
-              config.features.Profile_CustomIdentityPageTranslation
-                ? i18n.t("piso.profile.documentNumber")
-                : i18n.t("profile.nameVerify.icNum")
-            }
-            disabled={false}
-            maxLength={256}
-            isCustomProfileStyle={config.brand === "WGHK"}
-          ></Textbox>
-        )}
-
-        {config.features.ICVerificationUpload && (
-          <AnotherWrapper>
-            <CustomLabel>{i18n.t("common.upload")}</CustomLabel>
-            <InputWrapper style={{ padding: 10 }}>
-              <button
-                onClick={() => {
-                  document.getElementById("getFile").click();
-                }}
-                style={{
-                  marginRight: 10,
-                  height: 80,
-                  minWidth: 200,
-                  fontSize: 24,
-                }}
-              >
-                {i18n.t("common.upload")}
-              </button>
-              <input
-                type="file"
-                id="getFile"
-                onChange={this.props.handleFileChange}
-                accept="image/jpg, image/jpeg, image/png, image/tiff"
-                style={{ display: "none" }}
-              />
-              {this.props.icUpload ? this.props.icUpload[0].name : ""}
-            </InputWrapper>
-          </AnotherWrapper>
-        )}
+        <ShowIdInfo ic={this.props.ic} icUpload={this.props.icUpload} handleFileChange={this.props.handleFileChange} handleChangeIC={this.props.handleChangeIC}></ShowIdInfo>
       </React.Fragment>
     );
   }
