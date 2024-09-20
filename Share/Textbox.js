@@ -18,7 +18,7 @@ const CustomLabel = styled.div`
       ? `30px`
       : config.brand === "WGHK"
       ? `26px`
-      : `20px`};
+      : `24px`};
   font-weight: 600;
   margin-left: 3px;
   color: #212e31;
