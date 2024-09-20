@@ -224,9 +224,8 @@ class NameVerify extends BaseProfile {
       case "waiting-verification":
         return (
           <BottomNote
-            text1={i18n.t("profile.nameVerify.toEdit")}
-            toEdit={this.handleGoEdit}
-            text2={i18n.t("profile.nameVerify.editHere")}
+            text1= {i18n.t('verified.waiting')}
+            text2={" "}
           ></BottomNote>
         );
       case "waiting-submit":
