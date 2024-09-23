@@ -685,7 +685,7 @@ class Login extends Component {
     this.setState({ ...this.state, hidePassword: !this.state.hidePassword });
   };
   handleRememberMeChange = (e) => {
-    this.setState({ ...this.state, rememberMe: e.target.checked });
+    this.setState({ ...this.state, rememberMe: !this.state.rememberMe });
   };
   handleToggleConfirmPasswordShow = () => {
     this.setState({
