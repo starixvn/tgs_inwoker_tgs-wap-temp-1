@@ -50,7 +50,14 @@ class NameVerify extends BaseProfile {
         this.setState({
           ...this.state,
           scene: scene,
-        });
+        })
+
+        if (scene === "rejected") {
+          this.setState({
+            ...this.state,
+            name: '',
+          })
+        }
       }
     }
   }
