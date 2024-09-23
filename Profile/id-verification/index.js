@@ -32,40 +32,26 @@ class NameVerify extends BaseProfile {
 
   currentFormStatus = this.props.account.info.identityformstatus;
   hasSubmitted = this.props.account.info.identityformid ? true : false;
-
+  realnameIsNotEmpty = this.props.account.info.member_name;
   componentDidMount() {
-    if (this.currentFormStatus === 0 && this.hasSubmitted === false) {
-      //api沒給表單id ，表示可以上傳
-      this.setState({
-        ...this.state,
-        scene: "waiting-submit",
-      });
-    }
-    if (
-      (this.currentFormStatus === 1 && this.hasSubmitted === true) ||
-      this.currentFormStatus === 1
-    ) {
+    if (this.realnameIsNotEmpty && !this.props.general.brand.playerIdentityAuthenticationEnabled) {
       this.setState({
         ...this.state,
         scene: "approved",
       });
-    }
-    if (
-      (this.currentFormStatus === 2 && this.hasSubmitted === true) ||
-      this.currentFormStatus === 2
-    ) {
-      //有給表單id但是狀態是拒絕，也可以上傳
-      this.setState({
-        ...this.state,
-        scene: "rejected",
-      });
-    }
-    if (this.currentFormStatus === 0 && this.hasSubmitted === true) {
-      //有給表單id但狀態沒驗證，不能上傳
-      this.setState({
-        ...this.state,
-        scene: "waiting-verification",
-      });
+    } else {
+      if (this.props.general.brand.playerIdentityAuthenticationEnabled) {
+        let scene = ''
+        if (this.currentFormStatus === 0) {
+          scene = this.hasSubmitted ? 'waiting-verification' : 'waiting-submit'
+        } else {
+          scene = this.currentFormStatus === 1 ?  "approved" : "rejected"
+        }
+        this.setState({
+          ...this.state,
+          scene: scene,
+        });
+      }
     }
   }
   componentDidUpdate(preProps, prevState) {
