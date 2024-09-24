@@ -941,7 +941,7 @@ class Login extends Component {
             selected={this.state.selected}
           ></ButtonSwitch>
           {(() => {
-            if (this.state.selected === 0) {0
+            if (this.state.selected === 0) {
               // 登陆
               return (
                 <React.Fragment>
