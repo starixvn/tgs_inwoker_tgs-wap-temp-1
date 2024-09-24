@@ -32,40 +32,33 @@ class NameVerify extends BaseProfile {
 
   currentFormStatus = this.props.account.info.identityformstatus;
   hasSubmitted = this.props.account.info.identityformid ? true : false;
+  realnameIsNotEmpty = this.props.account.info.member_name;
 
   componentDidMount() {
-    if (this.currentFormStatus === 0 && this.hasSubmitted === false) {
-      //api沒給表單id ，表示可以上傳
-      this.setState({
-        ...this.state,
-        scene: "waiting-submit",
-      });
-    }
-    if (
-      (this.currentFormStatus === 1 && this.hasSubmitted === true) ||
-      this.currentFormStatus === 1
-    ) {
+    if (this.realnameIsNotEmpty && !this.props.general.brand.playerIdentityAuthenticationEnabled) {
       this.setState({
         ...this.state,
         scene: "approved",
       });
-    }
-    if (
-      (this.currentFormStatus === 2 && this.hasSubmitted === true) ||
-      this.currentFormStatus === 2
-    ) {
-      //有給表單id但是狀態是拒絕，也可以上傳
-      this.setState({
-        ...this.state,
-        scene: "rejected",
-      });
-    }
-    if (this.currentFormStatus === 0 && this.hasSubmitted === true) {
-      //有給表單id但狀態沒驗證，不能上傳
-      this.setState({
-        ...this.state,
-        scene: "waiting-verification",
-      });
+    } else {
+      if (this.props.general.brand.playerIdentityAuthenticationEnabled) {
+        let scene = ''
+        if (this.currentFormStatus === 0) {
+          scene = this.hasSubmitted ? 'waiting-verification' : 'waiting-submit'
+        } else {
+          scene = this.currentFormStatus === 1 ?  "approved" : "rejected"
+        }
+        this.setState({
+          ...this.state,
+          scene: scene,
+        });
+        if (scene === "rejected") {
+          this.setState({
+            ...this.state,
+            name: '',
+          })
+        }
+      }
     }
   }
   componentDidUpdate(preProps, prevState) {
@@ -134,6 +127,12 @@ class NameVerify extends BaseProfile {
     this.onTextChanged();
   };
   handleSubmitClicked = () => {
+    if (!this.state.name) {
+      return this.props.alert("", i18n.t("profile.nameVerify.msgPlsEnterName"));
+    }
+    if (this.props.general.brand.playerIdentityAuthenticationEnabled && !this.state.ic) {
+      return this.props.alert("", i18n.t("profile.nameVerify.msgPlsEnterICNum"));
+    }
     if (this.props.general.brand.playerIdentityAuthenticationEnabled && this.state.icUpload === "") {
       return this.props.alert("", i18n.t("deposit.msgPlsSelectFile"));
     }
@@ -224,9 +223,8 @@ class NameVerify extends BaseProfile {
       case "waiting-verification":
         return (
           <BottomNote
-            text1={i18n.t("profile.nameVerify.toEdit")}
-            toEdit={this.handleGoEdit}
-            text2={i18n.t("profile.nameVerify.editHere")}
+            text1= {i18n.t('verified.waiting')}
+            text2={" "}
           ></BottomNote>
         );
       case "waiting-submit":
@@ -237,13 +235,7 @@ class NameVerify extends BaseProfile {
       case "approved":
         return <BottomNote text1={""} empty text2={""}></BottomNote>;
       default:
-        return (
-          <BottomNote
-            text1={i18n.t("profile.nameVerify.toEdit")}
-            link={"../chat"}
-            text2={i18n.t("profile.nameVerify.editHere")}
-          ></BottomNote>
-        );
+        return <BottomNote empty></BottomNote>;
     }
   };
 
