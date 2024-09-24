@@ -212,7 +212,7 @@ class Login extends Component {
     hideConfirmPassword: true,
     hadSend:false,
     loginData:"",
-    username: "",
+    username: localStorage.getItem("username"),
     password: "",
     phone: "",
     areaCode: config.features.PhonePrefix,
@@ -233,7 +233,7 @@ class Login extends Component {
 
     confirmPassword: "",
     tnc: true,
-    rememberMe: false,
+    rememberMe: !!localStorage.getItem("remember"),
     loading: false,
 
     code: "",
@@ -351,6 +351,14 @@ class Login extends Component {
     var bankInfoAuthentication = null;
     await this.props.getAccountInfo().then((response) => {
       if (response.IsSuccess) {
+        if (this.state.rememberMe === true) {
+          localStorage.setItem("remember", true);
+          localStorage.setItem("username", this.state.username);
+        } else {
+          localStorage.removeItem("remember");
+          localStorage.removeItem("username");
+        }
+
         if(isOk){
           //this.props.appHistory.replace("/main/home");
           this.props.history.push({
@@ -365,6 +373,8 @@ class Login extends Component {
           config.features.Register_ShowPhone &&
           config.features.ForcedVerification
         ) {
+          console.log("111");
+
           if (
             config.features.Register_CustomFlow_IDR &&
             config.features.NavigateToAddCard
@@ -389,6 +399,8 @@ class Login extends Component {
             });
           }
         } else {
+          console.log("222");
+
           if (
             !config.features.Register_CustomFlow_IDR ||
             (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)
@@ -399,15 +411,6 @@ class Login extends Component {
             this.props.getPromotion();
             this.props.getPromotionRouletteCount();
             this.props.getWithdrawalChannel();
-          }
-          if (this.state.rememberMe === true) {
-            localStorage.setItem("remember", true);
-
-            localStorage.setItem("username", this.state.username);
-          } else {
-            localStorage.removeItem("remember");
-
-            localStorage.removeItem("username");
           }
           if (
             this.state.selected === 1 ||
@@ -685,7 +688,7 @@ class Login extends Component {
     this.setState({ ...this.state, hidePassword: !this.state.hidePassword });
   };
   handleRememberMeChange = (e) => {
-    this.setState({ ...this.state, rememberMe: e.target.checked });
+    this.setState({ ...this.state, rememberMe: !this.state.rememberMe });
   };
   handleToggleConfirmPasswordShow = () => {
     this.setState({
