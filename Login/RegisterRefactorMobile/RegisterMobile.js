@@ -17,7 +17,7 @@ import { CustomWrapper, CustomInvitationSelect, RememberPassContainer, } from '.
 
 const RegisterMobile = (props) => {
     useEffect(() => {
-        console.log("RegisterPc v9.18.1");
+        console.log("RegisterMobile v9.24.1");
     }, []);
     const { onHandleClose, onHandleLoginSuccess } = props;
     const { performNewRegister, performGetCode, states } = useRegisterForm();
