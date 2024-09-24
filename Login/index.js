@@ -28,6 +28,8 @@ import config from "../../../config/config";
 import { uiAction } from "../../../api-services/actions/uiAction";
 import ErrorSwitcher from "../../../utils/ErrorSwitcher";
 import VersionNumber from "../../../utils/versionnumber";
+import RegisterRefactorMobile from './RegisterRefactorMobile'
+
 const Container = styled.div`
   z-index: 10;
   overflow-y: scroll;
@@ -36,7 +38,7 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   background: url(${process.env.PUBLIC_URL +
-    `/assets/images/wapp/login-bg.jpg`})
+  `/assets/images/wapp/login-bg.jpg`})
     no-repeat;
   background-size: cover;
   background-position: center;
@@ -65,7 +67,7 @@ const RememberPassContainer = styled.div`
 `;
 const RememberPassLabel = styled.div`
   float: left;
-  font-size: ${(props)=> i18n.language === "ta-IN" ? "20px" : "28px"};
+  font-size: ${(props) => i18n.language === "ta-IN" ? "20px" : "28px"};
   margin-top: 14px;
   margin-bottom: 14px;
   color: ${({ theme }) => theme.secondary};
@@ -160,9 +162,8 @@ const Icon = styled.div`
   margin-right: 20px;
   background-color: black;
   mask: ${({ icon }) => {
-    return `url(${
-      process.env.PUBLIC_URL + `/assets/images/wapp/${icon}.svg`
-    }) no-repeat center /
+    return `url(${process.env.PUBLIC_URL + `/assets/images/wapp/${icon}.svg`
+      }) no-repeat center /
     contain;`;
   }};
 `;
@@ -179,8 +180,8 @@ class Login extends Component {
     areaCode: config.features.PhonePrefix,
     withPromo:
       config.affiliateId === "" &&
-      localStorage.getItem("promotionId") === "" &&
-      !localStorage.getItem("promotionId")
+        localStorage.getItem("promotionId") === "" &&
+        !localStorage.getItem("promotionId")
         ? false
         : true,
     promoId:
@@ -209,8 +210,8 @@ class Login extends Component {
         : localStorage.getItem("invitationtype"),
     prefill:
       localStorage.getItem("upper") ||
-      localStorage.getItem("promotionId") ||
-      localStorage.getItem("invitationtype") !== ""
+        localStorage.getItem("promotionId") ||
+        localStorage.getItem("invitationtype") !== ""
         ? true
         : false,
     fromCustomDomain: false,
@@ -289,7 +290,7 @@ class Login extends Component {
   componentDidUpdate(preProps, prevState) {
     if (
       preProps.general.brand.hasInvitationCode !==
-        this.props.general.brand.hasInvitationCode &&
+      this.props.general.brand.hasInvitationCode &&
       this.props.general.brand.hasInvitationCode == true
     ) {
       this.getInvitationCode();
@@ -413,16 +414,10 @@ class Login extends Component {
   doLogin = (username, password) => {
     if (username === "") {
       this.props.alert("", i18n.t("web.login.errorMsg.emptyUsername"));
-      // this.props.enqueueSnackbar("用户名不能为空", {
-      //   variant: "warning"
-      // });
       return;
     }
     if (username === "") {
       this.props.alert("", i18n.t("web.login.errorMsg.emptyPassword"));
-      // this.props.enqueueSnackbar("密码不能为空", {
-      //   variant: "warning"
-      // });
       return;
     }
     this.setState({ ...this.state, loading: true });
@@ -444,9 +439,6 @@ class Login extends Component {
             });
           } else {
             this.props.alert("", i18n.t("common.msgInvalidUsername"));
-            // this.props.enqueueSnackbar(result.msg, {
-            //   variant: "warning"
-            // });
             this.setState({
               ...this.state,
 
@@ -546,34 +538,6 @@ class Login extends Component {
       });
       this.handleLoginSuccess(result.data);
     }
-    // if (result.IsSuccess) {
-    //   AccountService.Activation(username, password, areacode, phone).then(
-    //     async (response) => {
-    //       if (response.IsSuccess) {
-    //         AccountService.VerifyActivation(response.data, "123456");
-    //         // .then(
-    //         //   async (response) => {
-
-    //         //   }
-    //         // );
-    //       }
-    //       // else {
-    //       //   this.handleLoginSuccess(result.data);
-    //       // }
-    //     }
-    //   );
-    //   AccountService.ActivationEmail(email).then(async (response) => {
-    //     if (response.IsSuccess) {
-    //       AccountService.VerifyActivationEmail(response.data, "123456");
-    //       // .then(
-    //       //   async (response) => {
-    //       //     this.handleLoginSuccess(result.data);
-    //       //   }
-    //       // );
-    //     }
-    //   });
-    //   this.handleLoginSuccess(result.data);
-    // }
   };
   performLoginWithPhoneAndEmail = async (
     username,
@@ -685,12 +649,7 @@ class Login extends Component {
       code: e.target.value,
     });
   };
-  handleConfirmPasswordChange = (e) => {
-    this.setState({
-      ...this.state,
-      confirmPassword: e.target.value,
-    });
-  };
+ 
   handleWithdrawalPasswordChange = (e) => {
     this.setState({
       ...this.state,
@@ -717,12 +676,7 @@ class Login extends Component {
     });
   };
 
-  handleEmailChange = (e) => {
-    this.setState({
-      ...this.state,
-      email: e.target.value,
-    });
-  };
+ 
 
   handleToggleShow = () => {
     this.setState({ ...this.state, hidePassword: !this.state.hidePassword });
@@ -752,18 +706,6 @@ class Login extends Component {
       }
     });
   };
-  // smsVerification = (securityKey, code) => {
-  //   AccountService.VerifyActivation(securityKey, code).then(
-  //     async (response) => {
-  //       if (response.IsSuccess) {
-  //         this.props.appHistory.replace( "/main/home");
-  //       } else {
-  //         this.props.alert("", response.info);
-  //       }
-  //     }
-  //   );
-  // };
-
   handleActivationClick = async () => {
     const username = this.state.username;
     const password = this.state.password;
@@ -889,12 +831,6 @@ class Login extends Component {
       }, 1000);
     }
   };
-  handleTncClick = (e) => {
-    this.setState({
-      ...this.state,
-      tnc: !this.state.tnc,
-    });
-  };
   handleRegisterClick = () => {
     const username = this.state.username;
     const password = this.state.password;
@@ -946,24 +882,8 @@ class Login extends Component {
         return;
       }
     }
-    // if (withdrawalPassword.length < 6) {
-    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassInvalid"));
-
-    //   return;
-    // }
-    // if (withdrawalPassword !== confirmWithdrawalPassword) {
-    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassMatchInvalid"));
-
-    //   return;
-    // }
     if (tnc) {
       this.setState({ ...this.state, loading: true });
-      // user_account,
-      // user_password,
-      // pay_password,
-      // mobile,
-      // recommend_code,
-      // mobile_code_id
       this.props
         .register(username, password, confirmPassword, promotion_id, upper)
         .then(async (response) => {
@@ -988,171 +908,11 @@ class Login extends Component {
                 areaCode,
                 email
               );
-              // AccountService.VerifyPhone(areaCode,phone).then(
-              //   async (response) => {
-              //     // security key = response.data, default validatecode = 123456
-              //     AccountService.UpdatePhone(response.data, "123456").then(
-              //       async (response) => {
-              //           this.doLogin(username, password);
-              //       }
-              //     );
-              // });
             } else if (config.features.Register_ShowPhone) {
               this.doLoginWithHp(username, password, phone, areaCode);
-              // AccountService.VerifyPhone(areaCode,phone).then(
-              //   async (response) => {
-              //     // security key = response.data, default validatecode = 123456
-              //     AccountService.UpdatePhone(response.data, "123456").then(
-              //       async (response) => {
-              //           this.doLogin(username, password);
-              //       }
-              //     );
-              // });
             } else {
               this.doLogin(username, password);
             }
-          } else {
-            // if (response.code === 206) {
-            //   this.props.alert(
-            //     '',
-            //     i18n.t('common.msgInvalidInvitationCode')
-            //   )
-            // } else {
-            //   this.props.alert('', response.info)
-            // }
-            this.props.alert("", response.info);
-            this.setState({ ...this.state, loading: false });
-            // this.props.enqueueSnackbar(response.msg, {
-            //   variant: "warning"
-            // });
-          }
-        });
-    }
-  };
-
-  performNewRegister = async () => {
-    const username = this.state.username;
-    const password = this.state.password;
-    const phone = this.state.phone;
-
-    const areaCode = this.state.areaCode;
-    const confirmPassword = this.state.confirmPassword;
-    const email = this.state.email;
-
-    const tnc = this.state.tnc;
-    var expr = /^[a-zA-Z0-9]{6,16}$/;
-    if (!expr.test(username)) {
-      this.props.alert("", i18n.t("common.msgRegisterUserNameInvalid"));
-      return;
-    }
-    var expr = /^.{6,20}$/;
-    if (!expr.test(password)) {
-      this.props.alert("", i18n.t("common.msgRegisterPassInvalid"));
-
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      this.props.alert("", i18n.t("common.msgRegisterPassMatchInvalid"));
-
-      return;
-    }
-    var expr = new RegExp(
-      `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
-    );
-    if (config.features.Register_ShowPhone) {
-      if (!expr.test(phone)) {
-        this.props.alert(
-          "",
-          i18n
-            .t("common.noReachMin")
-            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10)
-        );
-        return;
-      }
-    }
-    var expr =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (config.features.Register_ShowEmail) {
-      if (!expr.test(email)) {
-        this.props.alert("", i18n.t("common.msgInvalidEmail"));
-
-        return;
-      }
-    }
-    // if (withdrawalPassword.length < 6) {
-    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassInvalid"));
-
-    //   return;
-    // }
-    // if (withdrawalPassword !== confirmWithdrawalPassword) {
-    //   this.props.alert("", i18n.t("common.msgRegisterWithdrawalPassMatchInvalid"));
-
-    //   return;
-    // }
-    if (tnc) {
-      this.setState({ ...this.state, loading: true });
-      // user_account,
-      // user_password,
-      // pay_password,
-      // mobile,
-      // recommend_code,
-      // mobile_code_id
-      this.props
-        .newRegister("CreatePlayer", {
-          username: username,
-          pwd: password,
-          upper: this.state.upper,
-          invitationcode: this.state.promoId,
-        })
-        .then(async (response) => {
-          if (
-            response.IsSuccess &&
-            response.data.stepResponse.isnew === false
-          ) {
-            this.props.alert("", i18n.t("common.msgAlreadyExist"));
-            this.setState({ ...this.state, loading: false });
-          } else if (response.IsSuccess) {
-            let setPhoneDontCareDuplicate =
-              response.data.nextStepType === "SetPhoneDontCareDuplicate";
-
-            if (config.features.SMSVerification) {
-              this.setState({
-                ...this.state,
-                selected: 2,
-                loading: false,
-              });
-            } else if (
-              config.features.Register_ShowPhone &&
-              config.features.Register_ShowEmail
-            ) {
-              this.performLoginWithPhoneAndEmail(
-                username,
-                password,
-                phone,
-                areaCode,
-                email,
-                setPhoneDontCareDuplicate
-              );
-            } else if (config.features.Register_ShowPhone) {
-              this.doLoginWithHp(
-                username,
-                password,
-                phone,
-                areaCode,
-                setPhoneDontCareDuplicate
-              );
-            } else {
-              this.doLogin(username, password);
-            }
-            // if (
-            //   this.props.match.params.subid &&
-            //   this.props.match.params.subid !== ""
-            // ) {
-            //   let PAYOUT = "";
-            //   let affiliateUrl = `http://ad.propellerads.com/conversion.php?aid=3508428&pid=&tid=100917&visitor_id=${this.props.match.params.subid}&payout=${PAYOUT}`;
-            //   window.open(affiliateUrl, "_blank");
-            // }
           } else {
             this.props.alert("", response.info);
             this.setState({ ...this.state, loading: false });
@@ -1160,6 +920,8 @@ class Login extends Component {
         });
     }
   };
+
+ 
 
   render() {
     return (
@@ -1179,7 +941,8 @@ class Login extends Component {
             selected={this.state.selected}
           ></ButtonSwitch>
           {(() => {
-            if (this.state.selected === 0) {
+            if (this.state.selected === 0) {0
+              // 登陆
               return (
                 <React.Fragment>
                   <Textbox
@@ -1237,29 +1000,6 @@ class Login extends Component {
                       {i18n.t("wap.login.forgetPass")}
                     </ForgotPassLabel>
                   </ForgotPassContainer>
-
-                  {/* {(() => {
-                    var brand = [
-                      "HK28",
-                      "WLGHK",
-                      "21GEN",
-                      "MESS8",
-                      "PISO",
-                      "BUNNY",
-                    ];
-                    if (brand.indexOf(config.brand) <= 0) {
-                      return (
-                        <ForgotPassContainer
-                          onClick={this.handleForgotpasswordClick}
-                        >
-                          <ForgotPassLabel>
-                            {i18n.t("wap.login.forgetPass")}
-                          </ForgotPassLabel>
-                        </ForgotPassContainer>
-                      );
-                    }
-                  })()} */}
-
                   <LoginActionContainer>
                     <ButtonWap
                       name={i18n.t("common.login")}
@@ -1303,7 +1043,7 @@ class Login extends Component {
                               </LanguageLink>
 
                               {this.props.general.brandLanguage.length - 1 !==
-                              index ? (
+                                index ? (
                                 <LanguageLink> | </LanguageLink>
                               ) : (
                                 ""
@@ -1325,218 +1065,44 @@ class Login extends Component {
                 </React.Fragment>
               );
             } else if (this.state.selected === 1) {
+              // 注册
               return (
-                <React.Fragment>
-                  <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-user.png`
-                    }
-                    type={"text"}
-                    placeholder={i18n.t("wap.register.username")}
-                    style={{ marginTop: "60px" }}
-                    maxLength="16"
-                    value={this.state.username}
-                    onChange={this.handleUsernameChange}
-                  ></Textbox>
-
-                  <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
-                    type={this.state.hidePassword ? "password" : "text"}
-                    hidePassword={this.state.hidePassword}
-                    placeholder={i18n.t("wap.register.password")}
-                    style={{ marginTop: "20px" }}
-                    password={true}
-                    maxLength="20"
-                    toggleShow={this.handleToggleShow}
-                    value={this.state.password}
-                    onChange={this.handlePasswordChange}
-                  ></Textbox>
-                  <Textbox
-                    icon={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/wapp/icon-unlock.png`
-                    }
-                    type={this.state.hideConfirmPassword ? "password" : "text"}
-                    hidePassword={this.state.hideConfirmPassword}
-                    placeholder={i18n.t("wap.register.confirmPassword")}
-                    style={{ marginTop: "20px" }}
-                    password={true}
-                    maxLength="20"
-                    toggleShow={this.handleToggleConfirmPasswordShow}
-                    value={this.state.confirmPassword}
-                    onChange={this.handleConfirmPasswordChange}
-                  ></Textbox>
-
-                  {config.features.Register_ShowPhone && (
-                    <CustomWrapper>
-                      <Select
-                        type={"text"}
-                        placeholder={i18n.t(
-                          "forgotPassword.plsEnterPhoneNumber"
-                        )}
-                        selectValue={this.state.areaCode}
-                        onSelectChange={this.handleAreaCodeChange}
-                        value={this.state.phone}
-                        maxLength={config.features.MAX_PHONE_LENGTH || 10}
-                        onChange={this.handlePhoneChange}
-                      ></Select>
-                    </CustomWrapper>
-                  )}
-
-                  {config.features.Register_ShowEmail && (
-                    <CustomWrapper>
-                      <Textbox
-                        icon={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/icon-email.png`
-                        }
-                        type={"text"}
-                        placeholder={i18n.t("wap.register.email")}
-                        style={{ marginTop: "20px" }}
-                        maxLength="50"
-                        value={this.state.email}
-                        onChange={this.handleEmailChange}
-                      ></Textbox>
-                    </CustomWrapper>
-                  )}
-
-                  {!(
-                    config.features.Register_HideInvitation &&
-                    this.state.fromCustomDomain
-                  ) && (
-                    <CustomWrapper>
-                      <Textbox
-                        icon={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/icon-promo.png`
-                        }
-                        type={"text"}
-                        placeholder={i18n.t("wap.register.promoteCode")}
-                        style={{ marginTop: "20px" }}
-                        value={
-                          this.state.promoteType === "a"
-                            ? this.state.promoId
-                            : this.state.upper
-                        }
-                        onChange={
-                          this.state.promoteType === "a"
-                            ? this.handlePromoCodeChange
-                            : this.handleUpperChange
-                        }
-                        disabled={this.state.prefill}
-                      ></Textbox>
-                      {this.props.general.haveAffiliate && (
-                        <CustomInvitationSelect
-                          disabled={this.state.prefill}
-                          value={this.state.promoteType}
-                          selected={this.state.promoteType}
-                          onChange={this.handleSwitchType}
-                        >
-                          <option value="a">{i18n.t("usertype.agent")}</option>
-                          <option value="p">{i18n.t("usertype.player")}</option>
-                        </CustomInvitationSelect>
-                      )}
-                    </CustomWrapper>
-                  )}
-
-                  <RememberPassContainer>
-                    <CustomCheck
-                      style={{ fontSize: "30px" }}
-                      icon={
-                        <CircleUnchecked
-                          style={{ color: "#404040", fontSize: "38px" }}
-                        />
-                      }
-                      checkedIcon={
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            `/assets/images/wapp/icon-checked.png`
-                          }
-                          style={{ width: "40px" }}
-                        />
-                      }
-                      checked={this.state.tnc}
-                      onChange={this.handleTncClick}
-                    />
-                    <TNC>{i18n.t("web.register.contract")}</TNC>
-                  </RememberPassContainer>
-                  <ButtonWap
-                    style={{ margin: "100px auto 0 auto" }}
-                    name={
-                      config.features.Register_CustomFlow_IDR
-                        ? i18n.t("common.nextStep")
-                        : i18n.t("common.register")
-                    }
-                    onClick={this.performNewRegister}
-                    disableButton={!this.state.tnc}
-                  ></ButtonWap>
-                </React.Fragment>
+                <>
+                  <RegisterRefactorMobile handleLoginSuccess={this.handleLoginSuccess}></RegisterRefactorMobile>
+                </>
               );
-            } else if (this.state.selected === 2) {
-              return (
-                <React.Fragment>
-                  {
-                    //        <Textbox
-                    //        icon={
-                    //          process.env.PUBLIC_URL +
-                    //          `/assets/images/wapp/icon-user.png`
-                    //        }
-                    //        type={"text"}
-                    //        placeholder={i18n.t("wap.register.username")}
-                    //        style={{ marginTop: "60px" }}
-                    //        maxLength="16"
-                    //        value={this.state.username}
-                    //        onChange={this.handleUsernameChange}
-                    //      ></Textbox>
-                    //      <Textbox
-                    //        icon={
-                    //          process.env.PUBLIC_URL +
-                    //          `/assets/images/wapp/icon-unlock.png`
-                    //        }
-                    //        type={this.state.hidePassword ? "password" : "text"}
-                    //        hidePassword={this.state.hidePassword}
-                    //        placeholder={i18n.t("wap.register.password")}
-                    //        style={{ marginTop: "20px" }}
-                    //        password={true}
-                    //        maxLength="20"
-                    //        toggleShow={this.handleToggleShow}
-                    //        value={this.state.password}
-                    //        onChange={this.handlePasswordChange}
-                    //      ></Textbox>
-                  }
-                  <Select
-                    type={"text"}
-                    placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
-                    selectValue={this.state.areaCode}
-                    onSelectChange={this.handleAreaCodeChange}
-                    value={this.state.phone}
-                    onChange={this.handlePhoneChange}
-                    leaveGap={config.features.SkipSMSVerification}
-                  ></Select>
-                  {!config.features.SkipSMSVerification && (
-                    <>
-                      <VerificationCode
-                        value={this.state.code}
-                        onChange={this.handleCodeChange}
-                        countdown={this.state.countdown}
-                        placeholder={i18n.t("common.msgEnterCode")}
-                        handleGetCodeClick={this.handleGetCodeClick}
-                      ></VerificationCode>
-                    </>
-                  )}
-                  <ButtonWap
-                    style={{ margin: "100px auto 0 auto" }}
-                    name={i18n.t("common.submit")}
-                    onClick={this.handleActivationClick}
-                  ></ButtonWap>
-                </React.Fragment>
-              );
-            }
+            } 
+            // else if (this.state.selected === 2) {
+            //   return (
+            //     <React.Fragment>
+            //       <Select
+            //         type={"text"}
+            //         placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
+            //         selectValue={this.state.areaCode}
+            //         onSelectChange={this.handleAreaCodeChange}
+            //         value={this.state.phone}
+            //         onChange={this.handlePhoneChange}
+            //         leaveGap={config.features.SkipSMSVerification}
+            //       ></Select>
+            //       {!config.features.SkipSMSVerification && (
+            //         <>
+            //           <VerificationCode
+            //             value={this.state.code}
+            //             onChange={this.handleCodeChange}
+            //             countdown={this.state.countdown}
+            //             placeholder={i18n.t("common.msgEnterCode")}
+            //             handleGetCodeClick={this.handleGetCodeClick}
+            //           ></VerificationCode>
+            //         </>
+            //       )}
+            //       <ButtonWap
+            //         style={{ margin: "100px auto 0 auto" }}
+            //         name={i18n.t("common.submit")}
+            //         onClick={this.handleActivationClick}
+            //       ></ButtonWap>
+            //     </React.Fragment>
+            //   );
+            // }
           })()}
         </ContentWrap>
 
