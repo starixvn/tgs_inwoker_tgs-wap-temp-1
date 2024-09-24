@@ -1,6 +1,5 @@
 
-import React, { useState, useContext } from "react";
-import Verification from "../../../Common/uis/verification";
+import React, { useState, useContext } from "react"; 
 import { useRegisterForm, useRegisterHandle } from "../../../Common/hooks/pages/register";
 import { RegisterContext } from "../../../Common/contexts";
 import TextboxRefactor from "../TextboxRefactor";
@@ -12,8 +11,6 @@ import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import { IsWithSMSCode } from "../../../Common/templates";
 import { useRegister } from "../hooks";
 import VerificationCodeRefactor from "../VerificationCodeRefactor";
-
-
 import { CustomWrapper, CustomInvitationSelect, RememberPassContainer, CustomCheck, TNC } from '../styles'
 
 

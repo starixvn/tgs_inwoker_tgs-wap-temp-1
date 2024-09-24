@@ -13,7 +13,7 @@ const ProvidersRegister = ({ children }) => {
 }
 
 
-const RegisterM = ({ handleLoginSuccess }) => {
+const RegisterMob = ({ handleLoginSuccess }) => {
     const commonprops = {
         handleLoginSuccess: handleLoginSuccess
     }
@@ -24,4 +24,4 @@ const RegisterM = ({ handleLoginSuccess }) => {
     )
 }
 
-export default RegisterM;
+export default RegisterMob;
