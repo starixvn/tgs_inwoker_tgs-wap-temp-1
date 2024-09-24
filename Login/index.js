@@ -27,6 +27,8 @@ import ErrorSwitcher from "../../../utils/ErrorSwitcher";
 import VersionNumber from "../../../utils/versionnumber";
 import Dropdown from "../component/dropdown";
 import Checkbox from "../component/checkbox";
+import RegisterRefactorMobile from "./RegisterRefactorMobile";
+
 const Container = styled.div`
   z-index: 10;
   overflow-y: scroll;
@@ -642,12 +644,7 @@ class Login extends Component {
       code: e.target.value,
     });
   };
-  handleConfirmPasswordChange = (e) => {
-    this.setState({
-      ...this.state,
-      confirmPassword: e.target.value,
-    });
-  };
+
   handleWithdrawalPasswordChange = (e) => {
     this.setState({
       ...this.state,
@@ -660,38 +657,12 @@ class Login extends Component {
       confirmWithdrawalPassword: e.target.value,
     });
   };
-  handlePromoCodeChange = (e) => {
-    this.setState({
-      ...this.state,
-      promoId: e.target.value,
-    });
-  };
-
-  handleUpperChange = (e) => {
-    this.setState({
-      ...this.state,
-      upper: e.target.value,
-    });
-  };
-
-  handleEmailChange = (e) => {
-    this.setState({
-      ...this.state,
-      email: e.target.value,
-    });
-  };
 
   handleToggleShow = () => {
     this.setState({ ...this.state, hidePassword: !this.state.hidePassword });
   };
   handleRememberMeChange = (e) => {
     this.setState({ ...this.state, rememberMe: e.target.checked });
-  };
-  handleToggleConfirmPasswordShow = () => {
-    this.setState({
-      ...this.state,
-      hideConfirmPassword: !this.state.hideConfirmPassword,
-    });
   };
 
   smsVerification = (securityKey, code) => {
@@ -755,16 +726,6 @@ class Login extends Component {
       this.smsVerification(securityKey, code);
     }
   };
-
-  handleSwitchType = (e) => {
-    this.setState({
-      ...this.state,
-      promoteType: e.target.value,
-      upper: "",
-      promoId: "",
-    });
-  };
-  
 
   checkinfo = () => {
     const username = this.state.username;
@@ -906,51 +867,6 @@ class Login extends Component {
       ...this.state,
       tnc: !this.state.tnc,
     });
-  };
-  
-  performNewRegister = async () => {
-    if(!this.checkinfo()){
-      return;
-    }
-  
-    const username = this.state.username;
-    const password = this.state.password;
-    const countdown = this.state.countdown;
-    const areaCode = this.state.areaCode;
-    const phone = this.state.phone;
-    const confirmPassword = this.state.confirmPassword;
-    const tnc = this.state.tnc;
-    const email = this.state.email;
-    
-    if(this.state.code===""){
-      this.props.alert("", i18n.t("common.msgEnterCode"));
-      return;
-    }
-    if(!this.state.hadSend){
-      this.props.alert("", i18n.t("common.msgInvalidPhoneCode"));
-      return;
-    }
-    
-    if (tnc) {
-      this.setState({ ...this.state, loading: true });
-      //--- from web ---
-      AccountService.NewRegister("InitPhone", {
-        input: "Valid",
-        data: {
-          securitykey: this.state.securityKey,
-          validatecode: this.state.code,
-        },
-      }).then(async (response) => {
-        if (response.IsSuccess) {
-          await this.handleLoginSuccess(this.state.loginData, true);
-        } else {
-          this.props.alert("", response.info);
-        }
-        this.setState({ ...this.state, loading: false });
-      });
-    }else{
-      this.props.alert("", i18n.t("common.msgRegisterTermAndCondition"));
-    }
   };
 
   render() {
@@ -1115,170 +1031,40 @@ class Login extends Component {
               );
             } else if (this.state.selected === 1 || this.state.selected === 2) {
               return (
-                <React.Fragment>
-                  <Textbox
-                    type={"text"}
-                    placeholder={i18n.t("wap.register.username")}
-                    style={{ marginTop: "60px" }}
-                    maxLength="16"
-                    value={this.state.username}
-                    onChange={this.handleUsernameChange}
-                  ></Textbox>
-
-                  <Textbox
-                    type={this.state.hidePassword ? "password" : "text"}
-                    hidePassword={this.state.hidePassword}
-                    placeholder={i18n.t("wap.register.password")}
-                    style={{ marginTop: "20px" }}
-                    password={true}
-                    maxLength="20"
-                    toggleShow={this.handleToggleShow}
-                    value={this.state.password}
-                    onChange={this.handlePasswordChange}
-                  ></Textbox>
-                  <Textbox
-                    type={this.state.hideConfirmPassword ? "password" : "text"}
-                    hidePassword={this.state.hideConfirmPassword}
-                    placeholder={i18n.t("wap.register.confirmPassword")}
-                    style={{ marginTop: "20px" }}
-                    password={true}
-                    maxLength="20"
-                    toggleShow={this.handleToggleConfirmPasswordShow}
-                    value={this.state.confirmPassword}
-                    onChange={this.handleConfirmPasswordChange}
-                  ></Textbox>
-
-         
-
-                  {config.features.Register_ShowEmail && (
-                    <CustomWrapper>
-                      <Textbox
-                        icon={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/wapp/icon-email.png`
-                        }
-                        type={"text"}
-                        placeholder={i18n.t("wap.register.email")}
-                        style={{ marginTop: "20px" }}
-                        maxLength="50"
-                        value={this.state.email}
-                        onChange={this.handleEmailChange}
-                      ></Textbox>
-                    </CustomWrapper>
-                  )}
-
-                  {!(
-                    config.features.Register_HideInvitation &&
-                    this.state.fromCustomDomain
-                  ) && (
-                    <CustomWrapper>
-                      <Textbox
-                        type={"text"}
-                        placeholder={i18n.t("wap.register.promoteCode")}
-                        style={{ marginTop: "20px" }}
-                        value={
-                          this.state.promoteType === "a"
-                            ? this.state.promoId
-                            : this.state.upper
-                        }
-                        onChange={
-                          this.state.promoteType === "a"
-                            ? this.handlePromoCodeChange
-                            : this.handleUpperChange
-                        }
-                        disabled={this.state.prefill}
-                      ></Textbox>
-                      {this.props.general.haveAffiliate && (
-                        <CustomInvitationSelect
-                          disabled={this.state.prefill}
-                          value={this.state.promoteType}
-                          selected={this.state.promoteType}
-                          onChange={this.handleSwitchType}
-                        >
-                          <option value="a">{i18n.t("usertype.agent")}</option>
-                          <option value="p">{i18n.t("usertype.player")}</option>
-                        </CustomInvitationSelect>
-                      )}
-                    </CustomWrapper>
-                  )}
-                  {config.features.Register_ShowPhone && (
-                    <CustomWrapper>
-                      <Select
-                        type={"text"}
-                        placeholder={i18n.t(
-                          "forgotPassword.plsEnterPhoneNumber"
-                        )}
-                        selectValue={this.state.areaCode}
-                        onSelectChange={this.handleAreaCodeChange}
-                        value={this.state.phone}
-                        maxLength={config.features.MAX_PHONE_LENGTH || 10}
-                        onChange={this.handlePhoneChange}
-                      ></Select>
-                    </CustomWrapper>
-                  )}
-                  {!config.features.SkipSMSVerification && (
-                    <>
-                      <VerificationCode
-                        value={this.state.code}
-                        onChange={this.handleCodeChange}
-                        countdown={this.state.countdown}
-                        placeholder={i18n.t("common.msgEnterCode")}
-                        handleGetCodeClick={this.handleGetCodeClick}
-                      ></VerificationCode>
-                    </>
-                  )}
-
-                  <RememberPassContainer style={{ width: 635 }}>
-                    <Checkbox
-                      checked={this.state.tnc}
-                      onChange={this.handleTncClick}
-                      label={i18n.t("web.register.contract")}
-                    />
-                  </RememberPassContainer>
-                  
-                  <ButtonWap
-                    style={{ margin: "100px auto 0 auto" }}
-                    name={
-                      config.features.Register_CustomFlow_IDR
-                        ? i18n.t("common.nextStep")
-                        : i18n.t("common.register")
-                    }
-                    onClick={this.performNewRegister}
-                    disableButton={!this.state.tnc}
-                  ></ButtonWap>
-                </React.Fragment>
-              );
-            } else if ( false && this.state.selected === 2) {
-              return (
-                <React.Fragment>
-                  <Select
-                    type={"text"}
-                    placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
-                    selectValue={this.state.areaCode}
-                    onSelectChange={this.handleAreaCodeChange}
-                    value={this.state.phone}
-                    onChange={this.handlePhoneChange}
-                    leaveGap={config.features.SkipSMSVerification}
-                  ></Select>
-                  {!config.features.SkipSMSVerification && (
-                    <>
-                      <VerificationCode
-                        value={this.state.code}
-                        onChange={this.handleCodeChange}
-                        countdown={this.state.countdown}
-                        placeholder={i18n.t("common.msgEnterCode")}
-                        handleGetCodeClick={this.handleGetCodeClick}
-                      ></VerificationCode>
-                    </>
-                  )}
-                  <ButtonWap
-                    style={{ margin: "100px auto 0 auto" }}
-                    name={i18n.t("common.submit")}
-                    onClick={this.handleActivationClick}
-                  ></ButtonWap>
-                </React.Fragment>
+                <RegisterRefactorMobile onHandleLoginSuccess={this.handleLoginSuccess}></RegisterRefactorMobile>
               );
             }
+            //  else if ( false && this.state.selected === 2) {
+            //   return (
+            //     <React.Fragment>
+            //       <Select
+            //         type={"text"}
+            //         placeholder={i18n.t("forgotPassword.plsEnterPhoneNumber")}
+            //         selectValue={this.state.areaCode}
+            //         onSelectChange={this.handleAreaCodeChange}
+            //         value={this.state.phone}
+            //         onChange={this.handlePhoneChange}
+            //         leaveGap={config.features.SkipSMSVerification}
+            //       ></Select>
+            //       {!config.features.SkipSMSVerification && (
+            //         <>
+            //           <VerificationCode
+            //             value={this.state.code}
+            //             onChange={this.handleCodeChange}
+            //             countdown={this.state.countdown}
+            //             placeholder={i18n.t("common.msgEnterCode")}
+            //             handleGetCodeClick={this.handleGetCodeClick}
+            //           ></VerificationCode>
+            //         </>
+            //       )}
+            //       <ButtonWap
+            //         style={{ margin: "100px auto 0 auto" }}
+            //         name={i18n.t("common.submit")}
+            //         onClick={this.handleActivationClick}
+            //       ></ButtonWap>
+            //     </React.Fragment>
+            //   );
+            // }
           })()}
         </ContentWrap>
 
