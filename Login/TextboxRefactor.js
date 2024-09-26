@@ -33,8 +33,9 @@ const InputTextBox = styled.input`
     font-size: 23px;
   }
   &:-webkit-autofill {
-    -webkit-text-fill-color: ${({ theme }) =>
-      theme.new_textfieldPlaceholder ?? "#b7b7b7"};
+    /* -webkit-text-fill-color: ${({ theme }) =>
+      theme.new_textfieldPlaceholder ?? "#b7b7b7"}; */
+      -webkit-text-fill-color: #000;
   }
 `;
 const TextContainer = styled.div`
