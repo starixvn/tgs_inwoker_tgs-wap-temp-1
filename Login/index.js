@@ -1034,7 +1034,7 @@ class Login extends Component {
               );
             } else if (this.state.selected === 1 || this.state.selected === 2) {
               return (
-                <RegisterRefactorMobile onHandleLoginSuccess={this.handleLoginSuccess}></RegisterRefactorMobile>
+                <RegisterRefactorMobile hadSend={this.state.hadSend} onHandleLoginSuccess={this.handleLoginSuccess}></RegisterRefactorMobile>
               );
             }
             //  else if ( false && this.state.selected === 2) {

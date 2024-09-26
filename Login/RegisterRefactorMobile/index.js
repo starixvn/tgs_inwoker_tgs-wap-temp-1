@@ -13,9 +13,10 @@ const ProvidersRegister = ({ children }) => {
 }
 
 
-const RegisterMob = ({ handleLoginSuccess }) => {
+const RegisterMob = ({ onHandleLoginSuccess,hadSend }) => {
     const commonprops = {
-        handleLoginSuccess: handleLoginSuccess
+        onHandleLoginSuccess: onHandleLoginSuccess,
+        hadSend:hadSend
     }
     return (
         <ProvidersRegister>
