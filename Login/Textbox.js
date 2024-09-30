@@ -50,11 +50,11 @@ const RightIcon = styled.div`
   width: 40px;
   height: 60px;
   background: url(${(props) =>
-      props.password === true
-        ? props.hidden
-          ? process.env.PUBLIC_URL + `/assets/images/wapp/hide-password.png`
-          : process.env.PUBLIC_URL + `/assets/images/wapp/show-password.png`
-        : ""})
+    props.password === true
+      ? props.hidden
+        ? process.env.PUBLIC_URL + `/assets/images/wapp/hide-password.png`
+        : process.env.PUBLIC_URL + `/assets/images/wapp/show-password.png`
+      : ""})
     no-repeat;
   background-size: contain;
   margin: 25px 25px 0 0;
