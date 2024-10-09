@@ -69,6 +69,24 @@ const Wrapper = styled.div`
   }
 `;
 
+const WidgetButton = ({ navigate, path, icon, title }) => {
+  return (
+    <div
+      className="widget"
+      onClick={() => {
+        navigate(path);
+      }}
+    >
+      <img
+        className="icon"
+        src={process.env.PUBLIC_URL + `/assets/images/wapp/${icon}`}
+        alt={title}
+      ></img>
+      <div>{title}</div>
+    </div>
+  );
+};
+
 const ProgressBarVersion = ({
   navigate,
   game,
@@ -90,23 +108,7 @@ const ProgressBarVersion = ({
     });
   };
 
-  const WidgetButton = ({ path, icon, title }) => {
-    return (
-      <div
-        className="widget"
-        onClick={() => {
-          navigate(path);
-        }}
-      >
-        <img
-          className="icon"
-          src={process.env.PUBLIC_URL + `/assets/images/wapp/${icon}`}
-          alt={title}
-        ></img>
-        <div>{title}</div>
-      </div>
-    );
-  };
+
 
   return (
     <Wrapper>
@@ -117,12 +119,14 @@ const ProgressBarVersion = ({
             path="/deposit"
             icon="icon-profile-deposit.svg"
             title={i18n.t("common.deposit")}
+            navigate={navigate}
           />
           {checkTransferWallet && !config.features.NewTransferUI && (
             <WidgetButton
               path="/transfer"
               icon="icon-profile-transfer.svg"
               title={i18n.t("common.transfer")}
+              navigate={navigate}
             />
           )}
 
@@ -130,6 +134,7 @@ const ProgressBarVersion = ({
             path="/withdrawal"
             icon="icon-profile-cashflow.svg"
             title={i18n.t("common.withdrawal")}
+            navigate={navigate}
           />
         </div>
         <div className="navigation">
@@ -138,6 +143,7 @@ const ProgressBarVersion = ({
               path="/profile"
               icon="icon-profile-profile.svg"
               title={i18n.t("wap.main.account.personalInfo")}
+              navigate={navigate}
             />
           </div>
           <div className="button">
@@ -145,6 +151,7 @@ const ProgressBarVersion = ({
               path="/inbox"
               icon="icon-profile-inbox.svg"
               title={i18n.t("wap.main.account.inbox")}
+              navigate={navigate}
             />
           </div>
           <div className="button">
@@ -152,6 +159,7 @@ const ProgressBarVersion = ({
               path="/report/2"
               icon="icon-profile-report.svg"
               title={i18n.t("wap.main.account.betReport")}
+              navigate={navigate}
             />
           </div>
 
@@ -160,14 +168,27 @@ const ProgressBarVersion = ({
               path="/report/3"
               icon="icon-profile-withdrawal.svg"
               title={i18n.t("wap.main.account.withdrawal")}
+              navigate={navigate}
             />
           </div>
+
+          { config.features.ShowWagering && 
+            (<div className="button">
+            <WidgetButton
+              path="/wagering"
+              icon="icon-wagering.svg"
+              title={i18n.t("t29.wagering")}
+              navigate={navigate}
+            />
+          </div>)
+          }
 
           <div className="button">
             <WidgetButton
               path="/report/4"
               icon="icon-profile-topup.svg"
               title={i18n.t("wap.main.account.deposit")}
+              navigate={navigate}
             />
           </div>
 
@@ -177,6 +198,7 @@ const ProgressBarVersion = ({
                 path="/report/6"
                 icon="icon-profile-transfer.svg"
                 title={i18n.t("wap.main.account.transfer")}
+                navigate={navigate}
               />
             </div>
           )}
@@ -185,6 +207,7 @@ const ProgressBarVersion = ({
               path="/report/8"
               icon="icon-profile-transfer.svg"
               title={i18n.t("report.balanceChanges.title")}
+              navigate={navigate}
             />
           </div>
           {general.haveAffiliate && (
@@ -193,6 +216,7 @@ const ProgressBarVersion = ({
                 path="/affiliate"
                 icon="icon-affiliate.svg"
                 title={i18n.t("web.account.affiliate")}
+                navigate={navigate}
               />
             </div>
           )}
@@ -202,6 +226,7 @@ const ProgressBarVersion = ({
               path="/card"
               icon="icon-profile-card.svg"
               title={i18n.t("wap.main.account.manageBank")}
+              navigate={navigate}
             />
           </div>
           <div className="button">
@@ -209,12 +234,13 @@ const ProgressBarVersion = ({
               path="/setting/language"
               icon="icon-profile-language.svg"
               title={i18n.t("common.language")}
+              navigate={navigate}
             />
           </div>
 
           {config.features.HaveVIPFeature && (
             <div className="button">
-              <WidgetButton path="/vip" icon="icon-vip.svg" title="VIP" />
+              <WidgetButton path="/vip" icon="icon-vip.svg" title="VIP" navigate={navigate}/>
             </div>
           )}
 
@@ -224,6 +250,7 @@ const ProgressBarVersion = ({
                 path="/main/download"
                 icon="icon-download.svg"
                 title={i18n.t("wap.main.account.appDownload")}
+                navigate={navigate}
               />
             </div>
           )}

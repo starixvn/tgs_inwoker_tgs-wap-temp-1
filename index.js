@@ -83,6 +83,7 @@ import ForcedVerification from "./ForcedVerification";
 import LiveChat from "../Share/live-chat";
 import memo from "./memo";
 import Zalo from "./Profile/Zalo";
+import Wagering from "./Wagering";
 
 const StyledModal = withStyles((theme) => ({
   paper: {
@@ -479,6 +480,12 @@ const RouteMapping = [
   {
     path: "/sports/:platform",
     component: CustomSportPage,
+    alert: true,
+    navigate: true,
+  },
+  {
+    path: "/wagering",
+    component: Wagering,
     alert: true,
     navigate: true,
   },
