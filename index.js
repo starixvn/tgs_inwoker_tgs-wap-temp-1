@@ -132,7 +132,7 @@ const ButtonConfirm = styled.div`
   text-align: center;
 
   padding-top: 24px;
-
+ 
   margin: 10px auto;
   background-image: linear-gradient(
     to top,
