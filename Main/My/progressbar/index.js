@@ -172,7 +172,7 @@ const ProgressBarVersion = ({
             />
           </div>
 
-          { config.features.ShowWagering && 
+          {config.features.ShowWagering && 
             (<div className="button">
             <WidgetButton
               path="/wagering"
