@@ -322,6 +322,14 @@ class My extends Component {
         display: true,
       },
       {
+        name: "common.reward",
+        url: "/reward",
+        icon:
+          process.env.PUBLIC_URL +
+          `/assets/images/wapp/icon-profile-download.svg`,
+        display: true,
+      },
+      {
         name: "common.language",
         url: "/setting/language",
         icon:
