@@ -326,7 +326,7 @@ class My extends Component {
         url: "/reward",
         icon:
           process.env.PUBLIC_URL +
-          `/assets/images/wapp/icon-profile-download.svg`,
+          `/assets/images/wapp/icon-reward_2.png`,
         display: true,
       },
       {
