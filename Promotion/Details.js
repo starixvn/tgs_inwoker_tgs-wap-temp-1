@@ -193,7 +193,7 @@ class Details extends Component {
           <EventTitle>【{i18n.t("promotion.promoDetail")}】</EventTitle>
           {config.features.HaveVIPFeature && (
             <EventText>
-              {i18n.t("promotion.promoTarget")}：
+              {i18n.t("promotion.promoTarget")}
               <br />
               {this.state.details.vipLevels
                 .sort((a, b) => {
@@ -216,6 +216,9 @@ class Details extends Component {
             {" - "}
             {moment(this.state.details.to).format("YYYY/MM/DD HH:mm:ss")}
           </EventText>
+          {this.state.details.name ?
+              <EventTitle>{this.state.details.name}：</EventTitle> : <></>}
+
           <PromoDesc
             dangerouslySetInnerHTML={{
               __html: "<div>" + contentToDisplay + "</div>",
