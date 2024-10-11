@@ -496,6 +496,8 @@ const RouteMapping = [
     alert: true,
     navigate: true,
   },
+
+  
 ];
 class Wap extends Component {
   constructor(props) {
