@@ -216,9 +216,10 @@ class Details extends Component {
             {" - "}
             {moment(this.state.details.to).format("YYYY/MM/DD HH:mm:ss")}
           </EventText>
-          {this.state.details.name ?
-              <EventTitle>{this.state.details.name}</EventTitle> : <></>}
 
+          {this.state.details.localization[i18n.language].name !== "" || this.state.details.localization[i18n.language].name !== null ?
+            <EventTitle>{this.state.details.localization[i18n.language].name}</EventTitle> : <></>}
+            
           <PromoDesc
             dangerouslySetInnerHTML={{
               __html: "<div>" + contentToDisplay + "</div>",
