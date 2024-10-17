@@ -132,7 +132,9 @@ class Details extends Component {
   };
 
   handleBackClick = () => {
-    this.props.appHistory.replace("/promotion-list");
+    // this.props.appHistory.replace("/promotion-list");
+    this.props.appHistory.replace("/reward");
+
   };
 
   render() {

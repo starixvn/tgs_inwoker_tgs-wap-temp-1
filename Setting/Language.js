@@ -30,6 +30,8 @@ const imageMap = {
   "hi-IN": process.env.PUBLIC_URL + `/assets/images/flags/in.png`,
   "ta-IN": process.env.PUBLIC_URL + `/assets/images/flags/in.png`,
   "tgl-PH": process.env.PUBLIC_URL + `/assets/images/flags/ph.png`,
+  "ja-JP": process.env.PUBLIC_URL + `/assets/images/flags/jp.png`,
+
 };
 const Container = styled.div`
   width: 100%;
