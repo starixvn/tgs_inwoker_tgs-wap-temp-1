@@ -237,7 +237,14 @@ const ProgressBarVersion = ({
               navigate={navigate}
             />
           </div>
-
+          <div className="button">
+            <WidgetButton
+              path="/reward"
+              icon="icon-reward_2.png"
+              title={i18n.t("common.reward")}
+              navigate={navigate}
+            />
+          </div>
           {config.features.HaveVIPFeature && (
             <div className="button">
               <WidgetButton path="/vip" icon="icon-vip.svg" title="VIP" navigate={navigate}/>

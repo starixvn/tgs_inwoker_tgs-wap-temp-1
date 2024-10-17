@@ -132,7 +132,9 @@ class Details extends Component {
   };
 
   handleBackClick = () => {
-    this.props.appHistory.replace("/promotion-list");
+    // this.props.appHistory.replace("/promotion-list");
+    this.props.appHistory.replace("/reward");
+
   };
 
   render() {
@@ -193,7 +195,7 @@ class Details extends Component {
           <EventTitle>【{i18n.t("promotion.promoDetail")}】</EventTitle>
           {config.features.HaveVIPFeature && (
             <EventText>
-              {i18n.t("promotion.promoTarget")}：
+              {i18n.t("promotion.promoTarget")}
               <br />
               {this.state.details.vipLevels
                 .sort((a, b) => {
@@ -216,6 +218,10 @@ class Details extends Component {
             {" - "}
             {moment(this.state.details.to).format("YYYY/MM/DD HH:mm:ss")}
           </EventText>
+
+          {this.state.details.localization[i18n.language].name !== "" || this.state.details.localization[i18n.language].name !== null ?
+            <EventTitle>{this.state.details.localization[i18n.language].name}</EventTitle> : <></>}
+            
           <PromoDesc
             dangerouslySetInnerHTML={{
               __html: "<div>" + contentToDisplay + "</div>",

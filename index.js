@@ -83,7 +83,8 @@ import ForcedVerification from "./ForcedVerification";
 import LiveChat from "../Share/live-chat";
 import memo from "./memo";
 import Zalo from "./Profile/Zalo";
-import Wagering from "./Wagering";
+import Wagering from "./Wagering"; 
+import RewardItem from '../Common/components/Account/Reward/RewardItem' 
 
 const StyledModal = withStyles((theme) => ({
   paper: {
@@ -489,6 +490,14 @@ const RouteMapping = [
     alert: true,
     navigate: true,
   },
+  {
+    path: "/reward",
+    component: RewardItem,
+    alert: true,
+    navigate: true,
+  },
+
+  
 ];
 class Wap extends Component {
   constructor(props) {
