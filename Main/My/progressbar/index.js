@@ -78,7 +78,7 @@ const WidgetButton = ({ navigate, path, icon, title }) => {
   return (
     <div
       className="widget"
-      onClick={() => {
+      onClick={() => { 
         navigate(path);
       }}
     >
