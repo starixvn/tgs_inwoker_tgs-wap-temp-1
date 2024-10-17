@@ -14,7 +14,7 @@ const Wagering = (props={}) => {
 
   return (
     <>
-      <Header title={i18n.t("common.wagering")} onBackClick={ handleBackClick }></Header>
+      <Header title={i18n.t("wagering.wageringrequirement")} onBackClick={ handleBackClick }></Header>
       <WageringWrapper ></WageringWrapper>
     </>
   )
