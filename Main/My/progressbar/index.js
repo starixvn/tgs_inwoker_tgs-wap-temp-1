@@ -31,6 +31,10 @@ const Wrapper = styled.div`
         height: 80px;
         width: 80px;
       }
+      .dark-filter{
+        -webkit-filter: brightness(30%); 
+        filter: brightness(30%);
+      }
     }
 
     .widgets {
@@ -70,6 +74,7 @@ const Wrapper = styled.div`
 `;
 
 const WidgetButton = ({ navigate, path, icon, title }) => {
+  const className = path === '/reward' ? 'icon dark-filter' : 'icon';  
   return (
     <div
       className="widget"
@@ -77,8 +82,9 @@ const WidgetButton = ({ navigate, path, icon, title }) => {
         navigate(path);
       }}
     >
-      <img
-        className="icon"
+      <img 
+        className={className}
+        imgColor={path}
         src={process.env.PUBLIC_URL + `/assets/images/wapp/${icon}`}
         alt={title}
       ></img>
