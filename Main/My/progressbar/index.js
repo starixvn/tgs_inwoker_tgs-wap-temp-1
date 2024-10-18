@@ -32,8 +32,8 @@ const Wrapper = styled.div`
         width: 80px;
       }
       .dark-filter{
-        -webkit-filter: brightness(30%); 
-        filter: brightness(30%);
+        -webkit-filter: brightness(15%); 
+        filter: brightness(15%);
       }
     }
 
@@ -246,7 +246,7 @@ const ProgressBarVersion = ({
           <div className="button">
             <WidgetButton
               path="/reward"
-              icon="icon-reward_2.png"
+              icon="icon-reward_3.svg"
               title={i18n.t("common.reward")}
               navigate={navigate}
             />
