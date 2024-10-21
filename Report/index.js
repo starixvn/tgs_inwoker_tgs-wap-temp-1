@@ -1891,7 +1891,7 @@ class Report extends Component {
                       <DataContent>
                         {this.state.dataList.map((row, index) => {
                           const date = moment(row.recordedon).format(
-                            "YYYY/MM/DD hh:mm:ss"
+                            "YYYY/MM/DD hh:mm:ss a"
                           );
                           return (
                             <div key={index}>
