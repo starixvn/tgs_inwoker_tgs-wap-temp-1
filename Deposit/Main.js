@@ -322,9 +322,10 @@ class Main extends Component {
     };
 
     const hasDepositRewardPromotion = (item) => {
-      return (item.promotionType === "DepositReward" || item.promotionType === "DepositRewardV2")
-        ? this.props.amount >= item.campaignDetail.depositMinimumLimit
-        : true;
+      if (item.promotionType === "DepositReward" || item.promotionType === "DepositRewardV2") {
+        return item.campaignDetail.depositMinimumLimit ? this.props.amount >= item.campaignDetail.depositMinimumLimit : true
+      }
+      return true
     };
 
     return (
