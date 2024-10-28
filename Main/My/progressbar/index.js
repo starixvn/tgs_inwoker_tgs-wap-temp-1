@@ -246,7 +246,7 @@ const ProgressBarVersion = ({
           <div className="button">
             <WidgetButton
               path="/reward"
-              icon="icon-reward_3.svg"
+              icon="icon-reward.svg"
               title={i18n.t("common.reward")}
               navigate={navigate}
             />
