@@ -178,16 +178,14 @@ const ProgressBarVersion = ({
             />
           </div>
 
-          {config.features.ShowWagering && 
-            (<div className="button">
+          <div className="button">
             <WidgetButton
               path="/wagering"
               icon="icon-wagering.svg"
               title={i18n.t("t29.wagering")}
               navigate={navigate}
             />
-          </div>)
-          }
+          </div>
 
           <div className="button">
             <WidgetButton
